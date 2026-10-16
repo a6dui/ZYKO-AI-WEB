@@ -17,7 +17,8 @@ from database import (
     get_user_by_id,
     get_or_create_google_user,
     get_or_create_telegram_user,
-    get_or_create_demo_user
+    get_or_create_demo_user,
+    sync_link_user_accounts
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, GOOGLE_CLIENT_ID
 from payments import (
@@ -75,24 +76,64 @@ async def handle_google_auth(request: web.Request):
     try:
         data = await request.json()
         credential = data.get("credential")
-        if not credential:
-            return web.json_response({"error": "Missing credential"}, status=400)
+        email_direct = data.get("email")
+        if credential:
+            g_info = verify_google_id_token(credential)
+            user = await get_or_create_google_user(
+                google_id=g_info["google_id"],
+                email=g_info["email"],
+                name=g_info["name"],
+                avatar=g_info["avatar"]
+            )
+        elif email_direct:
+            clean_email = email_direct.strip().lower()
+            name_val = data.get("name") or clean_email.split("@")[0].capitalize()
+            user = await get_or_create_google_user(
+                google_id=f"g_{clean_email}",
+                email=clean_email,
+                name=name_val,
+                avatar=data.get("avatar") or "https://lh3.googleusercontent.com/a/default-user=s96-c"
+            )
+        else:
+            return web.json_response({"error": "Missing credential or email"}, status=400)
             
-        g_info = verify_google_id_token(credential)
-        user = await get_or_create_google_user(
-            google_id=g_info["google_id"],
-            email=g_info["email"],
-            name=g_info["name"],
-            avatar=g_info["avatar"]
-        )
         token = create_access_token(user["id"])
-        
         resp = web.json_response({"token": token, "user": user})
         resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
         return resp
     except Exception as e:
         logger.error("Google Auth error: %s", e)
         return web.json_response({"error": str(e)}, status=400)
+
+async def handle_user_link_account(request: web.Request):
+    """
+    Links and synchronizes Google and Telegram accounts with balance and subscription pooling.
+    """
+    try:
+        user = await get_current_user(request)
+        if not user:
+            user = await get_or_create_demo_user()
+        data = await request.json()
+        google_email = data.get("google_email") or data.get("email")
+        tg_id = data.get("telegram_id")
+        tg_username = data.get("telegram_username")
+        
+        updated_user = await sync_link_user_accounts(
+            user_id=user["id"],
+            google_email=google_email,
+            telegram_id=int(tg_id) if tg_id else None,
+            telegram_username=tg_username
+        )
+        if not updated_user:
+            return web.json_response({"error": "Failed to link account"}, status=400)
+            
+        new_token = create_access_token(updated_user["id"])
+        resp = web.json_response({"success": True, "user": updated_user, "token": new_token})
+        resp.set_cookie("zyko_token", new_token, max_age=30*86400, httponly=True, samesite="Lax")
+        return resp
+    except Exception as e:
+        logger.error("Link account error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
 
 async def handle_telegram_auth(request: web.Request):
     try:
@@ -254,8 +295,10 @@ async def handle_stripe_create_checkout(request: web.Request):
         cycle = data.get("cycle", "annual")
         
         user = await get_current_user(request)
-        user_id = user["id"] if user else 0
-        user_email = user["email"] if user else ""
+        if not user:
+            user = await get_or_create_demo_user()
+        user_id = user["id"]
+        user_email = user.get("email", "")
         
         origin = f"{request.scheme}://{request.host}"
         res = await create_stripe_checkout(user_id, user_email, plan_name, cycle, origin)
@@ -278,7 +321,9 @@ async def handle_platega_create(request: web.Request):
         plan_name = data.get("plan", "Pro")
         method = data.get("method", "sbp")
         user = await get_current_user(request)
-        user_id = user["id"] if user else 0
+        if not user:
+            user = await get_or_create_demo_user()
+        user_id = user["id"]
         origin = f"{request.scheme}://{request.host}"
         
         res = await create_platega_payment(user_id, plan_name, origin, method=method)
@@ -303,7 +348,9 @@ async def handle_crypto_create(request: web.Request):
         plan_name = data.get("plan", "Pro")
         cycle = data.get("cycle", "annual")
         user = await get_current_user(request)
-        user_id = user["id"] if user else 0
+        if not user:
+            user = await get_or_create_demo_user()
+        user_id = user["id"]
         
         res = await create_cryptopay_payment(user_id, plan_name, cycle)
         return web.json_response(res)
@@ -543,6 +590,7 @@ def create_app():
     app.router.add_post("/api/auth/demo", handle_demo_auth)
     app.router.add_get("/api/auth/me", handle_me)
     app.router.add_post("/api/auth/logout", handle_logout)
+    app.router.add_post("/api/user/link-account", handle_user_link_account)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)

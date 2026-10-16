@@ -188,3 +188,52 @@ async def log_generation(user_id: int, model: str, prompt: str, result_url: str,
             (user_id, model, prompt, result_url, cost)
         )
         await db.commit()
+
+async def sync_link_user_accounts(user_id: int, google_email: str = None, telegram_id: int = None, telegram_username: str = None) -> dict:
+    """
+    Links and synchronizes Google and Telegram accounts, merging balances and subscriptions.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as cursor:
+            current_user = await cursor.fetchone()
+            if not current_user:
+                return None
+            current_user = dict(current_user)
+            
+        if google_email:
+            clean_email = google_email.strip().lower()
+            async with db.execute("SELECT * FROM users WHERE LOWER(email) = LOWER(?) AND id != ?", (clean_email, user_id)) as c_email:
+                other_user = await c_email.fetchone()
+                if other_user:
+                    other_user = dict(other_user)
+                    new_tokens = max(float(current_user.get("tokens") or 0), float(other_user.get("tokens") or 0))
+                    tg_id = current_user.get("telegram_id") or other_user.get("telegram_id")
+                    chosen_tier = other_user.get("tier") if other_user.get("tier") != "Free" else current_user.get("tier", "Free")
+                    await db.execute(
+                        "UPDATE users SET tokens = ?, telegram_id = COALESCE(?, telegram_id), tier = ? WHERE id = ?",
+                        (new_tokens, tg_id, chosen_tier, other_user["id"])
+                    )
+                    user_id = other_user["id"]
+                    await db.commit()
+                else:
+                    await db.execute("UPDATE users SET email = ? WHERE id = ?", (clean_email, user_id))
+                    await db.commit()
+                    
+        if telegram_id:
+            async with db.execute("SELECT * FROM users WHERE telegram_id = ? AND id != ?", (telegram_id, user_id)) as c_tg:
+                other_tg = await c_tg.fetchone()
+                if other_tg:
+                    other_tg = dict(other_tg)
+                    new_tokens = max(float(current_user.get("tokens") or 0), float(other_tg.get("tokens") or 0))
+                    await db.execute("UPDATE users SET tokens = ?, telegram_id = ? WHERE id = ?", (new_tokens, telegram_id, user_id))
+                    await db.execute("DELETE FROM users WHERE id = ?", (other_tg["id"],))
+                    await db.commit()
+                else:
+                    await db.execute("UPDATE users SET telegram_id = ? WHERE id = ?", (telegram_id, user_id))
+                    await db.commit()
+                    
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c_final:
+            row = await c_final.fetchone()
+            return dict(row) if row else None
