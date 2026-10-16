@@ -834,42 +834,69 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 5: VIDEO STUDIO ================= -->
+        <!-- ================= VIEW 5: VIDEO STUDIO (SCREENSHOTS 1, 2 & 3) ================= -->
         <div id="view-video" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
-            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
-              🎬
+            <!-- Kling Loop Ribbon Icon -->
+            <div id="video-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
+              <svg class="w-8 h-8 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5-7.5-3.358-7.5-7.5 3.358-7.5 7.5-7.5zm0 3a4.5 4.5 0 100 9 4.5 4.5 0 000-9z"/>
+              </svg>
             </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Wan 3.0 & Kling 1.5 HD</h2>
-            <p class="text-xs text-stone-400 max-w-lg mx-auto mb-6 leading-relaxed">
-              Generate up to 30 seconds of high-frame-rate cinematics with camera path control (Pan, Tilt, Zoom, FPV Drone).
+            <h2 id="video-model-title" class="text-2xl font-bold text-white mb-2">Kling</h2>
+            <p id="video-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 leading-relaxed">
+              Kling 4.0 creates realistic videos with natural facial expressions and dynamic camera movements. It supports multiple keyframes for precise control over each scene, delivering smooth motion even in fast-paced sequences.
             </p>
+            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+              <span class="text-emerald-400">Key capabilities:</span>
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Realistic motion</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Natural lighting</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Precise lip synchronization</span>
+            </div>
+
+            <!-- Video Gallery Stream -->
             <div id="video-generation-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
-              <!-- Videos rendered here -->
+              <!-- Dynamically populated -->
             </div>
           </div>
 
+          <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 ⚡) -->
           <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 rounded-2xl p-3 shadow-2xl">
-              <textarea id="video-prompt-input" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1">🔒 Write your prompt and use @... to mention references</span>
+                <span id="video-char-count">0 / 24000</span>
+              </div>
+              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 24000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-2">
+                  <button title="Attach reference image or video" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
                   <select id="video-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
-                    <option value="9:16">📱 9:16 Reels</option>
-                    <option value="16:9" selected>🖥️ 16:9 Cinema</option>
+                    <option value="16:9" selected>🖥️ 16:9</option>
+                    <option value="9:16">📱 9:16</option>
+                    <option value="1:1">🔲 1:1</option>
+                  </select>
+                  <select id="video-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
+                    <option value="720" selected>720p</option>
+                    <option value="1080">1080p HD</option>
+                    <option value="4K">4K Ultra</option>
                   </select>
                   <select id="video-duration-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
-                    <option value="5">5s (Quick)</option>
-                    <option value="10" selected>10s (HD)</option>
-                    <option value="30">30s (Wan 3.0 Pro)</option>
+                    <option value="5.0s" selected>5.0s</option>
+                    <option value="10.0s">10.0s</option>
+                    <option value="30.0s">30.0s</option>
                   </select>
+                  <button onclick="expandVideoPrompt()" title="Neural Prompt Expander (✦)" class="bg-white/5 hover:bg-emerald-500/20 border border-white/15 hover:border-emerald-400 text-emerald-400 px-2 py-1 rounded-lg text-[10px] font-bold transition">
+                    ✦
+                  </button>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="bg-white/5 border border-white/10 px-2 py-1 rounded-lg text-[10px] font-bold text-amber-300">
-                    ⚡ 15 ZK
+                  <button onclick="handleVoiceInput('video')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
+                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
+                    32 ⚡
                   </div>
-                  <button onclick="sendGenerateVideo()" class="bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg">
-                    <span>Generate Video</span> <span>➢</span>
+                  <button onclick="sendGenerateVideo()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
+                    <span>Generate</span> <span>➢</span>
                   </button>
                 </div>
               </div>
@@ -877,88 +904,131 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 6: AUDIO & VOICE STUDIO ================= -->
+<!-- ================= VIEW 6: AUDIO & VOICE STUDIO (SCREENSHOT 4) ================= -->
         <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
-            <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
-              🎙️
+            <!-- Elevenlabs Vertical Double Bar Icon -->
+            <div id="audio-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-xl tracking-tighter">
+              ||
             </div>
-            <h2 class="text-2xl font-bold text-white mb-2">ElevenLabs Studio TTS & 12 RVC Streamers</h2>
-            <p class="text-xs text-stone-400 max-w-lg mx-auto mb-6 leading-relaxed">
-              Ultra-realistic speech synthesis, voice cloning, and AI music production in 29 languages.
+            <h2 id="audio-model-title" class="text-2xl font-bold text-white mb-2">Elevenlabs</h2>
+            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 leading-relaxed">
+              Eleven v4 creates natural, emotionally expressive speech with precise control through tags. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
+            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+              <span class="text-emerald-400">Key capabilities:</span>
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">emotion tags</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">accent-free voice</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">long-form content</span>
+            </div>
 
+            <!-- Voice & Character Selector Card -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto text-left mb-6">
-              <!-- Voice Selector -->
               <div class="bg-[#111614] border border-white/10 rounded-2xl p-4">
                 <label class="block text-xs font-bold text-emerald-400 mb-2">Select Character / Voice:</label>
                 <select id="audio-voice-select" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white focus:outline-none">
-                  <option value="21m0aC4C9KstEPqMsrxW">Rachel — Calme & Professional</option>
+                  <option value="21m0aC4C9KstEPqMsrxW">Rachel — Natural & Expressive</option>
                   <option value="AZnzlk1XvdvUeBnXmlld">Domi — Energetic & Modern</option>
                   <option value="EXAVITQu4vr4xnSDxMaL">Bella — Warm & Natural</option>
                   <option value="ErXwobaYiN019PkySvjV">Antoni — Deep & Authoritative</option>
                   <option value="buster">Бустер (Buster) — RVC Streamer</option>
                   <option value="papich">Папич (Arthas) — RVC Legend</option>
                   <option value="mellstroy">Меллстрой — RVC Streamer</option>
-                  <option value="marmok">Мармок — Gaming Voice</option>
+                  <option value="marmok">Мармок — Gaming Legend</option>
                 </select>
               </div>
 
-              <!-- Audio Player Result -->
+              <!-- Audio Preview Player -->
               <div class="bg-[#111614] border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-                <div class="text-xs font-bold text-stone-300 mb-2">Audio Preview:</div>
+                <div class="text-xs font-bold text-stone-300 mb-2">Synthesized Audio Player:</div>
                 <audio id="audio-player-preview" controls class="w-full h-9"></audio>
-                <div id="audio-status-text" class="text-[11px] text-stone-500 mt-2">Ready to synthesize</div>
+                <div id="audio-status-text" class="text-[11px] text-stone-500 mt-2">Ready to synthesize with tags like [laughing]</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Prompt Box (Screenshot 4: 0/10000, 🎚️, 🎙️, 0,4 ⚡) -->
+          <div class="max-w-3xl w-full mx-auto pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1">🔒 Type text with tags like [laughing] for more expressive speech...</span>
+                <span id="audio-char-count">0 / 10000</span>
+              </div>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <div class="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
+                <div class="flex items-center gap-3 text-stone-400 text-xs">
+                  <button title="Voice Settings" class="hover:text-white transition">🎚️</button>
+                  <button title="Voice input" onclick="handleVoiceInput('audio')" class="hover:text-emerald-400 transition">🎙️</button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
+                    0,4 ⚡
+                  </div>
+                  <button onclick="sendGenerateTTS()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
+                    <span>Synthesize</span> <span>➢</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- ================= VIEW 7: TOOLKIT / INPAINT STUDIO (SCREENSHOT 5) ================= -->
+        <div id="view-toolkit" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+            <!-- Big Drag & Drop File Zone (Screenshot 5) -->
+            <div id="toolkit-dropzone" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-3xl p-12 transition bg-[#0d1211] cursor-pointer max-w-xl mx-auto mb-6 group shadow-2xl" onclick="document.getElementById('toolkit-file-input').click()">
+              <input type="file" id="toolkit-file-input" class="hidden" accept="image/jpeg,image/png" onchange="handleToolkitUpload(this.files)">
+              <div class="w-14 h-14 rounded-2xl bg-white/5 text-stone-300 group-hover:text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-4 transition">
+                📤
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1">Drop file here or click to upload</h3>
+              <p class="text-[11px] text-stone-500">JPEG, PNG (max. 50MB) • 1 file remaining</p>
+            </div>
+
+            <!-- Upload Source Action Buttons (Screenshot 5) -->
+            <div class="flex items-center justify-center gap-3 max-w-md mx-auto mb-8">
+              <button onclick="document.getElementById('toolkit-file-input').click()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
+                <span>📎</span> <span>Select from uploaded</span>
+              </button>
+              <button onclick="openGeneratedSelector()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
+                <span>📄</span> <span>Select from the generated</span>
+              </button>
+            </div>
+
+            <!-- Inpaint Canvas / Preview (when file selected) -->
+            <div id="toolkit-canvas-container" class="hidden max-w-md mx-auto rounded-2xl overflow-hidden border border-emerald-500/30 p-2 bg-black/60 shadow-xl mb-4">
+              <img id="toolkit-preview-img" class="w-full rounded-xl object-contain max-h-72">
+              <div class="flex items-center justify-between pt-2 px-1 text-xs">
+                <span class="text-stone-400 text-[11px]">Brush inpaint mask ready</span>
+                <button onclick="clearToolkitImage()" class="text-stone-400 hover:text-red-400 text-xs">Clear ✕</button>
               </div>
             </div>
           </div>
 
           <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 rounded-2xl p-3 shadow-2xl">
-              <textarea id="audio-text-input" rows="2" placeholder="Enter text to synthesize with ElevenLabs..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
-                <span class="text-[11px] text-stone-400">1000 characters ≈ 2 ZK</span>
-                <button onclick="sendGenerateTTS()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg">
-                  <span>Synthesize</span> <span>🔊</span>
+            <div class="bg-[#121615] border border-white/15 rounded-2xl p-3 shadow-2xl flex items-center justify-between text-xs">
+              <div class="flex items-center gap-3">
+                <button title="Brush highlight mask" class="text-stone-400 hover:text-emerald-400 transition flex items-center gap-1.5 font-medium text-xs">
+                  <span>🖌️</span> Brush Size: 24px
+                </button>
+                <input type="range" min="5" max="80" value="24" class="w-28 accent-emerald-400">
+              </div>
+              <div class="flex items-center gap-2">
+                <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
+                <button onclick="sendToolkitInpaint()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg active:scale-95">
+                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">3 ⚡</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ================= VIEW 7: TOOLKIT ================= -->
-        <div id="view-toolkit" class="hidden flex-1 flex flex-col justify-center bg-[#060908] p-6 overflow-y-auto">
-          <div class="max-w-4xl w-full mx-auto text-center py-6">
-            <h2 class="text-3xl font-black text-white mb-2">ZYKO AI Creative Toolkit</h2>
-            <p class="text-xs text-stone-400 mb-8">One-click neural enhancements and transformations.</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-              <div onclick="switchTab('image')" class="p-5 rounded-2xl bg-[#111614] border border-white/10 hover:border-emerald-400 cursor-pointer transition group">
-                <div class="text-3xl mb-3">🔍</div>
-                <h4 class="text-sm font-bold text-white group-hover:text-emerald-300">4K Upscaler</h4>
-                <p class="text-[11px] text-stone-400 mt-1">Topaz Neural Engine upscaler with facial detail reconstruction.</p>
-              </div>
-              <div onclick="switchTab('image')" class="p-5 rounded-2xl bg-[#111614] border border-white/10 hover:border-emerald-400 cursor-pointer transition group">
-                <div class="text-3xl mb-3">✂️</div>
-                <h4 class="text-sm font-bold text-white group-hover:text-emerald-300">Background Remover</h4>
-                <p class="text-[11px] text-stone-400 mt-1">Instant alpha cutout for products, portraits, and cars.</p>
-              </div>
-              <div onclick="switchTab('image')" class="p-5 rounded-2xl bg-[#111614] border border-white/10 hover:border-emerald-400 cursor-pointer transition group">
-                <div class="text-3xl mb-3">🎭</div>
-                <h4 class="text-sm font-bold text-white group-hover:text-emerald-300">Face Swap</h4>
-                <p class="text-[11px] text-stone-400 mt-1">High-fidelity identity transfer into any photo or video.</p>
-              </div>
-              <div onclick="switchTab('audio')" class="p-5 rounded-2xl bg-[#111614] border border-white/10 hover:border-emerald-400 cursor-pointer transition group">
-                <div class="text-3xl mb-3">🎙️</div>
-                <h4 class="text-sm font-bold text-white group-hover:text-emerald-300">Voice Isolator</h4>
-                <p class="text-[11px] text-stone-400 mt-1">Separate clean studio vocals from background noise and music.</p>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
 
-      <!-- ================= 3. RIGHT CONTROL PANEL (MATCHING SCREENSHOTS 2, 3 & 4) ================= -->
+<!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
       <aside id="workspace-control-panel" class="w-72 bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-10">
         
         <!-- Model Filter Info Header -->
@@ -969,141 +1039,265 @@
           <span class="text-xs">▾</span>
         </div>
 
-        <!-- MODEL SELECTION ACCORDION (SCREENSHOT 4 DROPDOWN LIST) -->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between font-bold text-stone-200">
-            <span>Model selection</span>
-            <span class="text-xs">▴</span>
-          </div>
-
-          <!-- Custom Dropdown Trigger Button -->
-          <div class="relative">
-            <button onclick="toggleModelDropdown()" id="model-dropdown-btn" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
-              <div class="flex items-center gap-2.5">
-                <span id="active-model-icon-pill" class="text-base">🍌</span>
-                <div>
-                  <div id="active-model-name-pill" class="font-extrabold text-white text-xs">Nano Banana</div>
-                  <div id="active-model-sub-pill" class="text-[10px] text-stone-400">Banana 2</div>
+        <!-- PANEL SECTION: IMAGE CONTROLS (SCREENSHOT 4) -->
+        <div id="control-group-image" class="space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-bold text-stone-200">
+              <span>Model selection</span> <span class="text-xs">▴</span>
+            </div>
+            <div class="relative">
+              <button onclick="toggleModelDropdown('image')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
+                <div class="flex items-center gap-2.5">
+                  <span id="active-image-icon" class="text-base">🍌</span>
+                  <div>
+                    <div id="active-image-name" class="font-extrabold text-white text-xs">Nano Banana</div>
+                    <div id="active-image-sub" class="text-[10px] text-stone-400">Banana 2</div>
+                  </div>
                 </div>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+
+              <!-- Image Models Dropdown (Screenshot 4) -->
+              <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
+                <button onclick="selectImageModel('banana', '🍌', 'Nano Banana', 'Banana 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300"><span>🍌</span> Nano Banana</button>
+                <button onclick="selectImageModel('chatgpt', '🌐', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> GPT Image</button>
+                <button onclick="selectImageModel('seedream', '📊', 'Seedream', 'Seedream 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>📊</span> Seedream</button>
+                <button onclick="selectImageModel('flux', '🔺', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔺</span> Flux</button>
+                <button onclick="selectImageModel('runway', '🎞️', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway Frames</button>
+                <button onclick="selectImageModel('grok', '🌀', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
+                <button onclick="selectImageModel('luma', '🌙', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
+                <button onclick="selectImageModel('higgsfield', '🎭', 'Higgsfield Soul', 'Soul v2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎭</span> Higgsfield Soul</button>
               </div>
-              <span class="text-stone-400 text-xs">▾</span>
-            </button>
-
-            <!-- Floating Tooltip (Screenshot 2, 3 & 4) -->
-            <div id="model-select-tooltip" class="tooltip-bubble absolute left-0 right-0 -bottom-11 bg-[#1a2320] border border-white/15 rounded-xl p-2 shadow-2xl flex items-center justify-between text-[11px] text-stone-300 z-30">
-              <span>Here you can choose the AI and its model.</span>
-              <button onclick="document.getElementById('model-select-tooltip').style.display='none'" class="text-stone-500 hover:text-white px-1">✕</button>
-            </div>
-
-            <!-- Full Models Dropdown (Exact Match to Screenshot 4!) -->
-            <div id="model-dropdown-menu" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-              <button onclick="selectStudioModel('banana', '🍌', 'Nano Banana', 'Banana 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300">
-                <span>🍌</span> Nano Banana
-              </button>
-              <button onclick="selectStudioModel('chatgpt', '🌐', 'GPT Image / ChatGPT', 'GPT 6 Luna')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🌐</span> GPT Image
-              </button>
-              <button onclick="selectStudioModel('seedream', '📊', 'Seedream', 'Seedream 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>📊</span> Seedream
-              </button>
-              <button onclick="selectStudioModel('flux', '🔺', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🔺</span> Flux
-              </button>
-              <button onclick="selectStudioModel('runway', '🎞️', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🎞️</span> Runway Frames
-              </button>
-              <button onclick="selectStudioModel('grok', '🌀', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🌀</span> Grok Imagine
-              </button>
-              <button onclick="selectStudioModel('luma', '🌙', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🌙</span> Luma
-              </button>
-              <button onclick="selectStudioModel('higgsfield', '🎭', 'Higgsfield Soul', 'Soul v2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                <span>🎭</span> Higgsfield Soul
-              </button>
             </div>
           </div>
-        </div>
 
-        <!-- ACCORDION: FORMAT (ASPECT RATIO) -->
-        <div class="pt-4 border-t border-white/10">
-          <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('section-format')">
-            <span class="flex items-center gap-1.5">📐 Format</span>
-            <span class="text-stone-400">▾</span>
-          </div>
-          <div id="section-format" class="space-y-2">
-            <div class="text-[11px] text-stone-400">Aspect ratio:</div>
-            <div class="grid grid-cols-2 gap-1.5 text-xs">
-              <button onclick="setFormatAspect('9:16', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2">
-                <span class="w-3 h-5 border border-white/40 rounded-sm"></span> 9:16 (Story)
-              </button>
-              <button onclick="setFormatAspect('1:1', this)" class="aspect-btn bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold p-2 rounded-xl flex items-center gap-2">
-                <span class="w-4 h-4 border border-emerald-400 rounded-sm"></span> 1:1 (Square)
-              </button>
-              <button onclick="setFormatAspect('16:9', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2">
-                <span class="w-5 h-3 border border-white/40 rounded-sm"></span> 16:9 (Cinema)
-              </button>
-              <button onclick="setFormatAspect('4:5', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2">
-                <span class="w-3.5 h-4.5 border border-white/40 rounded-sm"></span> 4:5 (Post)
-              </button>
+          <!-- Format Accordion -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-img-format')">
+              <span>📐 Format</span> <span class="text-stone-400">▾</span>
             </div>
-          </div>
-        </div>
-
-        <!-- ACCORDION: QUALITY -->
-        <div class="pt-3 border-t border-white/10">
-          <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('section-quality')">
-            <span class="flex items-center gap-1.5">✨ Quality</span>
-            <span class="text-stone-400">▾</span>
-          </div>
-          <div id="section-quality" class="space-y-3 text-[11px] text-stone-400">
-            <div>
-              <div class="flex justify-between mb-1">
-                <span>Sampling steps:</span>
-                <span id="steps-val" class="font-bold text-white">30</span>
+            <div id="sec-img-format" class="space-y-2">
+              <div class="text-[11px] text-stone-400">Aspect ratio:</div>
+              <div class="grid grid-cols-2 gap-1.5 text-xs">
+                <button onclick="setFormatAspect('9:16', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
+                  <span class="w-3 h-5 border border-white/40 rounded-sm"></span> 9:16 (Story)
+                </button>
+                <button onclick="setFormatAspect('1:1', this)" class="aspect-btn bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold p-2 rounded-xl flex items-center gap-2">
+                  <span class="w-4 h-4 border border-emerald-400 rounded-sm"></span> 1:1 (Square)
+                </button>
+                <button onclick="setFormatAspect('16:9', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
+                  <span class="w-5 h-3 border border-white/40 rounded-sm"></span> 16:9 (Cinema)
+                </button>
+                <button onclick="setFormatAspect('4:5', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
+                  <span class="w-3.5 h-4.5 border border-white/40 rounded-sm"></span> 4:5 (Post)
+                </button>
               </div>
-              <input type="range" min="15" max="50" value="30" oninput="document.getElementById('steps-val').textContent = this.value" class="w-full accent-emerald-400">
             </div>
-            <div>
-              <div class="flex justify-between mb-1">
-                <span>CFG Scale:</span>
-                <span id="cfg-val" class="font-bold text-white">7.5</span>
+          </div>
+
+          <!-- Quality Accordion -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-img-quality')">
+              <span>✨ Quality</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-img-quality" class="space-y-3 text-[11px] text-stone-400">
+              <div>
+                <div class="flex justify-between mb-1"><span>Sampling steps:</span><span id="steps-val" class="font-bold text-white">30</span></div>
+                <input type="range" min="15" max="50" value="30" oninput="document.getElementById('steps-val').textContent = this.value" class="w-full accent-emerald-400">
               </div>
-              <input type="range" min="1" max="15" step="0.5" value="7.5" oninput="document.getElementById('cfg-val').textContent = this.value" class="w-full accent-emerald-400">
+              <div>
+                <div class="flex justify-between mb-1"><span>CFG Scale:</span><span id="cfg-val" class="font-bold text-white">7.5</span></div>
+                <input type="range" min="1" max="15" step="0.5" value="7.5" oninput="document.getElementById('cfg-val').textContent = this.value" class="w-full accent-emerald-400">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- ACCORDION: CAPABILITIES & TOOLS -->
-        <div class="pt-3 border-t border-white/10">
-          <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('section-capabilities')">
-            <span class="flex items-center gap-1.5">⚡ Capabilities</span>
-            <span class="text-stone-400">▾</span>
+        <!-- PANEL SECTION: VIDEO CONTROLS (SCREENSHOTS 1, 2 & 3) -->
+        <div id="control-group-video" class="hidden space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-bold text-stone-200">
+              <span>Model selection</span> <span class="text-xs">▴</span>
+            </div>
+            <div class="relative">
+              <button onclick="toggleModelDropdown('video')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
+                <div class="flex items-center gap-2.5">
+                  <span id="active-video-icon" class="text-base">♾️</span>
+                  <div>
+                    <div id="active-video-name" class="font-extrabold text-white text-xs">Kling</div>
+                    <div id="active-video-sub" class="text-[10px] text-stone-400">Omni • Kling 4.0</div>
+                  </div>
+                </div>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+
+              <!-- Video Models Dropdown (Exact Match to Screenshots 2 & 3!) -->
+              <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
+                <button onclick="selectVideoModel('kling', '♾️', 'Kling', 'Kling 4.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>♾️</span> Kling</button>
+                <button onclick="selectVideoModel('veo', '🌐', 'Google Veo', 'Veo 3.1 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> Google Veo</button>
+                <button onclick="selectVideoModel('seedance', '📊', 'Seedance', 'Seedance 2.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>📊</span> Seedance</button>
+                <button onclick="selectVideoModel('grok_vid', '🌀', 'Grok Imagine', 'Grok Video 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
+                <button onclick="selectVideoModel('runway', '🎞️', 'Runway', 'Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway</button>
+                <button onclick="selectVideoModel('minimax', '🎬', 'Hailuo Minimax', 'Hailuo 01 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎬</span> Hailuo Minimax</button>
+                <button onclick="selectVideoModel('luma_vid', '🌙', 'Luma', 'Dream Machine 1.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
+                <button onclick="selectVideoModel('heygen', '🗣️', 'HeyGen', 'HeyGen Avatar 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🗣️</span> HeyGen</button>
+                <button onclick="selectVideoModel('beeble', '👁️', 'Beeble', 'Virtual Studio')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>👁️</span> Beeble</button>
+                <button onclick="selectVideoModel('happyhorse', '🐴', 'HappyHorse', 'Horse Cinematic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🐴</span> HappyHorse</button>
+                <button onclick="selectVideoModel('flux_vid', '🔺', 'FLUX 3 Video', 'FLUX Motion')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔺</span> FLUX 3 Video</button>
+                <button onclick="selectVideoModel('wan', '🌊', 'Wan Video', 'Wan 3.0 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌊</span> Wan Video</button>
+                <button onclick="selectVideoModel('higgs_vid', '🎭', 'Higgsfield', 'Soul Motion')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎭</span> Higgsfield</button>
+              </div>
+            </div>
           </div>
-          <div id="section-capabilities" class="space-y-1.5 text-[11px] text-stone-300">
-            <label class="flex items-center justify-between p-1.5 rounded-lg hover:bg-white/5 cursor-pointer">
-              <span>Web Search</span>
-              <input type="checkbox" checked class="rounded bg-black/50 text-emerald-500">
-            </label>
-            <label class="flex items-center justify-between p-1.5 rounded-lg hover:bg-white/5 cursor-pointer">
-              <span>Code Interpreter</span>
-              <input type="checkbox" checked class="rounded bg-black/50 text-emerald-500">
-            </label>
-            <label class="flex items-center justify-between p-1.5 rounded-lg hover:bg-white/5 cursor-pointer">
-              <span>ElevenLabs Audio Voice</span>
-              <input type="checkbox" checked class="rounded bg-black/50 text-emerald-500">
-            </label>
+
+          <!-- Video Format Accordion (Screenshot 1: 16:9 + Reset) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2">
+              <span>📐 Format</span> <button onclick="resetVideoFormat()" class="text-[11px] text-stone-500 hover:text-white">Reset ↺</button>
+            </div>
+            <div class="space-y-1.5">
+              <label class="block text-[11px] text-stone-400">Aspect ratio</label>
+              <select id="video-panel-aspect" onchange="document.getElementById('video-aspect-pill').value = this.value" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
+                <option value="16:9" selected>🖥️ 16:9</option>
+                <option value="9:16">📱 9:16</option>
+                <option value="1:1">🔲 1:1</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Video Quality Accordion -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2">
+              <span>✨ Quality</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div class="space-y-2 text-[11px] text-stone-400">
+              <div class="flex justify-between items-center p-2 rounded-lg bg-white/5">
+                <span>Motion Smoothness</span> <span class="text-emerald-400 font-bold">Ultra 60fps</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- ACCORDION: SYSTEM PROMPT -->
-        <div class="pt-3 border-t border-white/10">
-          <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('section-sysprompt')">
-            <span class="flex items-center gap-1.5">⚙️ System Prompt</span>
-            <span class="text-stone-400">▾</span>
+        <!-- PANEL SECTION: AUDIO CONTROLS (SCREENSHOT 4) -->
+        <div id="control-group-audio" class="hidden space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-bold text-stone-200">
+              <span>Model selection</span> <span class="text-xs">▴</span>
+            </div>
+            <div class="bg-[#141b18] border border-white/15 rounded-xl p-3">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="text-base font-black">||</span>
+                <span class="font-extrabold text-white text-xs">Elevenlabs</span>
+              </div>
+              <select class="w-full bg-black/50 border border-white/10 rounded-lg p-1.5 text-xs text-stone-300">
+                <option value="v4" selected>Eleven v4</option>
+                <option value="turbo">Eleven Turbo v2.5</option>
+                <option value="multilingual">Eleven Multilingual v2</option>
+              </select>
+            </div>
           </div>
-          <div id="section-sysprompt" class="space-y-1.5">
-            <textarea id="custom-system-prompt" rows="3" placeholder="Custom instructions for AI behavior..." class="w-full bg-black/50 border border-white/15 rounded-xl p-2 text-[11px] text-white placeholder-stone-600 focus:outline-none"></textarea>
+
+          <!-- Mode (Screenshot 4) -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-stone-300">Mode</label>
+            <select class="w-full bg-[#141b18] border border-white/15 rounded-xl p-2.5 text-xs text-white">
+              <option value="tts" selected>Text to Speech</option>
+              <option value="sts">Speech to Speech</option>
+              <option value="clone">Voice Cloning</option>
+              <option value="sfx">Sound Effects</option>
+            </select>
+            <div class="text-[10px] text-stone-500 pt-1">In this mode, price depends on characters count</div>
+          </div>
+
+          <!-- Generation Parameters (Screenshot 4) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-audio-params')">
+              <span>⚙️ Generation parameters</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-audio-params" class="space-y-2.5 text-[11px] text-stone-400">
+              <div>
+                <div class="flex justify-between mb-1"><span>Stability:</span><span class="text-white font-bold">50%</span></div>
+                <input type="range" min="0" max="100" value="50" class="w-full accent-emerald-400">
+              </div>
+              <div>
+                <div class="flex justify-between mb-1"><span>Clarity + Similarity:</span><span class="text-white font-bold">75%</span></div>
+                <input type="range" min="0" max="100" value="75" class="w-full accent-emerald-400">
+              </div>
+            </div>
+          </div>
+
+          <!-- Style Accordion -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-audio-style')">
+              <span class="flex items-center gap-1">🎨 Style <span class="text-red-400">*</span></span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-audio-style" class="space-y-2 text-[11px]">
+              <select class="w-full bg-black/60 border border-white/15 rounded-xl p-2 text-xs text-stone-300">
+                <option value="natural" selected>Natural Expression</option>
+                <option value="dramatic">Dramatic Film Voice</option>
+                <option value="news">Broadcast News Anchor</option>
+                <option value="whisper">ASMR Whisper</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL SECTION: TOOLKIT CONTROLS (SCREENSHOT 5) -->
+        <div id="control-group-toolkit" class="hidden space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-bold text-stone-200">
+              <span>Model selection</span> <span class="text-xs">▴</span>
+            </div>
+            <div class="relative">
+              <button onclick="toggleModelDropdown('toolkit')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🍌</span>
+                  <span id="active-toolkit-name" class="font-extrabold text-white text-xs">Nano Banana Pro Editor</span>
+                </div>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+
+              <!-- Toolkit Dropdown (Screenshot 5) -->
+              <div id="dropdown-menu-toolkit" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40">
+                <button onclick="selectToolkitModel('seedance_ed', '📊', 'Seedance 2.5 Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>📊</span> Seedance 2.5 Editor</button>
+                <button onclick="selectToolkitModel('seedream_ed', '📊', 'Seedream 5 Pro Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>📊</span> Seedream 5 Pro Editor</button>
+                <button onclick="selectToolkitModel('banana_ed', '🍌', 'Nano Banana Pro Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>🍌</span> Nano Banana Pro Editor</button>
+                <button onclick="selectToolkitModel('clarity', '🔍', 'Clarity')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>🔍</span> Clarity</button>
+                <button onclick="selectToolkitModel('magnific', '🔺', 'Magnific')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>🔺</span> Magnific</button>
+                <button onclick="selectToolkitModel('topaz', '✨', 'Topaz AI')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>✨</span> Topaz AI</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlight Accordion (Screenshot 5) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-highlight')">
+              <span>🖌️ Highlight</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-tool-highlight" class="space-y-2 text-[11px] text-stone-400">
+              <div class="flex justify-between"><span>Brush opacity:</span><span class="text-white font-bold">100%</span></div>
+              <input type="range" min="20" max="100" value="100" class="w-full accent-emerald-400">
+            </div>
+          </div>
+
+          <!-- Attach Accordion (Screenshot 5) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-attach')">
+              <span>📎 Attach</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-tool-attach" class="space-y-1 text-[11px] text-stone-400">
+              <p>Reference mask or background replacement source.</p>
+            </div>
+          </div>
+
+          <!-- Quality Accordion (Screenshot 5) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-quality')">
+              <span>✨ Quality</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-tool-quality" class="space-y-1 text-[11px] text-stone-400">
+              <div class="flex justify-between"><span>Inpaint Resolution:</span><span class="text-white font-bold">2K Ultra</span></div>
+            </div>
           </div>
         </div>
 
@@ -1526,46 +1720,21 @@
             else el.classList.add('hidden');
           }
         });
-      }
-    }
 
-    // 3. Side Drawer (Hamburger Menu)
-    function toggleSideMenu() {
-      const drawer = document.getElementById('side-drawer');
-      const backdrop = document.getElementById('side-drawer-backdrop');
-      const isOpen = !drawer.classList.contains('-translate-x-full');
-      if (isOpen) {
-        drawer.classList.add('-translate-x-full');
-        backdrop.classList.add('hidden');
-      } else {
-        drawer.classList.remove('-translate-x-full');
-        backdrop.classList.remove('hidden');
-      }
-    }
-
-    // 4. Language Switcher (i18n)
-    function setLanguage(lang) {
-      currentLang = lang;
-      const dict = i18n[lang] || i18n['en'];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) el.textContent = dict[key];
-      });
-
-      // Update buttons
-      ['en', 'ru', 'es', 'de'].forEach(l => {
-        const btn = document.getElementById(`lang-btn-${l}`);
-        if (btn) {
-          if (l === lang) {
-            btn.className = 'flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 text-[11px]';
-          } else {
-            btn.className = 'flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-stone-300 border border-transparent text-[11px]';
+        // Switch right control groups
+        ['image', 'video', 'audio', 'toolkit'].forEach(g => {
+          const grp = document.getElementById(`control-group-${g}`);
+          if (grp) {
+            if (g === tabId || (tabId === 'text' && g === 'image') || (tabId === 'agents' && g === 'image')) {
+              grp.classList.remove('hidden');
+            } else {
+              grp.classList.add('hidden');
+            }
           }
-        }
-      });
+        });
+      }
     }
 
-    // 5. Model Selection Dropdown (Screenshot 4)
     function toggleModelDropdown() {
       const menu = document.getElementById('model-dropdown-menu');
       menu.classList.toggle('hidden');
@@ -2393,6 +2562,81 @@
         else if (target === 'llm') document.getElementById('llm-prompt-input').value = text;
         else if (target === 'image') document.getElementById('image-prompt-input').value = text;
       };
+    }
+
+
+    function toggleModelDropdown(type) {
+      const menu = document.getElementById(`dropdown-menu-${type}`);
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function selectImageModel(key, icon, name, sub) {
+      document.getElementById('active-image-icon').textContent = icon;
+      document.getElementById('active-image-name').textContent = name;
+      document.getElementById('active-image-sub').textContent = sub;
+      document.getElementById('dropdown-menu-image').classList.add('hidden');
+      document.getElementById('image-model-icon').textContent = icon;
+      document.getElementById('image-model-title').textContent = name;
+    }
+
+    function selectVideoModel(key, icon, name, ver) {
+      document.getElementById('active-video-icon').textContent = icon;
+      document.getElementById('active-video-name').textContent = name;
+      document.getElementById('active-video-sub').textContent = ver;
+      document.getElementById('dropdown-menu-video').classList.add('hidden');
+      document.getElementById('video-model-title').textContent = name;
+    }
+
+    function selectToolkitModel(key, icon, name) {
+      document.getElementById('active-toolkit-name').textContent = name;
+      document.getElementById('dropdown-menu-toolkit').classList.add('hidden');
+    }
+
+    function handleToolkitUpload(files) {
+      if (!files || !files[0]) return;
+      const file = files[0];
+      const url = URL.createObjectURL(file);
+      document.getElementById('toolkit-preview-img').src = url;
+      document.getElementById('toolkit-canvas-container').classList.remove('hidden');
+    }
+
+    function clearToolkitImage() {
+      document.getElementById('toolkit-canvas-container').classList.add('hidden');
+      document.getElementById('toolkit-file-input').value = '';
+    }
+
+    function openGeneratedSelector() {
+      switchTab('image');
+      alert('Select any image from your gallery to import into Toolkit!');
+    }
+
+    function sendToolkitInpaint() {
+      alert('Inpainting and neural reconstruction started! Cost: 3 ⚡');
+      deductTokensUI(3);
+    }
+
+    function resetVideoFormat() {
+      document.getElementById('video-aspect-pill').value = '16:9';
+      document.getElementById('video-duration-pill').value = '5.0s';
+      document.getElementById('video-res-pill').value = '720';
+    }
+
+    function expandVideoPrompt() {
+      const input = document.getElementById('video-prompt-input');
+      const val = input.value.trim();
+      if (!val) {
+        input.value = "Cinematic aerial fpv shot, hyper-realistic 8k octane render, dramatic volumetric lighting, anamorphic lens flare, motion blur 60fps";
+      } else {
+        input.value = val + ", cinematic 8k octane render, hyper-detailed volumetric lighting, photorealistic depth of field, 60fps motion";
+      }
+      document.getElementById('video-char-count').textContent = input.value.length + ' / 24000';
+    }
+
+    function expandAllControls() {
+      ['sec-img-format', 'sec-img-quality', 'sec-audio-params', 'sec-audio-style', 'sec-tool-highlight', 'sec-tool-attach', 'sec-tool-quality', 'section-quality', 'section-capabilities', 'section-sysprompt'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('hidden');
+      });
     }
 
     window.addEventListener('keydown', (e) => {
