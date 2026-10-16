@@ -585,28 +585,17 @@ async def handle_index(request: web.Request):
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
         return response
     return web.Response(text="ZYKO.AI Landing page is loading...", status=200)
-async def handle_favicon(request: web.Request):
-    fav_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", "favicon.ico")
-    if os.path.exists(fav_path):
-        resp = web.FileResponse(fav_path)
-        resp.headers["Cache-Control"] = "public, max-age=86400"
-        return resp
-    return web.Response(status=404)
-
-async def handle_root_file(request: web.Request):
-    fname = request.match_info.get("fname", "")
-    allowed = {
-        "favicon.ico", "favicon.svg", "favicon.png", "favicon-32x32.png", "favicon-16x16.png",
-        "apple-touch-icon.png", "apple-touch-icon-precomposed.png", "icon-192.png",
-        "icon-512.png", "site.webmanifest"
-    }
-    if fname in allowed:
-        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", fname)
+def make_file_handler(filename, content_type=None):
+    async def handler(request: web.Request):
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", filename)
         if os.path.exists(fpath):
             resp = web.FileResponse(fpath)
+            if content_type:
+                resp.content_type = content_type
             resp.headers["Cache-Control"] = "public, max-age=86400"
             return resp
-    return web.Response(status=404)
+        return web.Response(status=404)
+    return handler
 
 async def handle_get_system_settings(request: web.Request):
     settings = await get_system_settings()
@@ -680,8 +669,16 @@ def create_app():
     # API endpoints
     app.router.add_get("/health", handle_health)
     app.router.add_get("/api/config/public", handle_public_config)
-    app.router.add_get("/favicon.ico", handle_favicon)
-    app.router.add_get("/{fname:(?:favicon(?:-32x32|-16x16)?\\.png|favicon\\.svg|apple-touch-icon(?:-precomposed)?\\.png|icon-(?:192|512)\\.png|site\\.webmanifest)}", handle_root_file)
+    app.router.add_get("/favicon.ico", make_file_handler("favicon.ico", "image/x-icon"))
+    app.router.add_get("/favicon.svg", make_file_handler("favicon.svg", "image/svg+xml"))
+    app.router.add_get("/favicon.png", make_file_handler("favicon.png", "image/png"))
+    app.router.add_get("/favicon-32x32.png", make_file_handler("favicon-32x32.png", "image/png"))
+    app.router.add_get("/favicon-16x16.png", make_file_handler("favicon-16x16.png", "image/png"))
+    app.router.add_get("/apple-touch-icon.png", make_file_handler("apple-touch-icon.png", "image/png"))
+    app.router.add_get("/apple-touch-icon-precomposed.png", make_file_handler("apple-touch-icon.png", "image/png"))
+    app.router.add_get("/icon-192.png", make_file_handler("icon-192.png", "image/png"))
+    app.router.add_get("/icon-512.png", make_file_handler("icon-512.png", "image/png"))
+    app.router.add_get("/site.webmanifest", make_file_handler("site.webmanifest", "application/manifest+json"))
     app.router.add_get("/api/system/settings", handle_get_system_settings)
     
     # Admin Panel API
