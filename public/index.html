@@ -792,32 +792,38 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 3: LLM STUDIO (SCREENSHOT 2) ================= -->
+                <!-- ================= VIEW 3: LLM STUDIO (SCREENSHOT 2) ================= -->
         <div id="view-text" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
-            <!-- ChatGPT / Claude Icon -->
-            <div id="llm-model-icon" class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-4 shadow-xl">
-              🌐
+            <!-- LLM Icon (SVG) -->
+            <div id="llm-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
+              <svg class="w-8 h-8 text-emerald-400 fill-current" viewBox="0 0 24 24">
+                <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/>
+              </svg>
             </div>
-            <h2 id="llm-model-title" class="text-2xl font-bold text-white mb-2">ChatGPT</h2>
+            <h2 id="llm-model-title" class="text-2xl font-bold text-white mb-2">Google Gemini</h2>
             <p id="llm-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-4 leading-relaxed">
-              GPT 6 Luna combines high speed and low token usage with the capabilities of the new GPT 6 generation. It is well suited for everyday work with text, code, and information.
+              Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities. It is well suited for everyday work with text, code, research, and creative workflows.
             </p>
-            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+            <div id="llm-capabilities-row" class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
               <span class="text-emerald-400">Key capabilities:</span>
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">high speed</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">low token usage</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">versatile tasks</span>
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">2M context</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">ultra fast</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">multimodal reasoning</span>
             </div>
 
             <!-- Chat messages stream -->
             <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-6 max-h-96 overflow-y-auto p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Box -->
+          <!-- Bottom Prompt Box (Screenshot 2) -->
           <div class="max-w-3xl w-full mx-auto pb-4">
             <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
-              <textarea id="llm-prompt-input" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <div class="flex items-center justify-between pb-1 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1">🔒 Write your prompt...</span>
+                <span id="llm-char-count">0 / 25000</span>
+              </div>
+              <textarea id="llm-prompt-input" oninput="document.getElementById('llm-char-count').textContent = this.value.length + ' / 25000'" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex items-center justify-between pt-2 border-t border-white/5">
                 <div class="flex items-center gap-3 text-stone-400 text-xs">
                   <button title="Attach file" class="hover:text-white transition">📎</button>
@@ -828,7 +834,10 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <button onclick="handleVoiceInput('llm')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <button onclick="sendLLMMessage()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
+                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
+                    250 ⚡
+                  </div>
+                  <button onclick="sendLLMMessage()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
                     <span>Send</span> <span>➢</span>
                   </button>
                 </div>
@@ -920,6 +929,14 @@
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Precise lip synchronization</span>
             </div>
 
+                        <!-- Recommended prompt length notice (Screenshot 4) -->
+            <div id="video-notice-box" class="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-[11px] text-stone-400 max-w-xl mx-auto mb-4 text-left">
+              <span class="flex items-center gap-2">
+                <span class="text-emerald-400 font-bold">ⓘ</span> Recommended prompt length: up to 1000 words. If the prompt is too long, the model may reduce accuracy and miss some details.
+              </span>
+              <button onclick="document.getElementById('video-notice-box').style.display='none'" class="text-stone-500 hover:text-white ml-2 text-xs">✕</button>
+            </div>
+
             <!-- Video Gallery Stream -->
             <div id="video-generation-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
               <!-- Dynamically populated -->
@@ -931,9 +948,9 @@
             <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1">🔒 Write your prompt and use @... to mention references</span>
-                <span id="video-char-count">0 / 24000</span>
+                <span id="video-char-count">0 / 35000</span>
               </div>
-              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 24000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 35000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-2">
                   <button title="Attach reference image or video" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
@@ -1092,7 +1109,7 @@
 
       </div>
 
-      <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
+            <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
       <aside id="workspace-control-panel" class="w-72 bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-10">
         
         <!-- Model Filter Info Header -->
@@ -1103,63 +1120,138 @@
           <span class="text-xs">▾</span>
         </div>
 
-        <!-- PANEL SECTION: IMAGE CONTROLS (SCREENSHOT 4) -->
-        <div id="control-group-image" class="space-y-4">
+        <!-- PANEL SECTION 1: LLM CONTROLS (SCREENSHOT 2) -->
+        <div id="control-group-text" class="hidden space-y-4">
           <div class="space-y-2">
             <div class="flex items-center justify-between font-bold text-stone-200">
               <span>Model selection</span> <span class="text-xs">▴</span>
             </div>
             <div class="relative">
-              <button onclick="toggleModelDropdown('image')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
+              <button onclick="toggleModelDropdown('text')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
                 <div class="flex items-center gap-2.5">
-                  <span id="active-image-icon" class="text-base">🍌</span>
+                  <span id="active-text-icon" class="text-emerald-400 font-bold">✦</span>
                   <div>
-                    <div id="active-image-name" class="font-extrabold text-white text-xs">Nano Banana</div>
-                    <div id="active-image-sub" class="text-[10px] text-stone-400">Banana 2</div>
+                    <div id="active-text-name" class="font-extrabold text-white text-xs">Gemini</div>
+                    <div id="active-text-sub" class="text-[10px] text-stone-400">Google Gemini 2.5 Pro</div>
                   </div>
                 </div>
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <!-- Image Models Dropdown (Screenshot 4) -->
+              <!-- LLM Models Dropdown (Exact Match to Screenshot 2) -->
+              <div id="dropdown-menu-text" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
+                <button onclick="selectLLMModel('gemini', '✦', 'Gemini', 'Google Gemini 2.5 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-400"><span class="text-emerald-400">✦</span> Gemini</button>
+                <button onclick="selectLLMModel('chatgpt', '🌐', 'ChatGPT', 'GPT 6 Luna')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> ChatGPT</button>
+                <button onclick="selectLLMModel('claude', '☀️', 'Claude', 'Claude 3.7 Sonnet')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300"><span>☀️</span> Claude</button>
+                <button onclick="selectLLMModel('grok', '🌀', 'Grok', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok</button>
+                <button onclick="selectLLMModel('deepseek', '🐋', 'Deepseek', 'DeepSeek R1 Reasoning')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-cyan-300"><span>🐋</span> Deepseek</button>
+                <button onclick="selectLLMModel('perplexity', '✳️', 'Perplexity', 'Perplexity Search')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>✳️</span> Perplexity</button>
+                <button onclick="selectLLMModel('qwen', '🔷', 'Qwen', 'Qwen 2.5 Max')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔷</span> Qwen</button>
+                <button onclick="selectLLMModel('zhipu', '⬡', 'Zhipu AI', 'GLM-4')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>⬡</span> Zhipu AI</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion: System Prompt (Screenshot 2) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-text-sysprompt')">
+              <span>⚙️ System Prompt</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-text-sysprompt" class="space-y-1.5">
+              <textarea id="llm-system-prompt" rows="3" placeholder="Provide custom system instructions for AI behavior..." class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-[11px] text-white placeholder-stone-600 focus:outline-none"></textarea>
+            </div>
+          </div>
+
+          <!-- Accordion: About Model (Screenshot 2) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-text-about')">
+              <span>ⓘ About model</span> <span class="text-stone-400">▾</span>
+            </div>
+            <div id="sec-text-about" class="space-y-1 text-[11px] text-stone-400 bg-white/5 p-2.5 rounded-xl">
+              <div class="flex justify-between"><span>Engine:</span><span class="text-white font-bold">Google Gemini API</span></div>
+              <div class="flex justify-between"><span>Speed:</span><span class="text-emerald-400 font-bold">Ultra Fast (150ms)</span></div>
+              <div class="flex justify-between"><span>Context:</span><span class="text-white">2,000,000 Tokens</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL SECTION 2: IMAGE CONTROLS (SCREENSHOT 3) -->
+        <div id="control-group-image" class="space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-bold text-stone-200">
+              <span>Model selection</span> <span class="text-xs">▴</span>
+            </div>
+            
+            <!-- Box 1: Model Dropdown (Screenshot 3) -->
+            <div class="relative">
+              <button onclick="toggleModelDropdown('image')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
+                <div class="flex items-center gap-2.5">
+                  <span id="active-image-icon" class="text-base">|||</span>
+                  <div>
+                    <div id="active-image-name" class="font-extrabold text-white text-xs">Seedream</div>
+                    <div id="active-image-sub" class="text-[10px] text-stone-400">ByteDance Multimodal</div>
+                  </div>
+                </div>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+
               <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-                <button onclick="selectImageModel('banana', '🍌', 'Nano Banana', 'Banana 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300"><span>🍌</span> Nano Banana</button>
-                <button onclick="selectImageModel('chatgpt', '🌐', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> GPT Image</button>
-                <button onclick="selectImageModel('seedream', '📊', 'Seedream', 'Seedream 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>📊</span> Seedream</button>
+                <button onclick="selectImageModel('seedream', '|||', 'Seedream', 'ByteDance Multimodal')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>|||</span> Seedream</button>
+                <button onclick="selectImageModel('banana', '🍌', 'Nano Banana', 'Banana 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🍌</span> Nano Banana</button>
                 <button onclick="selectImageModel('flux', '🔺', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔺</span> Flux</button>
+                <button onclick="selectImageModel('chatgpt', '🌐', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> GPT Image</button>
+                <button onclick="selectImageModel('midjourney', '⛵', 'Midjourney', 'v6.1 Artistic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>⛵</span> Midjourney</button>
                 <button onclick="selectImageModel('runway', '🎞️', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway Frames</button>
                 <button onclick="selectImageModel('grok', '🌀', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
                 <button onclick="selectImageModel('luma', '🌙', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
-                <button onclick="selectImageModel('higgsfield', '🎭', 'Higgsfield Soul', 'Soul v2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎭</span> Higgsfield Soul</button>
+              </div>
+            </div>
+
+            <!-- Box 2: Version Selector Dropdown (Screenshot 3: 5.0, 4.5, 4.0) -->
+            <div class="relative mt-2">
+              <button onclick="toggleVersionDropdown('image')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white">
+                <span id="active-image-version" class="font-extrabold text-amber-400">5.0</span>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+              <div id="version-menu-image" class="hidden absolute top-12 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40">
+                <button onclick="setVersion('image', '5.0')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-bold text-amber-400">5.0</button>
+                <button onclick="setVersion('image', '4.5')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">4.5</button>
+                <button onclick="setVersion('image', '4.0')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">4.0</button>
               </div>
             </div>
           </div>
 
-          <!-- Format Accordion -->
+          <!-- Mode Accordion (Screenshot 3) -->
           <div class="pt-3 border-t border-white/10">
-            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-img-format')">
-              <span>📐 Format</span> <span class="text-stone-400">▾</span>
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-img-mode')">
+              <span>🎛️ Mode</span> <span class="text-stone-400">▾</span>
             </div>
-            <div id="sec-img-format" class="space-y-2">
-              <div class="text-[11px] text-stone-400">Aspect ratio:</div>
-              <div class="grid grid-cols-2 gap-1.5 text-xs">
-                <button onclick="setFormatAspect('9:16', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
-                  <span class="w-3 h-5 border border-white/40 rounded-sm"></span> 9:16 (Story)
-                </button>
-                <button onclick="setFormatAspect('1:1', this)" class="aspect-btn bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold p-2 rounded-xl flex items-center gap-2">
-                  <span class="w-4 h-4 border border-emerald-400 rounded-sm"></span> 1:1 (Square)
-                </button>
-                <button onclick="setFormatAspect('16:9', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
-                  <span class="w-5 h-3 border border-white/40 rounded-sm"></span> 16:9 (Cinema)
-                </button>
-                <button onclick="setFormatAspect('4:5', this)" class="aspect-btn bg-white/5 hover:bg-white/10 border border-white/15 p-2 rounded-xl flex items-center gap-2 text-stone-300">
-                  <span class="w-3.5 h-4.5 border border-white/40 rounded-sm"></span> 4:5 (Post)
-                </button>
-              </div>
+            <div id="sec-img-mode" class="space-y-1 text-xs">
+              <select class="w-full bg-black/60 border border-white/15 rounded-xl p-2 text-xs text-white">
+                <option value="t2i" selected>Text to Image</option>
+                <option value="i2i">Image to Image</option>
+                <option value="style">Style Transfer</option>
+              </select>
             </div>
           </div>
 
-          <!-- Quality Accordion -->
+          <!-- Format Accordion (Screenshot 3: Aspect Ratio Dropdown + Reset) -->
+          <div class="pt-3 border-t border-white/10">
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2">
+              <span>📐 Format</span> <button onclick="resetImageFormat()" class="text-[11px] text-stone-500 hover:text-white">Reset ↺</button>
+            </div>
+            <div class="space-y-1.5">
+              <label class="block text-[11px] text-stone-400">Aspect ratio</label>
+              <select id="image-panel-aspect" onchange="document.getElementById('image-aspect-pill').value = this.value" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
+                <option value="1:1" selected>🔲 1:1 (Square)</option>
+                <option value="9:16">📱 9:16 (Story)</option>
+                <option value="16:9">🖥️ 16:9 (Cinema)</option>
+                <option value="4:5">📸 4:5 (Post)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quality Accordion (Screenshot 3) -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-img-quality')">
               <span>✨ Quality</span> <span class="text-stone-400">▾</span>
@@ -1177,44 +1269,56 @@
           </div>
         </div>
 
-        <!-- PANEL SECTION: VIDEO CONTROLS (SCREENSHOTS 1, 2 & 3) -->
+        <!-- PANEL SECTION 3: VIDEO CONTROLS (SCREENSHOT 4) -->
         <div id="control-group-video" class="hidden space-y-4">
           <div class="space-y-2">
             <div class="flex items-center justify-between font-bold text-stone-200">
               <span>Model selection</span> <span class="text-xs">▴</span>
             </div>
+            
+            <!-- Box 1: Model Dropdown (Screenshot 4: Seedance, Kling, Veo...) -->
             <div class="relative">
               <button onclick="toggleModelDropdown('video')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 hover:border-emerald-400/60 rounded-xl p-3 text-left transition shadow">
                 <div class="flex items-center gap-2.5">
-                  <span id="active-video-icon" class="text-base">♾️</span>
+                  <span id="active-video-icon" class="text-base">|||</span>
                   <div>
-                    <div id="active-video-name" class="font-extrabold text-white text-xs">Kling</div>
-                    <div id="active-video-sub" class="text-[10px] text-stone-400">Omni • Kling 4.0</div>
+                    <div id="active-video-name" class="font-extrabold text-white text-xs">Seedance</div>
+                    <div id="active-video-sub" class="text-[10px] text-stone-400">TikTok Video Engine</div>
                   </div>
                 </div>
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <!-- Video Models Dropdown (Exact Match to Screenshots 2 & 3!) -->
               <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-                <button onclick="selectVideoModel('kling', '♾️', 'Kling', 'Kling 4.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>♾️</span> Kling</button>
+                <button onclick="selectVideoModel('seedance', '|||', 'Seedance', 'TikTok Video Engine')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>|||</span> Seedance</button>
+                <button onclick="selectVideoModel('kling', '♾️', 'Kling', 'Kling 4.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>♾️</span> Kling</button>
                 <button onclick="selectVideoModel('veo', '🌐', 'Google Veo', 'Veo 3.1 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> Google Veo</button>
-                <button onclick="selectVideoModel('seedance', '📊', 'Seedance', 'Seedance 2.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>📊</span> Seedance</button>
-                <button onclick="selectVideoModel('grok_vid', '🌀', 'Grok Imagine', 'Grok Video 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
                 <button onclick="selectVideoModel('runway', '🎞️', 'Runway', 'Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway</button>
+                <button onclick="selectVideoModel('wan', '🌊', 'Wan Video', 'Wan 3.0 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌊</span> Wan Video</button>
                 <button onclick="selectVideoModel('minimax', '🎬', 'Hailuo Minimax', 'Hailuo 01 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎬</span> Hailuo Minimax</button>
                 <button onclick="selectVideoModel('luma_vid', '🌙', 'Luma', 'Dream Machine 1.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
-                <button onclick="selectVideoModel('heygen', '🗣️', 'HeyGen', 'HeyGen Avatar 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🗣️</span> HeyGen</button>
-                <button onclick="selectVideoModel('beeble', '👁️', 'Beeble', 'Virtual Studio')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>👁️</span> Beeble</button>
-                <button onclick="selectVideoModel('happyhorse', '🐴', 'HappyHorse', 'Horse Cinematic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🐴</span> HappyHorse</button>
-                <button onclick="selectVideoModel('flux_vid', '🔺', 'FLUX 3 Video', 'FLUX Motion')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔺</span> FLUX 3 Video</button>
-                <button onclick="selectVideoModel('wan', '🌊', 'Wan Video', 'Wan 3.0 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌊</span> Wan Video</button>
-                <button onclick="selectVideoModel('higgs_vid', '🎭', 'Higgsfield', 'Soul Motion')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎭</span> Higgsfield</button>
+                <button onclick="selectVideoModel('grok_vid', '🌀', 'Grok Imagine', 'Grok Video 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
+                <button onclick="selectVideoModel('heygen', '🗣️', 'HeyGen', 'Avatar 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🗣️</span> HeyGen</button>
+              </div>
+            </div>
+
+            <!-- Box 2: Version Selector Dropdown (Screenshot 4: 2.5, 2.0, 1.0 Pro, 1.0 Pro-Fast, 1.5 Pro) -->
+            <div class="relative mt-2">
+              <button onclick="toggleVersionDropdown('video')" class="w-full flex items-center justify-between bg-[#141b18] hover:bg-[#18221f] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white">
+                <span id="active-video-version" class="font-extrabold text-amber-400">2.0</span>
+                <span class="text-stone-400 text-xs">▾</span>
+              </button>
+              <div id="version-menu-video" class="hidden absolute top-12 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-56 overflow-y-auto">
+                <button onclick="setVersion('video', '2.5')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">2.5</button>
+                <button onclick="setVersion('video', '2.0')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-bold text-amber-400">2.0</button>
+                <button onclick="setVersion('video', '1.0 Pro')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">1.0 Pro</button>
+                <button onclick="setVersion('video', '1.0 Pro-Fast')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">1.0 Pro-Fast</button>
+                <button onclick="setVersion('video', '1.5 Pro')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs font-medium text-stone-300">1.5 Pro</button>
               </div>
             </div>
           </div>
 
-          <!-- Video Format Accordion (Screenshot 1: 16:9 + Reset) -->
+          <!-- Video Format Accordion (Screenshot 4: 16:9 + Reset) -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2">
               <span>📐 Format</span> <button onclick="resetVideoFormat()" class="text-[11px] text-stone-500 hover:text-white">Reset ↺</button>
@@ -1229,20 +1333,23 @@
             </div>
           </div>
 
-          <!-- Video Quality Accordion -->
+          <!-- Video Quality / Generation Parameters (Screenshot 4) -->
           <div class="pt-3 border-t border-white/10">
-            <div class="flex items-center justify-between font-bold text-stone-300 mb-2">
-              <span>✨ Quality</span> <span class="text-stone-400">▾</span>
+            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-video-params')">
+              <span>⚙️ Generation parameters</span> <span class="text-stone-400">▾</span>
             </div>
-            <div class="space-y-2 text-[11px] text-stone-400">
+            <div id="sec-video-params" class="space-y-2 text-[11px] text-stone-400">
               <div class="flex justify-between items-center p-2 rounded-lg bg-white/5">
                 <span>Motion Smoothness</span> <span class="text-emerald-400 font-bold">Ultra 60fps</span>
+              </div>
+              <div class="flex justify-between items-center p-2 rounded-lg bg-white/5">
+                <span>Multi-Reference Mode</span> <span class="text-stone-300 font-semibold">Enabled</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- PANEL SECTION: AUDIO CONTROLS (SCREENSHOT 4) -->
+        <!-- PANEL SECTION 4: AUDIO CONTROLS (SCREENSHOT 4) -->
         <div id="control-group-audio" class="hidden space-y-4">
           <div class="space-y-2">
             <div class="flex items-center justify-between font-bold text-stone-200">
@@ -1265,7 +1372,7 @@
             </div>
           </div>
 
-          <!-- Mode (Screenshot 4) -->
+          <!-- Mode -->
           <div class="space-y-1.5">
             <label class="block text-xs font-bold text-stone-300">Mode</label>
             <select class="w-full bg-[#141b18] border border-white/15 rounded-xl p-2.5 text-xs text-white">
@@ -1277,7 +1384,7 @@
             <div class="text-[10px] text-stone-500 pt-1">In this mode, price depends on characters count</div>
           </div>
 
-          <!-- Generation Parameters (Screenshot 4) -->
+          <!-- Generation Parameters -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-audio-params')">
               <span>⚙️ Generation parameters</span> <span class="text-stone-400">▾</span>
@@ -1310,7 +1417,7 @@
           </div>
         </div>
 
-        <!-- PANEL SECTION: TOOLKIT CONTROLS (SCREENSHOT 5) -->
+        <!-- PANEL SECTION 5: TOOLKIT CONTROLS -->
         <div id="control-group-toolkit" class="hidden space-y-4">
           <div class="space-y-2">
             <div class="flex items-center justify-between font-bold text-stone-200">
@@ -1325,11 +1432,10 @@
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <!-- Toolkit Dropdown (Screenshot 5) -->
               <div id="dropdown-menu-toolkit" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40">
-                <button onclick="selectToolkitModel('seedance_ed', '📊', 'Seedance 2.5 Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>📊</span> Seedance 2.5 Editor</button>
-                <button onclick="selectToolkitModel('seedream_ed', '📊', 'Seedream 5 Pro Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>📊</span> Seedream 5 Pro Editor</button>
                 <button onclick="selectToolkitModel('banana_ed', '🍌', 'Nano Banana Pro Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>🍌</span> Nano Banana Pro Editor</button>
+                <button onclick="selectToolkitModel('seedance_ed', '|||', 'Seedance 2.5 Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>|||</span> Seedance 2.5 Editor</button>
+                <button onclick="selectToolkitModel('seedream_ed', '|||', 'Seedream 5 Pro Editor')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>|||</span> Seedream 5 Pro Editor</button>
                 <button onclick="selectToolkitModel('clarity', '🔍', 'Clarity')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>🔍</span> Clarity</button>
                 <button onclick="selectToolkitModel('magnific', '🔺', 'Magnific')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>🔺</span> Magnific</button>
                 <button onclick="selectToolkitModel('topaz', '✨', 'Topaz AI')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-300"><span>✨</span> Topaz AI</button>
@@ -1337,7 +1443,7 @@
             </div>
           </div>
 
-          <!-- Highlight Accordion (Screenshot 5) -->
+          <!-- Highlight Accordion -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-highlight')">
               <span>🖌️ Highlight</span> <span class="text-stone-400">▾</span>
@@ -1348,7 +1454,7 @@
             </div>
           </div>
 
-          <!-- Attach Accordion (Screenshot 5) -->
+          <!-- Attach Accordion -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-attach')">
               <span>📎 Attach</span> <span class="text-stone-400">▾</span>
@@ -1358,7 +1464,7 @@
             </div>
           </div>
 
-          <!-- Quality Accordion (Screenshot 5) -->
+          <!-- Quality Accordion -->
           <div class="pt-3 border-t border-white/10">
             <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-tool-quality')">
               <span>✨ Quality</span> <span class="text-stone-400">▾</span>
@@ -1762,6 +1868,83 @@
     });
 
     // 2. Tab Switcher
+    
+    // Model Version definitions (Screenshots 3 & 4)
+    const MODEL_VERSIONS = {
+      image: {
+        seedream: ['5.0', '4.5', '4.0'],
+        banana: ['2.1', '2.0', '1.5'],
+        flux: ['FLUX.1 Pro Ultra', 'FLUX.1 Dev', 'FLUX.1 Schnell'],
+        chatgpt: ['DALL-E 3.5', 'DALL-E 3'],
+        midjourney: ['v6.1', 'v6.0', 'v5.2'],
+        grok: ['2.0 Vision', '1.5'],
+        runway: ['Gen-3 Alpha', 'Gen-2'],
+        luma: ['Photon 1.0', 'Flash']
+      },
+      video: {
+        seedance: ['2.5', '2.0', '1.0 Pro', '1.0 Pro-Fast', '1.5 Pro'],
+        kling: ['4.0 Omni', '3.0 HD', '1.5 Motion'],
+        veo: ['Veo 3.1 HD', 'Veo 2.0', 'Veo Lite'],
+        runway: ['Gen-3 Alpha', 'Gen-2 HD', 'Turbo'],
+        wan: ['Wan 3.0 Pro', 'Wan 2.1'],
+        minimax: ['Hailuo 01 HD', '01 Standard'],
+        luma_vid: ['Dream Machine 1.5', 'Ray 2'],
+        grok_vid: ['Grok Video 2.0', '1.0'],
+        heygen: ['Avatar 2.0', 'Expressive']
+      }
+    };
+
+    let activeImageModelKey = 'seedream';
+    let activeVideoModelKey = 'seedance';
+
+    function toggleVersionDropdown(type) {
+      const menu = document.getElementById(`version-menu-${type}`);
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function setVersion(type, ver) {
+      document.getElementById(`active-${type}-version`).textContent = ver;
+      document.getElementById(`version-menu-${type}`).classList.add('hidden');
+    }
+
+    function updateVersionList(type, modelKey) {
+      const list = (MODEL_VERSIONS[type] && MODEL_VERSIONS[type][modelKey]) || ['Latest', 'Standard'];
+      const menu = document.getElementById(`version-menu-${type}`);
+      const btnLabel = document.getElementById(`active-${type}-version`);
+      btnLabel.textContent = list[0];
+      if (menu) {
+        menu.innerHTML = list.map((v, i) => `
+          <button onclick="setVersion('${type}', '${v}')" class="w-full text-left px-3 py-2 rounded-xl hover:bg-white/5 text-xs ${i === 0 ? 'font-bold text-amber-400' : 'font-medium text-stone-300'}">${v}</button>
+        `).join('');
+      }
+    }
+
+    function selectLLMModel(key, icon, name, sub) {
+      document.getElementById('active-text-icon').textContent = icon;
+      document.getElementById('active-text-name').textContent = name;
+      document.getElementById('active-text-sub').textContent = sub;
+      document.getElementById('dropdown-menu-text').classList.add('hidden');
+
+      document.getElementById('llm-model-title').textContent = name;
+      const descMap = {
+        gemini: 'Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities.',
+        chatgpt: 'GPT 6 Luna combines high speed and low token usage with the capabilities of the new GPT 6 generation.',
+        claude: 'Claude 3.7 Sonnet delivers state-of-the-art coding, long-form logic, and subtle aesthetic comprehension.',
+        grok: 'Grok 2.0 is built by xAI for real-time situational awareness, code synthesis, and deep reasoning.',
+        deepseek: 'DeepSeek R1 features verifiable chain-of-thought mathematical proofing and coding excellence.',
+        perplexity: 'Perplexity Pro combines search index grounding with deep citations and real-time synthesis.',
+        qwen: 'Qwen 2.5 Max by Alibaba excels in multilingual reasoning and complex engineering workflows.',
+        zhipu: 'GLM-4 offers superior bilingual reasoning and precision tool execution.'
+      };
+      document.getElementById('llm-model-desc').textContent = descMap[key] || `${name} neural language model.`;
+    }
+
+    function resetImageFormat() {
+      document.getElementById('image-panel-aspect').value = '1:1';
+      document.getElementById('image-aspect-pill').value = '1:1';
+    }
+
+
     function switchTab(tabId) {
       currentTab = tabId;
       window.location.hash = tabId;
@@ -1773,6 +1956,7 @@
 
       const viewTrends = document.getElementById('view-trends');
       const workspaceShell = document.getElementById('workspace-shell');
+      const controlPanel = document.getElementById('workspace-control-panel');
       const studioViews = ['agents', 'text', 'image', 'video', 'audio', 'toolkit'];
 
       if (tabId === 'trends') {
@@ -1781,6 +1965,7 @@
       } else {
         viewTrends.classList.add('hidden');
         workspaceShell.classList.remove('hidden');
+        
         studioViews.forEach(v => {
           const el = document.getElementById(`view-${v}`);
           if (el) {
@@ -1789,17 +1974,20 @@
           }
         });
 
-        // Switch right control groups
-        ['image', 'video', 'audio', 'toolkit'].forEach(g => {
-          const grp = document.getElementById(`control-group-${g}`);
-          if (grp) {
-            if (g === tabId || (tabId === 'text' && g === 'image') || (tabId === 'agents' && g === 'image')) {
-              grp.classList.remove('hidden');
-            } else {
-              grp.classList.add('hidden');
+        // Screenshot 1: In 'agents' tab, there is NO model choice on the right panel!
+        if (tabId === 'agents') {
+          controlPanel.classList.add('hidden');
+        } else {
+          controlPanel.classList.remove('hidden');
+          // Switch right control groups: text, image, video, audio, toolkit
+          ['text', 'image', 'video', 'audio', 'toolkit'].forEach(g => {
+            const grp = document.getElementById(`control-group-${g}`);
+            if (grp) {
+              if (g === tabId) grp.classList.remove('hidden');
+              else grp.classList.add('hidden');
             }
-          }
-        });
+          });
+        }
       }
     }
 
@@ -2639,20 +2827,24 @@
     }
 
     function selectImageModel(key, icon, name, sub) {
+      activeImageModelKey = key;
       document.getElementById('active-image-icon').textContent = icon;
       document.getElementById('active-image-name').textContent = name;
       document.getElementById('active-image-sub').textContent = sub;
       document.getElementById('dropdown-menu-image').classList.add('hidden');
       document.getElementById('image-model-icon').textContent = icon;
       document.getElementById('image-model-title').textContent = name;
+      updateVersionList('image', key);
     }
 
     function selectVideoModel(key, icon, name, ver) {
+      activeVideoModelKey = key;
       document.getElementById('active-video-icon').textContent = icon;
       document.getElementById('active-video-name').textContent = name;
       document.getElementById('active-video-sub').textContent = ver;
       document.getElementById('dropdown-menu-video').classList.add('hidden');
       document.getElementById('video-model-title').textContent = name;
+      updateVersionList('video', key);
     }
 
     function selectToolkitModel(key, icon, name) {
@@ -2697,7 +2889,7 @@
       } else {
         input.value = val + ", cinematic 8k octane render, hyper-detailed volumetric lighting, photorealistic depth of field, 60fps motion";
       }
-      document.getElementById('video-char-count').textContent = input.value.length + ' / 24000';
+      document.getElementById('video-char-count').textContent = input.value.length + ' / 35000';
     }
 
     function expandAllControls() {
