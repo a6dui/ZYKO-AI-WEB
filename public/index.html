@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZYKO.AI — 100+ AI Models in One Place | Web & Telegram</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="icon" type="image/jpeg" sizes="192x192" href="/static/assets/zyko_bot_avatar.jpg">
+  <link rel="apple-touch-icon" href="/static/assets/zyko_bot_avatar.jpg">
   <meta name="description" content="One subscription. Unlimited access to top AI tools: Nano Banana, Kling, FLUX, Veo, Seedance, ElevenLabs, ChatGPT, Claude, and 100+ neural networks in Web and Telegram.">
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Identity Services -->
@@ -179,11 +183,72 @@
   <header class="sticky top-0 z-50 bg-[#0c1110]/90 backdrop-blur-xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
-      <!-- Left: Logo + Hamburger Menu -->
-      <div class="flex items-center gap-3.5">
-        <button onclick="toggleSideMenu()" class="p-1.5 -ml-1 text-stone-300 hover:text-white hover:bg-white/10 rounded-lg transition" title="Open navigation menu">
+      <!-- Left: Logo + Hamburger Dropdown (Screenshot 5) -->
+      <div class="flex items-center gap-3.5 relative">
+        <button onclick="toggleBurgerDropdown(event)" id="burger-menu-btn" class="p-1.5 -ml-1 text-stone-300 hover:text-white hover:bg-white/10 rounded-lg transition" title="Open navigation menu">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
         </button>
+
+        <!-- Floating Hamburger Dropdown (Screenshot 5) -->
+        <div id="burger-dropdown-menu" class="hidden absolute left-0 top-11 w-52 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl">
+          <div class="space-y-0.5 text-xs font-semibold text-stone-300">
+            <button onclick="switchTab('trends'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <span>🏠</span> <span data-i18n="drawer_home">Home</span>
+            </button>
+            <button onclick="openAcademyModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <span>🎓</span> <span data-i18n="drawer_academy">Academy</span>
+            </button>
+            <button onclick="openContestModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <span>🏆</span> <span data-i18n="drawer_contest">Contest</span>
+            </button>
+            <button onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <span>❓</span> <span data-i18n="drawer_faq">FAQ</span>
+            </button>
+            <button onclick="openStatusModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <span>📈</span> <span data-i18n="drawer_status">Status Page</span>
+            </button>
+            <a href="https://t.me/Zykolandstore" target="_blank" onclick="closeBurgerDropdown();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+              <div class="flex items-center gap-3">
+                <span>🎧</span> <span data-i18n="drawer_support">Support</span>
+              </div>
+              <span class="text-stone-500 text-xs">›</span>
+            </a>
+
+            <!-- Language Flyout Item (Screenshot 5) -->
+            <div class="relative group/lang">
+              <button onclick="toggleLangFlyout(event)" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <div class="flex items-center gap-3">
+                  <span id="active-lang-flag">🇬🇧</span> <span id="active-lang-label">English</span>
+                </div>
+                <span class="text-stone-500 text-xs">›</span>
+              </button>
+              
+              <!-- Submenu flyout (Screenshot 5) -->
+              <div id="lang-flyout-menu" class="hidden group-hover/lang:block md:absolute left-full top-0 ml-1.5 w-44 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-1.5 z-50 backdrop-blur-xl space-y-0.5">
+                <button onclick="setLanguage('en'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                  <span>🇬🇧</span> English
+                </button>
+                <button onclick="setLanguage('ru'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                  <span>🇷🇺</span> Русский
+                </button>
+                <button onclick="setLanguage('es'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                  <span>🇪🇸</span> Español
+                </button>
+                <button onclick="setLanguage('de'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                  <span>🇩🇪</span> Deutsch
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Panel Shortcut -->
+            <div class="border-t border-white/10 my-1 pt-1">
+              <button onclick="openAdminPanel(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold transition text-left border border-emerald-500/20">
+                <span>🛡️</span> <span>Admin Panel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <a href="#trends" onclick="switchTab('trends')" class="flex items-center gap-2.5 font-black text-xl tracking-tighter group">
           <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 text-black flex items-center justify-center font-black shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition">Z</span>
           <span class="text-stone-100 font-extrabold tracking-tight text-base md:text-lg">ZYKO<span class="text-emerald-400">.AI</span></span>
@@ -263,6 +328,9 @@
                   <span>🔗</span> <span>Affiliate program</span>
                 </button>
                 <div class="border-t border-white/10 my-1"></div>
+                <button onclick="openAdminPanel(); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-emerald-500/10 text-emerald-400 font-bold flex items-center gap-2.5 transition">
+                  <span>🛡️</span> <span>Admin Panel</span>
+                </button>
                 <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-red-500/10 text-stone-400 hover:text-red-400 flex items-center gap-2.5 transition">
                   <span>🚪</span> <span>Log out</span>
                 </button>
@@ -274,73 +342,7 @@
     </div>
   </header>
 
-  <!-- ================= LEFT SLIDE-OVER NAVIGATION DRAWER (SCREENSHOT 1) ================= -->
-  <div id="side-drawer-backdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity" onclick="toggleSideMenu()"></div>
-  <aside id="side-drawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-[#0e1312] border-r border-white/10 shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
-    <div>
-      <!-- Drawer Header -->
-      <div class="p-5 border-b border-white/10 flex items-center justify-between">
-        <div class="flex items-center gap-2.5 font-black text-lg">
-          <span class="w-7 h-7 rounded-lg bg-emerald-400 text-black flex items-center justify-center font-black">Z</span>
-          <span class="text-white font-extrabold">ZYKO<span class="text-emerald-400">.AI</span></span>
-        </div>
-        <button onclick="toggleSideMenu()" class="text-stone-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">✕</button>
-      </div>
 
-      <!-- Drawer Nav Items (Screenshot 1: Home, Academy, Contest, FAQ, Status Page, Support, Language) -->
-      <div class="p-3 space-y-1 text-xs font-semibold text-stone-300">
-        <button onclick="toggleSideMenu(); switchTab('trends');" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <span class="text-base">🏠</span> <span data-i18n="drawer_home">Home</span>
-        </button>
-        <button onclick="toggleSideMenu(); openAcademyModal();" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <span class="text-base">🎓</span> <span data-i18n="drawer_academy">Academy</span>
-        </button>
-        <button onclick="toggleSideMenu(); openContestModal();" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <span class="text-base">🏆</span> <span data-i18n="drawer_contest">Contest</span>
-        </button>
-        <button onclick="toggleSideMenu(); switchTab('trends'); setTimeout(() => document.getElementById('faq').scrollIntoView({behavior: 'smooth'}), 200);" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <span class="text-base">❓</span> <span data-i18n="drawer_faq">FAQ</span>
-        </button>
-        <button onclick="toggleSideMenu(); openStatusModal();" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <span class="text-base">⚡</span> <span data-i18n="drawer_status">Status Page</span>
-        </button>
-        <a href="https://t.me/Zykolandstore" target="_blank" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl hover:bg-white/5 hover:text-white transition">
-          <div class="flex items-center gap-3">
-            <span class="text-base">🎧</span> <span data-i18n="drawer_support">Support</span>
-          </div>
-          <span class="text-stone-500">›</span>
-        </a>
-
-        <!-- Language Selector Dropdown -->
-        <div class="pt-3 border-t border-white/10 mt-3">
-          <div class="px-3.5 text-[10px] uppercase font-bold text-stone-500 mb-1.5" data-i18n="drawer_language">Language</div>
-          <div class="grid grid-cols-2 gap-1.5">
-            <button onclick="setLanguage('en')" id="lang-btn-en" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 text-[11px]">
-              <span>🇬🇧</span> English
-            </button>
-            <button onclick="setLanguage('ru')" id="lang-btn-ru" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-stone-300 border border-transparent text-[11px]">
-              <span>🇷🇺</span> Русский
-            </button>
-            <button onclick="setLanguage('es')" id="lang-btn-es" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-stone-300 border border-transparent text-[11px]">
-              <span>🇪🇸</span> Español
-            </button>
-            <button onclick="setLanguage('de')" id="lang-btn-de" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-stone-300 border border-transparent text-[11px]">
-              <span>🇩🇪</span> Deutsch
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Drawer Footer -->
-    <div class="p-4 border-t border-white/10 text-[11px] text-stone-400">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="text-stone-300 font-medium">All 100+ Models Operational</span>
-      </div>
-      <div class="text-[10px] text-stone-500">ZYKO.AI Studio Engine v2.5</div>
-    </div>
-  </aside>
 
   <!-- ================= APP CONTAINER ================= -->
   <main id="app-container" class="min-h-screen">
@@ -2413,7 +2415,341 @@
   </main>
 
 
-  <!-- ================= ALL MODALS ================= -->
+  <!-- ================= ADMIN PANEL MODAL (FULL CONTROL SUITE) ================= -->
+  <div id="admin-panel-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop" onclick="closeAdminPanel()">
+    <div class="bg-[#0b0f0e] border border-emerald-500/40 rounded-3xl overflow-hidden max-w-6xl w-full h-[92vh] flex flex-col shadow-2xl relative" onclick="event.stopPropagation()">
+      
+      <!-- Admin Header -->
+      <div class="px-6 py-4 bg-[#111615] border-b border-white/10 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center text-xl font-black shadow-lg shadow-emerald-500/20">
+            🛡️
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight">ZYKO.AI Control Center</h2>
+              <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live System
+              </span>
+            </div>
+            <p class="text-xs text-stone-400">Управление пользователями, балансами, платежами и настройками платформы</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="refreshAdminData()" title="Обновить данные" class="p-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition text-sm">
+            🔄
+          </button>
+          <button onclick="closeAdminPanel()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center transition">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Tabs Navigation -->
+      <div class="px-6 border-b border-white/10 bg-[#0e1211] flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0">
+        <button onclick="switchAdminTab('overview')" id="admin-tab-btn-overview" class="admin-tab-btn active py-3 px-3.5 text-xs font-bold border-b-2 border-emerald-400 text-white flex items-center gap-2 transition whitespace-nowrap">
+          <span>📊</span> Обзор & KPI
+        </button>
+        <button onclick="switchAdminTab('users')" id="admin-tab-btn-users" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>👥</span> Пользователи
+        </button>
+        <button onclick="switchAdminTab('transactions')" id="admin-tab-btn-transactions" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>💳</span> Транзакции & Оплаты
+        </button>
+        <button onclick="switchAdminTab('generations')" id="admin-tab-btn-generations" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>🎨</span> Генерации ИИ
+        </button>
+        <button onclick="switchAdminTab('settings')" id="admin-tab-btn-settings" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>⚙️</span> Настройки & Баннер
+        </button>
+      </div>
+
+      <!-- Admin Tab Contents (Scrollable Container) -->
+      <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+        
+        <!-- Tab 1: Overview -->
+        <div id="admin-view-overview" class="space-y-6">
+          <!-- Metric Cards Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="text-[11px] font-medium text-stone-400">Всего пользователей</div>
+              <div id="admin-stat-users" class="text-2xl md:text-3xl font-black text-white mt-1">...</div>
+              <div class="text-[10px] text-emerald-400 font-semibold mt-1">Google & Telegram</div>
+            </div>
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="text-[11px] font-medium text-stone-400">Успешных оплат</div>
+              <div id="admin-stat-tx" class="text-2xl md:text-3xl font-black text-white mt-1">...</div>
+              <div id="admin-stat-rev" class="text-[10px] text-emerald-400 font-semibold mt-1">0 € / 0 ₽</div>
+            </div>
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="text-[11px] font-medium text-stone-400">Токенов в обороте</div>
+              <div id="admin-stat-tokens" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">... ⚡</div>
+              <div class="text-[10px] text-stone-400 mt-1">На балансах пользователей</div>
+            </div>
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="text-[11px] font-medium text-stone-400">Всего генераций</div>
+              <div id="admin-stat-gens" class="text-2xl md:text-3xl font-black text-white mt-1">...</div>
+              <div class="text-[10px] text-sky-400 mt-1">Фото, видео, аудио, текст</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Subscriptions Breakdown -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Active Subscriptions Breakdown -->
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>👑</span> Распределение по тарифам
+              </h3>
+              <div id="admin-stat-tiers" class="space-y-2 text-xs">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Quick Bulk Actions -->
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>⚡</span> Быстрые действия платформы
+              </h3>
+              <div class="space-y-3">
+                <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
+                  <div>
+                    <div class="text-xs font-bold text-white">Подарок всем пользователям</div>
+                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по 500 ZK токенов</div>
+                  </div>
+                  <button onclick="adminGiftAll(500)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs px-3.5 py-2 rounded-xl transition shrink-0">
+                    🎁 Подарить 500 ⚡
+                  </button>
+                </div>
+
+                <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
+                  <div>
+                    <div class="text-xs font-bold text-white">Статус шлюзов оплаты</div>
+                    <div class="text-[10px] text-stone-400 mt-0.5">Stripe Live, Platega СБП, CryptoPay @ZykoAi_bot</div>
+                  </div>
+                  <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2.5 py-1 rounded-lg">
+                    Все шлюзы онлайн
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Users Management -->
+        <div id="admin-view-users" class="hidden space-y-4">
+          <!-- Filter & Search Bar -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div class="relative flex-1">
+              <input id="admin-users-search" oninput="debounceAdminUsersSearch()" type="text" placeholder="Поиск по имени, email или Telegram ID..." class="w-full bg-[#141a18] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400">
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="admin-users-tier-filter" onchange="loadAdminUsers()" class="bg-[#141a18] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+                <option value="All">Все тарифы</option>
+                <option value="Free">Free</option>
+                <option value="Basic">Basic</option>
+                <option value="Pro">Pro</option>
+                <option value="VIP">VIP</option>
+                <option value="Elite">Elite</option>
+                <option value="Ultra Elite">Ultra Elite</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3.5 font-semibold">ID</th>
+                    <th class="p-3.5 font-semibold">Пользователь</th>
+                    <th class="p-3.5 font-semibold">Telegram ID</th>
+                    <th class="p-3.5 font-semibold">Тариф</th>
+                    <th class="p-3.5 font-semibold">Токены</th>
+                    <th class="p-3.5 font-semibold">Дата регистрации</th>
+                    <th class="p-3.5 font-semibold text-right">Действие</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-table-body" class="divide-y divide-white/5 text-stone-300">
+                  <tr>
+                    <td colspan="7" class="p-6 text-center text-stone-500">Загрузка пользователей...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Transactions -->
+        <div id="admin-view-transactions" class="hidden space-y-4">
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3.5 font-semibold">Order ID</th>
+                    <th class="p-3.5 font-semibold">Провайдер</th>
+                    <th class="p-3.5 font-semibold">Пользователь</th>
+                    <th class="p-3.5 font-semibold">Сумма</th>
+                    <th class="p-3.5 font-semibold">Токены</th>
+                    <th class="p-3.5 font-semibold">Тариф</th>
+                    <th class="p-3.5 font-semibold">Статус</th>
+                    <th class="p-3.5 font-semibold">Дата</th>
+                    <th class="p-3.5 font-semibold text-right">Управление</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-tx-table-body" class="divide-y divide-white/5 text-stone-300">
+                  <tr>
+                    <td colspan="9" class="p-6 text-center text-stone-500">Загрузка транзакций...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Generations Feed -->
+        <div id="admin-view-generations" class="hidden space-y-4">
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3.5 font-semibold">ID</th>
+                    <th class="p-3.5 font-semibold">Пользователь</th>
+                    <th class="p-3.5 font-semibold">Модель</th>
+                    <th class="p-3.5 font-semibold">Промпт</th>
+                    <th class="p-3.5 font-semibold">Списано</th>
+                    <th class="p-3.5 font-semibold">Дата</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-gens-table-body" class="divide-y divide-white/5 text-stone-300">
+                  <tr>
+                    <td colspan="6" class="p-6 text-center text-stone-500">Загрузка генераций...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Settings & Banner -->
+        <div id="admin-view-settings" class="hidden space-y-6">
+          <!-- Announcement Banner Settings -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>📢</span> Управление верхним промо-баннером
+            </h3>
+            <p class="text-xs text-stone-400">Текст и кнопка в самом верху сайта видны всем посетителям в режиме реального времени.</p>
+            
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Текст анонса</label>
+                <input id="admin-setting-banner-text" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400" value="Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-semibold text-stone-300 mb-1">Текст кнопки действия</label>
+                  <input id="admin-setting-banner-btn-text" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400" value="Create Video">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-stone-300 mb-1">Переход кнопки (Вкладка)</label>
+                  <select id="admin-setting-banner-tab" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+                    <option value="video">Video Studio</option>
+                    <option value="image">Image Studio</option>
+                    <option value="text">LLM Studio</option>
+                    <option value="audio">Audio / ElevenLabs</option>
+                    <option value="trends">Trends</option>
+                    <option value="pricing">Pricing Plans</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button onclick="adminSaveBannerSettings()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-5 py-2.5 rounded-xl transition shadow-md">
+                  💾 Сохранить и применить баннер
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Neural Models Health & Status -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>🧠</span> Состояние и статус нейросетей
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">Kling 4.0 Omni</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">Google Veo 3.1 HD</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">FLUX.1 Ultra 4K</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">ElevenLabs Turbo v4</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">OpenAI Sora HD</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+              <div class="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                <span class="font-medium text-stone-200">Google Gemini Pro 2.5</span>
+                <span class="text-emerald-400 font-bold text-[11px] flex items-center gap-1">● Онлайн</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- User Edit Sub-Modal -->
+  <div id="admin-user-edit-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAdminUserEditModal()">
+    <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl relative" onclick="event.stopPropagation()">
+      <button onclick="closeAdminUserEditModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white">✕</button>
+      <h3 class="text-base font-bold text-white mb-1 flex items-center gap-2">
+        <span>✏️</span> Редактирование пользователя
+      </h3>
+      <p id="admin-edit-user-title" class="text-xs text-stone-400 mb-4">ID: ...</p>
+      
+      <input type="hidden" id="admin-edit-user-id">
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Баланс токенов (ZK)</label>
+          <input id="admin-edit-user-tokens" type="number" step="any" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
+        </div>
+        <div>
+          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Тарифный план</label>
+          <select id="admin-edit-user-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
+            <option value="Free">Free</option>
+            <option value="Basic">Basic (3,120 ZK)</option>
+            <option value="Pro">Pro (8,160 ZK)</option>
+            <option value="VIP">VIP (20,400 ZK)</option>
+            <option value="Elite">Elite (31,200 ZK)</option>
+            <option value="Ultra Elite">Ultra Elite (36,000 ZK)</option>
+          </select>
+        </div>
+        <div class="pt-2 flex gap-2">
+          <button onclick="adminSaveUserEdit()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs py-2.5 rounded-xl transition shadow">
+            Сохранить
+          </button>
+          <button onclick="closeAdminUserEditModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 rounded-xl transition">
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- 1. AUTH / SIGN IN MODAL (GOOGLE + TELEGRAM) -->
   <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAuthModal()">
@@ -2726,6 +3062,50 @@
         agent_title: "Создавайте и общайтесь с вашим личным агентом",
         agent_desc: "Агенты запоминают инструкции, стиль общения, обучаются на ваших данных, умеют искать в интернете, писать код и генерировать в нейросетях GPT Image, Veo 3.1, Suno.",
         payment_success: "🎉 Оплата успешно подтверждена! Токены начислены на ваш баланс."
+      },
+      es: {
+        nav_trends: "Tendencias",
+        nav_agents: "Agentes",
+        nav_llm: "Estudio LLM",
+        nav_image: "Imagen",
+        nav_video: "Vídeo",
+        nav_audio: "Audio",
+        nav_toolkit: "Herramientas",
+        sign_in: "Iniciar sesión",
+        topup: "Recargar ZK",
+        logout: "Cerrar sesión",
+        drawer_home: "Inicio",
+        drawer_academy: "Academia",
+        drawer_contest: "Concurso",
+        drawer_faq: "Preguntas frecuentes",
+        drawer_status: "Estado de modelos",
+        drawer_support: "Soporte",
+        drawer_language: "Idioma",
+        agent_title: "Crea y comunícate con tu agente personal",
+        agent_desc: "Los agentes memorizan instrucciones, estilo de habla y se entrenan con tus datos.",
+        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo."
+      },
+      de: {
+        nav_trends: "Trends",
+        nav_agents: "Agenten",
+        nav_llm: "LLM Studio",
+        nav_image: "Bild",
+        nav_video: "Video",
+        nav_audio: "Audio",
+        nav_toolkit: "Werkzeuge",
+        sign_in: "Anmelden",
+        topup: "ZK aufladen",
+        logout: "Abmelden",
+        drawer_home: "Startseite",
+        drawer_academy: "Akademie",
+        drawer_contest: "Wettbewerb",
+        drawer_faq: "FAQ",
+        drawer_status: "Statusseite",
+        drawer_support: "Support",
+        drawer_language: "Sprache",
+        agent_title: "Erstelle und kommuniziere mit deinem persönlichen Agenten",
+        agent_desc: "Agenten merken sich Anweisungen, Sprachstil und lernen aus Ihren Daten.",
+        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben."
       }
     };
 
@@ -2760,6 +3140,27 @@
         console.warn('Config fetch error:', e);
       }
 
+      // Restore saved language
+      try {
+        const savedLang = localStorage.getItem('zyko_lang') || 'en';
+        setLanguage(savedLang);
+      } catch (e) {
+        console.warn('Lang restore error:', e);
+      }
+
+      // Load System Settings (e.g. Announcement banner)
+      try {
+        const setResp = await fetch('/api/system/settings');
+        if (setResp.ok) {
+          const sData = await setResp.json();
+          if (sData.settings) {
+            populateBannerInputs(sData.settings);
+          }
+        }
+      } catch (e) {
+        console.warn('System settings fetch error:', e);
+      }
+
       // Check URL Hash for initial tab
       const hash = window.location.hash.replace('#', '');
       const userSubtabsMap = {
@@ -2776,7 +3177,9 @@
         'affiliate-program': 'affiliate'
       };
 
-      if (userSubtabsMap[hash]) {
+      if (hash === 'admin') {
+        openAdminPanel();
+      } else if (userSubtabsMap[hash]) {
         switchTab('profile');
         switchUserSubtab(userSubtabsMap[hash]);
       } else if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].includes(hash)) {
@@ -2785,7 +3188,9 @@
 
       window.addEventListener('hashchange', () => {
         const h = window.location.hash.replace('#', '');
-        if (userSubtabsMap[h]) {
+        if (h === 'admin') {
+          openAdminPanel();
+        } else if (userSubtabsMap[h]) {
           switchTab('profile');
           switchUserSubtab(userSubtabsMap[h]);
         } else if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].includes(h)) {
@@ -4135,6 +4540,469 @@
 
     function refreshUsageLimits() {
       alert('Usage limits updated. You are currently in Free tier.');
+    }
+
+    // =========================================================================
+    // 1. BURGER DROPDOWN & LANGUAGE FLYOUT (SCREENSHOT 5)
+    // =========================================================================
+    function toggleBurgerDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('burger-dropdown-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function closeBurgerDropdown() {
+      const menu = document.getElementById('burger-dropdown-menu');
+      if (menu) menu.classList.add('hidden');
+      const flyout = document.getElementById('lang-flyout-menu');
+      if (flyout) flyout.classList.add('hidden');
+    }
+
+    function toggleLangFlyout(e) {
+      if (e) e.stopPropagation();
+      const flyout = document.getElementById('lang-flyout-menu');
+      if (flyout) flyout.classList.toggle('hidden');
+    }
+
+    const langDetails = {
+      en: { flag: '🇬🇧', label: 'English' },
+      ru: { flag: '🇷🇺', label: 'Русский' },
+      es: { flag: '🇪🇸', label: 'Español' },
+      de: { flag: '🇩🇪', label: 'Deutsch' }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      try {
+        localStorage.setItem('zyko_lang', lang);
+      } catch (e) {}
+
+      const info = langDetails[lang] || langDetails['en'];
+      const flagEl = document.getElementById('active-lang-flag');
+      const labelEl = document.getElementById('active-lang-label');
+      if (flagEl) flagEl.textContent = info.flag;
+      if (labelEl) labelEl.textContent = info.label;
+
+      const dict = i18n[lang] || i18n['en'];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict && dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const burgerMenu = document.getElementById('burger-dropdown-menu');
+      const burgerBtn = document.getElementById('burger-menu-btn');
+      if (burgerMenu && !burgerMenu.classList.contains('hidden')) {
+        if (!burgerMenu.contains(e.target) && (!burgerBtn || !burgerBtn.contains(e.target))) {
+          closeBurgerDropdown();
+        }
+      }
+    });
+
+    // =========================================================================
+    // 2. ADMIN PANEL & CONTROL CENTER
+    // =========================================================================
+    let adminCurrentTab = 'overview';
+    let adminUsersDebounceTimer = null;
+    let cachedAdminUsers = [];
+
+    function openAdminPanel() {
+      const modal = document.getElementById('admin-panel-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        refreshAdminData();
+      }
+    }
+
+    function closeAdminPanel() {
+      const modal = document.getElementById('admin-panel-modal');
+      if (modal) modal.classList.add('hidden');
+      if (window.location.hash === '#admin') {
+        window.history.replaceState(null, null, ' ');
+      }
+    }
+
+    function switchAdminTab(tabName) {
+      adminCurrentTab = tabName;
+      const tabs = ['overview', 'users', 'transactions', 'generations', 'settings'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`admin-view-${t}`);
+        const btn = document.getElementById(`admin-tab-btn-${t}`);
+        if (view) view.classList.toggle('hidden', t !== tabName);
+        if (btn) {
+          if (t === tabName) {
+            btn.classList.add('active', 'border-emerald-400', 'text-white');
+            btn.classList.remove('text-stone-400', 'border-transparent');
+          } else {
+            btn.classList.remove('active', 'border-emerald-400', 'text-white');
+            btn.classList.add('text-stone-400', 'border-transparent');
+          }
+        }
+      });
+
+      if (tabName === 'overview') loadAdminOverview();
+      else if (tabName === 'users') loadAdminUsers();
+      else if (tabName === 'transactions') loadAdminTransactions();
+      else if (tabName === 'generations') loadAdminGenerations();
+      else if (tabName === 'settings') loadAdminSettings();
+    }
+
+    function refreshAdminData() {
+      switchAdminTab(adminCurrentTab);
+    }
+
+    // Tab 1: Overview & KPI
+    async function loadAdminOverview() {
+      try {
+        const res = await fetch('/api/admin/overview');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok') {
+          const ov = data.overview;
+          const uEl = document.getElementById('admin-stat-users');
+          const txEl = document.getElementById('admin-stat-tx');
+          const revEl = document.getElementById('admin-stat-rev');
+          const tokEl = document.getElementById('admin-stat-tokens');
+          const genEl = document.getElementById('admin-stat-gens');
+
+          if (uEl) uEl.textContent = (ov.users_count || 0).toLocaleString();
+          if (txEl) txEl.textContent = (ov.tx_count || 0).toLocaleString();
+          if (revEl) revEl.textContent = `${(ov.rev_eur || 0).toFixed(2)} € / ${(ov.rev_rub || 0).toFixed(0)} ₽`;
+          if (tokEl) tokEl.textContent = `${Math.round(ov.total_tokens || 0).toLocaleString()} ⚡`;
+          if (genEl) genEl.textContent = (ov.gens_count || 0).toLocaleString();
+
+          // Tiers breakdown
+          const tiersEl = document.getElementById('admin-stat-tiers');
+          if (tiersEl && ov.tier_counts) {
+            tiersEl.innerHTML = ov.tier_counts.map(tc => `
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/30 border border-white/5">
+                <span class="font-semibold text-stone-200">${tc.tier}</span>
+                <span class="font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-lg border border-emerald-500/20">${tc.count} чел.</span>
+              </div>
+            `).join('');
+          }
+
+          if (data.settings) {
+            populateBannerInputs(data.settings);
+          }
+        }
+      } catch (e) {
+        console.error('Error loading admin overview:', e);
+      }
+    }
+
+    // Tab 2: Users CRM
+    function debounceAdminUsersSearch() {
+      clearTimeout(adminUsersDebounceTimer);
+      adminUsersDebounceTimer = setTimeout(() => {
+        loadAdminUsers();
+      }, 300);
+    }
+
+    async function loadAdminUsers() {
+      const tbody = document.getElementById('admin-users-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-stone-500">Загрузка пользователей...</td></tr>';
+
+      const search = document.getElementById('admin-users-search')?.value || '';
+      const tier = document.getElementById('admin-users-tier-filter')?.value || '';
+
+      try {
+        const params = new URLSearchParams();
+        if (search.trim()) params.append('search', search.trim());
+        if (tier && tier !== 'All') params.append('tier', tier);
+
+        const res = await fetch(`/api/admin/users?${params.toString()}`);
+        if (!res.ok) throw new Error('Failed to load users');
+        const data = await res.json();
+        cachedAdminUsers = data.users || [];
+
+        if (cachedAdminUsers.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-stone-500">Пользователи не найдены</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = cachedAdminUsers.map(u => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3.5 font-mono text-stone-400">#${u.id}</td>
+            <td class="p-3.5">
+              <div class="font-bold text-white flex items-center gap-1.5">
+                <span>${escapeHtml(u.name || 'Пользователь')}</span>
+                ${u.is_superadmin ? '<span class="text-[9px] bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.2 rounded font-bold">ADMIN</span>' : ''}
+              </div>
+              <div class="text-[11px] text-stone-400">${escapeHtml(u.email || '—')}</div>
+            </td>
+            <td class="p-3.5 font-mono text-stone-300">
+              ${u.telegram_id ? `<a href="https://t.me/${u.telegram_username || ''}" target="_blank" class="text-sky-400 hover:underline">@${escapeHtml(u.telegram_username || u.telegram_id)}</a>` : '—'}
+            </td>
+            <td class="p-3.5">
+              <span class="font-bold px-2 py-0.5 rounded-lg text-[10px] ${
+                u.tier === 'Ultra Elite' || u.tier === 'Elite' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                u.tier === 'VIP' || u.tier === 'Pro' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                u.tier === 'Basic' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 'bg-stone-500/20 text-stone-400 border border-stone-500/30'
+              }">${u.tier || 'Free'}</span>
+            </td>
+            <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} ⚡</td>
+            <td class="p-3.5 text-stone-400 text-[11px]">${(u.created_at || '').substring(0, 16)}</td>
+            <td class="p-3.5 text-right">
+              <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-emerald-500 hover:text-black text-stone-200 font-bold px-3 py-1.5 rounded-xl transition text-[11px]">
+                Редактировать
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+      }
+    }
+
+    function adminEditUser(userId) {
+      const user = cachedAdminUsers.find(u => u.id === userId);
+      if (!user) return;
+      document.getElementById('admin-edit-user-id').value = user.id;
+      document.getElementById('admin-edit-user-title').textContent = `Пользователь #${user.id} (${user.name || user.email || 'Без имени'})`;
+      document.getElementById('admin-edit-user-tokens').value = user.tokens || 0;
+      document.getElementById('admin-edit-user-tier').value = user.tier || 'Free';
+      document.getElementById('admin-user-edit-modal').classList.remove('hidden');
+    }
+
+    function closeAdminUserEditModal() {
+      document.getElementById('admin-user-edit-modal').classList.add('hidden');
+    }
+
+    async function adminSaveUserEdit() {
+      const userId = document.getElementById('admin-edit-user-id').value;
+      const tokens = parseFloat(document.getElementById('admin-edit-user-tokens').value);
+      const tier = document.getElementById('admin-edit-user-tier').value;
+
+      try {
+        const res = await fetch('/api/admin/users/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, tokens: tokens, tier: tier })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          closeAdminUserEditModal();
+          loadAdminUsers();
+          if (currentUser && currentUser.id == userId) {
+            checkAuthStatus();
+          }
+        } else {
+          alert('Ошибка обновления: ' + (data.error || 'Неизвестная ошибка'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    async function adminGiftAll(amount = 500) {
+      if (!confirm(`Вы действительно хотите начислить по ${amount} ZK токенов ВСЕМ пользователям платформы?`)) return;
+      try {
+        const res = await fetch('/api/admin/users/gift', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: amount })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert(`🎉 Успешно! ${data.affected_users} пользователей получили по ${data.gifted_tokens} ZK!`);
+          loadAdminOverview();
+          loadAdminUsers();
+          checkAuthStatus();
+        } else {
+          alert('Ошибка: ' + (data.error || 'Неизвестная'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    // Tab 3: Transactions & Invoices
+    async function loadAdminTransactions() {
+      const tbody = document.getElementById('admin-tx-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-stone-500">Загрузка транзакций...</td></tr>';
+
+      try {
+        const res = await fetch('/api/admin/transactions');
+        if (!res.ok) throw new Error('Failed to load transactions');
+        const data = await res.json();
+        const txs = data.transactions || [];
+
+        if (txs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-stone-500">Транзакций пока нет</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = txs.map(t => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3.5 font-mono text-stone-400 text-[11px]">${t.order_id}</td>
+            <td class="p-3.5 font-semibold text-white capitalize">${t.provider || 'Stripe'}</td>
+            <td class="p-3.5">
+              <div class="font-bold text-white">${escapeHtml(t.user_name || 'User #' + t.user_id)}</div>
+              <div class="text-[10px] text-stone-400">${escapeHtml(t.user_email || '')}</div>
+            </td>
+            <td class="p-3.5 font-black text-white">${t.amount} ${t.currency}</td>
+            <td class="p-3.5 font-mono text-amber-400 font-bold">+${Math.round(t.tokens || 0).toLocaleString()} ⚡</td>
+            <td class="p-3.5 text-stone-300">${t.tier || 'Pack'}</td>
+            <td class="p-3.5">
+              <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold ${
+                t.status === 'completed' || t.status === 'paid' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                t.status === 'pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-red-500/20 text-red-300 border border-red-500/30'
+              }">${t.status}</span>
+            </td>
+            <td class="p-3.5 text-stone-400 text-[11px]">${(t.created_at || '').substring(0, 16)}</td>
+            <td class="p-3.5 text-right">
+              ${t.status === 'pending' ? `
+                <button onclick="adminCompleteTx('${t.order_id}')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3 py-1.5 rounded-xl transition text-[10px]">
+                  Подтвердить & Начислить
+                </button>
+              ` : '<span class="text-stone-500 text-[11px]">Завершено</span>'}
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function adminCompleteTx(orderId) {
+      if (!confirm(`Подтвердить оплату по заказу ${orderId} и зачислить токены пользователю?`)) return;
+      try {
+        const res = await fetch('/api/admin/transactions/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order_id: orderId })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert('✅ Оплата подтверждена! Токены начислены пользователю.');
+          loadAdminTransactions();
+          loadAdminOverview();
+          checkAuthStatus();
+        } else {
+          alert('Ошибка: ' + (data.error || 'Не удалось подтвердить'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    // Tab 4: AI Generations Feed
+    async function loadAdminGenerations() {
+      const tbody = document.getElementById('admin-gens-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-stone-500">Загрузка генераций...</td></tr>';
+
+      try {
+        const res = await fetch('/api/admin/generations');
+        if (!res.ok) throw new Error('Failed to load generations');
+        const data = await res.json();
+        const gens = data.generations || [];
+
+        if (gens.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-stone-500">Генераций пока нет</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = gens.map(g => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3.5 font-mono text-stone-400 text-[11px]">#${g.id}</td>
+            <td class="p-3.5">
+              <div class="font-bold text-white">${escapeHtml(g.user_name || 'User #' + g.user_id)}</div>
+              <div class="text-[10px] text-stone-400">${escapeHtml(g.user_email || '')}</div>
+            </td>
+            <td class="p-3.5">
+              <span class="bg-white/10 text-stone-200 px-2 py-0.5 rounded-lg text-[10px] font-semibold">${escapeHtml(g.model || 'AI Model')}</span>
+            </td>
+            <td class="p-3.5 max-w-xs truncate text-stone-300" title="${escapeHtml(g.prompt || '')}">
+              ${g.prompt ? escapeHtml(g.prompt.substring(0, 70)) + (g.prompt.length > 70 ? '...' : '') : '—'}
+            </td>
+            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ⚡</td>
+            <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+      }
+    }
+
+    // Tab 5: Settings & Announcement Banner
+    function populateBannerInputs(settings) {
+      if (settings.announcement_banner_text) {
+        const input = document.getElementById('admin-setting-banner-text');
+        if (input) input.value = settings.announcement_banner_text;
+        const promo = document.getElementById('promo-text');
+        if (promo) promo.textContent = settings.announcement_banner_text;
+      }
+      if (settings.announcement_banner_btn) {
+        const btnInput = document.getElementById('admin-setting-banner-btn-text');
+        if (btnInput) btnInput.value = settings.announcement_banner_btn;
+        const promoBtn = document.getElementById('promo-action-btn');
+        if (promoBtn) promoBtn.textContent = settings.announcement_banner_btn;
+      }
+      if (settings.announcement_banner_tab) {
+        const tabInput = document.getElementById('admin-setting-banner-tab');
+        if (tabInput) tabInput.value = settings.announcement_banner_tab;
+        const promoBtn = document.getElementById('promo-action-btn');
+        if (promoBtn) {
+          promoBtn.onclick = () => switchTab(settings.announcement_banner_tab);
+        }
+      }
+    }
+
+    async function loadAdminSettings() {
+      try {
+        const res = await fetch('/api/system/settings');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && data.settings) {
+          populateBannerInputs(data.settings);
+        }
+      } catch (e) {
+        console.error('Error loading settings:', e);
+      }
+    }
+
+    async function adminSaveBannerSettings() {
+      const text = document.getElementById('admin-setting-banner-text').value;
+      const btnText = document.getElementById('admin-setting-banner-btn-text').value;
+      const targetTab = document.getElementById('admin-setting-banner-tab').value;
+
+      try {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'announcement_banner_text', value: text })
+        });
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'announcement_banner_btn', value: btnText })
+        });
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'announcement_banner_tab', value: targetTab })
+        });
+
+        populateBannerInputs({
+          announcement_banner_text: text,
+          announcement_banner_btn: btnText,
+          announcement_banner_tab: targetTab
+        });
+
+        alert('✅ Промо-баннер успешно сохранен и применен на сайте в реальном времени!');
+      } catch (e) {
+        alert('Ошибка сохранения настроек: ' + e.message);
+      }
     }
 
   </script>

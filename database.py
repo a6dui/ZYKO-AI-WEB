@@ -49,6 +49,19 @@ async def init_db():
                 FOREIGN KEY (user_id) REFERENCES users (id)
             )
         """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS system_settings (
+                key TEXT PRIMARY KEY,
+                value TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        await db.execute("""
+            INSERT OR IGNORE INTO system_settings (key, value) VALUES 
+            ('banner_text', 'Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity'),
+            ('banner_link_tab', 'video'),
+            ('announcement_active', 'true')
+        """)
         await db.commit()
         logger.info("Database initialized successfully at %s", DB_PATH)
 
@@ -237,3 +250,111 @@ async def sync_link_user_accounts(user_id: int, google_email: str = None, telegr
         async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c_final:
             row = await c_final.fetchone()
             return dict(row) if row else None
+
+# --- Admin Operations ---
+
+async def get_admin_overview():
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT COUNT(*) as count FROM users") as c:
+            total_users = (await c.fetchone())["count"]
+            
+        async with db.execute("SELECT SUM(tokens) as total_tokens FROM users") as c:
+            tokens_row = await c.fetchone()
+            total_tokens = tokens_row["total_tokens"] or 0
+            
+        async with db.execute("SELECT tier, COUNT(*) as count FROM users GROUP BY tier") as c:
+            tier_rows = await c.fetchall()
+            tier_dist = {r["tier"]: r["count"] for r in tier_rows}
+            
+        async with db.execute("SELECT COUNT(*) as count, SUM(amount) as revenue FROM transactions WHERE status = 'completed'") as c:
+            tx_row = await c.fetchone()
+            completed_tx_count = tx_row["count"] or 0
+            total_revenue = round(tx_row["revenue"] or 0, 2)
+            
+        async with db.execute("SELECT COUNT(*) as count FROM generations") as c:
+            total_generations = (await c.fetchone())["count"]
+            
+        return {
+            "total_users": total_users,
+            "total_tokens": total_tokens,
+            "tier_distribution": tier_dist,
+            "completed_transactions": completed_tx_count,
+            "total_revenue": total_revenue,
+            "total_generations": total_generations
+        }
+
+async def get_admin_users(search=None, tier=None, limit=100, offset=0):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT * FROM users WHERE 1=1"
+        params = []
+        if search:
+            query += " AND (name LIKE ? OR email LIKE ? OR CAST(telegram_id AS TEXT) LIKE ?)"
+            s = f"%{search}%"
+            params.extend([s, s, s])
+        if tier and tier != 'All':
+            query += " AND tier = ?"
+            params.append(tier)
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+        async with db.execute(query, params) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def admin_update_user(user_id: int, tokens: float = None, tier: str = None) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        if tokens is not None and tier is not None:
+            await db.execute("UPDATE users SET tokens = ?, tier = ? WHERE id = ?", (tokens, tier, user_id))
+        elif tokens is not None:
+            await db.execute("UPDATE users SET tokens = ? WHERE id = ?", (tokens, user_id))
+        elif tier is not None:
+            await db.execute("UPDATE users SET tier = ? WHERE id = ?", (tier, user_id))
+        await db.commit()
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c:
+            row = await c.fetchone()
+            return dict(row) if row else None
+
+async def admin_gift_all_users(token_amount: float) -> int:
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute("UPDATE users SET tokens = tokens + ?", (token_amount,))
+        await db.commit()
+        return cursor.rowcount
+
+async def get_admin_transactions(limit=100, offset=0):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("""
+            SELECT t.*, u.name as user_name, u.email as user_email 
+            FROM transactions t 
+            LEFT JOIN users u ON t.user_id = u.id 
+            ORDER BY t.id DESC LIMIT ? OFFSET ?
+        """, (limit, offset)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def get_admin_generations(limit=50):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("""
+            SELECT g.*, u.name as user_name, u.email as user_email 
+            FROM generations g 
+            LEFT JOIN users u ON g.user_id = u.id 
+            ORDER BY g.id DESC LIMIT ?
+        """, (limit,)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def get_system_settings() -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT key, value FROM system_settings") as cursor:
+            rows = await cursor.fetchall()
+            return {r["key"]: r["value"] for r in rows}
+
+async def update_system_setting(key: str, value: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("INSERT OR REPLACE INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)", (key, value))
+        await db.commit()
+

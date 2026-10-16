@@ -18,7 +18,16 @@ from database import (
     get_or_create_google_user,
     get_or_create_telegram_user,
     get_or_create_demo_user,
-    sync_link_user_accounts
+    sync_link_user_accounts,
+    get_admin_overview,
+    get_admin_users,
+    admin_update_user,
+    admin_gift_all_users,
+    get_admin_transactions,
+    get_admin_generations,
+    get_system_settings,
+    update_system_setting,
+    complete_transaction
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, GOOGLE_CLIENT_ID
 from payments import (
@@ -576,6 +585,77 @@ async def handle_index(request: web.Request):
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
         return response
     return web.Response(text="ZYKO.AI Landing page is loading...", status=200)
+async def handle_favicon(request: web.Request):
+    fav_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", "favicon.ico")
+    if os.path.exists(fav_path):
+        return web.FileResponse(fav_path)
+    return web.Response(status=404)
+
+async def handle_get_system_settings(request: web.Request):
+    settings = await get_system_settings()
+    return web.json_response({"status": "ok", "settings": settings})
+
+async def handle_admin_overview(request: web.Request):
+    overview = await get_admin_overview()
+    settings = await get_system_settings()
+    return web.json_response({"status": "ok", "overview": overview, "settings": settings})
+
+async def handle_admin_users(request: web.Request):
+    search = request.query.get("search", "").strip()
+    tier = request.query.get("tier", "").strip()
+    users = await get_admin_users(search=search if search else None, tier=tier if tier else None)
+    return web.json_response({"status": "ok", "users": users})
+
+async def handle_admin_update_user(request: web.Request):
+    try:
+        data = await request.json()
+        user_id = int(data.get("user_id"))
+        tokens = float(data.get("tokens")) if "tokens" in data and data["tokens"] is not None else None
+        tier = data.get("tier")
+        updated = await admin_update_user(user_id, tokens, tier)
+        return web.json_response({"status": "ok", "user": updated})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_gift_all(request: web.Request):
+    try:
+        data = await request.json()
+        amount = float(data.get("amount", 500))
+        affected = await admin_gift_all_users(amount)
+        return web.json_response({"status": "ok", "affected_users": affected, "gifted_tokens": amount})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_transactions(request: web.Request):
+    txs = await get_admin_transactions()
+    return web.json_response({"status": "ok", "transactions": txs})
+
+async def handle_admin_complete_transaction(request: web.Request):
+    try:
+        data = await request.json()
+        order_id = data.get("order_id")
+        if not order_id:
+            return web.json_response({"error": "Missing order_id"}, status=400)
+        tx = await complete_transaction(order_id)
+        return web.json_response({"status": "ok", "transaction": tx})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_generations(request: web.Request):
+    gens = await get_admin_generations()
+    return web.json_response({"status": "ok", "generations": gens})
+
+async def handle_admin_update_setting(request: web.Request):
+    try:
+        data = await request.json()
+        key = data.get("key")
+        value = str(data.get("value", ""))
+        if not key:
+            return web.json_response({"error": "Missing key"}, status=400)
+        await update_system_setting(key, value)
+        return web.json_response({"status": "ok", "key": key, "value": value})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
 
 def create_app():
     app = web.Application()
@@ -583,6 +663,18 @@ def create_app():
     # API endpoints
     app.router.add_get("/health", handle_health)
     app.router.add_get("/api/config/public", handle_public_config)
+    app.router.add_get("/favicon.ico", handle_favicon)
+    app.router.add_get("/api/system/settings", handle_get_system_settings)
+    
+    # Admin Panel API
+    app.router.add_get("/api/admin/overview", handle_admin_overview)
+    app.router.add_get("/api/admin/users", handle_admin_users)
+    app.router.add_post("/api/admin/users/update", handle_admin_update_user)
+    app.router.add_post("/api/admin/users/gift", handle_admin_gift_all)
+    app.router.add_get("/api/admin/transactions", handle_admin_transactions)
+    app.router.add_post("/api/admin/transactions/complete", handle_admin_complete_transaction)
+    app.router.add_get("/api/admin/generations", handle_admin_generations)
+    app.router.add_post("/api/admin/settings", handle_admin_update_setting)
     
     # Auth
     app.router.add_post("/api/auth/google", handle_google_auth)
