@@ -162,7 +162,7 @@ async def create_platega_payment(user_id: int, plan_name: str, origin_url: str, 
     await create_transaction(user_id, "platega", order_id, amount_rub, "RUB", plan["tokens"], plan_name)
     
     if not PLATEGA_MERCHANT_ID or not PLATEGA_SECRET:
-        bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ElevenlabsA_bot")
+        bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
         return {
             "url": f"https://t.me/{bot_user}?start=sub_{plan_name.lower()}",
             "order_id": order_id,
@@ -214,7 +214,7 @@ async def create_platega_payment(user_id: int, plan_name: str, origin_url: str, 
     except Exception as e:
         logger.error("Platega network error: %s", e)
         
-    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ElevenlabsA_bot")
+    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
     tg_sub_url = f"https://t.me/{bot_user}?start=sub_{plan_name.lower()}"
     return {
         "url": tg_sub_url,
@@ -279,7 +279,7 @@ async def create_cryptopay_payment(user_id: int, plan_name: str, cycle: str) -> 
     
     await create_transaction(user_id, "crypto", order_id, amount_usd, "USD", plan["tokens"], plan_name)
     
-    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ElevenlabsA_bot")
+    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
     if not CRYPTO_PAY_TOKEN:
         return {
             "url": f"https://t.me/{bot_user}?start=crypto_{plan_name.lower()}",
