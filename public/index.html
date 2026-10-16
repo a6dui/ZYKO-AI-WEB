@@ -314,6 +314,61 @@
 
       <!-- Right Actions: Notification, User Profile / Sign in -->
       <div class="flex items-center gap-2.5" id="header-actions">
+        <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, hidden on Trends landing, visible in Studios) -->
+        <div class="relative hidden" id="studio-switcher-container">
+          <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="text-amber-400 hover:text-amber-300 p-2 rounded-xl hover:bg-white/10 active:scale-95 transition flex items-center justify-center relative" title="Переключение студий (Studio Switcher)">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <circle cx="7" cy="7" r="2.8"/>
+              <circle cx="17" cy="7" r="2.8"/>
+              <circle cx="7" cy="17" r="2.8"/>
+              <circle cx="17" cy="17" r="2.8"/>
+            </svg>
+          </button>
+
+          <!-- Studio Switcher Dropdown Menu (Screenshot 2) -->
+          <div id="studio-switcher-dropdown" class="hidden absolute right-0 top-full mt-2 w-60 sm:w-64 bg-[#141416]/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-2xl">
+            <div class="space-y-1 text-xs font-semibold">
+              <button onclick="switchTab('trends'); closeStudioSwitcher();" id="switcher-item-trends" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <div class="flex items-center gap-3">
+                  <span class="text-base">🔥</span>
+                  <span>Trends</span>
+                </div>
+                <span class="bg-gradient-to-r from-orange-500 to-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">New</span>
+              </button>
+
+              <button onclick="switchTab('agents'); closeStudioSwitcher();" id="switcher-item-agents" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">🤖</span>
+                <span>Agents</span>
+              </button>
+
+              <button onclick="switchTab('text'); closeStudioSwitcher();" id="switcher-item-text" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">💭</span>
+                <span>LLM Studio</span>
+              </button>
+
+              <button onclick="switchTab('image'); closeStudioSwitcher();" id="switcher-item-image" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">🖼️</span>
+                <span>Image</span>
+              </button>
+
+              <button onclick="switchTab('video'); closeStudioSwitcher();" id="switcher-item-video" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">🎬</span>
+                <span>Video</span>
+              </button>
+
+              <button onclick="switchTab('audio'); closeStudioSwitcher();" id="switcher-item-audio" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">🎵</span>
+                <span>Audio</span>
+              </button>
+
+              <button onclick="switchTab('toolkit'); closeStudioSwitcher();" id="switcher-item-toolkit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
+                <span class="text-base">🛠️</span>
+                <span>Toolkit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Notifications Bell & Popover -->
         <div class="relative" id="notification-bell-container">
           <button onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative" title="Notifications">
@@ -1008,19 +1063,27 @@
       <!-- ================= STUDIO CENTER STAGE ================= -->
       <div class="flex-1 flex flex-col overflow-hidden relative min-w-0">
         
-        <!-- Studio Mobile Topbar (Visible on screens < md) -->
+        <!-- Studio Mobile Topbar (Screenshot 1: 🗨️ + ⭐ | Model Selector Pill) -->
         <div id="studio-mobile-bar" class="md:hidden flex items-center justify-between px-3 py-2 border-b border-white/10 bg-[#0c100e]/95 backdrop-blur shrink-0 z-20">
           <div class="flex items-center gap-1.5">
-            <button onclick="toggleHistoryDrawer(true)" class="px-2.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-stone-300 text-xs flex items-center gap-1 hover:bg-white/10 active:scale-95 transition">
-              <span>💬</span> <span data-i18n="mob_history">История</span>
+            <button onclick="toggleHistoryDrawer(true)" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm active:scale-95 transition" title="История чатов">
+              💬
             </button>
-            <button onclick="startNewSession()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-1 font-semibold hover:bg-emerald-500/20 active:scale-95 transition">
-              <span>+</span> <span data-i18n="mob_new">Новый</span>
+            <button onclick="startNewSession()" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-base font-bold active:scale-95 transition" title="Новый сеанс">
+              +
+            </button>
+            <button onclick="toggleStudioFavorite()" id="btn-studio-star" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-400 hover:text-amber-400 flex items-center justify-center text-sm active:scale-95 transition" title="В избранное">
+              ⭐
             </button>
           </div>
           <div class="flex items-center gap-1.5">
-            <button onclick="toggleMobileControlPanel(true)" id="mobile-control-panel-btn" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-1.5 font-bold hover:bg-emerald-500/25 active:scale-95 transition">
-              <span>⚙️</span> <span data-i18n="mob_settings">Модели & Параметры</span>
+            <button onclick="toggleMobileControlPanel(true)" id="mobile-control-panel-btn" class="px-2.5 py-1.5 rounded-xl bg-[#141b18] border border-white/15 text-white text-xs flex items-center gap-2 hover:border-emerald-400/50 active:scale-95 transition">
+              <span id="mobile-bar-model-icon" class="text-xs">🌀</span>
+              <div class="text-left">
+                <span id="mobile-bar-model-name" class="font-bold text-[11px] block leading-tight">Kling</span>
+                <span id="mobile-bar-model-sub" class="text-[9px] text-stone-400 block leading-none">Kling 4.0 Omni</span>
+              </div>
+              <span class="text-stone-400 text-[10px] ml-1">⚙️</span>
             </button>
           </div>
         </div>
@@ -1056,22 +1119,51 @@
             <div id="agent-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Input Box (Matching Syntx) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
-              <textarea id="agent-prompt-input" rows="2" placeholder="Write your prompt or instructions for the agent..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex items-center justify-between pt-2 border-t border-white/5">
-                <div class="flex items-center gap-3 text-stone-400 text-xs">
-                  <button title="Attach reference file" class="hover:text-white transition">📎</button>
-                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300">
+          <!-- Bottom Prompt Box (Agents Studio: Screenshot 1 style) -->
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span class="truncate">Write your prompt or instructions for the agent...</span>
+                </span>
+                <span id="agent-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 24000</span>
+              </div>
+
+              <!-- Attached file chip preview -->
+              <div id="agents-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
+                <span class="text-emerald-400">📎</span>
+                <span id="agents-file-name" class="truncate max-w-[200px] text-[11px] font-medium">file.txt</span>
+                <button onclick="removeAttachedFile('agents')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
+              </div>
+
+              <textarea id="agent-prompt-input" oninput="document.getElementById('agent-char-count').textContent = this.value.length + ' / 24000'" rows="2" placeholder="Write instructions for the agent (e.g. Analyze market trends, generate python pipeline...)" class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+
+              <!-- Hidden file input for paperclip -->
+              <input type="file" id="agents-file-input" onchange="handleStudioAttachment('agents', this)" class="hidden">
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="triggerStudioAttachment('agents')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить файл">
+                    📎
+                  </button>
+                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-emerald-400/40 px-2.5 py-1 rounded-lg transition select-none">
                     <input type="checkbox" id="agent-deep-research" class="rounded bg-black/50 border-white/20 text-emerald-500">
                     <span>Deep research</span>
                   </label>
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки">
+                    ⬡
+                  </button>
                 </div>
-                <div class="flex items-center gap-2">
-                  <button onclick="handleVoiceInput('agent')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <button onclick="sendAgentMessage()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
-                    <span>Send</span> <span>➢</span>
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('agent')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                    🎙️
+                  </button>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span>1</span>
+                    <span class="text-amber-400">⚡</span>
+                  </div>
+                  <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Отправить сообщение">
+                    ➤
                   </button>
                 </div>
               </div>
@@ -1103,29 +1195,51 @@
             <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 2) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
-              <div class="flex items-center justify-between pb-1 text-stone-500 text-[10px]">
-                <span class="flex items-center gap-1">🔒 Write your prompt...</span>
-                <span id="llm-char-count">0 / 25000</span>
+          <!-- Bottom Prompt Box (LLM Studio: Screenshot 1 style: 0/25000, ⬡, 🎙️, 1 ⚡) -->
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span class="truncate">Write your prompt or instructions...</span>
+                </span>
+                <span id="llm-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 25000</span>
               </div>
-              <textarea id="llm-prompt-input" oninput="document.getElementById('llm-char-count').textContent = this.value.length + ' / 25000'" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5">
-                <div class="flex items-center gap-3 text-stone-400 text-xs">
-                  <button title="Attach file" class="hover:text-white transition">📎</button>
-                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300">
+
+              <!-- Attached file chip preview -->
+              <div id="text-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
+                <span class="text-emerald-400">📎</span>
+                <span id="text-file-name" class="truncate max-w-[200px] text-[11px] font-medium">file.txt</span>
+                <button onclick="removeAttachedFile('text')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
+              </div>
+
+              <textarea id="llm-prompt-input" oninput="document.getElementById('llm-char-count').textContent = this.value.length + ' / 25000'" rows="2" placeholder="Write your prompt for Google Gemini, ChatGPT, Claude or Deepseek..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+
+              <!-- Hidden file input for paperclip -->
+              <input type="file" id="text-file-input" onchange="handleStudioAttachment('text', this)" class="hidden">
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="triggerStudioAttachment('text')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить файл">
+                    📎
+                  </button>
+                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-emerald-400/40 px-2.5 py-1 rounded-lg transition select-none">
                     <input type="checkbox" id="llm-deep-research" class="rounded bg-black/50 border-white/20 text-emerald-500">
                     <span>Deep research</span>
                   </label>
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки">
+                    ⬡
+                  </button>
                 </div>
-                <div class="flex items-center gap-2">
-                  <button onclick="handleVoiceInput('llm')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
-                    1 ⚡
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('llm')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                    🎙️
+                  </button>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span>1</span>
+                    <span class="text-amber-400">⚡</span>
                   </div>
-                  <button onclick="sendLLMMessage()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
-                    <span>Send</span> <span>➢</span>
+                  <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Отправить сообщение">
+                    ➤
                   </button>
                 </div>
               </div>
@@ -1157,38 +1271,61 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 3: 9:16, 2K, Expander, Mic, ⚡ 3) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
-              <textarea id="image-prompt-input" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5">
-                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                  <button title="Attach reference image" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
-                  <!-- Aspect Ratio Pill -->
-                  <select id="image-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
-                    <option value="9:16">📱 9:16</option>
+          <!-- Bottom Prompt Box (Screenshot 3 & Screenshot 1 style: 0/24000, 9:16, 2K, ⬡, ✦, 🎙️, 2 ⚡) -->
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span class="truncate">Write your prompt and use @... to mention references</span>
+                </span>
+                <span id="image-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 24000</span>
+              </div>
+
+              <!-- Attached file chip preview -->
+              <div id="image-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
+                <span class="text-emerald-400">📎</span>
+                <span id="image-file-name" class="truncate max-w-[200px] text-[11px] font-medium">file.jpg</span>
+                <button onclick="removeAttachedFile('image')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
+              </div>
+
+              <textarea id="image-prompt-input" oninput="document.getElementById('image-char-count').textContent = this.value.length + ' / 24000'" rows="2" placeholder="Describe the image you want to generate in detail..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+
+              <!-- Hidden file input for paperclip -->
+              <input type="file" id="image-file-input" onchange="handleStudioAttachment('image', this)" class="hidden" accept="image/*">
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
+                  <button type="button" onclick="triggerStudioAttachment('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить изображение">
+                    📎
+                  </button>
+                  <select id="image-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="1:1" selected>🔲 1:1</option>
+                    <option value="9:16">📱 9:16</option>
                     <option value="16:9">🖥️ 16:9</option>
                     <option value="4:5">📸 4:5</option>
                   </select>
-                  <!-- Resolution Pill -->
-                  <select id="image-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
+                  <select id="image-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="1K">1K</option>
                     <option value="2K" selected>2K HD</option>
                     <option value="4K">4K Topaz</option>
                   </select>
-                  <!-- Neural Expander (✦) -->
-                  <button onclick="expandImagePrompt()" title="Neural Prompt Expander (✦)" class="bg-white/5 hover:bg-emerald-500/20 border border-white/15 hover:border-emerald-400 text-emerald-400 px-2 py-1 rounded-lg text-[10px] font-bold transition">
-                    ✦
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки генерации">
+                    ⬡
+                  </button>
+                  <button type="button" onclick="expandImagePrompt()" title="Улучшить промпт нейросетью" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
+                    ✨
                   </button>
                 </div>
-                <div class="flex items-center gap-2">
-                  <button onclick="handleVoiceInput('image')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <div class="bg-white/5 border border-white/10 px-2 py-1 rounded-lg text-[10px] font-bold text-amber-300">
-                    ⚡ 3 ZK
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                    🎙️
+                  </button>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span id="image-token-cost">2</span>
+                    <span class="text-amber-400">⚡</span>
                   </div>
-                  <button onclick="sendGenerateImage()" id="btn-generate-image" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
-                    <span>Generate</span> <span>➢</span>
+                  <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Сгенерировать изображение">
+                    ➤
                   </button>
                 </div>
               </div>
@@ -1206,22 +1343,11 @@
               </svg>
             </div>
             <h2 id="video-model-title" class="text-2xl font-bold text-white mb-2">Kling</h2>
-            <p id="video-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 leading-relaxed">
+            <p id="video-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-2 leading-relaxed">
               Kling 4.0 creates realistic videos with natural facial expressions and dynamic camera movements. It supports multiple keyframes for precise control over each scene, delivering smooth motion even in fast-paced sequences.
             </p>
-            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
-              <span class="text-emerald-400">Key capabilities:</span>
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Realistic motion</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Natural lighting</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">Precise lip synchronization</span>
-            </div>
-
-                        <!-- Recommended prompt length notice (Screenshot 4) -->
-            <div id="video-notice-box" class="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-[11px] text-stone-400 max-w-xl mx-auto mb-4 text-left">
-              <span class="flex items-center gap-2">
-                <span class="text-emerald-400 font-bold">ⓘ</span> Recommended prompt length: up to 1000 words. If the prompt is too long, the model may reduce accuracy and miss some details.
-              </span>
-              <button onclick="document.getElementById('video-notice-box').style.display='none'" class="text-stone-500 hover:text-white ml-2 text-xs">✕</button>
+            <div class="mb-5">
+              <button onclick="toggleMobileControlPanel(true)" class="text-orange-400 text-xs font-semibold hover:text-orange-300 border-b border-orange-400/80 pb-0.5 transition">More</button>
             </div>
 
             <!-- Video Gallery Stream -->
@@ -1231,43 +1357,68 @@
           </div>
 
           <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 ⚡) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
-                <span class="flex items-center gap-1">🔒 Write your prompt and use @... to mention references</span>
-                <span id="video-char-count">0 / 35000</span>
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span class="truncate">Write your prompt and use @... to mention references</span>
+                </span>
+                <span id="video-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 24000</span>
               </div>
-              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 35000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
-                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                  <button title="Attach reference image or video" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
-                  <select id="video-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
+
+              <!-- Attached file chip preview -->
+              <div id="video-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
+                <span class="text-emerald-400">📎</span>
+                <span id="video-file-name" class="truncate max-w-[200px] text-[11px] font-medium">file.jpg</span>
+                <button onclick="removeAttachedFile('video')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
+              </div>
+
+              <!-- Textarea -->
+              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 24000'" rows="2" placeholder="Write your prompt and use @... to mention references" class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+
+              <!-- Hidden file input for paperclip -->
+              <input type="file" id="video-file-input" onchange="handleStudioAttachment('video', this)" class="hidden" accept="image/*,video/*">
+
+              <!-- Action Controls Row (Screenshot 1) -->
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                <!-- Left controls group -->
+                <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
+                  <button type="button" onclick="triggerStudioAttachment('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить изображение или референс">
+                    📎
+                  </button>
+                  <select id="video-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="16:9" selected>🖥️ 16:9</option>
                     <option value="9:16">📱 9:16</option>
                     <option value="1:1">🔲 1:1</option>
                   </select>
-                  <select id="video-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
-                    <option value="720" selected>720p</option>
-                    <option value="1080">1080p HD</option>
-                    <option value="4K">4K Ultra</option>
+                  <select id="video-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                    <option value="720" selected>720</option>
+                    <option value="1080">1080</option>
+                    <option value="4K">4K</option>
                   </select>
-                  <select id="video-duration-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
+                  <select id="video-duration-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="5.0s" selected>5.0s</option>
                     <option value="10.0s">10.0s</option>
-                    <option value="30.0s">30.0s</option>
                   </select>
-                  <button onclick="expandVideoPrompt()" title="Neural Prompt Expander (✦)" class="bg-white/5 hover:bg-emerald-500/20 border border-white/15 hover:border-emerald-400 text-emerald-400 px-2 py-1 rounded-lg text-[10px] font-bold transition">
-                    ✦
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки генерации">
+                    ⬡
+                  </button>
+                  <button type="button" onclick="expandVideoPrompt()" title="Улучшить промпт нейросетью" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
+                    ✨
                   </button>
                 </div>
-                <div class="flex items-center gap-2">
-                  <button onclick="handleVoiceInput('video')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
-                    <span class="text-[10px] text-stone-500 line-through">25,7</span>
-                    <span>19,3 ⚡</span>
+
+                <!-- Right controls group -->
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                    🎙️
+                  </button>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span id="video-token-cost">32</span>
+                    <span class="text-amber-400">⚡</span>
                   </div>
-                  <button onclick="sendGenerateVideo()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
-                    <span>Generate</span> <span>➢</span>
+                  <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Сгенерировать видео">
+                    ➤
                   </button>
                 </div>
               </div>
@@ -1318,25 +1469,47 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 4: 0/10000, 🎚️, 🎙️, 0,4 ⚡) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+          <!-- Bottom Prompt Box (Audio Studio: Screenshot 1 style: 0/10000, 🎚️, 🎙️, 0.4 ⚡) -->
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
-                <span class="flex items-center gap-1">🔒 Type text with tags like [laughing] for more expressive speech...</span>
-                <span id="audio-char-count">0 / 10000</span>
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span class="truncate">Type text with tags like [laughing] for more expressive speech...</span>
+                </span>
+                <span id="audio-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 10000</span>
               </div>
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
-                <div class="flex items-center gap-3 text-stone-400 text-xs">
-                  <button title="Voice Settings" class="hover:text-white transition">🎚️</button>
-                  <button title="Voice input" onclick="handleVoiceInput('audio')" class="hover:text-emerald-400 transition">🎙️</button>
-                </div>
+
+              <!-- Attached file chip preview -->
+              <div id="audio-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
+                <span class="text-emerald-400">📎</span>
+                <span id="audio-file-name" class="truncate max-w-[200px] text-[11px] font-medium">voice_sample.wav</span>
+                <button onclick="removeAttachedFile('audio')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
+              </div>
+
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for natural expressive speech..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+
+              <!-- Hidden file input for paperclip -->
+              <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
+
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-2">
-                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
-                    0,4 ⚡
+                  <button type="button" onclick="triggerStudioAttachment('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить аудио образец">
+                    📎
+                  </button>
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Параметры голоса">
+                    🎚️
+                  </button>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                    🎙️
+                  </button>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span>0.4</span>
+                    <span class="text-amber-400">⚡</span>
                   </div>
-                  <button onclick="sendGenerateTTS()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
-                    <span>Synthesize</span> <span>➢</span>
+                  <button type="button" onclick="sendGenerateTTS()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Синтезировать речь">
+                    ➤
                   </button>
                 </div>
               </div>
@@ -3881,6 +4054,87 @@
     }
 
 
+    // Studio Switcher Dropdown controls
+    function toggleStudioSwitcher(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('studio-switcher-dropdown');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function closeStudioSwitcher() {
+      const menu = document.getElementById('studio-switcher-dropdown');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    // Attachment Helpers (📎 Paperclip)
+    function triggerStudioAttachment(studio) {
+      const input = document.getElementById(`${studio}-file-input`);
+      if (input) input.click();
+    }
+
+    function handleStudioAttachment(studio, input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const preview = document.getElementById(`${studio}-file-preview`);
+      const nameEl = document.getElementById(`${studio}-file-name`);
+      if (preview && nameEl) {
+        nameEl.textContent = file.name;
+        preview.classList.remove('hidden');
+      }
+    }
+
+    function removeAttachedFile(studio) {
+      const input = document.getElementById(`${studio}-file-input`);
+      const preview = document.getElementById(`${studio}-file-preview`);
+      if (input) input.value = '';
+      if (preview) preview.classList.add('hidden');
+    }
+
+    // Studio Favorite Toggle (⭐)
+    function toggleStudioFavorite() {
+      const btn = document.getElementById('btn-studio-star');
+      if (!btn) return;
+      const isStarred = btn.classList.contains('text-amber-400');
+      if (isStarred) {
+        btn.classList.remove('text-amber-400');
+        btn.classList.add('text-stone-400');
+      } else {
+        btn.classList.add('text-amber-400');
+        btn.classList.remove('text-stone-400');
+      }
+    }
+
+    // Agent Persona Selector
+    function onSelectAgentPersona(val) {
+      const personas = {
+        agent_creative: {
+          title: "Creative & Media Director",
+          desc: "Specialized in cinematic video prompts, Veo 3.1, Kling, Midjourney, and visual aesthetics."
+        },
+        agent_code: {
+          title: "Full-Stack & Neural Architect",
+          desc: "Specialized in Python, TypeScript, API integrations, debugging, and system architectures."
+        },
+        agent_voice: {
+          title: "Voice & Audio Director",
+          desc: "Specialized in ElevenLabs emotion tags, voice cloning, audio post-production, and Suno soundscapes."
+        },
+        agent_smm: {
+          title: "Growth & Viral Marketer",
+          desc: "Creates viral hooks, TikTok/Reels video concepts, multi-platform copy, and engagement strategies."
+        },
+        agent_research: {
+          title: "Deep Research Analyst",
+          desc: "Conducts deep multi-source research, synthesizes data, checks citations, and compiles reports."
+        }
+      };
+      const p = personas[val] || personas.agent_creative;
+      const titleEl = document.querySelector('#view-agents [data-i18n="agent_title"]');
+      const descEl = document.querySelector('#view-agents [data-i18n="agent_desc"]');
+      if (titleEl) titleEl.textContent = p.title;
+      if (descEl) descEl.textContent = p.desc;
+    }
+
     function switchTab(tabId) {
       currentTab = tabId;
       window.location.hash = tabId;
@@ -3907,12 +4161,29 @@
       // Close mobile drawers when switching tabs
       toggleMobileControlPanel(false);
       toggleHistoryDrawer(false);
+      closeStudioSwitcher();
 
       const viewTrends = document.getElementById('view-trends');
       const workspaceShell = document.getElementById('workspace-shell');
       const controlPanel = document.getElementById('workspace-control-panel');
       const studioViews = ['agents', 'text', 'image', 'video', 'audio', 'toolkit'];
       const userDash = document.getElementById('view-user-dashboard');
+      const switcherContainer = document.getElementById('studio-switcher-container');
+      const mobStudioNav = document.getElementById('mobile-studio-nav');
+
+      // Highlight active item in studio switcher dropdown (Screenshot 2)
+      ['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].forEach(t => {
+        const item = document.getElementById(`switcher-item-${t}`);
+        if (item) {
+          if (t === tabId) {
+            item.classList.add('bg-white/10', 'text-amber-400');
+            item.classList.remove('text-stone-200');
+          } else {
+            item.classList.remove('bg-white/10', 'text-amber-400');
+            item.classList.add('text-stone-200');
+          }
+        }
+      });
 
       // Show/Hide mobile settings button based on tab
       const mobControlBtn = document.getElementById('mobile-control-panel-btn');
@@ -3925,15 +4196,22 @@
       }
 
       if (tabId === 'trends') {
+        if (switcherContainer) switcherContainer.classList.add('hidden');
+        if (mobStudioNav) mobStudioNav.classList.remove('hidden');
         viewTrends.classList.remove('hidden');
         workspaceShell.classList.add('hidden');
         if (userDash) userDash.classList.add('hidden');
       } else if (tabId === 'profile') {
+        if (switcherContainer) switcherContainer.classList.add('hidden');
+        if (mobStudioNav) mobStudioNav.classList.remove('hidden');
         viewTrends.classList.add('hidden');
         workspaceShell.classList.add('hidden');
         if (userDash) userDash.classList.remove('hidden');
         switchUserSubtab('profile');
       } else {
+        // In studios: Studio switcher icon is VISIBLE in header, secondary nav hidden for clean vertical mobile space!
+        if (switcherContainer) switcherContainer.classList.remove('hidden');
+        if (mobStudioNav) mobStudioNav.classList.add('hidden');
         viewTrends.classList.add('hidden');
         if (userDash) userDash.classList.add('hidden');
         workspaceShell.classList.remove('hidden');
@@ -3945,6 +4223,38 @@
             else el.classList.add('hidden');
           }
         });
+
+        // Update mobile top bar model info
+        const mobModelIcon = document.getElementById('mobile-bar-model-icon');
+        const mobModelName = document.getElementById('mobile-bar-model-name');
+        const mobModelSub = document.getElementById('mobile-bar-model-sub');
+        if (mobModelName && mobModelSub) {
+          if (tabId === 'video') {
+            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeVideoModelKey || 'kling');
+            mobModelName.textContent = document.getElementById('active-video-name')?.textContent || 'Kling';
+            mobModelSub.textContent = document.getElementById('active-video-sub')?.textContent || 'Kling 4.0 Omni';
+          } else if (tabId === 'image') {
+            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'seedream');
+            mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Seedream';
+            mobModelSub.textContent = document.getElementById('active-image-sub')?.textContent || 'ByteDance Multimodal';
+          } else if (tabId === 'text') {
+            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon('gemini');
+            mobModelName.textContent = document.getElementById('active-text-name')?.textContent || 'Gemini';
+            mobModelSub.textContent = document.getElementById('active-text-sub')?.textContent || 'Google Gemini 2.5 Pro';
+          } else if (tabId === 'audio') {
+            if (mobModelIcon) mobModelIcon.innerHTML = '<span class="font-bold text-xs">||</span>';
+            mobModelName.textContent = 'Elevenlabs';
+            mobModelSub.textContent = 'Eleven v4';
+          } else if (tabId === 'agents') {
+            if (mobModelIcon) mobModelIcon.innerHTML = '🤖';
+            mobModelName.textContent = 'AI Agent';
+            mobModelSub.textContent = 'Autonomous Core';
+          } else if (tabId === 'toolkit') {
+            if (mobModelIcon) mobModelIcon.innerHTML = '🛠️';
+            mobModelName.textContent = 'Toolkit';
+            mobModelSub.textContent = 'Inpaint & Upscale';
+          }
+        }
 
         // Responsive control panel logic
         if (window.innerWidth >= 768) {
@@ -4107,7 +4417,8 @@
       const text = input.value.trim();
       if (!text) return;
 
-      const deepRes = document.getElementById('llm-deep-research').checked;
+      const deepRes = document.getElementById('llm-deep-research')?.checked || false;
+      const sysPrompt = document.getElementById('custom-system-prompt')?.value || document.getElementById('llm-system-prompt')?.value || '';
       const chatBox = document.getElementById('llm-chat-messages');
       chatBox.classList.remove('hidden');
 
@@ -4141,8 +4452,8 @@
           headers,
           body: JSON.stringify({
             messages: [{ role: 'user', content: text }],
-            model: currentStudioModel,
-            system_prompt: document.getElementById('custom-system-prompt').value,
+            model: currentStudioModel || 'gemini',
+            system_prompt: sysPrompt,
             deep_research: deepRes
           })
         });
@@ -4155,7 +4466,8 @@
           deductTokensUI(deepRes ? 2 : 1);
           saveToHistory('chats', text.slice(0, 30), data.reply);
         } else {
-          renderAgentBubble(chatBox, "❌ Generation failed. Check token balance.");
+          const errData = await resp.json().catch(() => ({}));
+          renderAgentBubble(chatBox, "❌ " + (errData.error || "Generation failed. Please check token balance."));
         }
       } catch (e) {
         document.getElementById(loadingId)?.remove();
@@ -4169,11 +4481,23 @@
       const prompt = input.value.trim();
       if (!prompt) return;
 
-      const aspect = document.getElementById('image-aspect-pill').value;
+      const aspect = document.getElementById('image-aspect-pill')?.value || '1:1';
       const gallery = document.getElementById('image-generation-gallery');
       const btn = document.getElementById('btn-generate-image');
+      const modelToUse = activeImageModelKey || currentStudioModel || 'seedream';
+
       btn.disabled = true;
-      btn.innerHTML = `<span class="animate-spin">⏳</span> Generating...`;
+      btn.innerHTML = `<span class="animate-spin">⏳</span>`;
+
+      // Live placeholder loading card
+      const loadCardId = 'img-load-' + Date.now();
+      gallery.insertAdjacentHTML('afterbegin', `
+        <div id="${loadCardId}" class="relative rounded-2xl overflow-hidden border border-emerald-500/40 bg-white/5 p-4 flex flex-col items-center justify-center text-center aspect-square shadow-xl animate-pulse">
+          <span class="animate-spin text-2xl mb-2 text-emerald-400">✨</span>
+          <span class="text-[11px] font-bold text-white mb-1">Rendering 4K Image</span>
+          <span class="text-[9px] text-stone-400 line-clamp-2">${escapeHtml(prompt.slice(0, 50))}...</span>
+        </div>
+      `);
 
       try {
         const token = localStorage.getItem('zyko_token');
@@ -4186,22 +4510,24 @@
           body: JSON.stringify({
             prompt: prompt,
             aspect: aspect,
-            model: currentStudioModel
+            model: modelToUse
           })
         });
+
+        document.getElementById(loadCardId)?.remove();
 
         if (resp.ok) {
           const blob = await resp.blob();
           const imgUrl = URL.createObjectURL(blob);
 
           gallery.insertAdjacentHTML('afterbegin', `
-            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-[${aspect.replace(':', '/')}] shadow-xl">
+            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01]">
               <img src="${imgUrl}" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-2.5 flex flex-col justify-between">
-                <span class="text-[9px] font-bold text-emerald-400 uppercase">${currentStudioModel} • ${aspect}</span>
+                <span class="text-[9px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
                 <div class="flex gap-1.5">
                   <a href="${imgUrl}" download="zyko_ai_render.jpg" class="flex-1 text-center bg-white/20 hover:bg-white text-black font-bold py-1 rounded text-[10px] transition">Download 4K</a>
-                  <button onclick="recreateWithPrompt('${escapeHtml(prompt)}')" class="px-2 py-1 bg-emerald-500 text-black font-bold rounded text-[10px]">Recreate</button>
+                  <button onclick="document.getElementById('image-prompt-input').value = '${escapeHtml(prompt)}'" class="px-2 py-1 bg-emerald-500 text-black font-bold rounded text-[10px]">Recreate</button>
                 </div>
               </div>
             </div>
@@ -4209,13 +4535,16 @@
           deductTokensUI(2);
           saveToHistory('projects', prompt.slice(0, 30), imgUrl);
         } else {
-          alert('Image generation failed. Please check your token balance.');
+          const errData = await resp.json().catch(() => ({}));
+          const errMsg = errData.error || 'Ошибка при генерации изображения. Попробуйте еще раз.';
+          alert(errMsg);
         }
       } catch (e) {
+        document.getElementById(loadCardId)?.remove();
         alert('Generation error: ' + e.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Generate</span> <span>➢</span>`;
+        btn.innerHTML = `➤`;
       }
     }
 
@@ -4239,29 +4568,118 @@
       }
     }
 
-    // 9. Video Studio Interaction
+    // 9. Video Studio Interaction (Real Async API + Animated Progress + Interactive Video Player)
     async function sendGenerateVideo() {
       const input = document.getElementById('video-prompt-input');
       const prompt = input.value.trim();
       if (!prompt) return;
 
-      const aspect = document.getElementById('video-aspect-pill').value;
-      const duration = document.getElementById('video-duration-pill').value;
+      const aspect = document.getElementById('video-aspect-pill')?.value || '16:9';
+      const duration = document.getElementById('video-duration-pill')?.value || '5.0s';
       const gallery = document.getElementById('video-generation-gallery');
+      const btn = document.getElementById('btn-generate-video');
+      const modelToUse = activeVideoModelKey || 'kling';
 
-      alert(`Video render started for ${duration}s scene. Rendering with Wan 3.0 & Kling...`);
-      deductTokensUI(19);
-      
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-spin text-xs">⏳</span>`;
+
+      // Live progress card
+      const loadCardId = 'vid-load-' + Date.now();
+      const pbarId = 'vid-pbar-' + Date.now();
+      const ptextId = 'vid-ptext-' + Date.now();
+
       gallery.insertAdjacentHTML('afterbegin', `
-        <div class="rounded-2xl overflow-hidden border border-cyan-500/30 bg-black p-3 text-left">
-          <div class="text-[10px] text-cyan-400 font-bold mb-1">Rendering Video (${duration}s • ${aspect})</div>
-          <div class="text-xs text-white mb-2">${escapeHtml(prompt)}</div>
-          <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-            <div class="bg-cyan-400 h-full w-2/3 animate-pulse"></div>
+        <div id="${loadCardId}" class="rounded-2xl overflow-hidden border border-emerald-500/40 bg-[#0d1412] p-3.5 text-left shadow-2xl transition">
+          <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-1.5">
+            <span class="flex items-center gap-1.5"><span class="animate-spin">⏳</span> ${(modelToUse).toUpperCase()} • ${duration} • ${aspect}</span>
+            <span id="${ptextId}" class="font-mono text-stone-300">15%</span>
+          </div>
+          <div class="text-xs text-stone-200 mb-2.5 line-clamp-1">${escapeHtml(prompt)}</div>
+          <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+            <div id="${pbarId}" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 15%"></div>
           </div>
         </div>
       `);
-      saveToHistory('projects', `Video: ${prompt.slice(0, 20)}`, prompt);
+
+      // Progress animation
+      let progress = 15;
+      const progressTimer = setInterval(() => {
+        if (progress < 85) {
+          progress += Math.floor(Math.random() * 15) + 5;
+          if (progress > 85) progress = 85;
+          const pbar = document.getElementById(pbarId);
+          const ptext = document.getElementById(ptextId);
+          if (pbar) pbar.style.width = progress + '%';
+          if (ptext) ptext.textContent = progress + '%';
+        }
+      }, 350);
+
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/generate/video', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            prompt: prompt,
+            aspect: aspect,
+            duration: duration,
+            model: modelToUse
+          })
+        });
+
+        clearInterval(progressTimer);
+
+        if (resp.ok) {
+          const data = await resp.json();
+          const pbar = document.getElementById(pbarId);
+          const ptext = document.getElementById(ptextId);
+          if (pbar) pbar.style.width = '100%';
+          if (ptext) ptext.textContent = '100%';
+
+          setTimeout(() => {
+            const card = document.getElementById(loadCardId);
+            if (card) {
+              card.outerHTML = `
+                <div class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3 text-left shadow-2xl transition hover:border-emerald-400/50">
+                  <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
+                    <span>${(data.model || modelToUse).toUpperCase()} • ${data.duration || duration} • ${aspect}</span>
+                    <span class="text-stone-400 font-medium">Готово ✓</span>
+                  </div>
+                  <div class="relative rounded-xl overflow-hidden bg-black/80 aspect-video mb-2.5 border border-white/10">
+                    <video src="${data.video_url}" controls autoplay loop playsinline class="w-full h-full object-cover rounded-xl"></video>
+                  </div>
+                  <p class="text-xs text-stone-300 mb-2.5 line-clamp-2">${escapeHtml(prompt)}</p>
+                  <div class="flex items-center gap-2">
+                    <a href="${data.video_url}" download="zyko_video.mp4" target="_blank" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition">
+                      Скачать MP4
+                    </a>
+                    <button onclick="document.getElementById('video-prompt-input').value = '${escapeHtml(prompt)}'" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
+                      Повторить
+                    </button>
+                  </div>
+                </div>
+              `;
+            }
+          }, 400);
+
+          deductTokensUI(19);
+          saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
+        } else {
+          document.getElementById(loadCardId)?.remove();
+          const errData = await resp.json().catch(() => ({}));
+          alert(errData.error || 'Ошибка при рендере видео');
+        }
+      } catch (e) {
+        clearInterval(progressTimer);
+        document.getElementById(loadCardId)?.remove();
+        alert('Ошибка соединения с видеосервером: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `➤`;
+      }
     }
 
     // 10. Audio & TTS Interaction
@@ -6027,6 +6445,14 @@
       if (notifDrawer && !notifDrawer.classList.contains('hidden')) {
         if (!notifDrawer.contains(e.target) && (!notifBtn || !notifBtn.contains(e.target))) {
           closeNotificationDrawer();
+        }
+      }
+
+      const switcherDropdown = document.getElementById('studio-switcher-dropdown');
+      const switcherBtn = document.getElementById('studio-switcher-btn');
+      if (switcherDropdown && !switcherDropdown.classList.contains('hidden')) {
+        if (!switcherDropdown.contains(e.target) && (!switcherBtn || !switcherBtn.contains(e.target))) {
+          closeStudioSwitcher();
         }
       }
     });
