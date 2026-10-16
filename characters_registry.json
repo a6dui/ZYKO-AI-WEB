@@ -1,0 +1,432 @@
+[
+  {
+    "id": "zk_zelensky",
+    "name": "🇺🇦 Владимир Зеленский",
+    "desc": "Характерный хрипловатый тембр, эмоциональная подача и интонации",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "politics",
+    "preview": "/api/voice/preview?voice_id=zk_zelensky",
+    "premium": false
+  },
+  {
+    "id": "zk_zuko",
+    "name": "🔥 Принц Зуко (ZykoLand)",
+    "desc": "Решительный юношеский голос принца Нации Огня из вселенной Аватара",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=zk_zuko",
+    "premium": false
+  },
+  {
+    "id": "zk_aang",
+    "name": "💨 Аватар Аанг",
+    "desc": "Звонкий дружелюбный голос последнего мага воздуха",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=zk_aang",
+    "premium": false
+  },
+  {
+    "id": "eWyzQbd2tSH4aR6f4tQ7",
+    "name": "🌟 Кристиан Бэйл",
+    "desc": "Глубокий харизматичный голос звезды фильмов «Тёмный рыцарь» и «Престиж»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=eWyzQbd2tSH4aR6f4tQ7",
+    "premium": false
+  },
+  {
+    "id": "mfUkbStYnQQEhw8uLuyr",
+    "name": "🌟 Том Харди",
+    "desc": "Низкий мужественный баритон звезды фильмов «Веном», «Безумный Макс» и «Острые козырьки»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=mfUkbStYnQQEhw8uLuyr",
+    "premium": false
+  },
+  {
+    "id": "lGxlo5MIWGAiFpBe1hrs",
+    "name": "🌟 Леонардо ДиКаприо",
+    "desc": "Харизматичный эмоциональный голос звезды фильмов «Волк с Уолл-стрит» и «Начало»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=lGxlo5MIWGAiFpBe1hrs",
+    "premium": false
+  },
+  {
+    "id": "05Xq2u4jaYgJjuBqynxC",
+    "name": "🌟 Джонни Депп",
+    "desc": "Неподражаемый манерный и загадочный голос легендарного актёра",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=05Xq2u4jaYgJjuBqynxC",
+    "premium": false
+  },
+  {
+    "id": "hL0XkpIo73wTRTQdlYvy",
+    "name": "🌟 Киану Ривз",
+    "desc": "Спокойный, сдержанный и проницательный голос Киану Ривза",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=hL0XkpIo73wTRTQdlYvy",
+    "premium": false
+  },
+  {
+    "id": "gzRpwr9cIt7t3PoKVYS5",
+    "name": "🌟 Мэттью Макконахи",
+    "desc": "Фирменный южный акцент, вкрадчивый и философский голос из «Интерстеллара»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=gzRpwr9cIt7t3PoKVYS5",
+    "premium": false
+  },
+  {
+    "id": "UwaJg3ryKYDcyPojxAlD",
+    "name": "🌟 Брэд Питт",
+    "desc": "Уверенный, дерзкий и притягательный голос голливудской звезды",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=UwaJg3ryKYDcyPojxAlD",
+    "premium": false
+  },
+  {
+    "id": "7l3TEipZ4jWJHbVDz02f",
+    "name": "🌟 Киллиан Мёрфи (Томас Шелби)",
+    "desc": "Холодный, гипнотический баритон лидера «Острых козырьков»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f",
+    "premium": false
+  },
+  {
+    "id": "Zejs4Ed7Duhu4haarHZP",
+    "name": "🌟 Джейсон Стетхэм",
+    "desc": "Низкий хриплый голос главного брутала кинематографа",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=Zejs4Ed7Duhu4haarHZP",
+    "premium": false
+  },
+  {
+    "id": "YT5DjdqazFbkyMRpR9R7",
+    "name": "🌟 Райан Гослинг",
+    "desc": "Меланхоличный, загадочный голос героя фильмов «Драйв» и «Бегущий по лезвию 2049»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "actors",
+    "preview": "/api/voice/preview?voice_id=YT5DjdqazFbkyMRpR9R7",
+    "premium": false
+  },
+  {
+    "id": "75yZp6ulfvyEokK0CEzs",
+    "name": "🧸 Шрек (Добрый Огр)",
+    "desc": "Легендарный голос огра из болота (Алексей Колган)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=75yZp6ulfvyEokK0CEzs",
+    "premium": false
+  },
+  {
+    "id": "TNgAGIml2DVqWAlsUkUf",
+    "name": "🧸 Гомер Симпсон",
+    "desc": "Культовый забавный голос Гомера Симпсона («D'oh! / Ву-ху!»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf",
+    "premium": false
+  },
+  {
+    "id": "VofB5YwEbFB4UZPIKXFc",
+    "name": "🧸 Губка Боб",
+    "desc": "Весёлый, энергичный и жизнерадостный голос обитателя Бикини Боттом",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=VofB5YwEbFB4UZPIKXFc",
+    "premium": false
+  },
+  {
+    "id": "wzZN4pJLaVTXA3GNfG0r",
+    "name": "🧸 Рик Санчез (Рик и Морти)",
+    "desc": "Гениальный безумный учёный из вселенной Рика и Морти",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=wzZN4pJLaVTXA3GNfG0r",
+    "premium": false
+  },
+  {
+    "id": "6FcDaHnDiHncjNBQCt4R",
+    "name": "🧸 Питер Гриффин",
+    "desc": "Специфический смех и забавный голос главы семейства Гриффинов",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=6FcDaHnDiHncjNBQCt4R",
+    "premium": false
+  },
+  {
+    "id": "u27WdXOyonJpr0lrNcBp",
+    "name": "🧸 Эрик Картман",
+    "desc": "Дерзкий, капризный и узнаваемый голос из Южного Парка",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=u27WdXOyonJpr0lrNcBp",
+    "premium": false
+  },
+  {
+    "id": "trTLWpv3IfTLipriCOpI",
+    "name": "🧸 Грю (Гадкий Я)",
+    "desc": "Колоритный восточноевропейский акцент гениального злодея и повелителя миньонов",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=trTLWpv3IfTLipriCOpI",
+    "premium": false
+  },
+  {
+    "id": "1DCKIoTuj6qXKyhOsuka",
+    "name": "🧸 Микки Маус",
+    "desc": "Высокий фирменный голос главного мышонка мира Disney",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=1DCKIoTuj6qXKyhOsuka",
+    "premium": false
+  },
+  {
+    "id": "Tny2NBFBPyWbNPv4TEjr",
+    "name": "🧸 Дональд Дак",
+    "desc": "Неподражаемый ворчливый утиный голос Дональда Дака",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=Tny2NBFBPyWbNPv4TEjr",
+    "premium": false
+  },
+  {
+    "id": "CE2x5s8QRPTpi7AXLJZO",
+    "name": "🧸 Кот в сапогах",
+    "desc": "Страстный испанский баритон очаровательного дуэлянта",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "cartoons",
+    "preview": "/api/voice/preview?voice_id=CE2x5s8QRPTpi7AXLJZO",
+    "premium": false
+  },
+  {
+    "id": "f9ztG8fDUcDJNvl3idel",
+    "name": "🎬 Дарт Вейдер (Звёздные Войны)",
+    "desc": "Культовый глубокий бас владыки ситхов в шлеме с механическим дыханием (дубляж)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=f9ztG8fDUcDJNvl3idel",
+    "premium": false
+  },
+  {
+    "id": "MEkSZtVBQpcAez2lSoPH",
+    "name": "🎬 Терминатор (T-800)",
+    "desc": "Металлический голос Арнольда Шварценеггера («I'll be back»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=MEkSZtVBQpcAez2lSoPH",
+    "premium": false
+  },
+  {
+    "id": "AbLYQoM9Rf8fDu4YfmzP",
+    "name": "🎬 Джокер (The Joker)",
+    "desc": "Язвительный, эксцентричный и опасный голос Клоуна-Принца преступного мира",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=AbLYQoM9Rf8fDu4YfmzP",
+    "premium": false
+  },
+  {
+    "id": "2pL2xny3pNZC3SydSjHL",
+    "name": "🎬 Вито Корлеоне (Крёстный отец)",
+    "desc": "Хриплый властный шепот Дона Корлеоне (Марлон Брандо)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL",
+    "premium": false
+  },
+  {
+    "id": "bCYBazBDrKIXupR8A7ux",
+    "name": "🎬 Тайлер Дёрден (Бойцовский клуб)",
+    "desc": "Бунтарский, гипнотический голос Брэда Питта из «Бойцовского клуба»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=bCYBazBDrKIXupR8A7ux",
+    "premium": false
+  },
+  {
+    "id": "Y7BAH3crzPLulxKdQfh9",
+    "name": "🎬 Ганнибал Лектер",
+    "desc": "Интеллигентный, вкрадчивый и леденящий душу голос доктора Лектера",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=Y7BAH3crzPLulxKdQfh9",
+    "premium": false
+  },
+  {
+    "id": "28afC0vgntvFTbfv3IBa",
+    "name": "🎬 Голлум (Властелин Колец)",
+    "desc": "Культовый шипящий раздвоенный голос Голлума («Моя прелесть!», Вячеслав Баранов)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=28afC0vgntvFTbfv3IBa",
+    "premium": false
+  },
+  {
+    "id": "2vPGsGYhgGZIEPCr7cmE",
+    "name": "🎬 Северус Снейп",
+    "desc": "Медленный, бархатный и ледяной голос профессора зельеварения",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=2vPGsGYhgGZIEPCr7cmE",
+    "premium": false
+  },
+  {
+    "id": "9xIsncBMMYDN8exPwYUo",
+    "name": "🎬 Джон Уик",
+    "desc": "Скупой на слова, смертоносный шёпот Бабы Яги",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=9xIsncBMMYDN8exPwYUo",
+    "premium": false
+  },
+  {
+    "id": "wptdT6bCVJ3QtGOYNypC",
+    "name": "🎬 Капитан Джек Воробей",
+    "desc": "Пьянящий, эксцентричный голос капитана «Чёрной жемчужины»",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "movies",
+    "preview": "/api/voice/preview?voice_id=wptdT6bCVJ3QtGOYNypC",
+    "premium": false
+  },
+  {
+    "id": "YhIrTO8wTULguR9iqNTF",
+    "name": "🎮 Геральт из Ривии (Ведьмак)",
+    "desc": "Суровый хриплый голос Белого Волка из Ривии (Ведьмак 3)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=YhIrTO8wTULguR9iqNTF",
+    "premium": false
+  },
+  {
+    "id": "WNFgIM75teoc5W2xiSxG",
+    "name": "🎮 Кратос (God of War)",
+    "desc": "Могучий, громоподобный голос спартанского Бога Войны («Boy!»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG",
+    "premium": false
+  },
+  {
+    "id": "v1AeN4m2oKIPfLxF2xJT",
+    "name": "🎮 Тревор Филипс (GTA V)",
+    "desc": "Неуравновешенный, взрывной голос безумца из округа Блейн",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT",
+    "premium": false
+  },
+  {
+    "id": "ZQCBCbIV9PpcLppaVZj1",
+    "name": "🎮 Сиджей / Carl Johnson (GTA SA)",
+    "desc": "Легендарный голос Сиджея из Grove Street («Ah shit, here we go again»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1",
+    "premium": false
+  },
+  {
+    "id": "NGfC0ZSun1NgalQyPDmF",
+    "name": "🎮 Дюк Нюкем (Duke Nukem)",
+    "desc": "Брутальный тестостероновый бас короля боевиков 90-х",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=NGfC0ZSun1NgalQyPDmF",
+    "premium": false
+  },
+  {
+    "id": "3KFZFY6hzpHJRJPQ8W5Y",
+    "name": "🎮 Ваас Монтенегро (Far Cry 3)",
+    "desc": "Психопатический голос пирата с островов Рук («Ты знаешь, что такое безумие?»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y",
+    "premium": false
+  },
+  {
+    "id": "RutpQZVwiLoPSSrELyDA",
+    "name": "🎮 Мастер Чиф (Halo)",
+    "desc": "Глубокий спокойный голос суперсолдата Спартанца-117",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=RutpQZVwiLoPSSrELyDA",
+    "premium": false
+  },
+  {
+    "id": "p3gpCF2EEL1zph78ic7E",
+    "name": "🎮 Солид Снейк (Metal Gear)",
+    "desc": "Хриплый тактический голос легендарного шпиона (David Hayter)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=p3gpCF2EEL1zph78ic7E",
+    "premium": false
+  },
+  {
+    "id": "asnEOmpTq4TdoAB6jOdG",
+    "name": "🎮 Капитан Прайс (Call of Duty)",
+    "desc": "Британский офицер спецназа SAS («Bravo Six, going dark»)",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=asnEOmpTq4TdoAB6jOdG",
+    "premium": false
+  },
+  {
+    "id": "6NsEhT1HiUXvbYM0boZL",
+    "name": "🎮 Артур Морган (RDR2)",
+    "desc": "Глубокий усталый голос благородного стрелка Дикого Запада",
+    "gender": "male",
+    "category": "characters",
+    "sub_category": "games",
+    "preview": "/api/voice/preview?voice_id=6NsEhT1HiUXvbYM0boZL",
+    "premium": false
+  }
+]

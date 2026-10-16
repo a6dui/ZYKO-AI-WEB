@@ -157,7 +157,18 @@ async def handle_crypto_create(request: web.Request):
         logger.error("CryptoPay create error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
-# --- AI Tools ---
+# --- AI Tools & ElevenLabs Generation ---
+
+from elevenlabs_service import (
+    text_to_speech,
+    generate_sfx,
+    clone_voice,
+    get_all_character_voices,
+    generate_ai_image,
+    generate_ai_video,
+    generate_ai_music
+)
+from database import deduct_tokens, log_generation
 
 async def handle_expand_prompt(request: web.Request):
     try:
@@ -170,6 +181,152 @@ async def handle_expand_prompt(request: web.Request):
         return web.json_response(res)
     except Exception as e:
         logger.error("Expand prompt error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_generate_tts(request: web.Request):
+    try:
+        data = await request.json()
+        text = data.get("text", "").strip()
+        voice_id = data.get("voice_id", "21m0aC4C9KstEPqMsrxW")
+        model_id = data.get("model_id", "eleven_multilingual_v2")
+        
+        if not text:
+            return web.json_response({"error": "Text required"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 2):
+            return web.json_response({"error": "Insufficient tokens (requires 2 ZK)"}, status=400)
+            
+        audio_bytes = await text_to_speech(text, voice_id, model_id)
+        if user:
+            await log_generation(user["id"], "elevenlabs_tts", text[:100], "tts_audio", 2)
+            
+        return web.Response(body=audio_bytes, content_type="audio/mpeg")
+    except Exception as e:
+        logger.error("TTS generation error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_generate_sfx(request: web.Request):
+    try:
+        data = await request.json()
+        prompt = data.get("prompt", "").strip()
+        duration = float(data.get("duration", 4.0))
+        if not prompt:
+            return web.json_response({"error": "Prompt required"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 5):
+            return web.json_response({"error": "Insufficient tokens (requires 5 ZK)"}, status=400)
+            
+        audio_bytes = await generate_sfx(prompt, duration)
+        if user:
+            await log_generation(user["id"], "elevenlabs_sfx", prompt, "sfx_audio", 5)
+            
+        return web.Response(body=audio_bytes, content_type="audio/mpeg")
+    except Exception as e:
+        logger.error("SFX generation error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_generate_clone(request: web.Request):
+    try:
+        reader = await request.multipart()
+        name = ""
+        audio_bytes = b""
+        filename = "sample.mp3"
+        
+        while True:
+            part = await reader.next()
+            if part is None:
+                break
+            if part.name == "name":
+                name = (await part.read()).decode()
+            elif part.name == "file":
+                filename = part.filename or "sample.mp3"
+                audio_bytes = await part.read()
+                
+        if not name or not audio_bytes:
+            return web.json_response({"error": "Name and audio sample file required"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 20):
+            return web.json_response({"error": "Insufficient tokens for voice cloning (requires 20 ZK)"}, status=400)
+            
+        res = await clone_voice(name, audio_bytes, filename)
+        if user:
+            await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), 20)
+            
+        return web.json_response({"status": "success", "voice": res})
+    except Exception as e:
+        logger.error("Voice clone error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_get_voices(request: web.Request):
+    return web.json_response({"voices": get_all_character_voices()})
+
+async def handle_generate_image(request: web.Request):
+    try:
+        data = await request.json()
+        prompt = data.get("prompt", "").strip()
+        aspect = data.get("aspect", "1:1")
+        model = data.get("model", "flux")
+        
+        if not prompt:
+            return web.json_response({"error": "Prompt required"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 2):
+            return web.json_response({"error": "Insufficient tokens (requires 2 ZK)"}, status=400)
+            
+        img_bytes = await generate_ai_image(prompt, aspect, model)
+        if user:
+            await log_generation(user["id"], f"image_{model}", prompt, "image_result", 2)
+            
+        return web.Response(body=img_bytes, content_type="image/jpeg")
+    except Exception as e:
+        logger.error("Image generation error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_generate_video(request: web.Request):
+    try:
+        data = await request.json()
+        prompt = data.get("prompt", "").strip()
+        aspect = data.get("aspect", "9:16")
+        model = data.get("model", "kling")
+        
+        if not prompt:
+            return web.json_response({"error": "Prompt required"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 15):
+            return web.json_response({"error": "Insufficient tokens (requires 15 ZK)"}, status=400)
+            
+        res = await generate_ai_video(prompt, aspect, model)
+        if user:
+            await log_generation(user["id"], f"video_{model}", prompt, res.get("video_url", ""), 15)
+            
+        return web.json_response(res)
+    except Exception as e:
+        logger.error("Video generation error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_generate_music(request: web.Request):
+    try:
+        data = await request.json()
+        prompt = data.get("prompt", "").strip()
+        style = data.get("style", "Lo-Fi")
+        title = data.get("title", "AI Track")
+        
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 10):
+            return web.json_response({"error": "Insufficient tokens (requires 10 ZK)"}, status=400)
+            
+        res = await generate_ai_music(prompt, style, title)
+        if user:
+            await log_generation(user["id"], "ai_music", prompt, res.get("audio_url", ""), 10)
+            
+        return web.json_response(res)
+    except Exception as e:
+        logger.error("Music generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
 # --- Static Landing Page ---
@@ -201,8 +358,15 @@ def create_app():
     app.router.add_post("/api/payments/platega/create-invoice", handle_platega_create)
     app.router.add_post("/api/payments/crypto/create-invoice", handle_crypto_create)
     
-    # AI Services
+    # AI Services & ElevenLabs Generations
     app.router.add_post("/api/ai/expand-prompt", handle_expand_prompt)
+    app.router.add_post("/api/generate/tts", handle_generate_tts)
+    app.router.add_post("/api/generate/sfx", handle_generate_sfx)
+    app.router.add_post("/api/generate/clone", handle_generate_clone)
+    app.router.add_get("/api/voices", handle_get_voices)
+    app.router.add_post("/api/generate/image", handle_generate_image)
+    app.router.add_post("/api/generate/video", handle_generate_video)
+    app.router.add_post("/api/generate/music", handle_generate_music)
     
     # Frontend SPA
     app.router.add_get("/", handle_index)
