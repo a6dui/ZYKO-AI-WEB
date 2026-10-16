@@ -3166,15 +3166,32 @@
         <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
 
-      <!-- 1. Header Card (Exact replica from Screenshot 1) -->
+      <!-- 1. Header Card (Dynamic Telemetry) -->
       <div class="bg-[#1c2023] border border-white/10 rounded-xl p-4 flex items-center justify-between mb-3.5">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold text-lg">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           </div>
-          <span class="text-base sm:text-lg font-black text-white tracking-wider">ZYKO.AI</span>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-base sm:text-lg font-black text-white tracking-wider">ZYKO.AI</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold hidden xs:inline-flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                LIVE
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] text-stone-400 mt-0.5">
+              <span id="status-live-indicator" class="text-emerald-400 font-medium">Телеметрия активна</span>
+              <span>•</span>
+              <span id="status-updated-ago">обновлено только что</span>
+            </div>
+          </div>
         </div>
         <div class="flex items-center gap-2 pr-8 sm:pr-0">
+          <button onclick="fetchStatusData(false)" id="btn-status-refresh" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 text-xs text-stone-300 hover:text-white transition group" title="Обновить статус">
+            <svg id="status-refresh-icon" class="w-3.5 h-3.5 stroke-current transition-transform duration-500 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span class="hidden sm:inline">Обновить</span>
+          </button>
           <span class="text-xs text-stone-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
             <span>🌐</span> <span class="hidden sm:inline">Global Engine Status</span> <span class="sm:hidden">Online</span>
           </span>
@@ -3182,19 +3199,22 @@
       </div>
 
       <!-- 2. Operational Banner (Exact mint pill from Screenshot 1) -->
-      <div class="bg-[#bbf7d0] text-[#14532d] rounded-xl px-4 py-3 flex items-center gap-2.5 mb-4 shadow-sm">
+      <div id="status-main-banner" class="bg-[#bbf7d0] text-[#14532d] rounded-xl px-4 py-3 flex items-center gap-2.5 mb-4 shadow-sm transition-all duration-300">
         <div class="w-5 h-5 rounded-full bg-[#16a34a] text-white flex items-center justify-center text-xs font-black shrink-0">✓</div>
-        <span class="text-xs sm:text-sm font-semibold leading-tight">We're not aware of any issues affecting our systems</span>
+        <span id="status-main-banner-text" class="text-xs sm:text-sm font-semibold leading-tight">We're not aware of any issues affecting our systems</span>
       </div>
 
       <!-- 3. System Status Main Card -->
       <div class="bg-[#1c2023] border border-white/10 rounded-xl p-3.5 sm:p-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-white/10 gap-2.5">
-          <h3 class="text-base sm:text-lg font-bold text-white">System Status</h3>
+          <div class="flex items-center gap-2">
+            <h3 class="text-base sm:text-lg font-bold text-white">System Status</h3>
+            <span id="status-total-count" class="text-[11px] text-stone-400 bg-white/5 px-2 py-0.5 rounded-full border border-white/5">38 моделей</span>
+          </div>
           <div class="flex items-center gap-2 text-xs text-stone-400">
-            <button class="hover:text-white transition p-1 text-sm font-bold">‹</button>
-            <span class="font-medium" id="status-date-range">Sep 2026 — Oct 2026.</span>
-            <button class="hover:text-white transition p-1 text-sm font-bold">›</button>
+            <button onclick="navigateStatusMonths(-1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Предыдущий месяц">‹</button>
+            <span class="font-medium px-1 select-none" id="status-date-range">Sep 2026 — Oct 2026.</span>
+            <button onclick="navigateStatusMonths(1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Следующий месяц">›</button>
           </div>
         </div>
 
@@ -3214,6 +3234,9 @@
           <!-- Rendered via JS -->
         </div>
       </div>
+
+      <!-- Floating Interactive Tooltip for Day Pills -->
+      <div id="status-pill-tooltip" class="fixed hidden pointer-events-none z-50 bg-[#0d0f10]/95 border border-white/20 text-stone-200 text-xs rounded-xl shadow-2xl p-2.5 max-w-xs transition-opacity duration-150 backdrop-blur-md"></div>
     </div>
   </div>
 
@@ -4634,74 +4657,163 @@
     ];
 
     let currentStatusSystem = 'web';
+    const statusDateRanges = [
+      'Jan 2026 — Feb 2026.',
+      'Mar 2026 — Apr 2026.',
+      'May 2026 — Jun 2026.',
+      'Jul 2026 — Aug 2026.',
+      'Sep 2026 — Oct 2026.'
+    ];
+    let statusCurrentRangeIndex = 4;
+    let statusSecondsCounter = 0;
+    let statusSecondsTimer = null;
+    let statusPollingTimer = null;
+    let statusIsFetching = false;
 
-    function generateHistoryBars(historyKey) {
+    function getPillDateLabel(dayIndex, rangeIndex) {
+      const endMonths = [
+        { month: 'Feb', days: 28, year: 2026, prevMonth: 'Jan', prevDays: 31 },
+        { month: 'Apr', days: 30, year: 2026, prevMonth: 'Mar', prevDays: 31 },
+        { month: 'Jun', days: 30, year: 2026, prevMonth: 'May', prevDays: 31 },
+        { month: 'Aug', days: 31, year: 2026, prevMonth: 'Jul', prevDays: 31 },
+        { month: 'Oct', days: 17, year: 2026, prevMonth: 'Sep', prevDays: 30 },
+      ];
+      const cfg = endMonths[rangeIndex] || endMonths[4];
+      const daysBack = 53 - dayIndex;
+      if (daysBack < cfg.days) {
+        return `${cfg.days - daysBack} ${cfg.month} ${cfg.year}`;
+      } else {
+        const inPrev = cfg.prevDays - (daysBack - cfg.days);
+        return `${Math.max(1, inPrev)} ${cfg.prevMonth} ${cfg.year}`;
+      }
+    }
+
+    function showPillTooltip(e, modelName, dateStr, statusStr, latencyMs, note) {
+      const tip = document.getElementById('status-pill-tooltip');
+      if (!tip) return;
+      const isOk = statusStr.includes('100%') || statusStr.includes('Operational');
+      const isWarning = statusStr.includes('Degraded') || statusStr.includes('Lag') || statusStr.includes('Load');
+      const isMaint = statusStr.includes('Maintenance') || statusStr.includes('Sync');
+      const statusColor = isOk ? '#10b981' : (isMaint ? '#3b82f6' : (isWarning ? '#f59e0b' : '#ef4444'));
+      const statusIcon = isOk ? '✓' : (isMaint ? 'ℹ' : '!');
+
+      tip.innerHTML = `
+        <div class="flex items-center justify-between gap-2 mb-1.5 border-b border-white/10 pb-1 font-mono text-[11px]">
+          <span class="font-bold text-white truncate max-w-[140px]">${modelName}</span>
+          <span class="text-stone-400 text-[10px] shrink-0">${dateStr}</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs font-semibold mb-1" style="color: ${statusColor}">
+          <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] text-white shrink-0" style="background-color: ${statusColor}">${statusIcon}</span>
+          <span>${statusStr}</span>
+        </div>
+        <div class="flex items-center justify-between text-[10px] text-stone-400 font-mono pt-1 border-t border-white/5">
+          <span>Latency: <strong class="text-stone-200">~${latencyMs || 95} ms</strong></span>
+          <span class="text-emerald-400">99.9% SLA</span>
+        </div>
+        ${note ? `<div class="mt-1.5 text-[10px] text-stone-300 italic bg-white/5 p-1.5 rounded-lg border border-white/5 leading-snug">${note}</div>` : ''}
+      `;
+      tip.classList.remove('hidden');
+
+      const x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : window.innerWidth / 2);
+      const y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : window.innerHeight / 2);
+      const tipWidth = 220;
+      const tipHeight = 110;
+      let left = x + 12;
+      let top = y - tipHeight - 10;
+      if (left + tipWidth > window.innerWidth) left = x - tipWidth - 12;
+      if (top < 10) top = y + 20;
+      tip.style.left = `${Math.max(10, left)}px`;
+      tip.style.top = `${Math.max(10, top)}px`;
+    }
+
+    function hidePillTooltip() {
+      const tip = document.getElementById('status-pill-tooltip');
+      if (tip) tip.classList.add('hidden');
+    }
+
+    function generateHistoryBars(item, rangeIndex = statusCurrentRangeIndex) {
       const totalBars = 54;
+      const historyKey = item.history || 'all_green';
+      const baseLatency = item.latency_ms || 100;
       let bars = [];
-      for (let i = 0; i < totalBars; i++) {
-        let color = '#10b981'; // Green
-        let tooltip = `Day ${i + 1}: 100% Operational`;
 
-        if (historyKey === 'chatgpt_incidents' && (i >= 39 && i <= 43)) {
-          color = '#ef4444'; // Red
-          tooltip = `Day ${i + 1}: Latency Degraded (Resolved)`;
-        } else if (historyKey === 'chatgpt_incidents' && i === 52) {
-          color = '#ef4444';
-          tooltip = `Day ${i + 1}: Service Restart`;
-        } else if (historyKey === 'flux_incidents' && (i >= 38 && i <= 40)) {
-          color = '#ef4444';
-          tooltip = `Day ${i + 1}: Queue Overload`;
-        } else if (historyKey === 'elevenlabs_incidents' && i === 47) {
-          color = '#ef4444';
-          tooltip = `Day ${i + 1}: API Maintenance`;
-        } else if (historyKey === 'luma_incidents' && (i === 3 || i === 33 || i === 52)) {
-          color = '#ef4444';
-          tooltip = `Day ${i + 1}: Rendering Cluster Reboot`;
-        } else if (historyKey === 'runway_incidents') {
-          if (i >= 26 && i <= 28) { color = '#f59e0b'; tooltip = `Day ${i + 1}: Queue Lag`; }
-          else if (i >= 29 && i <= 32) { color = '#ef4444'; tooltip = `Day ${i + 1}: Partial Outage`; }
-          else if (i === 34) { color = '#ef4444'; tooltip = `Day ${i + 1}: Fix Applied`; }
-          else if (i === 42) { color = '#f59e0b'; tooltip = `Day ${i + 1}: High Load`; }
-        } else if (historyKey === 'kling_incidents' && (i === 11 || i === 46)) {
-          color = '#ef4444'; tooltip = `Day ${i + 1}: Minor Incident`;
-        } else if (historyKey === 'minimax_incidents' && (i === 13 || i === 16)) {
-          color = '#ef4444'; tooltip = `Day ${i + 1}: High Traffic Spike`;
-        } else if (historyKey === 'veo_incidents') {
-          if (i === 3 || i === 7 || i === 10) { color = '#ef4444'; tooltip = `Day ${i + 1}: Latency`; }
-          else if (i === 31) { color = '#3b82f6'; tooltip = `Day ${i + 1}: Scheduled Maintenance`; }
-          else if (i === 33) { color = '#f59e0b'; tooltip = `Day ${i + 1}: Minor Degradation`; }
-        } else if (historyKey === 'sora_incidents' && (i >= 32 && i <= 34 || i === 51)) {
-          color = '#ef4444'; tooltip = `Day ${i + 1}: Compute Spike`;
-        } else if (historyKey === 'higgsfield_incidents' && (i === 39 || i === 40)) {
-          color = '#ef4444'; tooltip = `Day ${i + 1}: Node Recovery`;
-        } else if (historyKey === 'bytedance_incidents') {
-          if (i === 34) { color = '#ef4444'; }
-          else if (i === 39 || i === 40) { color = '#f59e0b'; }
-          else if (i === 43) { color = '#ef4444'; }
-        } else if (historyKey === 'claude_incidents' && (i >= 3 && i <= 5)) {
-          color = '#f59e0b'; tooltip = `Day ${i + 1}: High Demand Rate Limit`;
-        } else if (historyKey === 'perplexity_incidents' && i === 52) {
-          color = '#ef4444'; tooltip = `Day ${i + 1}: Search Grounding Glitch`;
-        } else if (historyKey === 'grok_img_incidents') {
-          if (i >= 3 && i <= 4) color = '#f59e0b';
-          else if (i >= 40 && i <= 43) color = '#ef4444';
-          else if (i >= 47 && i <= 49) color = '#ef4444';
-        } else if (historyKey === 'faceswap_incidents' && (i === 22 || i === 50)) {
-          color = '#ef4444';
-        } else if (historyKey === 'ideogram_incidents' && i === 20) {
-          color = '#ef4444';
-        } else if (historyKey === 'photomaker_incidents' && i === 24) {
-          color = '#3b82f6'; tooltip = `Day ${i + 1}: Model Update`;
-        } else if (historyKey === 'did_incidents' && i === 50) {
-          color = '#ef4444';
-        } else if (historyKey === 'suno_incidents') {
-          if (i === 1) color = '#f59e0b';
-          else if (i === 11 || i === 22 || i === 31 || i === 32 || i === 52) color = '#ef4444';
-        } else if (historyKey === 'sd_incidents' && (i === 36 || i === 51)) {
-          color = '#ef4444';
+      for (let i = 0; i < totalBars; i++) {
+        let color = '#10b981';
+        let statusStr = '100% Operational';
+        let note = '';
+        let pillLatency = Math.max(30, baseLatency + ((i * 7) % 25) - 12);
+
+        if (rangeIndex === 4) {
+          if (historyKey === 'chatgpt_incidents' && (i >= 39 && i <= 43)) {
+            color = '#ef4444'; statusStr = 'Degraded Performance'; note = 'High demand & latency spike, fully mitigated'; pillLatency += 140;
+          } else if (historyKey === 'chatgpt_incidents' && i === 52) {
+            color = '#ef4444'; statusStr = 'Rolling Restart'; note = 'Automated cluster rolling upgrade'; pillLatency += 85;
+          } else if (historyKey === 'flux_incidents' && (i >= 38 && i <= 40)) {
+            color = '#ef4444'; statusStr = 'GPU Queue Overload'; note = 'Dynamic cluster auto-scaling triggered'; pillLatency += 260;
+          } else if (historyKey === 'elevenlabs_incidents' && i === 47) {
+            color = '#ef4444'; statusStr = 'Upstream API Maintenance'; note = 'Scheduled voice model weights sync'; pillLatency += 120;
+          } else if (historyKey === 'luma_incidents' && (i === 3 || i === 33 || i === 52)) {
+            color = '#ef4444'; statusStr = 'Rendering Node Outage'; note = 'Render queue worker recycled'; pillLatency += 220;
+          } else if (historyKey === 'runway_incidents') {
+            if (i >= 26 && i <= 28) { color = '#f59e0b'; statusStr = 'Queue Lag'; note = 'High video generation volume'; pillLatency += 180; }
+            else if (i >= 29 && i <= 32) { color = '#ef4444'; statusStr = 'Partial Degradation'; note = 'Failover node activated'; pillLatency += 310; }
+            else if (i === 34) { color = '#ef4444'; statusStr = 'Cluster Hotfix'; note = 'Patch deployed'; pillLatency += 150; }
+            else if (i === 42) { color = '#f59e0b'; statusStr = 'High Load'; note = 'Load-balancing adjusted'; pillLatency += 110; }
+          } else if (historyKey === 'kling_incidents' && (i === 11 || i === 46)) {
+            color = '#ef4444'; statusStr = 'Minor Cluster Lag'; note = 'Video queue backlog cleaned'; pillLatency += 190;
+          } else if (historyKey === 'minimax_incidents' && (i === 13 || i === 16)) {
+            color = '#ef4444'; statusStr = 'Traffic Spike'; note = 'Traffic surge absorbed'; pillLatency += 160;
+          } else if (historyKey === 'veo_incidents') {
+            if (i === 3 || i === 7 || i === 10) { color = '#ef4444'; statusStr = 'Node Latency'; note = 'TPU pod reallocation'; pillLatency += 210; }
+            else if (i === 31) { color = '#3b82f6'; statusStr = 'Scheduled Maintenance'; note = 'Veo 3.1 runtime update'; pillLatency = 95; }
+            else if (i === 33) { color = '#f59e0b'; statusStr = 'Minor Lag'; note = 'Transient delay'; pillLatency += 110; }
+          } else if (historyKey === 'sora_incidents' && (i >= 32 && i <= 34 || i === 51)) {
+            color = '#ef4444'; statusStr = 'Compute Saturation'; note = 'Peak generation usage'; pillLatency += 240;
+          } else if (historyKey === 'higgsfield_incidents' && (i === 39 || i === 40)) {
+            color = '#ef4444'; statusStr = 'Node Recovery'; note = 'GPU pod rebooted'; pillLatency += 190;
+          } else if (historyKey === 'bytedance_incidents') {
+            if (i === 34 || i === 43) { color = '#ef4444'; statusStr = 'API Rate Limit Throttle'; note = 'Upstream rate throttle resolved'; pillLatency += 200; }
+            else if (i === 39 || i === 40) { color = '#f59e0b'; statusStr = 'Slow Responses'; note = 'Capacity expanded'; pillLatency += 120; }
+          } else if (historyKey === 'claude_incidents' && (i >= 3 && i <= 5)) {
+            color = '#f59e0b'; statusStr = 'High Demand Tier'; note = 'Anthropic tier limit, auto-routed'; pillLatency += 90;
+          } else if (historyKey === 'perplexity_incidents' && i === 52) {
+            color = '#ef4444'; statusStr = 'Search Index Delay'; note = 'Web citation index latency'; pillLatency += 180;
+          } else if (historyKey === 'grok_img_incidents') {
+            if (i >= 3 && i <= 4) { color = '#f59e0b'; statusStr = 'Queue Lag'; pillLatency += 130; }
+            else if (i >= 40 && i <= 43 || i >= 47 && i <= 49) { color = '#ef4444'; statusStr = 'GPU Saturation'; note = 'Flux cluster node scaleup'; pillLatency += 270; }
+          } else if (historyKey === 'faceswap_incidents' && (i === 22 || i === 50)) {
+            color = '#ef4444'; statusStr = 'Worker Restart'; pillLatency += 160;
+          } else if (historyKey === 'ideogram_incidents' && i === 20) {
+            color = '#ef4444'; statusStr = 'Temporary Outage'; pillLatency += 210;
+          } else if (historyKey === 'photomaker_incidents' && i === 24) {
+            color = '#3b82f6'; statusStr = 'Checkpoint Sync'; note = 'Model checkpoint updated'; pillLatency = 80;
+          } else if (historyKey === 'did_incidents' && i === 50) {
+            color = '#ef4444'; statusStr = 'Avatar Synth Queue Lag'; pillLatency += 180;
+          } else if (historyKey === 'suno_incidents') {
+            if (i === 1) { color = '#f59e0b'; statusStr = 'High Audio Render Load'; pillLatency += 140; }
+            else if (i === 11 || i === 22 || i === 31 || i === 32 || i === 52) { color = '#ef4444'; statusStr = 'Audio Generation Timeout'; note = 'Render queue purged and restored'; pillLatency += 290; }
+          } else if (historyKey === 'sd_incidents' && (i === 36 || i === 51)) {
+            color = '#ef4444'; statusStr = 'CUDA OOM Recovery'; note = 'Worker restarted'; pillLatency += 170;
+          }
+        } else {
+          if ((i + rangeIndex * 7) % 29 === 0) {
+            color = '#3b82f6'; statusStr = 'Scheduled Maintenance'; note = 'System health routine check'; pillLatency = 70;
+          } else if ((i + rangeIndex * 5) % 37 === 0 && item.uptime !== '100%') {
+            color = '#f59e0b'; statusStr = 'Transient Latency'; note = 'Minor delay resolved within 2m'; pillLatency += 95;
+          }
         }
 
-        bars.push(`<span class="inline-block h-3.5 sm:h-4 w-[3.5px] sm:w-[4.5px] md:w-[5px] rounded-sm transition-transform hover:scale-125 cursor-pointer mx-[0.5px]" style="background-color: ${color};" title="${tooltip}"></span>`);
+        const pillDate = getPillDateLabel(i, rangeIndex);
+        const safeName = (item.name || '').replace(/'/g, "\\'");
+        const safeStatus = statusStr.replace(/'/g, "\\'");
+        const safeNote = note.replace(/'/g, "\\'");
+
+        bars.push(`<span class="inline-block h-3.5 sm:h-4 w-[3.5px] sm:w-[4.5px] md:w-[5px] rounded-sm transition-transform hover:scale-150 active:scale-125 cursor-pointer mx-[0.5px] shrink-0" 
+          style="background-color: ${color};" 
+          onmouseenter="showPillTooltip(event, '${safeName}', '${pillDate}', '${safeStatus}', ${pillLatency}, '${safeNote}')"
+          onmouseleave="hidePillTooltip()"
+          onclick="showPillTooltip(event, '${safeName}', '${pillDate}', '${safeStatus}', ${pillLatency}, '${safeNote}')"
+        ></span>`);
       }
       return bars.join('');
     }
@@ -4726,11 +4838,12 @@
       }
 
       container.innerHTML = filtered.map(item => {
-        const barsHtml = generateHistoryBars(item.history);
+        const barsHtml = generateHistoryBars(item, statusCurrentRangeIndex);
         const hasSubs = item.components && item.components.length > 0;
+        const latency = item.latency_ms || (item.uptime === '100%' ? 95 : 180);
         return `
           <div class="py-3 px-1 transition border-b border-white/5 hover:bg-white/[0.02] last:border-0">
-            <div class="flex items-center justify-between gap-2 mb-1.5 cursor-pointer" onclick="toggleStatusComponent('${item.id}')">
+            <div class="flex items-center justify-between gap-2 mb-1.5 cursor-pointer select-none" onclick="toggleStatusComponent('${item.id}')">
               <div class="flex items-center gap-2 flex-wrap min-w-0">
                 <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span class="font-bold text-white text-xs sm:text-sm truncate">${item.name}</span>
@@ -4740,8 +4853,14 @@
                   </span>
                 ` : ''}
               </div>
-              <div class="text-[11px] sm:text-xs text-stone-400 font-medium shrink-0">
-                Uptime <span class="text-stone-200 font-semibold">${item.uptime}</span>
+              <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                <span class="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1" title="Текущая задержка отклика">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  ⚡ ${latency} ms
+                </span>
+                <div class="text-[11px] sm:text-xs text-stone-400 font-medium">
+                  Uptime <span class="text-stone-200 font-semibold">${item.uptime}</span>
+                </div>
               </div>
             </div>
             <div class="flex items-center justify-between overflow-x-auto no-scrollbar py-1">
@@ -4756,6 +4875,7 @@
                       <span class="text-stone-300 font-medium text-[11px] sm:text-xs truncate">${sub.name}</span>
                     </div>
                     <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                      ${sub.latency_ms ? `<span class="text-[10px] font-mono text-emerald-400/80 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/15">⚡ ${sub.latency_ms} ms</span>` : ''}
                       <span class="text-[10px] text-emerald-400 font-semibold">Operational</span>
                       <span class="text-[11px] text-stone-400 font-medium">${sub.uptime}</span>
                     </div>
@@ -4791,12 +4911,82 @@
           btnWeb.className = 'py-2 rounded-lg text-center transition text-stone-400 hover:text-white';
         }
       }
-      const searchInput = document.getElementById('status-search-input');
-      renderStatusComponents(searchInput ? searchInput.value : '');
+      fetchStatusData(false);
     }
 
     function filterStatusComponents(query) {
       renderStatusComponents(query);
+    }
+
+    function updateStatusSecondsLabel() {
+      const label = document.getElementById('status-updated-ago');
+      if (!label) return;
+      if (statusSecondsCounter === 0) {
+        label.textContent = 'обновлено только что';
+      } else {
+        label.textContent = `обновлено ${statusSecondsCounter} сек назад`;
+      }
+    }
+
+    async function fetchStatusData(isBackground = false) {
+      if (statusIsFetching) return;
+      statusIsFetching = true;
+      const refreshIcon = document.getElementById('status-refresh-icon');
+      if (refreshIcon && !isBackground) {
+        refreshIcon.classList.add('animate-spin');
+      }
+
+      try {
+        const rangeText = statusDateRanges[statusCurrentRangeIndex] || 'Sep 2026 — Oct 2026.';
+        const res = await fetch(`/api/status/models?system=${encodeURIComponent(currentStatusSystem)}&range=${encodeURIComponent(rangeText)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.models)) {
+            data.models.forEach(incoming => {
+              const idx = STATUS_COMPONENTS_DATA.findIndex(c => c.id === incoming.id);
+              if (idx !== -1) {
+                STATUS_COMPONENTS_DATA[idx].uptime = incoming.uptime;
+                STATUS_COMPONENTS_DATA[idx].latency_ms = incoming.latency_ms;
+                STATUS_COMPONENTS_DATA[idx].status = incoming.status;
+                if (incoming.components && Array.isArray(incoming.components)) {
+                  STATUS_COMPONENTS_DATA[idx].components = incoming.components;
+                }
+              } else {
+                STATUS_COMPONENTS_DATA.push(incoming);
+              }
+            });
+
+            const countEl = document.getElementById('status-total-count');
+            if (countEl) countEl.textContent = `${data.total_models || STATUS_COMPONENTS_DATA.length} моделей`;
+
+            const rangeEl = document.getElementById('status-date-range');
+            if (rangeEl && data.range) rangeEl.textContent = data.range;
+
+            const bannerText = document.getElementById('status-main-banner-text');
+            if (bannerText && data.message) bannerText.textContent = data.message;
+          }
+        }
+      } catch (err) {
+        console.warn('Status telemetry fetch error, using local data:', err);
+      } finally {
+        statusIsFetching = false;
+        statusSecondsCounter = 0;
+        updateStatusSecondsLabel();
+        if (refreshIcon) {
+          refreshIcon.classList.remove('animate-spin');
+        }
+        const q = document.getElementById('status-search-input')?.value || '';
+        renderStatusComponents(q);
+      }
+    }
+
+    function navigateStatusMonths(delta) {
+      const newIndex = statusCurrentRangeIndex + delta;
+      if (newIndex < 0 || newIndex >= statusDateRanges.length) return;
+      statusCurrentRangeIndex = newIndex;
+      const rangeEl = document.getElementById('status-date-range');
+      if (rangeEl) rangeEl.textContent = statusDateRanges[statusCurrentRangeIndex];
+      fetchStatusData(false);
     }
 
     function openStatusModal() {
@@ -4804,12 +4994,31 @@
       if (modal) {
         modal.classList.remove('hidden');
         renderStatusComponents();
+        fetchStatusData(false);
+
+        clearInterval(statusSecondsTimer);
+        statusSecondsCounter = 0;
+        updateStatusSecondsLabel();
+        statusSecondsTimer = setInterval(() => {
+          statusSecondsCounter++;
+          updateStatusSecondsLabel();
+        }, 1000);
+
+        clearInterval(statusPollingTimer);
+        statusPollingTimer = setInterval(() => {
+          fetchStatusData(true);
+        }, 25000);
       }
     }
 
     function closeStatusModal() {
       const modal = document.getElementById('status-page-modal');
       if (modal) modal.classList.add('hidden');
+      hidePillTooltip();
+      clearInterval(statusSecondsTimer);
+      clearInterval(statusPollingTimer);
+      statusSecondsTimer = null;
+      statusPollingTimer = null;
     }
 
     function closeInfoModal() {
