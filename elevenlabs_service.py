@@ -56,23 +56,47 @@ def mark_key_rate_limited(key: str, cooldown_seconds: int = 120):
 
 # --- 1. ElevenLabs Text-to-Speech (With Pool Rotation) ---
 
-async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", model_id: str = "eleven_multilingual_v2") -> bytes:
+async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", model_id: str = "eleven_multilingual_v2", voice_settings: dict = None) -> bytes:
     """
     Synthesizes speech using ElevenLabs API with multi-key rotation and auto-fallback.
     """
+    voice_aliases = {
+        "rachel": "21m0aC4C9KstEPqMsrxW",
+        "domi": "AZnzlk1XvdvUeBnXmlld",
+        "bella": "EXAVITQu4vr4xnSDxMaL",
+        "antoni": "ErXwobaYiN019PkySvjV",
+        "adam": "pNInz6obpgDQGcFmaJgB",
+        "josh": "TxGEqnHWrfWFTfGW9XjX",
+        "arnold": "VR6AewLTigWG4xSOukaG",
+        "sam": "yoZ06aMxZJJ28mfd3POQ",
+        "buster": "WNFgIM75teoc5W2xiSxG",
+        "papich": "3KFZFY6hzpHJRJPQ8W5Y",
+        "mellstroy": "v1AeN4m2oKIPfLxF2xJT",
+        "marmok": "ZQCBCbIV9PpcLppaVZj1",
+        "a4": "TNgAGIml2DVqWAlsUkUf",
+        "zubarev": "2pL2xny3pNZC3SydSjHL"
+    }
+    actual_voice_id = voice_aliases.get(voice_id.lower(), voice_id)
+    if len(actual_voice_id) < 15:
+        actual_voice_id = "21m0aC4C9KstEPqMsrxW"
+
     keys = get_all_elevenlabs_keys()
     if not keys:
         raise ValueError("No ElevenLabs API keys configured in environment.")
 
+    vs = {
+        "stability": 0.5,
+        "similarity_boost": 0.85,
+        "style": 0.15,
+        "use_speaker_boost": True
+    }
+    if voice_settings and isinstance(voice_settings, dict):
+        vs.update(voice_settings)
+
     payload = {
         "text": text,
         "model_id": model_id,
-        "voice_settings": {
-            "stability": 0.5,
-            "similarity_boost": 0.85,
-            "style": 0.15,
-            "use_speaker_boost": True
-        }
+        "voice_settings": vs
     }
     
     last_err = None

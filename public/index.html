@@ -1444,37 +1444,36 @@
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">long-form content</span>
             </div>
 
-            <!-- Voice & Character Selector Card -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto text-left mb-4 sm:mb-6">
-              <div class="bg-[#111614] border border-white/10 rounded-2xl p-3.5 sm:p-4">
-                <label class="block text-xs font-bold text-emerald-400 mb-2">Select Character / Voice:</label>
-                <select id="audio-voice-select" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:outline-none">
-                  <option value="21m0aC4C9KstEPqMsrxW">Rachel — Natural & Expressive</option>
-                  <option value="AZnzlk1XvdvUeBnXmlld">Domi — Energetic & Modern</option>
-                  <option value="EXAVITQu4vr4xnSDxMaL">Bella — Warm & Natural</option>
-                  <option value="ErXwobaYiN019PkySvjV">Antoni — Deep & Authoritative</option>
-                  <option value="buster">Бустер (Buster) — RVC Streamer</option>
-                  <option value="papich">Папич (Arthas) — RVC Legend</option>
-                  <option value="mellstroy">Меллстрой — RVC Streamer</option>
-                  <option value="marmok">Мармок — Gaming Legend</option>
-                </select>
-              </div>
+            <!-- Emotion Tags Quick Buttons -->
+            <div id="audio-tags-help" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-5">
+              <span class="text-emerald-400 font-bold">Emotion tags:</span>
+              <button type="button" class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md hover:bg-emerald-500/20 hover:text-emerald-300 transition" onclick="insertAudioTag('[laughing]')">[laughing]</button>
+              <button type="button" class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md hover:bg-emerald-500/20 hover:text-emerald-300 transition" onclick="insertAudioTag('[whispering]')">[whispering]</button>
+              <button type="button" class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md hover:bg-emerald-500/20 hover:text-emerald-300 transition" onclick="insertAudioTag('[sigh]')">[sigh]</button>
+              <button type="button" class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md hover:bg-emerald-500/20 hover:text-emerald-300 transition" onclick="insertAudioTag('[excited]')">[excited]</button>
+              <button type="button" class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md hover:bg-emerald-500/20 hover:text-emerald-300 transition" onclick="insertAudioTag('[calm]')">[calm]</button>
+            </div>
 
-              <!-- Audio Preview Player -->
-              <div class="bg-[#111614] border border-white/10 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between">
-                <div class="text-xs font-bold text-stone-300 mb-2">Synthesized Audio Player:</div>
-                <audio id="audio-player-preview" controls class="w-full h-9"></audio>
-                <div id="audio-status-text" class="text-[11px] text-stone-500 mt-2">Ready to synthesize with tags like [laughing]</div>
+            <!-- Audio Generations Stream / History (Clean Cards with Playable Audio) -->
+            <div id="audio-generation-gallery" class="space-y-3 max-w-2xl mx-auto mb-4 text-left">
+              <!-- Empty state placeholder -->
+              <div id="audio-empty-placeholder" class="border border-white/10 bg-[#121615]/70 rounded-2xl p-6 text-center shadow-lg">
+                <span class="text-3xl block mb-2">🎙️</span>
+                <div class="text-xs font-bold text-white mb-1">ElevenLabs Audio Studio</div>
+                <p class="text-[11px] text-stone-400 max-w-md mx-auto mb-3">Выберите нужный голос и параметры в правой колонке, введите текст и нажмите «Синтезировать».</p>
+                <button type="button" onclick="toggleMobileControlPanel(true)" class="md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold active:scale-95 transition">
+                  <span>⚙️</span> <span>Выбрать голос и параметры</span>
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Audio Studio: Screenshot 1 style: 0/10000, 🎚️, 🎙️, 0.4 ⚡) -->
+          <!-- Bottom Prompt Box (Audio Studio: ElevenLabs style) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1.5 text-stone-400">
-                  <span>🔒</span> <span class="truncate">Type text with tags like [laughing] for more expressive speech...</span>
+                  <span id="audio-input-lock-icon">🔒</span> <span id="audio-input-hint-text" class="truncate">Введите текст для озвучки (используйте теги [laughing], [whispering] для эмоций)...</span>
                 </span>
                 <span id="audio-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 10000</span>
               </div>
@@ -1486,7 +1485,7 @@
                 <button onclick="removeAttachedFile('audio')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
               </div>
 
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for natural expressive speech..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Введите текст для озвучки голосом ElevenLabs..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
 
               <!-- Hidden file input for paperclip -->
               <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
@@ -1505,10 +1504,10 @@
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span>0.4</span>
+                    <span id="audio-token-cost-val">1</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" onclick="sendGenerateTTS()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Синтезировать речь">
+                  <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Синтезировать речь">
                     ➤
                   </button>
                 </div>
@@ -1897,72 +1896,296 @@
           </div>
         </div>
 
-        <!-- PANEL SECTION 4: AUDIO CONTROLS (SCREENSHOT 4) -->
+        <!-- PANEL SECTION 4: AUDIO CONTROLS (ELEVENLABS WEB STUDIO) -->
         <div id="control-group-audio" class="hidden space-y-4">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between font-bold text-stone-200">
-              <span>Model selection</span> <span class="text-xs">▴</span>
+          <!-- Audio Studio Header & Branding -->
+          <div class="flex items-center justify-between font-bold text-stone-200">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-xs font-black tracking-tighter text-white">||</span>
+              <span class="text-xs uppercase tracking-wider text-emerald-400 font-extrabold">ElevenLabs Audio</span>
             </div>
-            <div class="bg-[#141b18] border border-white/15 rounded-xl p-3">
-              <div class="flex items-center gap-2.5 mb-2">
-                <span class="text-base font-black">||</span>
-                <span class="font-extrabold text-white text-xs">Elevenlabs</span>
-              </div>
-              <select id="audio-model-select" class="w-full bg-black/50 border border-white/10 rounded-lg p-1.5 text-xs text-stone-300">
-                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (29 Languages)</option>
-                <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Fast & Low Latency)</option>
-                <option value="eleven_flash_v2_5">Eleven Flash v2.5 (75ms Ultra-Speed)</option>
-                <option value="eleven_v4">Eleven v4 (Next-Gen Neural Emotion)</option>
-                <option value="eleven_sfx">Eleven Sound Effects v2</option>
-                <option value="eleven_clone">Eleven Instant Voice Cloning</option>
-                <option value="eleven_isolator">Eleven Voice Isolator</option>
-              </select>
+            <span class="text-[10px] text-stone-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full font-mono">v3.5 Neural</span>
+          </div>
+
+          <!-- Mode Switcher Tabs (4 Authentic ElevenLabs Modes) -->
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold text-stone-300">Режим студии</label>
+            <div class="grid grid-cols-2 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl text-xs font-semibold">
+              <button type="button" id="audio-tab-tts" onclick="setAudioMode('tts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-emerald-500/20 border border-emerald-500/40 shadow">
+                <span>🗣️</span> <span>Озвучка (TTS)</span>
+              </button>
+              <button type="button" id="audio-tab-clone" onclick="setAudioMode('clone')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
+                <span>🧬</span> <span>Клонирование</span>
+              </button>
+              <button type="button" id="audio-tab-sfx" onclick="setAudioMode('sfx')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
+                <span>🔊</span> <span>Звуки (SFX)</span>
+              </button>
+              <button type="button" id="audio-tab-isolate" onclick="setAudioMode('isolate')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
+                <span>🧹</span> <span>Изолятор речи</span>
+              </button>
             </div>
           </div>
 
-          <!-- Mode -->
-          <div class="space-y-1.5">
-            <label class="block text-xs font-bold text-stone-300">Mode</label>
-            <select class="w-full bg-[#141b18] border border-white/15 rounded-xl p-2.5 text-xs text-white">
-              <option value="tts" selected>Text to Speech</option>
-              <option value="sts">Speech to Speech</option>
-              <option value="clone">Voice Cloning</option>
-              <option value="sfx">Sound Effects</option>
-            </select>
-            <div class="text-[10px] text-stone-500 pt-1">In this mode, price depends on characters count</div>
+          <!-- ================= MODE 1: TEXT TO SPEECH (TTS) ================= -->
+          <div id="audio-mode-panel-tts" class="space-y-3.5">
+            <!-- Selected Voice Card (Clickable to open search picker) -->
+            <div class="space-y-1.5 relative">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-stone-200">Выбор голоса</label>
+                <span id="audio-voices-count-badge" class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">50+ Голосов</span>
+              </div>
+              
+              <!-- Voice trigger card -->
+              <div onclick="toggleVoicePickerDropdown()" class="cursor-pointer bg-[#141b18] hover:bg-[#18231f] border border-white/15 hover:border-emerald-500/50 rounded-2xl p-3 transition shadow group select-none">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div id="selected-voice-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center text-lg font-bold text-emerald-300 shadow shrink-0">
+                      🎙️
+                    </div>
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-1.5">
+                        <span id="selected-voice-name" class="font-bold text-white text-xs sm:text-sm group-hover:text-emerald-400 transition truncate">Rachel</span>
+                        <span id="selected-voice-cat-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold uppercase tracking-wider shrink-0">Official</span>
+                      </div>
+                      <div id="selected-voice-tags" class="text-[10px] text-stone-400 truncate mt-0.5">Studio Narrator • Expressive • EN/RU</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" id="btn-active-voice-preview" onclick="event.stopPropagation(); playActiveVoicePreview()" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Прослушать образец">
+                      ▶
+                    </button>
+                    <span id="voice-picker-caret" class="text-stone-400 text-xs transition-transform duration-200">▾</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Searchable Voice Picker Dropdown (Expandable) -->
+              <div id="voice-picker-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 z-50 bg-[#0d1210] border border-white/20 rounded-2xl p-3 shadow-2xl space-y-2 backdrop-blur-xl">
+                <!-- Search input -->
+                <div class="relative">
+                  <input type="text" id="voice-search-input" oninput="filterVoicesList(this.value)" placeholder="🔍 Поиск голоса, актера или персонажа..." class="w-full bg-black/60 border border-white/15 focus:border-emerald-400 rounded-xl pl-3 pr-8 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+                  <button type="button" onclick="clearVoiceSearch()" class="absolute right-2.5 top-2 text-stone-500 hover:text-white text-xs">✕</button>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px] font-semibold text-stone-400">
+                  <button type="button" onclick="filterVoiceCategory('all', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">Все</button>
+                  <button type="button" onclick="filterVoiceCategory('elevenlabs', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">ElevenLabs</button>
+                  <button type="button" onclick="filterVoiceCategory('streamers', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Стримеры</button>
+                  <button type="button" onclick="filterVoiceCategory('actors', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Актеры</button>
+                  <button type="button" onclick="filterVoiceCategory('characters', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Персонажи</button>
+                  <button type="button" onclick="filterVoiceCategory('cloned', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Мои клоны</button>
+                </div>
+
+                <!-- Scrollable Voices List -->
+                <div id="voice-items-container" class="max-h-64 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                  <!-- Dynamically rendered via JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-stone-200">Нейросетевая модель</label>
+              <div class="bg-[#141b18] border border-white/15 rounded-xl p-2.5">
+                <select id="audio-model-select" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
+                  <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (29 языков — Стандарт качества)</option>
+                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик)</option>
+                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Минимальная задержка 75мс)</option>
+                  <option value="eleven_v4">Eleven v4 Neural (Максимум эмоций и шепота)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Voice Settings Accordion (ElevenLabs Exact Sliders) -->
+            <div class="pt-2 border-t border-white/10">
+              <div class="flex items-center justify-between font-bold text-stone-300 cursor-pointer py-1.5 select-none" onclick="toggleControlSection('sec-audio-params')">
+                <span class="flex items-center gap-1.5 text-xs">
+                  <span>⚙️</span> <span>Параметры голоса (Voice Settings)</span>
+                </span>
+                <span id="caret-sec-audio-params" class="text-stone-400 text-xs">▾</span>
+              </div>
+
+              <div id="sec-audio-params" class="space-y-3 pt-2 text-[11px] text-stone-400">
+                <!-- Stability -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium text-stone-300">Стабильность (Stability):</span>
+                    <span id="val-audio-stability" class="text-emerald-400 font-bold font-mono">50%</span>
+                  </div>
+                  <input type="range" id="slider-audio-stability" min="0" max="100" value="50" oninput="document.getElementById('val-audio-stability').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
+                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
+                    <span>Живее / Переменчивее</span>
+                    <span>Стабильнее / Монотоннее</span>
+                  </div>
+                </div>
+
+                <!-- Similarity / Clarity -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium text-stone-300">Четкость и сходство (Clarity):</span>
+                    <span id="val-audio-similarity" class="text-emerald-400 font-bold font-mono">75%</span>
+                  </div>
+                  <input type="range" id="slider-audio-similarity" min="0" max="100" value="75" oninput="document.getElementById('val-audio-similarity').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
+                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
+                    <span>Низкое (0%)</span>
+                    <span>Максимум сходства (100%)</span>
+                  </div>
+                </div>
+
+                <!-- Style Exaggeration -->
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium text-stone-300">Экспрессия стиля (Style Exaggeration):</span>
+                    <span id="val-audio-style" class="text-emerald-400 font-bold font-mono">15%</span>
+                  </div>
+                  <input type="range" id="slider-audio-style" min="0" max="100" value="15" oninput="document.getElementById('val-audio-style').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
+                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
+                    <span>Без акцента (0%)</span>
+                    <span>Утрированный стиль (100%)</span>
+                  </div>
+                </div>
+
+                <!-- Speaker Boost -->
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5">
+                  <div class="text-[11px] text-stone-300 font-medium">
+                    <div>Speaker Boost</div>
+                    <div class="text-[9px] text-stone-500">Усиливает тембр оригинального диктора</div>
+                  </div>
+                  <input type="checkbox" id="toggle-speaker-boost" checked class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                </div>
+
+                <div class="text-right">
+                  <button type="button" onclick="resetAudioVoiceSettings()" class="text-[10px] text-stone-500 hover:text-emerald-400 underline transition">
+                    Сбросить к стандартным
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Generation Parameters -->
-          <div class="pt-3 border-t border-white/10">
-            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-audio-params')">
-              <span>⚙️ Generation parameters</span> <span class="text-stone-400">▾</span>
-            </div>
-            <div id="sec-audio-params" class="space-y-2.5 text-[11px] text-stone-400">
-              <div>
-                <div class="flex justify-between mb-1"><span>Stability:</span><span class="text-white font-bold">50%</span></div>
-                <input type="range" min="0" max="100" value="50" class="w-full accent-emerald-400">
+          <!-- ================= MODE 2: INSTANT VOICE CLONING ================= -->
+          <div id="audio-mode-panel-clone" class="hidden space-y-3.5">
+            <div class="bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/20 rounded-2xl p-3.5">
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="text-base">🧬</span>
+                <span class="font-bold text-white text-xs">Мгновенный клон голоса</span>
               </div>
-              <div>
-                <div class="flex justify-between mb-1"><span>Clarity + Similarity:</span><span class="text-white font-bold">75%</span></div>
-                <input type="range" min="0" max="100" value="75" class="w-full accent-emerald-400">
+              <p class="text-[11px] text-stone-400 leading-relaxed">
+                Загрузите образец чистого голоса без музыки (1-2 минуты), и ИИ обучится воспроизводить этот голос с любым текстом.
+              </p>
+            </div>
+
+            <!-- Clone Name -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-300">Имя голоса <span class="text-red-400">*</span></label>
+              <input type="text" id="clone-voice-name-input" placeholder="Например: Мой голос / Иван / Подкастер" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+            </div>
+
+            <!-- Clone Description / Labels -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-300">Описание и теги</label>
+              <input type="text" id="clone-voice-desc-input" placeholder="Например: Спокойный, глубокий, русский, подкаст" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+            </div>
+
+            <!-- File Upload Dropzone -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-300">Аудио образец <span class="text-red-400">*</span></label>
+              <div onclick="document.getElementById('clone-voice-file-input').click()" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-2xl p-4 text-center cursor-pointer bg-[#111614] hover:bg-[#141b18] transition group">
+                <input type="file" id="clone-voice-file-input" accept="audio/*" class="hidden" onchange="handleCloneFileSelected(this)">
+                <span class="text-2xl block mb-1">🎙️</span>
+                <div id="clone-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition">
+                  Нажмите для выбора файла
+                </div>
+                <p class="text-[10px] text-stone-500 mt-1">MP3, WAV, M4A до 15 МБ • Чистая речь без фоновой музыки</p>
               </div>
             </div>
+
+            <!-- Status & Action Button -->
+            <div id="clone-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
+
+            <button type="button" id="btn-submit-voice-clone" onclick="submitVoiceClone()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
+              <span>⚡</span> <span>Создать клон голоса (5 Credits)</span>
+            </button>
           </div>
 
-          <!-- Style Accordion -->
-          <div class="pt-3 border-t border-white/10">
-            <div class="flex items-center justify-between font-bold text-stone-300 mb-2 cursor-pointer" onclick="toggleControlSection('sec-audio-style')">
-              <span class="flex items-center gap-1">🎨 Style <span class="text-red-400">*</span></span> <span class="text-stone-400">▾</span>
+          <!-- ================= MODE 3: SOUND EFFECTS (SFX) ================= -->
+          <div id="audio-mode-panel-sfx" class="hidden space-y-3.5">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-base">🔊</span>
+                <span class="font-bold text-white text-xs">ElevenLabs Sound Effects</span>
+              </div>
+              <p class="text-[11px] text-stone-400">
+                Генерация реалистичных кинематографических звуковых эффектов, фонов и шумов по текстовому описанию.
+              </p>
             </div>
-            <div id="sec-audio-style" class="space-y-2 text-[11px]">
-              <select class="w-full bg-black/60 border border-white/15 rounded-xl p-2 text-xs text-stone-300">
-                <option value="natural" selected>Natural Expression</option>
-                <option value="dramatic">Dramatic Film Voice</option>
-                <option value="news">Broadcast News Anchor</option>
-                <option value="whisper">ASMR Whisper</option>
-              </select>
+
+            <!-- Duration Slider -->
+            <div class="space-y-1">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-stone-300">Длительность эффекта:</span>
+                <span id="val-sfx-duration" class="text-emerald-400 font-mono font-bold">4.0s</span>
+              </div>
+              <input type="range" id="slider-sfx-duration" min="1.0" max="11.0" step="0.5" value="4.0" oninput="document.getElementById('val-sfx-duration').textContent = parseFloat(this.value).toFixed(1) + 's'" class="w-full accent-emerald-400 cursor-pointer">
+              <div class="flex justify-between text-[9px] text-stone-500">
+                <span>1.0 сек</span>
+                <span>11.0 сек</span>
+              </div>
             </div>
+
+            <!-- Quick Preset Prompts -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-stone-300">Популярные идеи звуков:</label>
+              <div class="flex flex-wrap gap-1.5 text-[10px]">
+                <button type="button" onclick="insertSfxPrompt('Кинематографический мощный взрыв в космосе с басом')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">💥 Взрыв в космосе</button>
+                <button type="button" onclick="insertSfxPrompt('Ливень с раскатами грома за окном уютной комнаты')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">🌧️ Ливень с громом</button>
+                <button type="button" onclick="insertSfxPrompt('Футуристический лазерный выстрел бластера со звоном')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">⚡ Лазерный бластер</button>
+                <button type="button" onclick="insertSfxPrompt('Шаги человека в кожаных ботинках по мокрому гравию')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">👣 Шаги по гравию</button>
+                <button type="button" onclick="insertSfxPrompt('Волшебное заклинание с колокольчиками и сиянием')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">✨ Магический перезвон</button>
+              </div>
+            </div>
+
+            <button type="button" onclick="sendGenerateAudioAction()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
+              <span>🔊</span> <span>Сгенерировать SFX (1 Credit)</span>
+            </button>
           </div>
+
+          <!-- ================= MODE 4: VOICE ISOLATOR ================= -->
+          <div id="audio-mode-panel-isolate" class="hidden space-y-3.5">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-base">🧹</span>
+                <span class="font-bold text-white text-xs">Изолятор голоса (Denoise)</span>
+              </div>
+              <p class="text-[11px] text-stone-400">
+                Нейросеть удаляет фоновые шумы, гул, эхо и музыку, оставляя кристально чистый студийный голос.
+              </p>
+            </div>
+
+            <!-- File Upload Dropzone -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-300">Аудиозапись с шумом <span class="text-red-400">*</span></label>
+              <div onclick="document.getElementById('isolate-voice-file-input').click()" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-2xl p-4 text-center cursor-pointer bg-[#111614] hover:bg-[#141b18] transition group">
+                <input type="file" id="isolate-voice-file-input" accept="audio/*" class="hidden" onchange="handleIsolateFileSelected(this)">
+                <span class="text-2xl block mb-1">🎧</span>
+                <div id="isolate-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition">
+                  Выберите файл для очистки
+                </div>
+                <p class="text-[10px] text-stone-500 mt-1">MP3, WAV, M4A, OGG до 25 МБ</p>
+              </div>
+            </div>
+
+            <!-- Status msg -->
+            <div id="isolate-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
+
+            <button type="button" id="btn-submit-voice-isolate" onclick="submitVoiceIsolator()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
+              <span>✨</span> <span>Изолировать речь (2 Credits)</span>
+            </button>
+          </div>
+
+          <!-- Hidden Audio Preview Player (plays voice sample previews) -->
+          <audio id="audio-voice-preview-player" class="hidden" preload="none"></audio>
         </div>
 
         <!-- PANEL SECTION 5: TOOLKIT CONTROLS -->
@@ -3941,8 +4164,9 @@
         }
       });
 
-      // Load local history
+      // Load local history & initialize audio studio
       loadLocalHistory();
+      initAudioStudio();
     });
 
     // 2. Tab Switcher
@@ -4682,15 +4906,470 @@
       }
     }
 
-    // 10. Audio & TTS Interaction
-    async function sendGenerateTTS() {
-      const input = document.getElementById('audio-text-input');
-      const text = input.value.trim();
-      if (!text) return;
+    // =========================================================================
+    // 10. AUTHENTIC ELEVENLABS AUDIO STUDIO MODULE
+    // =========================================================================
 
-      const voice = document.getElementById('audio-voice-select').value;
-      const status = document.getElementById('audio-status-text');
-      status.textContent = 'Synthesizing with ElevenLabs HD Voice...';
+    let currentAudioMode = 'tts'; // 'tts' | 'clone' | 'sfx' | 'isolate'
+    let activeVoiceFilterCategory = 'all';
+    let currentPreviewAudioInstance = null;
+    let currentlyPlayingVoiceId = null;
+
+    // Comprehensive 50+ Voices Registry (Official ElevenLabs + Streamers + Actors + Characters)
+    let audioVoicesRegistry = [
+      // 1. Official ElevenLabs Voices
+      { id: "21m0aC4C9KstEPqMsrxW", name: "Rachel", tags: "Studio Narrator • Expressive • EN/RU", category: "elevenlabs", avatar: "🎙️", preview: "/api/voice/preview?voice_id=21m0aC4C9KstEPqMsrxW" },
+      { id: "AZnzlk1XvdvUeBnXmlld", name: "Domi", tags: "Strong, Energetic & Modern", category: "elevenlabs", avatar: "⚡", preview: "/api/voice/preview?voice_id=AZnzlk1XvdvUeBnXmlld" },
+      { id: "EXAVITQu4vr4xnSDxMaL", name: "Bella", tags: "Warm, Intimate & Natural", category: "elevenlabs", avatar: "🌸", preview: "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL" },
+      { id: "ErXwobaYiN019PkySvjV", name: "Antoni", tags: "Deep, Calm & Narrative", category: "elevenlabs", avatar: "🎩", preview: "/api/voice/preview?voice_id=ErXwobaYiN019PkySvjV" },
+      { id: "pNInz6obpgDQGcFmaJgB", name: "Adam", tags: "Deep, Authoritative, Narration", category: "elevenlabs", avatar: "🎙️", preview: "/api/voice/preview?voice_id=pNInz6obpgDQGcFmaJgB" },
+      { id: "TxGEqnHWrfWFTfGW9XjX", name: "Josh", tags: "Young, Deep, Dynamic", category: "elevenlabs", avatar: "🎧", preview: "/api/voice/preview?voice_id=TxGEqnHWrfWFTfGW9XjX" },
+      { id: "VR6AewLTigWG4xSOukaG", name: "Arnold", tags: "Crisp, Confident, Action", category: "elevenlabs", avatar: "🕶️", preview: "/api/voice/preview?voice_id=VR6AewLTigWG4xSOukaG" },
+      { id: "yoZ06aMxZJJ28mfd3POQ", name: "Sam", tags: "Dynamic, Raspy, American", category: "elevenlabs", avatar: "🎸", preview: "/api/voice/preview?voice_id=yoZ06aMxZJJ28mfd3POQ" },
+      { id: "piTKgcLEGmPE4e6mEKli", name: "Nicole", tags: "Whisper, Relaxed, Gentle", category: "elevenlabs", avatar: "🌙", preview: "/api/voice/preview?voice_id=piTKgcLEGmPE4e6mEKli" },
+
+      // 2. Streamers & Internet Culture
+      { id: "buster", name: "Бустер (Buster)", tags: "Энергичный, эмоциональный стример", category: "streamers", avatar: "🔥", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
+      { id: "papich", name: "Папич (Arthas)", tags: "Величайший, легенда Twitch", category: "streamers", avatar: "👑", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
+      { id: "mellstroy", name: "Меллстрой (Mellstroy)", tags: "Хайповый стример, азарт", category: "streamers", avatar: "💰", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
+      { id: "marmok", name: "Мармок", tags: "Геймер, ютубер, сарказм", category: "streamers", avatar: "🎮", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
+      { id: "a4", name: "Влад А4", tags: "Звонкий блогер, челленджи", category: "streamers", avatar: "⭐", preview: "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf" },
+      { id: "zubarev", name: "Зубарев", tags: "Стример, батя, душевный юмор", category: "streamers", avatar: "🧔", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
+
+      // 3. Actors (Актеры)
+      { id: "eWyzQbd2tSH4aR6f4tQ7", name: "Кристиан Бэйл", tags: "Тёмный рыцарь, Престиж", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=eWyzQbd2tSH4aR6f4tQ7" },
+      { id: "mfUkbStYnQQEhw8uLuyr", name: "Том Харди", tags: "Веном, Безумный Макс, Табу", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=mfUkbStYnQQEhw8uLuyr" },
+      { id: "lGxlo5MIWGAiFpBe1hrs", name: "Леонардо ДиКаприо", tags: "Волк с Уолл-стрит, Начало", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=lGxlo5MIWGAiFpBe1hrs" },
+      { id: "05Xq2u4jaYgJjuBqynxC", name: "Джонни Депп", tags: "Джек Воробей, Харизматичный", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=05Xq2u4jaYgJjuBqynxC" },
+      { id: "hL0XkpIo73wTRTQdlYvy", name: "Киану Ривз", tags: "Джон Уик, Матрица", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=hL0XkpIo73wTRTQdlYvy" },
+      { id: "gzRpwr9cIt7t3PoKVYS5", name: "Мэттью Макконахи", tags: "Интерстеллар, Настоящий детектив", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=gzRpwr9cIt7t3PoKVYS5" },
+      { id: "UwaJg3ryKYDcyPojxAlD", name: "Брэд Питт", tags: "Бойцовский клуб, Харизма", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=UwaJg3ryKYDcyPojxAlD" },
+      { id: "7l3TEipZ4jWJHbVDz02f", name: "Киллиан Мёрфи", tags: "Томас Шелби, Острые козырьки", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f" },
+      { id: "Zejs4Ed7Duhu4haarHZP", name: "Джейсон Стетхэм", tags: "Перевозчик, Брутальный баритон", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=Zejs4Ed7Duhu4haarHZP" },
+      { id: "YT5DjdqazFbkyMRpR9R7", name: "Райан Гослинг", tags: "Драйв, Бегущий по лезвию", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=YT5DjdqazFbkyMRpR9R7" },
+
+      // 4. Cinema & Characters (Персонажи и Кино)
+      { id: "f9ztG8fDUcDJNvl3idel", name: "Дарт Вейдер", tags: "Тёмная сторона Силы, Звёздные Войны", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=f9ztG8fDUcDJNvl3idel" },
+      { id: "MEkSZtVBQpcAez2lSoPH", name: "Терминатор (T-800)", tags: "Киборг-убийца, I'll be back", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=MEkSZtVBQpcAez2lSoPH" },
+      { id: "AbLYQoM9Rf8fDu4YfmzP", name: "Джокер (The Joker)", tags: "Безумный смех, Хаос", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=AbLYQoM9Rf8fDu4YfmzP" },
+      { id: "2pL2xny3pNZC3SydSjHL", name: "Вито Корлеоне", tags: "Крёстный отец, Мафия", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
+      { id: "bCYBazBDrKIXupR8A7ux", name: "Тайлер Дёрден", tags: "Первое правило Бойцовского клуба", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=bCYBazBDrKIXupR8A7ux" },
+      { id: "Y7BAH3crzPLulxKdQfh9", name: "Ганнибал Лектер", tags: "Молчание ягнят, Интеллект", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=Y7BAH3crzPLulxKdQfh9" },
+      { id: "28afC0vgntvFTbfv3IBa", name: "Голлум", tags: "Моя прелесть! Властелин Колец", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=28afC0vgntvFTbfv3IBa" },
+      { id: "2vPGsGYhgGZIEPCr7cmE", name: "Северус Снейп", tags: "Профессор зельеварения, Хогвартс", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=2vPGsGYhgGZIEPCr7cmE" },
+      { id: "wptdT6bCVJ3QtGOYNypC", name: "Джек Воробей", tags: "Капитан Джек Воробей, Пираты", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=wptdT6bCVJ3QtGOYNypC" },
+      { id: "75yZp6ulfvyEokK0CEzs", name: "Шрек (Добрый Огр)", tags: "Болото, Мультфильмы", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=75yZp6ulfvyEokK0CEzs" },
+      { id: "TNgAGIml2DVqWAlsUkUf", name: "Гомер Симпсон", tags: "D'oh! Спрингфилд", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf" },
+      { id: "VofB5YwEbFB4UZPIKXFc", name: "Губка Боб", tags: "Кто проживает на дне океана", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=VofB5YwEbFB4UZPIKXFc" },
+      { id: "wzZN4pJLaVTXA3GNfG0r", name: "Рик Санчез", tags: "Рик и Морти, Мультивселенная", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=wzZN4pJLaVTXA3GNfG0r" },
+      { id: "u27WdXOyonJpr0lrNcBp", name: "Эрик Картман", tags: "Южный Парк, Сарказм", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=u27WdXOyonJpr0lrNcBp" },
+
+      // 5. Gaming Legends (Игры)
+      { id: "YhIrTO8wTULguR9iqNTF", name: "Геральт из Ривии", tags: "Ведьмак, Белый Волк", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=YhIrTO8wTULguR9iqNTF" },
+      { id: "WNFgIM75teoc5W2xiSxG", name: "Кратос (God of War)", tags: "Бог Войны, Спартанец", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
+      { id: "v1AeN4m2oKIPfLxF2xJT", name: "Тревор Филипс (GTA V)", tags: "Психопат из Округа Блейн", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
+      { id: "ZQCBCbIV9PpcLppaVZj1", name: "Сиджей / CJ (GTA SA)", tags: "Grove Street, San Andreas", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
+      { id: "3KFZFY6hzpHJRJPQ8W5Y", name: "Ваас Монтенегро", tags: "Безумие, Far Cry 3", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
+      { id: "RutpQZVwiLoPSSrELyDA", name: "Мастер Чиф (Halo)", tags: "Spartan-117, Sci-Fi Легенда", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=RutpQZVwiLoPSSrELyDA" },
+      { id: "asnEOmpTq4TdoAB6jOdG", name: "Капитан Прайс", tags: "Bravo Six, Going Dark, CoD", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=asnEOmpTq4TdoAB6jOdG" },
+      { id: "6NsEhT1HiUXvbYM0boZL", name: "Артур Морган (RDR2)", tags: "Дикий Запад, Van der Linde", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=6NsEhT1HiUXvbYM0boZL" },
+      { id: "zk_zelensky", name: "Владимир Зеленский", tags: "Характерный хрипловатый тембр", category: "characters", avatar: "🇺🇦", preview: "/api/voice/preview?voice_id=zk_zelensky" },
+      { id: "zk_zuko", name: "Принц Зуко (ZykoLand)", tags: "Принц Нации Огня, Аватар", category: "characters", avatar: "🔥", preview: "/api/voice/preview?voice_id=zk_zuko" },
+      { id: "zk_aang", name: "Аватар Аанг", tags: "Последний маг воздуха", category: "characters", avatar: "💨", preview: "/api/voice/preview?voice_id=zk_aang" }
+    ];
+
+    let selectedAudioVoice = audioVoicesRegistry[0]; // Default Rachel
+
+    // Initialize Audio Studio on Startup
+    function initAudioStudio() {
+      // 1. Load custom user cloned voices
+      try {
+        const savedClones = localStorage.getItem('zyko_cloned_voices');
+        if (savedClones) {
+          const clones = JSON.parse(savedClones);
+          if (Array.isArray(clones)) {
+            clones.forEach(c => {
+              if (!audioVoicesRegistry.some(v => v.id === c.id)) {
+                audioVoicesRegistry.unshift(c);
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
+      // 2. Fetch voices from server characters_registry
+      fetch('/api/voices')
+        .then(r => r.json())
+        .then(data => {
+          if (data && Array.isArray(data.voices)) {
+            data.voices.forEach(sv => {
+              if (!audioVoicesRegistry.some(v => v.id === sv.id)) {
+                audioVoicesRegistry.push({
+                  id: sv.id,
+                  name: sv.name,
+                  tags: sv.desc || 'Персонаж Zyko Studio',
+                  category: sv.category === 'actors' ? 'actors' : (sv.sub_category === 'cartoons' || sv.sub_category === 'games' ? 'characters' : 'characters'),
+                  avatar: sv.gender === 'female' ? '🌸' : '🎙️',
+                  preview: sv.preview || `/api/voice/preview?voice_id=${sv.id}`
+                });
+              }
+            });
+            renderVoicePicker();
+          }
+        })
+        .catch(() => {});
+
+      // 3. Render initial Voice Card and Picker
+      updateSelectedVoiceUI();
+      renderVoicePicker();
+    }
+
+    // Switch between the 4 ElevenLabs Studio Modes
+    function setAudioMode(mode) {
+      currentAudioMode = mode;
+      const modes = ['tts', 'clone', 'sfx', 'isolate'];
+      
+      modes.forEach(m => {
+        const tabBtn = document.getElementById(`audio-tab-${m}`);
+        const panel = document.getElementById(`audio-mode-panel-${m}`);
+        
+        if (m === mode) {
+          if (tabBtn) {
+            tabBtn.className = 'py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-emerald-500/20 border border-emerald-500/40 shadow';
+          }
+          if (panel) panel.classList.remove('hidden');
+        } else {
+          if (tabBtn) {
+            tabBtn.className = 'py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5';
+          }
+          if (panel) panel.classList.add('hidden');
+        }
+      });
+
+      // Synchronize bottom prompt bar based on mode
+      const input = document.getElementById('audio-text-input');
+      const hint = document.getElementById('audio-input-hint-text');
+      const costBadge = document.getElementById('audio-token-cost-val');
+      const sendBtn = document.getElementById('btn-audio-send');
+      const tagsHelp = document.getElementById('audio-tags-help');
+
+      if (mode === 'tts') {
+        if (input) input.placeholder = 'Введите текст для озвучки голосом ElevenLabs (теги [laughing], [whispering])...';
+        if (hint) hint.textContent = 'Озвучка текста с реалистичными эмоциями...';
+        if (costBadge) costBadge.textContent = '1';
+        if (sendBtn) { sendBtn.title = 'Синтезировать речь'; sendBtn.innerHTML = '➤'; }
+        if (tagsHelp) tagsHelp.classList.remove('hidden');
+      } else if (mode === 'clone') {
+        if (input) input.placeholder = 'Заполните имя и прикрепите образец аудио в правой панели для мгновенного клонирования...';
+        if (hint) hint.textContent = 'Клонирование голоса из аудиозаписи (30с - 2 мин)...';
+        if (costBadge) costBadge.textContent = '5';
+        if (sendBtn) { sendBtn.title = 'Клонировать голос'; sendBtn.innerHTML = '⚡'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'sfx') {
+        if (input) input.placeholder = 'Опишите звуковой эффект (например: мощный взрыв в космосе, лазер, ливень с громом)...';
+        if (hint) hint.textContent = 'Генерация звуковых эффектов кинематографического качества...';
+        if (costBadge) costBadge.textContent = '1';
+        if (sendBtn) { sendBtn.title = 'Сгенерировать SFX'; sendBtn.innerHTML = '🔊'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'isolate') {
+        if (input) input.placeholder = 'Загрузите аудио с шумом в правой панели или со скрепки 📎 для кристальной очистки...';
+        if (hint) hint.textContent = 'Удаление шума и выделение чистого вокала...';
+        if (costBadge) costBadge.textContent = '2';
+        if (sendBtn) { sendBtn.title = 'Изолировать голос'; sendBtn.innerHTML = '✨'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      }
+    }
+
+    // Toggle Voice Picker Dropdown Modal
+    function toggleVoicePickerDropdown(forceState) {
+      const dd = document.getElementById('voice-picker-dropdown');
+      const caret = document.getElementById('voice-picker-caret');
+      if (!dd) return;
+
+      const shouldOpen = (forceState !== undefined) ? forceState : dd.classList.contains('hidden');
+      if (shouldOpen) {
+        dd.classList.remove('hidden');
+        if (caret) caret.style.transform = 'rotate(180deg)';
+        const searchInp = document.getElementById('voice-search-input');
+        if (searchInp) searchInp.focus();
+        renderVoicePicker();
+      } else {
+        dd.classList.add('hidden');
+        if (caret) caret.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Filter Voice Categories
+    function filterVoiceCategory(category, btn) {
+      activeVoiceFilterCategory = category;
+      document.querySelectorAll('.voice-cat-btn').forEach(b => {
+        b.className = 'voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0';
+      });
+      if (btn) {
+        btn.className = 'voice-cat-btn px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0 font-bold';
+      }
+      renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+    }
+
+    function filterVoicesList(query) {
+      renderVoicePicker(query);
+    }
+
+    function clearVoiceSearch() {
+      const inp = document.getElementById('voice-search-input');
+      if (inp) inp.value = '';
+      renderVoicePicker('');
+    }
+
+    // Render Voices List into Dropdown
+    function renderVoicePicker(query = '') {
+      const container = document.getElementById('voice-items-container');
+      if (!container) return;
+
+      const q = query.trim().toLowerCase();
+      const filtered = audioVoicesRegistry.filter(v => {
+        const matchesCategory = (activeVoiceFilterCategory === 'all') || (v.category === activeVoiceFilterCategory);
+        const matchesQuery = !q || (v.name && v.name.toLowerCase().includes(q)) || (v.tags && v.tags.toLowerCase().includes(q));
+        return matchesCategory && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 text-center text-xs text-stone-500">
+            Голоса не найдены по запросу "${escapeHtml(query)}"
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(v => {
+        const isSelected = v.id === selectedAudioVoice.id;
+        const isPlaying = currentlyPlayingVoiceId === v.id;
+        return `
+          <div onclick="selectAudioVoice('${v.id}')" class="flex items-center justify-between p-2 rounded-xl cursor-pointer transition ${isSelected ? 'bg-emerald-500/15 border border-emerald-500/40 text-white' : 'hover:bg-white/5 border border-transparent text-stone-300'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm shrink-0">
+                ${v.avatar || '🎙️'}
+              </span>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-xs truncate ${isSelected ? 'text-emerald-400' : 'text-stone-200'}">${escapeHtml(v.name)}</span>
+                  ${isSelected ? '<span class="text-emerald-400 text-xs">✓</span>' : ''}
+                </div>
+                <div class="text-[10px] text-stone-400 truncate">${escapeHtml(v.tags || '')}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 ml-2">
+              <button type="button" onclick="event.stopPropagation(); playVoicePreview('${v.id}', '${v.preview}', this)" class="w-6 h-6 rounded-md bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-[10px] transition" title="Прослушать пример">
+                ${isPlaying ? '⏸' : '▶'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Select Voice
+    function selectAudioVoice(voiceId) {
+      const v = audioVoicesRegistry.find(item => item.id === voiceId);
+      if (!v) return;
+      selectedAudioVoice = v;
+      updateSelectedVoiceUI();
+      toggleVoicePickerDropdown(false);
+      
+      // Stop sample preview if playing
+      stopActivePreview();
+    }
+
+    function updateSelectedVoiceUI() {
+      const nameEl = document.getElementById('selected-voice-name');
+      const tagsEl = document.getElementById('selected-voice-tags');
+      const avatarEl = document.getElementById('selected-voice-avatar');
+      const catEl = document.getElementById('selected-voice-cat-badge');
+
+      if (nameEl) nameEl.textContent = selectedAudioVoice.name;
+      if (tagsEl) tagsEl.textContent = selectedAudioVoice.tags;
+      if (avatarEl) avatarEl.textContent = selectedAudioVoice.avatar || '🎙️';
+      if (catEl) {
+        catEl.textContent = selectedAudioVoice.category === 'elevenlabs' ? 'Official' : (selectedAudioVoice.category === 'streamers' ? 'Streamer' : 'Character');
+      }
+    }
+
+    // Voice Previews Player
+    function playActiveVoicePreview() {
+      if (!selectedAudioVoice) return;
+      const btn = document.getElementById('btn-active-voice-preview');
+      playVoicePreview(selectedAudioVoice.id, selectedAudioVoice.preview, btn);
+    }
+
+    function playVoicePreview(voiceId, previewUrl, btnEl) {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (!player) return;
+
+      if (currentlyPlayingVoiceId === voiceId && !player.paused) {
+        player.pause();
+        currentlyPlayingVoiceId = null;
+        if (btnEl) btnEl.innerHTML = '▶';
+        renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+        return;
+      }
+
+      currentlyPlayingVoiceId = voiceId;
+      player.src = previewUrl || `/api/voice/preview?voice_id=${voiceId}`;
+      player.play().catch(e => {
+        console.warn('Preview playback error:', e);
+      });
+
+      player.onended = () => {
+        currentlyPlayingVoiceId = null;
+        if (btnEl) btnEl.innerHTML = '▶';
+        renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+      };
+
+      if (btnEl) btnEl.innerHTML = '⏸';
+      renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+    }
+
+    function stopActivePreview() {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player && !player.paused) {
+        player.pause();
+      }
+      currentlyPlayingVoiceId = null;
+      const activeBtn = document.getElementById('btn-active-voice-preview');
+      if (activeBtn) activeBtn.innerHTML = '▶';
+    }
+
+    // Reset Voice Settings Sliders to ElevenLabs Defaults
+    function resetAudioVoiceSettings() {
+      const stab = document.getElementById('slider-audio-stability');
+      const sim = document.getElementById('slider-audio-similarity');
+      const style = document.getElementById('slider-audio-style');
+      const boost = document.getElementById('toggle-speaker-boost');
+
+      if (stab) { stab.value = 50; document.getElementById('val-audio-stability').textContent = '50%'; }
+      if (sim) { sim.value = 75; document.getElementById('val-audio-similarity').textContent = '75%'; }
+      if (style) { style.value = 15; document.getElementById('val-audio-style').textContent = '15%'; }
+      if (boost) boost.checked = true;
+    }
+
+    // Insert emotion tag like [laughing] into prompt textarea
+    function insertAudioTag(tag) {
+      const input = document.getElementById('audio-text-input');
+      if (!input) return;
+      
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const text = input.value;
+      input.value = text.substring(0, start) + ' ' + tag + ' ' + text.substring(end);
+      input.focus();
+      input.selectionStart = input.selectionEnd = start + tag.length + 2;
+      document.getElementById('audio-char-count').textContent = input.value.length + ' / 10000';
+    }
+
+    // Insert sound effect prompt preset
+    function insertSfxPrompt(promptText) {
+      setAudioMode('sfx');
+      const input = document.getElementById('audio-text-input');
+      if (input) {
+        input.value = promptText;
+        input.focus();
+        document.getElementById('audio-char-count').textContent = promptText.length + ' / 10000';
+      }
+    }
+
+    // File selection callbacks for Clone and Isolate
+    function handleCloneFileSelected(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const status = document.getElementById('clone-file-status-text');
+        if (status) {
+          status.innerHTML = `<span class="text-emerald-400">✓ ${escapeHtml(file.name)}</span> <span class="text-[10px] text-stone-400">(${(file.size / (1024*1024)).toFixed(2)} MB)</span>`;
+        }
+      }
+    }
+
+    function handleIsolateFileSelected(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const status = document.getElementById('isolate-file-status-text');
+        if (status) {
+          status.innerHTML = `<span class="text-emerald-400">✓ ${escapeHtml(file.name)}</span> <span class="text-[10px] text-stone-400">(${(file.size / (1024*1024)).toFixed(2)} MB)</span>`;
+        }
+      }
+    }
+
+    // Main Audio Action Router (called from ➤ button)
+    async function sendGenerateAudioAction() {
+      if (currentAudioMode === 'tts') {
+        await executeGenerateTTS();
+      } else if (currentAudioMode === 'sfx') {
+        await executeGenerateSFX();
+      } else if (currentAudioMode === 'clone') {
+        await submitVoiceClone();
+      } else if (currentAudioMode === 'isolate') {
+        await submitVoiceIsolator();
+      }
+    }
+
+    // Backwards-compatibility alias
+    async function sendGenerateTTS() {
+      return sendGenerateAudioAction();
+    }
+
+    // 1. Text-to-Speech Generation (TTS)
+    async function executeGenerateTTS() {
+      const input = document.getElementById('audio-text-input');
+      const text = input ? input.value.trim() : '';
+      if (!text) {
+        alert('Пожалуйста, введите текст для озвучки.');
+        if (input) input.focus();
+        return;
+      }
+
+      const voiceId = selectedAudioVoice ? selectedAudioVoice.id : '21m0aC4C9KstEPqMsrxW';
+      const voiceName = selectedAudioVoice ? selectedAudioVoice.name : 'Rachel';
+      const modelId = document.getElementById('audio-model-select')?.value || 'eleven_multilingual_v2';
+
+      // Read fine-tuned Voice Settings
+      const stability = parseFloat(document.getElementById('slider-audio-stability')?.value || 50) / 100;
+      const similarity = parseFloat(document.getElementById('slider-audio-similarity')?.value || 75) / 100;
+      const style = parseFloat(document.getElementById('slider-audio-style')?.value || 15) / 100;
+      const speakerBoost = document.getElementById('toggle-speaker-boost')?.checked !== false;
+
+      // Gallery & Loading state
+      const gallery = document.getElementById('audio-generation-gallery');
+      const emptyState = document.getElementById('audio-empty-placeholder');
+      if (emptyState) emptyState.remove();
+
+      const loadId = 'audio-load-' + Date.now();
+      const loadCard = document.createElement('div');
+      loadCard.id = loadId;
+      loadCard.className = 'border border-emerald-500/30 bg-[#121615] rounded-2xl p-4 shadow-xl text-left animate-pulse';
+      loadCard.innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm font-bold">🎙️</span>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>${escapeHtml(voiceName)}</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono font-bold">ElevenLabs TTS</span>
+              </div>
+              <div class="text-[10px] text-stone-400">Генерация нейросетевого аудио высокого разрешения...</div>
+            </div>
+          </div>
+          <span class="text-xs text-emerald-400 font-bold">1 ⚡</span>
+        </div>
+        <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
+          "${escapeHtml(text.length > 120 ? text.slice(0, 120) + '...' : text)}"
+        </div>
+        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full animate-indeterminate"></div>
+        </div>
+      `;
+      if (gallery) gallery.prepend(loadCard);
+
+      const btn = document.getElementById('btn-audio-send');
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳'; }
 
       try {
         const token = localStorage.getItem('zyko_token');
@@ -4700,24 +5379,350 @@
         const resp = await fetch('/api/generate/tts', {
           method: 'POST',
           headers,
-          body: JSON.stringify({ text: text, voice_id: voice })
+          body: JSON.stringify({
+            text,
+            voice_id: voiceId,
+            model_id: modelId,
+            voice_settings: {
+              stability,
+              similarity_boost: similarity,
+              style,
+              use_speaker_boost: speakerBoost
+            }
+          })
         });
 
-        if (resp.ok) {
-          const blob = await resp.blob();
-          const audioUrl = URL.createObjectURL(blob);
-          const player = document.getElementById('audio-player-preview');
-          player.src = audioUrl;
-          player.play();
-          status.textContent = 'Speech generated successfully!';
-          deductTokensUI(1);
-          saveToHistory('projects', `Audio: ${text.slice(0, 20)}`, audioUrl);
-        } else {
-          status.textContent = 'Synthesis error. Check tokens.';
+        if (!resp.ok) {
+          const errData = await resp.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        }
+
+        const blob = await resp.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        document.getElementById(loadId)?.remove();
+
+        renderAudioGenerationCard({
+          type: 'TTS',
+          voiceName,
+          avatar: selectedAudioVoice.avatar || '🎙️',
+          model: modelId,
+          text,
+          audioUrl,
+          cost: 1
+        });
+
+        deductTokensUI(1);
+        saveToHistory('projects', `Audio (${voiceName}): ${text.slice(0, 30)}`, audioUrl);
+      } catch (e) {
+        document.getElementById(loadId)?.remove();
+        alert('Ошибка синтеза аудио: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '➤'; }
+      }
+    }
+
+    // 2. Sound Effects Generation (SFX)
+    async function submitSFXFromPanel() {
+      setAudioMode('sfx');
+      await executeGenerateSFX();
+    }
+
+    async function executeGenerateSFX() {
+      const input = document.getElementById('audio-text-input');
+      const prompt = input ? input.value.trim() : '';
+      if (!prompt) {
+        alert('Пожалуйста, введите описание звукового эффекта.');
+        if (input) input.focus();
+        return;
+      }
+
+      const duration = parseFloat(document.getElementById('slider-sfx-duration')?.value || 4.0);
+
+      const gallery = document.getElementById('audio-generation-gallery');
+      const emptyState = document.getElementById('audio-empty-placeholder');
+      if (emptyState) emptyState.remove();
+
+      const loadId = 'sfx-load-' + Date.now();
+      const loadCard = document.createElement('div');
+      loadCard.id = loadId;
+      loadCard.className = 'border border-emerald-500/30 bg-[#121615] rounded-2xl p-4 shadow-xl text-left animate-pulse';
+      loadCard.innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm font-bold">🔊</span>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>Eleven Sound Effects</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono font-bold">${duration.toFixed(1)}s</span>
+              </div>
+              <div class="text-[10px] text-stone-400">Генерация звукового эффекта нейросетью...</div>
+            </div>
+          </div>
+          <span class="text-xs text-emerald-400 font-bold">1 ⚡</span>
+        </div>
+        <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
+          "${escapeHtml(prompt)}"
+        </div>
+      `;
+      if (gallery) gallery.prepend(loadCard);
+
+      const btn = document.getElementById('btn-audio-send');
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳'; }
+
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/generate/sfx', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ prompt, duration })
+        });
+
+        if (!resp.ok) {
+          const errData = await resp.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        }
+
+        const blob = await resp.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        document.getElementById(loadId)?.remove();
+
+        renderAudioGenerationCard({
+          type: 'SFX',
+          voiceName: 'Sound Effects v2',
+          avatar: '🔊',
+          model: `Duration: ${duration.toFixed(1)}s`,
+          text: prompt,
+          audioUrl,
+          cost: 1
+        });
+
+        deductTokensUI(1);
+        saveToHistory('projects', `SFX: ${prompt.slice(0, 30)}`, audioUrl);
+      } catch (e) {
+        document.getElementById(loadId)?.remove();
+        alert('Ошибка генерации SFX: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '➤'; }
+      }
+    }
+
+    // 3. Instant Voice Cloning
+    async function submitVoiceClone() {
+      const nameInput = document.getElementById('clone-voice-name-input');
+      const descInput = document.getElementById('clone-voice-desc-input');
+      const fileInput = document.getElementById('clone-voice-file-input');
+      const statusMsg = document.getElementById('clone-status-msg');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      if (!name) {
+        alert('Введите имя создаваемого клона голоса.');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+
+      if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+        alert('Пожалуйста, выберите аудиозапись с образцом голоса (MP3 или WAV).');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const desc = descInput ? descInput.value.trim() : '';
+
+      const btn = document.getElementById('btn-submit-voice-clone');
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Обучение клона (до 45с)...'; }
+      if (statusMsg) {
+        statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 block';
+        statusMsg.textContent = 'Обучение нейросети ElevenLabs на вашем аудио образце...';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', desc);
+        formData.append('file', file);
+
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/generate/clone', {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+
+        if (!resp.ok) {
+          const errData = await resp.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        }
+
+        const res = await resp.json();
+        const newVoiceId = res.voice?.voice_id || ('cloned_' + Date.now());
+        
+        const newVoiceObj = {
+          id: newVoiceId,
+          name: name + ' (Клон)',
+          tags: desc || 'Пользовательский клон голоса',
+          category: 'cloned',
+          avatar: '🧬',
+          preview: URL.createObjectURL(file)
+        };
+
+        // Save into local registry
+        audioVoicesRegistry.unshift(newVoiceObj);
+        selectedAudioVoice = newVoiceObj;
+        updateSelectedVoiceUI();
+        renderVoicePicker();
+
+        // Save into localStorage
+        try {
+          const savedClones = JSON.parse(localStorage.getItem('zyko_cloned_voices') || '[]');
+          savedClones.unshift(newVoiceObj);
+          localStorage.setItem('zyko_cloned_voices', JSON.stringify(savedClones));
+        } catch (e) {}
+
+        deductTokensUI(5);
+        if (statusMsg) {
+          statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
+          statusMsg.textContent = `✅ Голос "${name}" успешно клонирован и выбран для озвучки!`;
+        }
+
+        // Switch to TTS mode so user can test the cloned voice right away
+        setTimeout(() => {
+          setAudioMode('tts');
+        }, 1200);
+
+      } catch (e) {
+        if (statusMsg) {
+          statusMsg.className = 'text-xs p-2.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 block';
+          statusMsg.textContent = 'Ошибка клонирования: ' + e.message;
+        }
+        alert('Ошибка клонирования голоса: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>⚡</span> <span>Создать клон голоса (5 Credits)</span>'; }
+      }
+    }
+
+    // 4. Voice Isolation (Noise removal & speech denoise)
+    async function submitVoiceIsolator() {
+      const fileInput = document.getElementById('isolate-voice-file-input') || document.getElementById('audio-file-input');
+      const statusMsg = document.getElementById('isolate-status-msg');
+
+      if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+        alert('Пожалуйста, прикрепите аудиозапись для изоляции и очистки речи.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const btn = document.getElementById('btn-submit-voice-isolate');
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Очистка аудио...'; }
+      if (statusMsg) {
+        statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 block';
+        statusMsg.textContent = 'Удаление посторонних шумов и изоляция речи...';
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('audio', file);
+
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/generate/isolate', {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+
+        if (!resp.ok) {
+          const errData = await resp.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        }
+
+        const blob = await resp.blob();
+        const audioUrl = URL.createObjectURL(blob);
+
+        const gallery = document.getElementById('audio-generation-gallery');
+        const emptyState = document.getElementById('audio-empty-placeholder');
+        if (emptyState) emptyState.remove();
+
+        renderAudioGenerationCard({
+          type: 'ISOLATOR',
+          voiceName: 'Clean Isolated Speech',
+          avatar: '🧹',
+          model: file.name,
+          text: `Изолированный чистый голос без шумов из файла "${file.name}"`,
+          audioUrl,
+          cost: 2
+        });
+
+        deductTokensUI(2);
+        if (statusMsg) {
+          statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
+          statusMsg.textContent = '✅ Запись успешно очищена от шумов!';
         }
       } catch (e) {
-        status.textContent = 'Audio error: ' + e.message;
+        if (statusMsg) {
+          statusMsg.className = 'text-xs p-2.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 block';
+          statusMsg.textContent = 'Ошибка изоляции: ' + e.message;
+        }
+        alert('Ошибка изоляции голоса: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>✨</span> <span>Изолировать речь (2 Credits)</span>'; }
       }
+    }
+
+    // Render Polished Audio Generation Result Card in Center Canvas
+    function renderAudioGenerationCard({ type, voiceName, avatar, model, text, audioUrl, cost }) {
+      const gallery = document.getElementById('audio-generation-gallery');
+      if (!gallery) return;
+
+      const cardId = 'audio-card-' + Date.now();
+      const card = document.createElement('div');
+      card.id = cardId;
+      card.className = 'border border-white/10 hover:border-emerald-500/40 bg-[#121615] rounded-2xl p-4 shadow-xl text-left transition space-y-3';
+      
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      card.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm font-bold shrink-0">
+              ${avatar || '🎙️'}
+            </span>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-xs text-white truncate">${escapeHtml(voiceName)}</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold uppercase tracking-wider shrink-0">${type}</span>
+              </div>
+              <div class="text-[10px] text-stone-400 font-mono truncate">${escapeHtml(model)} • ${timeStr}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <a href="${audioUrl}" download="${type.toLowerCase()}_${Date.now()}.mp3" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Скачать MP3">
+              📥
+            </a>
+            <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); alert('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Копировать текст">
+              📋
+            </button>
+          </div>
+        </div>
+
+        <div class="text-xs text-stone-300 bg-black/40 p-3 rounded-xl border border-white/5 leading-relaxed font-sans select-text">
+          "${escapeHtml(text)}"
+        </div>
+
+        <!-- Audio Player -->
+        <div class="bg-black/60 border border-white/10 rounded-xl p-2.5 flex items-center gap-3">
+          <audio controls autoplay class="w-full h-8 accent-emerald-500" src="${audioUrl}"></audio>
+        </div>
+      `;
+
+      gallery.prepend(card);
     }
 
     // 11. History Storage (Chats & Projects)

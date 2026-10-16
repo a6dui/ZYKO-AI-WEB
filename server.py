@@ -626,6 +626,7 @@ from elevenlabs_service import (
     text_to_speech,
     generate_sfx,
     clone_voice,
+    isolate_audio,
     get_all_character_voices,
     generate_ai_image,
     generate_ai_video,
@@ -684,7 +685,8 @@ async def handle_generate_tts(request: web.Request):
         if user and not await deduct_tokens(user["id"], 1):
             return web.json_response({"error": "Insufficient tokens (requires 1 Credit)"}, status=400)
             
-        audio_bytes = await text_to_speech(text, voice_id, model_id)
+        voice_settings = data.get("voice_settings")
+        audio_bytes = await text_to_speech(text, voice_id, model_id, voice_settings)
         if user:
             await log_generation(user["id"], "elevenlabs_tts", text[:100], "tts_audio", 1)
             
@@ -749,6 +751,49 @@ async def handle_generate_clone(request: web.Request):
 
 async def handle_get_voices(request: web.Request):
     return web.json_response({"voices": get_all_character_voices()})
+
+async def handle_api_voice_preview(request: web.Request):
+    voice_id = request.query.get("voice_id", "").strip()
+    if not voice_id:
+        return web.Response(text="Missing voice_id", status=400)
+    
+    public_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
+    preview_file = os.path.join(public_dir, "media", "previews", f"{voice_id}.mp3")
+    if os.path.exists(preview_file) and os.path.getsize(preview_file) > 100:
+        return web.FileResponse(preview_file, headers={"Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=86400"})
+        
+    mock_file = os.path.join(public_dir, "media", "mock_preview.mp3")
+    if os.path.exists(mock_file):
+        return web.FileResponse(mock_file, headers={"Content-Type": "audio/mpeg", "Cache-Control": "public, max-age=86400"})
+        
+    return web.Response(text="Preview not available", status=404)
+
+async def handle_generate_isolate(request: web.Request):
+    try:
+        reader = await request.multipart()
+        audio_bytes = b""
+        while True:
+            part = await reader.next()
+            if part is None:
+                break
+            if part.name in ("audio", "file"):
+                audio_bytes = await part.read()
+                
+        if not audio_bytes:
+            return web.json_response({"error": "Audio file required for isolation"}, status=400)
+            
+        user = await get_current_user(request)
+        if user and not await deduct_tokens(user["id"], 2):
+            return web.json_response({"error": "Insufficient tokens (requires 2 Credits)"}, status=400)
+            
+        clean_bytes = await isolate_audio(audio_bytes)
+        if user:
+            await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", "isolated_audio", 2)
+            
+        return web.Response(body=clean_bytes, content_type="audio/mpeg")
+    except Exception as e:
+        logger.error("Audio isolation error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
 
 async def handle_generate_image(request: web.Request):
     try:
@@ -961,7 +1006,9 @@ def create_app():
     app.router.add_post("/api/generate/tts", handle_generate_tts)
     app.router.add_post("/api/generate/sfx", handle_generate_sfx)
     app.router.add_post("/api/generate/clone", handle_generate_clone)
+    app.router.add_post("/api/generate/isolate", handle_generate_isolate)
     app.router.add_get("/api/voices", handle_get_voices)
+    app.router.add_get("/api/voice/preview", handle_api_voice_preview)
     app.router.add_post("/api/generate/image", handle_generate_image)
     app.router.add_post("/api/generate/video", handle_generate_video)
     app.router.add_post("/api/generate/music", handle_generate_music)
