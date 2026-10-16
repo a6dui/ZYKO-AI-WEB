@@ -29,7 +29,7 @@ PLATEGA_SECRET = os.environ.get("PLATEGA_SECRET", "R7B5u14XqMD4W44MFPt38cOXThmOw
 PLATEGA_BASE_URL = os.environ.get("PLATEGA_BASE_URL", "https://app.platega.io").rstrip("/")
 
 # CryptoPay Configuration
-CRYPTO_PAY_TOKEN = os.environ.get("CRYPTO_PAY_TOKEN") or base64.b64decode(_DEF_C).decode()
+CRYPTO_PAY_TOKEN = (os.environ.get("CRYPTO_PAY_TOKEN") or "651855:AApvysXCJyVakZDh68rhEJTdPQFXCMBaHEa").strip()
 
 # Plans Definitions (pricing & token bonuses matching Syntx.ai)
 PLANS = {
@@ -291,10 +291,16 @@ async def create_cryptopay_payment(user_id: int, plan_name: str, cycle: str) -> 
             "mock": True
         }
 
+    headers = {
+        "Content-Type": "application/json",
+        "Crypto-Pay-API-Token": CRYPTO_PAY_TOKEN,
+        "User-Agent": "Mozilla/5.0 (compatible; ZYKO-AI/2.0; +https://zyko.zeabur.app)"
+    }
     try:
         url = "https://pay.crypt.bot/api/createInvoice"
         data = {
-            "asset": "USDT",
+            "currency_type": "fiat",
+            "fiat": "USD",
             "amount": str(amount_usd),
             "description": f"ZYKO.AI Subscription: {plan_name}",
             "payload": json.dumps({"user_id": user_id, "order_id": order_id, "plan": plan_name})
@@ -302,12 +308,12 @@ async def create_cryptopay_payment(user_id: int, plan_name: str, cycle: str) -> 
         req = urllib.request.Request(
             url,
             data=json.dumps(data).encode(),
-            headers={"Content-Type": "application/json", "Crypto-Pay-API-Token": CRYPTO_PAY_TOKEN}
+            headers=headers
         )
         with urllib.request.urlopen(req, timeout=10) as resp:
             res = json.loads(resp.read().decode())
             if res.get("ok"):
-                inv_url = res["result"]["bot_invoice_url"]
+                inv_url = res["result"].get("bot_invoice_url") or res["result"].get("pay_url") or res["result"].get("mini_app_invoice_url")
                 return {
                     "url": inv_url,
                     "bot_invoice_url": inv_url,
@@ -316,7 +322,32 @@ async def create_cryptopay_payment(user_id: int, plan_name: str, cycle: str) -> 
                     "order_id": order_id
                 }
     except Exception as e:
-        logger.error("CryptoPay invoice error: %s", e)
+        logger.error("CryptoPay invoice error (fiat USD): %s", e)
+        try:
+            data = {
+                "asset": "USDT",
+                "amount": str(amount_usd),
+                "description": f"ZYKO.AI Subscription: {plan_name}",
+                "payload": json.dumps({"user_id": user_id, "order_id": order_id, "plan": plan_name})
+            }
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(data).encode(),
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                res = json.loads(resp.read().decode())
+                if res.get("ok"):
+                    inv_url = res["result"].get("bot_invoice_url") or res["result"].get("pay_url")
+                    return {
+                        "url": inv_url,
+                        "bot_invoice_url": inv_url,
+                        "payment_url": inv_url,
+                        "checkout_url": inv_url,
+                        "order_id": order_id
+                    }
+        except Exception as e2:
+            logger.error("CryptoPay invoice error (USDT fallback): %s", e2)
     
     fallback_url = f"https://t.me/{bot_user}?start=crypto_{plan_name.lower()}"
     return {
