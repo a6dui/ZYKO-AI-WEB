@@ -62,8 +62,41 @@ async def init_db():
             ('banner_link_tab', 'video'),
             ('announcement_active', 'true')
         """)
+        # Ensure password_hash column exists
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN password_hash TEXT")
+        except Exception:
+            pass
         await db.commit()
         logger.info("Database initialized successfully at %s", DB_PATH)
+
+async def get_user_by_email(email: str) -> dict:
+    if not email:
+        return None
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM users WHERE LOWER(email) = LOWER(?)", (email.strip(),)) as cursor:
+            row = await cursor.fetchone()
+            return dict(row) if row else None
+
+async def create_email_user(email: str, password_hash: str, name: str = None) -> dict:
+    clean_email = email.strip().lower()
+    display_name = name or clean_email.split("@")[0].capitalize()
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        cursor = await db.execute(
+            "INSERT INTO users (email, name, password_hash, tokens, tier) VALUES (?, ?, ?, 1000, 'Free')",
+            (clean_email, display_name, password_hash)
+        )
+        await db.commit()
+        user_id = cursor.lastrowid
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
+            return dict(await c2.fetchone())
+
+async def set_user_password(user_id: int, password_hash: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("UPDATE users SET password_hash = ? WHERE id = ?", (password_hash, user_id))
+        await db.commit()
 
 async def get_or_create_google_user(google_id: str, email: str, name: str, avatar: str) -> dict:
     async with aiosqlite.connect(DB_PATH) as db:

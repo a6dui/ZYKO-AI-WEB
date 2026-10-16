@@ -27,9 +27,12 @@ from database import (
     get_admin_generations,
     get_system_settings,
     update_system_setting,
-    complete_transaction
+    complete_transaction,
+    get_user_by_email,
+    create_email_user,
+    set_user_password
 )
-from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, GOOGLE_CLIENT_ID
+from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
     create_stripe_checkout,
     handle_stripe_webhook_payload,
@@ -116,6 +119,68 @@ async def handle_google_auth(request: web.Request):
     except Exception as e:
         logger.error("Google Auth error: %s", e)
         return web.json_response({"error": str(e)}, status=400)
+
+async def handle_email_register(request: web.Request):
+    try:
+        data = await request.json()
+        email = (data.get("email") or "").strip().lower()
+        password = data.get("password") or ""
+        name = (data.get("name") or "").strip()
+        
+        if not email or "@" not in email:
+            return web.json_response({"error": "Введите корректный email"}, status=400)
+        if len(password) < 6:
+            return web.json_response({"error": "Пароль должен содержать не менее 6 символов"}, status=400)
+            
+        existing = await get_user_by_email(email)
+        if existing:
+            if existing.get("password_hash"):
+                return web.json_response({"error": "Аккаунт с таким email уже существует. Пожалуйста, войдите."}, status=400)
+            else:
+                hashed = hash_password(password)
+                await set_user_password(existing["id"], hashed)
+                token = create_access_token(existing["id"])
+                resp = web.json_response({"status": "ok", "token": token, "user": existing})
+                resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+                return resp
+                
+        hashed = hash_password(password)
+        user = await create_email_user(email, hashed, name)
+        token = create_access_token(user["id"])
+        resp = web.json_response({"status": "ok", "token": token, "user": user})
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        return resp
+    except Exception as e:
+        logger.error("Email register error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_email_login(request: web.Request):
+    try:
+        data = await request.json()
+        email = (data.get("email") or "").strip().lower()
+        password = data.get("password") or ""
+        
+        if not email or not password:
+            return web.json_response({"error": "Укажите email и пароль"}, status=400)
+            
+        user = await get_user_by_email(email)
+        if not user:
+            return web.json_response({"error": "Пользователь с таким email не найден"}, status=404)
+            
+        saved_hash = user.get("password_hash")
+        if not saved_hash:
+            return web.json_response({"error": "Этот аккаунт был зарегистрирован через Google или Telegram. Войдите через них или зарегистрируйтесь с паролем."}, status=400)
+            
+        if not verify_password(password, saved_hash):
+            return web.json_response({"error": "Неверный пароль"}, status=401)
+            
+        token = create_access_token(user["id"])
+        resp = web.json_response({"status": "ok", "token": token, "user": user})
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        return resp
+    except Exception as e:
+        logger.error("Email login error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
 
 async def handle_user_link_account(request: web.Request):
     """
@@ -692,6 +757,8 @@ def create_app():
     app.router.add_post("/api/admin/settings", handle_admin_update_setting)
     
     # Auth
+    app.router.add_post("/api/auth/login", handle_email_login)
+    app.router.add_post("/api/auth/register", handle_email_register)
     app.router.add_post("/api/auth/google", handle_google_auth)
     app.router.add_post("/api/auth/telegram", handle_telegram_auth)
     app.router.add_post("/api/auth/telegram/create-session", handle_telegram_create_session)

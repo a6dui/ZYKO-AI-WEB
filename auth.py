@@ -29,7 +29,20 @@ def decode_access_token(token: str) -> int:
         return int(payload["sub"])
     except Exception as e:
         logger.debug("JWT decode error: %s", e)
-        return None
+def hash_password(password: str) -> str:
+    salt = os.urandom(16).hex()
+    dk = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000)
+    return f"{salt}:{dk.hex()}"
+
+def verify_password(password: str, hashed: str) -> bool:
+    if not hashed or ":" not in hashed:
+        return False
+    try:
+        salt, key = hashed.split(":", 1)
+        dk = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000)
+        return hmac.compare_digest(dk.hex(), key)
+    except Exception:
+        return False
 
 def verify_google_id_token(token_str: str) -> dict:
     """
