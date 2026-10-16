@@ -900,9 +900,55 @@ async def cleanup_background_tasks(app):
         except asyncio.CancelledError:
             pass
 
-if __name__ == "__main__":
+import signal
+
+async def run_server():
     app = create_app()
     app.on_startup.append(start_background_tasks)
     app.on_cleanup.append(cleanup_background_tasks)
-    logger.info("Starting ZYKO.AI Web Server on port %s", PORT)
-    web.run_app(app, host="0.0.0.0", port=PORT)
+    
+    runner = web.AppRunner(app)
+    await runner.setup()
+    
+    # Bind to PORT from environment, plus fallback standard ports
+    ports_to_bind = [PORT]
+    for p in [8080, 80, 3000, 5000]:
+        if p not in ports_to_bind:
+            ports_to_bind.append(p)
+            
+    bound_count = 0
+    for p in ports_to_bind:
+        try:
+            site = web.TCPSite(runner, "0.0.0.0", p)
+            await site.start()
+            logger.info("ZYKO.AI Web Server listening on http://0.0.0.0:%s", p)
+            bound_count += 1
+        except Exception as e:
+            logger.debug("Port %s not bound: %s", p, e)
+            
+    if bound_count == 0:
+        logger.error("Could not bind to any port! Exiting.")
+        return
+        
+    logger.info("ZYKO.AI Web Server successfully started on %s port(s). Ready for traffic.", bound_count)
+    
+    stop_event = asyncio.Event()
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        try:
+            loop.add_signal_handler(sig, stop_event.set)
+        except (NotImplementedError, RuntimeError):
+            pass
+            
+    try:
+        await stop_event.wait()
+    finally:
+        logger.info("Shutting down ZYKO.AI server...")
+        await runner.cleanup()
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(run_server())
+    except (KeyboardInterrupt, SystemExit):
+        pass
+
