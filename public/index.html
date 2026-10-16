@@ -161,9 +161,51 @@
       border-style: solid;
       border-color: transparent transparent #1f2a26;
     }
+    /* Google Translate Integration - Seamless & Hidden Toolbars */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-banner-frame {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+    }
+    body {
+      top: 0px !important;
+      position: static !important;
+    }
+    .goog-tooltip,
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+    .goog-text-highlight {
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
+    #goog-gt-tt,
+    .goog-te-balloon-frame {
+      display: none !important;
+    }
+    .goog-te-gadget {
+      font-size: 0px !important;
+      color: transparent !important;
+    }
+    .goog-te-gadget .goog-te-combo {
+      margin: 0 !important;
+    }
+    #google_translate_element {
+      position: absolute !important;
+      left: -9999px !important;
+      top: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   </style>
 </head>
 <body class="selection:bg-emerald-400 selection:text-black">
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element"></div>
 
   <!-- Payment Status Banner -->
   <div id="payment-alert" class="hidden bg-emerald-500 text-black py-2.5 px-4 text-center text-xs font-black tracking-wide flex items-center justify-center gap-2 shadow-lg">
@@ -175,9 +217,9 @@
   <div id="top-bar" class="bg-gradient-to-r from-[#1c0808] via-[#350d0d] to-[#1c0808] border-b border-red-500/25 text-xs py-2 px-4 flex items-center justify-between transition-all duration-300">
     <div></div>
     <div class="flex items-center gap-3">
-      <span id="promo-text" class="text-stone-200 font-medium">Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity</span>
+      <span id="promo-text" class="text-stone-200 font-medium" data-i18n="promo_text">Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity</span>
       <span class="text-red-500/50">|</span>
-      <button onclick="switchTab('video');" id="promo-action-btn" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-1 rounded-md text-[11px] font-semibold transition">Create Video</button>
+      <button onclick="switchTab('video');" id="promo-action-btn" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-1 rounded-md text-[11px] font-semibold transition" data-i18n="promo_btn">Create Video</button>
     </div>
     <button onclick="dismissTopBar()" class="text-stone-400 hover:text-white text-sm px-2 transition" title="Close announcement">✕</button>
   </div>
@@ -250,14 +292,14 @@
               <!-- Admin Panel Shortcut -->
               <div class="border-t border-white/10 my-1 pt-1">
                 <button onclick="openAdminPanel(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold transition text-left border border-emerald-500/20">
-                  <span>🛡️</span> <span>Admin Panel</span>
+                  <span>🛡️</span> <span data-i18n="drawer_admin">Admin Panel</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <a href="#trends" onclick="switchTab('trends')" class="flex items-center gap-2.5 font-black text-xl tracking-tighter group">
+        <a href="#trends" onclick="switchTab('trends')" class="flex items-center gap-2.5 font-black text-xl tracking-tighter group notranslate">
           <img src="/favicon.svg?v=5" alt="Z" class="w-7 h-7 rounded-lg shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition">
           <span class="text-stone-100 font-extrabold tracking-tight text-base md:text-lg">ZYKO<span class="text-emerald-400">.AI</span></span>
         </a>
@@ -324,23 +366,23 @@
               <div class="border-t border-white/10 my-2"></div>
               <div class="space-y-0.5 text-xs font-medium">
                 <button onclick="switchTab('profile'); switchUserSubtab('profile'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
-                  <span>👤</span> <span>Profile</span>
+                  <span>👤</span> <span data-i18n="profile_title">Profile</span>
                 </button>
                 <button onclick="switchTab('profile'); switchUserSubtab('feed'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
-                  <span>🖼️</span> <span>Generation feed</span>
+                  <span>🖼️</span> <span data-i18n="profile_feed">Generation feed</span>
                 </button>
                 <button onclick="switchTab('profile'); switchUserSubtab('pricing'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
-                  <span>⍟</span> <span>Pricing</span>
+                  <span>⍟</span> <span data-i18n="profile_pricing">Pricing</span>
                 </button>
                 <button onclick="switchTab('profile'); switchUserSubtab('affiliate'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
-                  <span>🔗</span> <span>Affiliate program</span>
+                  <span>🔗</span> <span data-i18n="profile_affiliate">Affiliate program</span>
                 </button>
                 <div class="border-t border-white/10 my-1"></div>
                 <button onclick="openAdminPanel(); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-emerald-500/10 text-emerald-400 font-bold flex items-center gap-2.5 transition">
-                  <span>🛡️</span> <span>Admin Panel</span>
+                  <span>🛡️</span> <span data-i18n="drawer_admin">Admin Panel</span>
                 </button>
                 <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-red-500/10 text-stone-400 hover:text-red-400 flex items-center gap-2.5 transition">
-                  <span>🚪</span> <span>Log out</span>
+                  <span>🚪</span> <span data-i18n="logout">Log out</span>
                 </button>
               </div>
             </div>
@@ -371,16 +413,16 @@
 
         <div class="relative z-10 max-w-7xl w-full mx-auto px-6 md:px-8 pb-16 flex items-end justify-between">
           <div class="max-w-2xl">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tight text-[#f5f0eb] mb-2 drop-shadow-md">
+            <h1 class="notranslate text-6xl md:text-8xl font-black tracking-tight text-[#f5f0eb] mb-2 drop-shadow-md">
               ZYKO.AI
             </h1>
             <p class="text-2xl md:text-4xl font-black text-emerald-400 leading-tight mb-8">
-              One subscription.<br>
-              Unlimited access to top AI tools.
+              <span data-i18n="hero_sub1">One subscription.</span><br>
+              <span data-i18n="hero_sub2">Unlimited access to top AI tools.</span>
             </p>
             <div class="flex flex-wrap gap-3">
               <button onclick="switchTab('image')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-xl shadow-emerald-500/25 transition active:scale-95">
-                <span>Start creating</span> <span>✦</span>
+                <span data-i18n="hero_cta">Start creating</span> <span>✦</span>
               </button>
             </div>
           </div>
@@ -397,27 +439,27 @@
         <div class="max-w-7xl mx-auto">
           <!-- Trends Headline (Exact Match to Screenshot 4) -->
           <div class="text-center max-w-4xl mx-auto mb-8">
-            <h2 class="font-serif-editorial text-5xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100">
+            <h2 class="font-serif-editorial text-5xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="trends_title">
               Trends in just a few clicks
             </h2>
-            <p class="text-stone-300 text-sm md:text-base font-medium">
+            <p class="text-stone-300 text-sm md:text-base font-medium" data-i18n="trends_desc">
               Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.
             </p>
           </div>
 
           <!-- Model Category Pills (Exact Match to Screenshot 4) -->
           <div id="trends-category-nav" class="flex items-center justify-center gap-2 flex-wrap mb-10 text-xs">
-            <button onclick="switchModelCategory('all', this)" class="bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs">All</button>
-            <button onclick="switchModelCategory('new', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">New</button>
-            <button onclick="switchModelCategory('featuring', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Featuring You</button>
-            <button onclick="switchModelCategory('popular', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Popular</button>
-            <button onclick="switchModelCategory('anime', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Anime</button>
-            <button onclick="switchModelCategory('cartoons', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Cartoons</button>
-            <button onclick="switchModelCategory('movies', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Movies</button>
-            <button onclick="switchModelCategory('fantasy', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Fantasy</button>
-            <button onclick="switchModelCategory('fashion', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Fashion</button>
-            <button onclick="switchModelCategory('products', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Products</button>
-            <button onclick="switchModelCategory('realistic', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs">Realistic</button>
+            <button onclick="switchModelCategory('all', this)" class="bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs" data-i18n="filter_all">All</button>
+            <button onclick="switchModelCategory('new', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_new">New</button>
+            <button onclick="switchModelCategory('featuring', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_featuring">Featuring You</button>
+            <button onclick="switchModelCategory('popular', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_popular">Popular</button>
+            <button onclick="switchModelCategory('anime', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_anime">Anime</button>
+            <button onclick="switchModelCategory('cartoons', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_cartoons">Cartoons</button>
+            <button onclick="switchModelCategory('movies', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_movies">Movies</button>
+            <button onclick="switchModelCategory('fantasy', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fantasy">Fantasy</button>
+            <button onclick="switchModelCategory('fashion', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fashion">Fashion</button>
+            <button onclick="switchModelCategory('products', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_products">Products</button>
+            <button onclick="switchModelCategory('realistic', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_realistic">Realistic</button>
           </div>
 
           <!-- 3D Card Grid with Perspective Tilt & Category Filtering -->
@@ -633,16 +675,16 @@
       <!-- PRICING TIERS SECTION -->
       <section id="pricing" class="py-20 px-6 max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-12">
-          <span class="text-emerald-400 text-xs font-extrabold uppercase tracking-widest">✦ Flexible Subscription</span>
-          <h2 class="text-4xl md:text-5xl font-black text-white mt-2 mb-4">Choose your creative tier</h2>
-          <p class="text-stone-300 text-xs md:text-sm">Universal token pool. Spend tokens across any model anytime.</p>
+          <span class="text-emerald-400 text-xs font-extrabold uppercase tracking-widest" data-i18n="pricing_badge">✦ Flexible Subscription</span>
+          <h2 class="text-4xl md:text-5xl font-black text-white mt-2 mb-4" data-i18n="pricing_title">Choose your creative tier</h2>
+          <p class="text-stone-300 text-xs md:text-sm" data-i18n="pricing_desc">Universal token pool. Spend tokens across any model anytime.</p>
           
           <!-- Billing Cycle Switcher -->
           <div class="mt-6 inline-flex p-1 bg-white/5 border border-white/10 rounded-xl">
-            <button onclick="setBillingCycle('annual')" id="billing-annual-btn" class="bg-[#f5f0eb] text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow">
+            <button onclick="setBillingCycle('annual')" id="billing-annual-btn" class="bg-[#f5f0eb] text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow" data-i18n="billing_annual">
               Annual (Save 15%)
             </button>
-            <button onclick="setBillingCycle('monthly')" id="billing-monthly-btn" class="text-stone-300 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
+            <button onclick="setBillingCycle('monthly')" id="billing-monthly-btn" class="text-stone-300 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition" data-i18n="billing_monthly">
               Monthly
             </button>
           </div>
@@ -661,12 +703,12 @@
               <div class="text-[11px] text-emerald-400 font-bold mb-4">3,120 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Essential neural network starter with Kling & Nano Banana.</p>
             </div>
-            <button onclick="openPaymentModal('Basic')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select Basic</button>
+            <button onclick="openPaymentModal('Basic')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_basic">Select Basic</button>
           </div>
 
           <!-- Pro (Highlighted) -->
           <div class="pro-card-gradient border border-emerald-500/50 rounded-2xl p-5 flex flex-col justify-between shadow-xl shadow-emerald-500/10 relative">
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-400 text-black text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase">Most Popular</div>
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-400 text-black text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase" data-i18n="pricing_most_popular">Most Popular</div>
             <div>
               <div class="text-xs font-bold text-emerald-300 mb-1">Pro</div>
               <div class="flex items-baseline gap-1 mb-2">
@@ -676,7 +718,7 @@
               <div class="text-[11px] text-emerald-400 font-extrabold mb-4">8,160 ⚡</div>
               <p class="text-xs text-stone-300 mb-4 leading-relaxed">Full package: Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs.</p>
             </div>
-            <button onclick="openPaymentModal('Pro')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25">Select Pro</button>
+            <button onclick="openPaymentModal('Pro')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25" data-i18n="pricing_select_pro">Select Pro</button>
           </div>
 
           <!-- VIP -->
@@ -690,7 +732,7 @@
               <div class="text-[11px] text-emerald-400 font-bold mb-4">20,400 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Full package + Topaz 4K + 6x more requests for high-volume creators.</p>
             </div>
-            <button onclick="openPaymentModal('VIP')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select VIP</button>
+            <button onclick="openPaymentModal('VIP')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_vip">Select VIP</button>
           </div>
 
           <!-- Elite -->
@@ -704,7 +746,7 @@
               <div class="text-[11px] text-emerald-400 font-bold mb-4">31,200 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited generations in Veo 3.1 Lite, Runway, and Topaz upscaler.</p>
             </div>
-            <button onclick="openPaymentModal('Elite')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select Elite</button>
+            <button onclick="openPaymentModal('Elite')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_elite">Select Elite</button>
           </div>
 
           <!-- Ultra Elite -->
@@ -718,12 +760,12 @@
               <div class="text-[11px] text-cyan-400 font-bold mb-4">36,000 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API.</p>
             </div>
-            <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs transition">Select Ultra</button>
+            <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs transition" data-i18n="pricing_select_ultra">Select Ultra</button>
           </div>
         </div>
 
         <div class="text-center mt-8">
-          <button onclick="openCompareModal()" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline">
+          <button onclick="openCompareModal()" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline" data-i18n="pricing_compare">
             Compare all features and model quotas in detail →
           </button>
         </div>
@@ -731,34 +773,34 @@
 
       <!-- FAQ ACCORDION -->
       <section id="faq" class="py-16 px-6 max-w-4xl mx-auto">
-        <h3 class="text-3xl font-black text-white text-center mb-8">Frequently Asked Questions</h3>
+        <h3 class="text-3xl font-black text-white text-center mb-8" data-i18n="faq_title">Frequently Asked Questions</h3>
         <div class="space-y-3">
           <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
             <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span>What models are included in ZYKO.AI?</span>
+              <span data-i18n="faq_q1">What models are included in ZYKO.AI?</span>
               <span class="faq-chevron transition text-stone-400">▾</span>
             </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed">
+            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a1">
               You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.
             </div>
           </div>
 
           <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
             <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span>How are tokens spent across models?</span>
+              <span data-i18n="faq_q2">How are tokens spent across models?</span>
               <span class="faq-chevron transition text-stone-400">▾</span>
             </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed">
+            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a2">
               Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.
             </div>
           </div>
 
           <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
             <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span>Can I use generated media for commercial purposes?</span>
+              <span data-i18n="faq_q3">Can I use generated media for commercial purposes?</span>
               <span class="faq-chevron transition text-stone-400">▾</span>
             </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed">
+            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a3">
               Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.
             </div>
           </div>
@@ -1812,12 +1854,12 @@
               <div class="flex items-center justify-between flex-wrap gap-2">
                 <div>
                   <h4 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
-                    <span>🔗</span> <span>Привязка и синхронизация аккаунтов</span>
+                    <span>🔗</span> <span data-i18n="profile_sync_title">Привязка и синхронизация аккаунтов</span>
                   </h4>
-                  <p class="text-xs text-stone-400 mt-0.5">Баланс токенов, подписка и история синхронизируются между сайтом и ботом в реальном времени</p>
+                  <p class="text-xs text-stone-400 mt-0.5" data-i18n="profile_sync_desc">Баланс токенов, подписка и история синхронизируются между сайтом и ботом в реальном времени</p>
                 </div>
                 <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Синхронизировано
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> <span data-i18n="profile_sync_status">Синхронизировано</span>
                 </span>
               </div>
 
@@ -1829,11 +1871,11 @@
                       <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                     </div>
                     <div class="truncate">
-                      <div class="text-[10px] text-stone-400">Google аккаунт</div>
+                      <div class="text-[10px] text-stone-400" data-i18n="profile_google_acc">Google аккаунт</div>
                       <div id="linked-google-email" class="text-xs font-bold text-white truncate">foryafrom@gmail.com</div>
                     </div>
                   </div>
-                  <button onclick="promptLinkGoogle()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold underline shrink-0 ml-2">Изменить</button>
+                  <button onclick="promptLinkGoogle()" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold underline shrink-0 ml-2" data-i18n="btn_change">Изменить</button>
                 </div>
 
                 <!-- Telegram Account Item -->
@@ -1843,11 +1885,11 @@
                       ✈️
                     </div>
                     <div class="truncate">
-                      <div class="text-[10px] text-stone-400">Telegram аккаунт</div>
+                      <div class="text-[10px] text-stone-400" data-i18n="profile_tg_acc">Telegram аккаунт</div>
                       <div id="linked-telegram-handle" class="text-xs font-bold text-sky-300 truncate">@ZykoAi_bot (Дмитрий)</div>
                     </div>
                   </div>
-                  <a href="https://t.me/ZykoAi_bot?start=sync_web" target="_blank" class="text-[11px] bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-3 py-1.5 rounded-lg font-semibold transition shrink-0 ml-2">Связать</a>
+                  <a href="https://t.me/ZykoAi_bot?start=sync_web" target="_blank" class="text-[11px] bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 px-3 py-1.5 rounded-lg font-semibold transition shrink-0 ml-2" data-i18n="btn_link">Связать</a>
                 </div>
               </div>
             </div>
@@ -2766,8 +2808,8 @@
       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center text-xl font-black mb-5 shadow-lg shadow-emerald-500/30">
         Z
       </div>
-      <h3 class="text-2xl font-bold text-white mb-2">Welcome to ZYKO.AI</h3>
-      <p class="text-xs text-stone-300 mb-6 leading-relaxed">
+      <h3 class="text-2xl font-bold text-white mb-2" data-i18n="auth_welcome">Welcome to ZYKO.AI</h3>
+      <p class="text-xs text-stone-300 mb-6 leading-relaxed" data-i18n="auth_desc">
         Sign in to sync your universal token balance across Web and Telegram, save past generations, and unlock 4K models.
       </p>
 
@@ -2776,7 +2818,7 @@
         <div id="telegram-login-container">
           <a id="tg-auth-btn" href="https://t.me/ZykoAi_bot?start=auth_web" target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-[#229ed9] to-[#1e8bc0] hover:from-[#1ea1e0] hover:to-[#177cb0] text-white font-bold text-xs py-3.5 rounded-xl transition shadow-lg shadow-sky-500/25 active:scale-95">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.88 8.01-3.44 3.82-1.58 4.61-1.86 5.13-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.38z"/></svg>
-            <span>Войти через Telegram</span>
+            <span data-i18n="auth_tg">Войти через Telegram</span>
           </a>
           <div id="telegram-widget-wrapper" class="flex justify-center pt-1"></div>
         </div>
@@ -2786,37 +2828,37 @@
           <div id="g_id_signin" class="w-full flex justify-center"></div>
           <button id="custom-google-btn" onclick="handleGoogleDirectPrompt()" class="w-full flex items-center justify-center gap-3 bg-white hover:bg-stone-100 text-stone-900 font-bold text-xs py-3 px-4 rounded-xl transition shadow-md active:scale-95">
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-            <span>Войти через Google</span>
+            <span data-i18n="auth_google">Войти через Google</span>
           </button>
         </div>
 
         <div class="flex items-center gap-3 my-2">
           <div class="flex-1 h-px bg-white/10"></div>
-          <span class="text-[10px] text-stone-500 uppercase tracking-widest">или по почте</span>
+          <span class="text-[10px] text-stone-500 uppercase tracking-widest" data-i18n="auth_or_email">или по почте</span>
           <div class="flex-1 h-px bg-white/10"></div>
         </div>
 
         <!-- Email & Password Form -->
         <form onsubmit="handleEmailAuthSubmit(event)" class="space-y-2.5">
           <div>
-            <label class="block text-[11px] font-medium text-stone-400 mb-1" for="auth-email-input">Email</label>
+            <label class="block text-[11px] font-medium text-stone-400 mb-1" for="auth-email-input" data-i18n="auth_email">Email</label>
             <input id="auth-email-input" type="email" required placeholder="name@example.com" class="w-full bg-[#161c1a] border border-white/15 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-stone-500 outline-none transition">
           </div>
           <div>
             <div class="flex justify-between items-center mb-1">
-              <label class="block text-[11px] font-medium text-stone-400" for="auth-password-input">Пароль</label>
+              <label class="block text-[11px] font-medium text-stone-400" for="auth-password-input" data-i18n="auth_password">Пароль</label>
             </div>
             <input id="auth-password-input" type="password" required placeholder="••••••••" minlength="6" class="w-full bg-[#161c1a] border border-white/15 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-stone-500 outline-none transition">
           </div>
 
           <div id="auth-email-error" class="hidden text-[11px] text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl p-2.5 text-center"></div>
 
-          <button id="auth-email-submit-btn" type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs py-3 rounded-xl transition shadow-lg shadow-emerald-500/25 active:scale-95">
+          <button id="auth-email-submit-btn" type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs py-3 rounded-xl transition shadow-lg shadow-emerald-500/25 active:scale-95" data-i18n="auth_submit_login">
             Войти по паролю
           </button>
 
           <div class="text-center pt-1">
-            <button type="button" onclick="toggleEmailAuthMode()" id="auth-mode-toggle" class="text-[11px] text-emerald-400 hover:text-emerald-300 transition">
+            <button type="button" onclick="toggleEmailAuthMode()" id="auth-mode-toggle" class="text-[11px] text-emerald-400 hover:text-emerald-300 transition" data-i18n="auth_toggle_reg">
               Нет аккаунта? Зарегистрироваться
             </button>
           </div>
@@ -3047,7 +3089,7 @@
         nav_toolkit: "Toolkit",
         sign_in: "Sign in",
         topup: "Top up ZK",
-        logout: "Logout",
+        logout: "Log out",
         drawer_home: "Home",
         drawer_academy: "Academy",
         drawer_contest: "Contest",
@@ -3055,9 +3097,70 @@
         drawer_status: "Status Page",
         drawer_support: "Support",
         drawer_language: "Language",
+        drawer_admin: "Admin Panel",
         agent_title: "Create and communicate with your personal agent",
         agent_desc: "Agents memorize instructions, speech manner, study on your data, know how to look on the Internet, issue files, launch code, work in the neural networks GPT Image, Veo 3.1, Suno.",
-        payment_success: "🎉 Payment successfully confirmed! Tokens added to your balance."
+        payment_success: "🎉 Payment successfully confirmed! Tokens added to your balance.",
+        auth_welcome: "Welcome to ZYKO.AI",
+        auth_desc: "Sign in to sync your universal token balance across Web and Telegram, save past generations, and unlock 4K models.",
+        auth_tg: "Sign in with Telegram",
+        auth_google: "Sign in with Google",
+        auth_or_email: "or with email",
+        auth_email: "Email",
+        auth_password: "Password",
+        auth_submit_login: "Sign in with password",
+        auth_submit_reg: "Register",
+        auth_toggle_reg: "No account? Register",
+        auth_toggle_login: "Already have an account? Sign in",
+        auth_terms: "By continuing you accept our Terms & Privacy Policy.",
+        promo_text: "Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity",
+        promo_btn: "Create Video",
+        hero_sub1: "One subscription.",
+        hero_sub2: "Unlimited access to top AI tools.",
+        hero_cta: "Start creating",
+        trends_title: "Trends in just a few clicks",
+        trends_desc: "Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.",
+        filter_all: "All",
+        filter_new: "New",
+        filter_featuring: "Featuring You",
+        filter_popular: "Popular",
+        filter_anime: "3D Anime",
+        filter_cartoons: "Cartoons",
+        filter_movies: "Movies",
+        filter_fantasy: "Fantasy",
+        filter_fashion: "Fashion",
+        filter_products: "Products",
+        filter_realistic: "Realistic",
+        pricing_badge: "✦ Flexible Subscription",
+        pricing_title: "Choose your creative tier",
+        pricing_desc: "Universal token pool. Spend tokens across any model anytime.",
+        billing_monthly: "Monthly",
+        billing_annual: "Annual (Save 15%)",
+        pricing_most_popular: "Most Popular",
+        pricing_select_basic: "Select Basic",
+        pricing_select_pro: "Select Pro",
+        pricing_select_vip: "Select VIP",
+        pricing_select_elite: "Select Elite",
+        pricing_select_ultra: "Select Ultra",
+        pricing_compare: "Compare all features and model quotas in detail →",
+        faq_title: "Frequently Asked Questions",
+        faq_q1: "What models are included in ZYKO.AI?",
+        faq_a1: "You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.",
+        faq_q2: "How are tokens spent across models?",
+        faq_a2: "Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.",
+        faq_q3: "Can I use generated media for commercial purposes?",
+        faq_a3: "Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.",
+        profile_title: "Profile",
+        profile_feed: "Generation feed",
+        profile_pricing: "Pricing",
+        profile_affiliate: "Affiliate program",
+        profile_sync_title: "Account linking & synchronization",
+        profile_sync_desc: "Token balance, subscription and history sync between Web and Telegram in real-time",
+        profile_sync_status: "Synced",
+        profile_google_acc: "Google Account",
+        profile_tg_acc: "Telegram Account",
+        btn_change: "Change",
+        btn_link: "Link"
       },
       ru: {
         nav_trends: "Тренды",
@@ -3077,9 +3180,70 @@
         drawer_status: "Статус моделей",
         drawer_support: "Поддержка",
         drawer_language: "Язык интерфейса",
+        drawer_admin: "Панель управления",
         agent_title: "Создавайте и общайтесь с вашим личным агентом",
         agent_desc: "Агенты запоминают инструкции, стиль общения, обучаются на ваших данных, умеют искать в интернете, писать код и генерировать в нейросетях GPT Image, Veo 3.1, Suno.",
-        payment_success: "🎉 Оплата успешно подтверждена! Токены начислены на ваш баланс."
+        payment_success: "🎉 Оплата успешно подтверждена! Токены начислены на ваш баланс.",
+        auth_welcome: "Добро пожаловать в ZYKO.AI",
+        auth_desc: "Войдите, чтобы синхронизировать баланс токенов между Web и Telegram, сохранять генерации и использовать 4K модели.",
+        auth_tg: "Войти через Telegram",
+        auth_google: "Войти через Google",
+        auth_or_email: "или по почте",
+        auth_email: "Email",
+        auth_password: "Пароль",
+        auth_submit_login: "Войти по паролю",
+        auth_submit_reg: "Зарегистрироваться",
+        auth_toggle_reg: "Нет аккаунта? Зарегистрироваться",
+        auth_toggle_login: "Уже есть аккаунт? Войти",
+        auth_terms: "Продолжая, вы принимаете Условия сервиса и Политику конфиденциальности.",
+        promo_text: "Встречайте Wan 3.0: До 30 секунд безграничного творчества",
+        promo_btn: "Создать видео",
+        hero_sub1: "Одна подписка.",
+        hero_sub2: "Безлимитный доступ к лучшим нейросетям.",
+        hero_cta: "Начать создавать",
+        trends_title: "Тренды в несколько кликов",
+        trends_desc: "Вдохновляйтесь, добавляйте своё видение и превращайте готовые идеи в уникальные работы.",
+        filter_all: "Все",
+        filter_new: "Новое",
+        filter_featuring: "С вашим лицом",
+        filter_popular: "Популярное",
+        filter_anime: "3D Аниме",
+        filter_cartoons: "Мультфильмы",
+        filter_movies: "Фильмы",
+        filter_fantasy: "Фэнтези",
+        filter_fashion: "Мода",
+        filter_products: "Товары",
+        filter_realistic: "Реализм",
+        pricing_badge: "✦ Гибкие тарифные планы",
+        pricing_title: "Выберите ваш тариф",
+        pricing_desc: "Единый пул токенов. Тратьте токены на любые нейросети в любое время.",
+        billing_monthly: "Ежемесячно",
+        billing_annual: "Ежегодно (скидка 15%)",
+        pricing_most_popular: "Хит продаж",
+        pricing_select_basic: "Выбрать Basic",
+        pricing_select_pro: "Выбрать Pro",
+        pricing_select_vip: "Выбрать VIP",
+        pricing_select_elite: "Выбрать Elite",
+        pricing_select_ultra: "Выбрать Ultra",
+        pricing_compare: "Подробное сравнение всех возможностей и квот →",
+        faq_title: "Часто задаваемые вопросы",
+        faq_q1: "Какие нейросети входят в ZYKO.AI?",
+        faq_a1: "Вы получаете единый доступ к более чем 100 нейросетям: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD голоса и Suno v4.",
+        faq_q2: "Как расходуются токены на модели?",
+        faq_a2: "Токены списываются строго за генерации: текст = 1 ZK, реалистичные фото = 2-3 ZK, озвучка HD = 2 ZK за 1000 знаков, видео 10 сек = 10-15 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
+        faq_q3: "Могу ли я использовать созданный контент в коммерческих целях?",
+        faq_a3: "Да! Все изображения, видео, аудио озвучки и код, созданные на активных тарифах (Basic, Pro, VIP, Elite, Ultra Elite), имеют полные коммерческие права.",
+        profile_title: "Профиль",
+        profile_feed: "Лента генераций",
+        profile_pricing: "Тарифы",
+        profile_affiliate: "Партнёрская программа",
+        profile_sync_title: "Привязка и синхронизация аккаунтов",
+        profile_sync_desc: "Баланс токенов, подписка и история синхронизируются между сайтом и ботом в реальном времени",
+        profile_sync_status: "Синхронизировано",
+        profile_google_acc: "Google аккаунт",
+        profile_tg_acc: "Telegram аккаунт",
+        btn_change: "Изменить",
+        btn_link: "Связать"
       },
       es: {
         nav_trends: "Tendencias",
@@ -3099,9 +3263,70 @@
         drawer_status: "Estado de modelos",
         drawer_support: "Soporte",
         drawer_language: "Idioma",
+        drawer_admin: "Panel de administración",
         agent_title: "Crea y comunícate con tu agente personal",
         agent_desc: "Los agentes memorizan instrucciones, estilo de habla y se entrenan con tus datos.",
-        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo."
+        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo.",
+        auth_welcome: "Bienvenido a ZYKO.AI",
+        auth_desc: "Inicia sesión para sincronizar tu saldo de tokens entre Web y Telegram, guardar generaciones y desbloquear modelos 4K.",
+        auth_tg: "Iniciar sesión con Telegram",
+        auth_google: "Iniciar sesión con Google",
+        auth_or_email: "o por correo",
+        auth_email: "Correo electrónico",
+        auth_password: "Contraseña",
+        auth_submit_login: "Iniciar sesión con contraseña",
+        auth_submit_reg: "Registrarse",
+        auth_toggle_reg: "¿No tienes cuenta? Regístrate",
+        auth_toggle_login: "¿Ya tienes cuenta? Inicia sesión",
+        auth_terms: "Al continuar aceptas nuestros Términos y Política de privacidad.",
+        promo_text: "Conoce Wan 3.0: Hasta 30 segundos de creatividad sin límites",
+        promo_btn: "Crear vídeo",
+        hero_sub1: "Una suscripción.",
+        hero_sub2: "Acceso ilimitado a las mejores herramientas de IA.",
+        hero_cta: "Comenzar a crear",
+        trends_title: "Tendencias en solo unos clics",
+        trends_desc: "Inspírate, añade tu perspectiva y convierte ideas listas en algo único.",
+        filter_all: "Todos",
+        filter_new: "Nuevo",
+        filter_featuring: "Con tu cara",
+        filter_popular: "Popular",
+        filter_anime: "Anime 3D",
+        filter_cartoons: "Dibujos",
+        filter_movies: "Películas",
+        filter_fantasy: "Fantasía",
+        filter_fashion: "Moda",
+        filter_products: "Productos",
+        filter_realistic: "Realista",
+        pricing_badge: "✦ Suscripción Flexible",
+        pricing_title: "Elige tu plan creativo",
+        pricing_desc: "Pool de tokens universal. Gasta tokens en cualquier modelo en cualquier momento.",
+        billing_monthly: "Mensual",
+        billing_annual: "Anual (Ahorra 15%)",
+        pricing_most_popular: "Más Popular",
+        pricing_select_basic: "Elegir Basic",
+        pricing_select_pro: "Elegir Pro",
+        pricing_select_vip: "Elegir VIP",
+        pricing_select_elite: "Elegir Elite",
+        pricing_select_ultra: "Elegir Ultra",
+        pricing_compare: "Comparar todas las características y cuotas →",
+        faq_title: "Preguntas frecuentes",
+        faq_q1: "¿Qué modelos están incluidos en ZYKO.AI?",
+        faq_a1: "Acceso universal a más de 100 redes neuronales: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs y Suno v4.",
+        faq_q2: "¿Cómo se consumen los tokens?",
+        faq_a2: "Los tokens se gastan por generación: texto = 1 ZK, imágenes fotorrealistas = 2-3 ZK, voz HD = 2 ZK por 1000 caracteres, y vídeo de 10s = 10-15 ZK. Tu saldo se sincroniza en tiempo real.",
+        faq_q3: "¿Puedo usar los medios generados comercialmente?",
+        faq_a3: "¡Sí! Todas las imágenes, vídeos, audios y códigos generados con planes activos incluyen derechos comerciales completos.",
+        profile_title: "Perfil",
+        profile_feed: "Feed de generaciones",
+        profile_pricing: "Precios",
+        profile_affiliate: "Programa de afiliados",
+        profile_sync_title: "Vinculación y sincronización de cuentas",
+        profile_sync_desc: "Saldo de tokens, suscripción e historial sincronizados entre Web y Telegram",
+        profile_sync_status: "Sincronizado",
+        profile_google_acc: "Cuenta de Google",
+        profile_tg_acc: "Cuenta de Telegram",
+        btn_change: "Cambiar",
+        btn_link: "Vincular"
       },
       de: {
         nav_trends: "Trends",
@@ -3116,14 +3341,75 @@
         logout: "Abmelden",
         drawer_home: "Startseite",
         drawer_academy: "Akademie",
-        drawer_contest: "Wettbewerb",
+        drawer_contest: "Wettbewerbe",
         drawer_faq: "FAQ",
         drawer_status: "Statusseite",
         drawer_support: "Support",
         drawer_language: "Sprache",
+        drawer_admin: "Admin-Bereich",
         agent_title: "Erstelle und kommuniziere mit deinem persönlichen Agenten",
         agent_desc: "Agenten merken sich Anweisungen, Sprachstil und lernen aus Ihren Daten.",
-        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben."
+        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben.",
+        auth_welcome: "Willkommen bei ZYKO.AI",
+        auth_desc: "Melden Sie sich an, um Ihr Token-Guthaben im Web und auf Telegram zu synchronisieren.",
+        auth_tg: "Mit Telegram anmelden",
+        auth_google: "Mit Google anmelden",
+        auth_or_email: "oder per E-Mail",
+        auth_email: "E-Mail",
+        auth_password: "Passwort",
+        auth_submit_login: "Mit Passwort anmelden",
+        auth_submit_reg: "Registrieren",
+        auth_toggle_reg: "Kein Konto? Registrieren",
+        auth_toggle_login: "Bereits ein Konto? Anmelden",
+        auth_terms: "Mit dem Fortfahren akzeptieren Sie unsere AGB und Datenschutzrichtlinien.",
+        promo_text: "Entdecken Sie Wan 3.0: Bis zu 30 Sekunden grenzenlose Kreativität",
+        promo_btn: "Video erstellen",
+        hero_sub1: "Ein Abonnement.",
+        hero_sub2: "Unbegrenzter Zugang zu den besten KI-Tools.",
+        hero_cta: "Jetzt erstellen",
+        trends_title: "Trends mit wenigen Klicks",
+        trends_desc: "Lassen Sie sich inspirieren, bringen Sie Ihre eigene Note ein und machen Sie Ideen zu etwas Einzigartigem.",
+        filter_all: "Alle",
+        filter_new: "Neu",
+        filter_featuring: "Mit deinem Gesicht",
+        filter_popular: "Beliebt",
+        filter_anime: "3D-Anime",
+        filter_cartoons: "Cartoons",
+        filter_movies: "Filme",
+        filter_fantasy: "Fantasy",
+        filter_fashion: "Mode",
+        filter_products: "Produkte",
+        filter_realistic: "Realistisch",
+        pricing_badge: "✦ Flexible Abonnements",
+        pricing_title: "Wählen Sie Ihren kreativen Tarif",
+        pricing_desc: "Universeller Token-Pool. Nutzen Sie Tokens jederzeit für jedes Modell.",
+        billing_monthly: "Monatlich",
+        billing_annual: "Jährlich (15% Rabatt)",
+        pricing_most_popular: "Am beliebtesten",
+        pricing_select_basic: "Basic wählen",
+        pricing_select_pro: "Pro wählen",
+        pricing_select_vip: "VIP wählen",
+        pricing_select_elite: "Elite wählen",
+        pricing_select_ultra: "Ultra wählen",
+        pricing_compare: "Alle Funktionen und Quoten im Detail vergleichen →",
+        faq_title: "Häufig gestellte Fragen",
+        faq_q1: "Welche Modelle sind in ZYKO.AI enthalten?",
+        faq_a1: "Sie erhalten universellen Zugang zu über 100 neuronalen Netzen: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs und Suno v4.",
+        faq_q2: "Wie werden Tokens verbraucht?",
+        faq_a2: "Tokens werden pro Generation abgerechnet: Text = 1 ZK, realistische Fotos = 2-3 ZK, HD-Audio = 2 ZK pro 1000 Zeichen, 10s Video = 10-15 ZK. Guthaben synchronisiert sich in Echtzeit.",
+        faq_q3: "Darf ich generierte Medien kommerziell nutzen?",
+        faq_a3: "Ja! Alle Bilder, Videos, Stimmen und Codes, die mit aktiven Abonnements generiert wurden, enthalten volle kommerzielle Rechte.",
+        profile_title: "Profil",
+        profile_feed: "Generierungs-Feed",
+        profile_pricing: "Preise",
+        profile_affiliate: "Partnerprogramm",
+        profile_sync_title: "Kontoverknüpfung & Synchronisierung",
+        profile_sync_desc: "Token-Guthaben, Abonnement und Verlauf werden sofort synchronisiert",
+        profile_sync_status: "Synchronisiert",
+        profile_google_acc: "Google-Konto",
+        profile_tg_acc: "Telegram-Konto",
+        btn_change: "Ändern",
+        btn_link: "Verknüpfen"
       },
       pt: {
         nav_trends: "Tendências",
@@ -3139,13 +3425,74 @@
         drawer_home: "Início",
         drawer_academy: "Academia",
         drawer_contest: "Concurso",
-        drawer_faq: "Perguntas frequentes",
+        drawer_faq: "Perguntas Frequentes",
         drawer_status: "Status das IAs",
         drawer_support: "Suporte",
         drawer_language: "Idioma",
+        drawer_admin: "Painel de Administração",
         agent_title: "Crie e converse com seu agente pessoal",
         agent_desc: "Os agentes memorizam instruções, estilo de conversa e aprendem com seus dados.",
-        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens creditados na sua conta."
+        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens creditados na sua conta.",
+        auth_welcome: "Bem-vindo ao ZYKO.AI",
+        auth_desc: "Faça login para sincronizar seu saldo de tokens entre a Web e o Telegram, salvar gerações e desbloquear modelos 4K.",
+        auth_tg: "Entrar com Telegram",
+        auth_google: "Entrar com Google",
+        auth_or_email: "ou por e-mail",
+        auth_email: "E-mail",
+        auth_password: "Senha",
+        auth_submit_login: "Entrar com senha",
+        auth_submit_reg: "Registrar-se",
+        auth_toggle_reg: "Não tem conta? Registre-se",
+        auth_toggle_login: "Já tem conta? Entrar",
+        auth_terms: "Ao continuar, você aceita nossos Termos e Política de Privacidade.",
+        promo_text: "Conheça Wan 3.0: Até 30 segundos de criatividade sem limites",
+        promo_btn: "Criar vídeo",
+        hero_sub1: "Uma assinatura.",
+        hero_sub2: "Acesso ilimitado às melhores ferramentas de IA.",
+        hero_cta: "Começar a criar",
+        trends_title: "Tendências em poucos cliques",
+        trends_desc: "Inspire-se, adicione sua perspectiva e transforme ideias prontas em criações únicas.",
+        filter_all: "Todos",
+        filter_new: "Novo",
+        filter_featuring: "Com seu rosto",
+        filter_popular: "Popular",
+        filter_anime: "Anime 3D",
+        filter_cartoons: "Desenhos",
+        filter_movies: "Filmes",
+        filter_fantasy: "Fantasia",
+        filter_fashion: "Moda",
+        filter_products: "Produtos",
+        filter_realistic: "Realista",
+        pricing_badge: "✦ Assinatura Flexível",
+        pricing_title: "Escolha seu plano criativo",
+        pricing_desc: "Pool de tokens universal. Use tokens em qualquer modelo a qualquer momento.",
+        billing_monthly: "Mensal",
+        billing_annual: "Anual (Poupe 15%)",
+        pricing_most_popular: "Mais Popular",
+        pricing_select_basic: "Escolher Basic",
+        pricing_select_pro: "Escolher Pro",
+        pricing_select_vip: "Escolher VIP",
+        pricing_select_elite: "Escolher Elite",
+        pricing_select_ultra: "Escolher Ultra",
+        pricing_compare: "Comparar todos os recursos e cotas em detalhes →",
+        faq_title: "Perguntas Frequentes",
+        faq_q1: "Quais modelos estão incluídos no ZYKO.AI?",
+        faq_a1: "Acesso universal a mais de 100 redes neurais: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs e Suno v4.",
+        faq_q2: "Como os tokens são consumidos?",
+        faq_a2: "Os tokens são debitados por geração: texto = 1 ZK, fotos realistas = 2-3 ZK, voz HD = 2 ZK por 1000 caracteres, vídeo 10s = 10-15 ZK. O saldo é sincronizado em tempo real.",
+        faq_q3: "Posso usar a mídia gerada comercialmente?",
+        faq_a3: "Sim! Todas as imagens, vídeos, áudios e códigos gerados com assinaturas ativas têm direitos comerciais completos.",
+        profile_title: "Perfil",
+        profile_feed: "Feed de gerações",
+        profile_pricing: "Preços",
+        profile_affiliate: "Programa de afiliados",
+        profile_sync_title: "Vinculação e sincronização de contas",
+        profile_sync_desc: "Saldo de tokens, assinatura e histórico sincronizados instantaneamente",
+        profile_sync_status: "Sincronizado",
+        profile_google_acc: "Conta Google",
+        profile_tg_acc: "Conta Telegram",
+        btn_change: "Alterar",
+        btn_link: "Vincular"
       }
     };
 
@@ -3914,12 +4261,25 @@
       const errBox = document.getElementById('auth-email-error');
       if (errBox) errBox.classList.add('hidden');
 
+      const dict = i18n[currentLang] || i18n['en'];
       if (isEmailRegisterMode) {
-        if (submitBtn) submitBtn.textContent = 'Зарегистрироваться';
-        if (toggleBtn) toggleBtn.textContent = 'Уже есть аккаунт? Войти';
+        if (submitBtn) {
+          submitBtn.setAttribute('data-i18n', 'auth_submit_reg');
+          submitBtn.textContent = dict.auth_submit_reg || 'Register';
+        }
+        if (toggleBtn) {
+          toggleBtn.setAttribute('data-i18n', 'auth_toggle_login');
+          toggleBtn.textContent = dict.auth_toggle_login || 'Already have an account? Sign in';
+        }
       } else {
-        if (submitBtn) submitBtn.textContent = 'Войти по паролю';
-        if (toggleBtn) toggleBtn.textContent = 'Нет аккаунта? Зарегистрироваться';
+        if (submitBtn) {
+          submitBtn.setAttribute('data-i18n', 'auth_submit_login');
+          submitBtn.textContent = dict.auth_submit_login || 'Sign in with password';
+        }
+        if (toggleBtn) {
+          toggleBtn.setAttribute('data-i18n', 'auth_toggle_reg');
+          toggleBtn.textContent = dict.auth_toggle_reg || 'No account? Register';
+        }
       }
     }
 
@@ -4694,11 +5054,50 @@
       de: { flag: '🇩🇪', label: 'Deutsch' }
     };
 
+    function triggerFullPageTranslation(lang) {
+      try {
+        const hostname = window.location.hostname;
+        const isEn = (lang === 'en');
+        const domains = [hostname, `.${hostname}`, ''];
+
+        // Clean any stale cookies first
+        domains.forEach(d => {
+          const domStr = d ? `; domain=${d}` : '';
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${domStr}`;
+        });
+
+        if (!isEn) {
+          domains.forEach(d => {
+            const domStr = d ? `; domain=${d}` : '';
+            document.cookie = `googtrans=/auto/${lang}; path=/${domStr}`;
+            document.cookie = `googtrans=/en/${lang}; path=/${domStr}`;
+          });
+        }
+
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          const selectEl = document.querySelector('.goog-te-combo');
+          if (selectEl) {
+            selectEl.value = isEn ? '' : lang;
+            selectEl.dispatchEvent(new Event('change'));
+            clearInterval(interval);
+          } else if (attempts > 30) {
+            clearInterval(interval);
+          }
+        }, 100);
+      } catch (e) {
+        console.debug('Translate trigger error:', e);
+      }
+    }
+
     function setLanguage(lang) {
       currentLang = lang;
       try {
         localStorage.setItem('zyko_lang', lang);
       } catch (e) {}
+
+      document.documentElement.lang = lang;
 
       const info = langDetails[lang] || langDetails['en'];
       const flagEl = document.getElementById('active-lang-flag');
@@ -4710,9 +5109,15 @@
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict && dict[key]) {
-          el.textContent = dict[key];
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = dict[key];
+          } else {
+            el.textContent = dict[key];
+          }
         }
       });
+
+      triggerFullPageTranslation(lang);
     }
 
     document.addEventListener('click', (e) => {
@@ -5165,5 +5570,27 @@
     }
 
   </script>
+  <!-- Full-Page Google Translate Engine -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,ru,es,de,pt',
+          autoDisplay: false
+        }, 'google_translate_element');
+        
+        const savedLang = localStorage.getItem('zyko_lang') || 'en';
+        if (savedLang && savedLang !== 'en') {
+          setTimeout(() => {
+            if (typeof triggerFullPageTranslation === 'function') {
+              triggerFullPageTranslation(savedLang);
+            }
+          }, 600);
+        }
+      } catch(e) {}
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
