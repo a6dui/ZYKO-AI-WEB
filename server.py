@@ -9,15 +9,23 @@ load_dotenv()
 
 from database import init_db, get_user_by_id, get_or_create_google_user, get_or_create_telegram_user
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, GOOGLE_CLIENT_ID
-from payments import create_stripe_checkout, handle_stripe_webhook_payload, create_platega_payment, create_cryptopay_payment
+from payments import (
+    create_stripe_checkout,
+    handle_stripe_webhook_payload,
+    create_platega_payment,
+    handle_platega_webhook_payload,
+    create_cryptopay_payment,
+    handle_cryptopay_webhook_payload,
+    STRIPE_PUBLISHABLE_KEY,
+    PLANS
+)
 from ai_service import generate_prompt_expansion
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("zyko_server")
 
 PORT = int(os.environ.get("PORT", 8080))
-STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
-TELEGRAM_BOT_USERNAME = os.environ.get("TELEGRAM_BOT_USERNAME", "voiceaichannel_bot")
+TELEGRAM_BOT_USERNAME = os.environ.get("TELEGRAM_BOT_USERNAME", "ElevenlabsA_bot")
 
 async def get_current_user(request: web.Request):
     auth_header = request.headers.get("Authorization", "")
@@ -44,7 +52,8 @@ async def handle_public_config(request: web.Request):
     return web.json_response({
         "google_client_id": GOOGLE_CLIENT_ID,
         "bot_username": TELEGRAM_BOT_USERNAME,
-        "stripe_publishable_key": STRIPE_PUBLISHABLE_KEY
+        "stripe_publishable_key": STRIPE_PUBLISHABLE_KEY,
+        "plans": PLANS
     })
 
 async def handle_google_auth(request: web.Request):
@@ -133,15 +142,26 @@ async def handle_platega_create(request: web.Request):
     try:
         data = await request.json()
         plan_name = data.get("plan", "Pro")
+        method = data.get("method", "sbp")
         user = await get_current_user(request)
         user_id = user["id"] if user else 0
         origin = f"{request.scheme}://{request.host}"
         
-        res = await create_platega_payment(user_id, plan_name, origin)
+        res = await create_platega_payment(user_id, plan_name, origin, method=method)
         return web.json_response(res)
     except Exception as e:
         logger.error("Platega create error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
+
+async def handle_platega_webhook(request: web.Request):
+    try:
+        data = await request.json()
+        logger.info("Incoming Platega webhook notification: %s", data)
+        success = await handle_platega_webhook_payload(data)
+        return web.json_response({"status": "ok", "processed": success}, status=200)
+    except Exception as e:
+        logger.error("Platega webhook error: %s", e)
+        return web.json_response({"status": "error", "message": str(e)}, status=200)
 
 async def handle_crypto_create(request: web.Request):
     try:
@@ -156,6 +176,16 @@ async def handle_crypto_create(request: web.Request):
     except Exception as e:
         logger.error("CryptoPay create error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
+
+async def handle_crypto_webhook(request: web.Request):
+    try:
+        data = await request.json()
+        sig = request.headers.get("crypto-pay-api-signature", "")
+        success = await handle_cryptopay_webhook_payload(data, sig)
+        return web.json_response({"status": "ok", "processed": success}, status=200)
+    except Exception as e:
+        logger.error("CryptoPay webhook error: %s", e)
+        return web.json_response({"status": "error", "message": str(e)}, status=200)
 
 # --- AI Tools & ElevenLabs Generation ---
 
@@ -352,11 +382,15 @@ def create_app():
     app.router.add_get("/api/auth/me", handle_me)
     app.router.add_post("/api/auth/logout", handle_logout)
     
-    # Payments
+    # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)
     app.router.add_post("/api/payments/stripe/webhook", handle_stripe_webhook)
     app.router.add_post("/api/payments/platega/create-invoice", handle_platega_create)
+    app.router.add_post("/api/payments/platega/webhook", handle_platega_webhook)
+    app.router.add_post("/api/webhook/platega", handle_platega_webhook)
     app.router.add_post("/api/payments/crypto/create-invoice", handle_crypto_create)
+    app.router.add_post("/api/payments/crypto/webhook", handle_crypto_webhook)
+    app.router.add_post("/api/webhook/cryptopay", handle_crypto_webhook)
     
     # AI Services & ElevenLabs Generations
     app.router.add_post("/api/ai/expand-prompt", handle_expand_prompt)
