@@ -1208,8 +1208,17 @@
 
     // 1. Initial State & Config Load
     document.addEventListener('DOMContentLoaded', async () => {
-      // Check URL params for payment alerts
+      // 1. Check for incoming auth_token from Telegram bot direct link (?auth_token=...)
       const params = new URLSearchParams(window.location.search);
+      const incomingToken = params.get('auth_token') || params.get('token');
+      if (incomingToken) {
+        localStorage.setItem('zyko_token', incomingToken);
+        document.cookie = `zyko_token=${incomingToken}; path=/; max-age=2592000; SameSite=Lax`;
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      // Check URL params for payment alerts
       if (params.get('payment') === 'success') {
         const alertBox = document.getElementById('payment-alert');
         if (alertBox) alertBox.classList.remove('hidden');
@@ -1245,7 +1254,14 @@
       }
 
       try {
-        const resp = await fetch('/api/auth/telegram/create-session', { method: 'POST' });
+        const resp = await fetch('/api/auth/telegram/create-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: window.location.host,
+            scheme: window.location.protocol.replace(':', '')
+          })
+        });
         if (resp.ok) {
           const data = await resp.json();
           currentTgAuthCode = data.code;
@@ -1287,6 +1303,10 @@
             clearInterval(tgAuthPollTimer);
             tgAuthPollTimer = null;
             currentUser = data.user;
+            if (data.token) {
+              localStorage.setItem('zyko_token', data.token);
+              document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
+            }
             
             const statusBox = document.getElementById('tg-auth-status');
             if (statusBox) {
@@ -1299,7 +1319,7 @@
             updateUserUI(currentUser);
             setTimeout(() => {
               closeAuthModal();
-            }, 1200);
+            }, 800);
           }
         }
       } catch (e) {
@@ -1317,6 +1337,10 @@
         if (resp.ok) {
           const data = await resp.json();
           currentUser = data.user;
+          if (data.token) {
+            localStorage.setItem('zyko_token', data.token);
+            document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
+          }
           updateUserUI(currentUser);
           closeAuthModal();
         }
@@ -1331,6 +1355,10 @@
         if (resp.ok) {
           const data = await resp.json();
           currentUser = data.user;
+          if (data.token) {
+            localStorage.setItem('zyko_token', data.token);
+            document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
+          }
           updateUserUI(currentUser);
           closeAuthModal();
         }
@@ -1367,6 +1395,10 @@
         if (resp.ok) {
           const data = await resp.json();
           currentUser = data.user;
+          if (data.token) {
+            localStorage.setItem('zyko_token', data.token);
+            document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
+          }
           updateUserUI(currentUser);
           closeAuthModal();
         } else {
@@ -1380,7 +1412,10 @@
     // 3. User Session Check
     async function checkAuthStatus() {
       try {
-        const resp = await fetch('/api/auth/me');
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        const resp = await fetch('/api/auth/me', { headers });
         if (resp.ok) {
           const data = await resp.json();
           if (data.authenticated && data.user) {
@@ -1408,6 +1443,8 @@
     }
 
     async function handleLogout() {
+      localStorage.removeItem('zyko_token');
+      document.cookie = 'zyko_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       await fetch('/api/auth/logout', { method: 'POST' });
       window.location.reload();
     }

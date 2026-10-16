@@ -116,16 +116,35 @@ async def handle_telegram_auth(request: web.Request):
 
 async def handle_telegram_create_session(request: web.Request):
     """
-    Creates a unique temporary session code for QR/deep-link bot authentication.
+    Creates a unique temporary session code for QR/deep-link bot authentication with host callback.
     """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+        
+    raw_host = body.get("host") or request.host or "localhost:8080"
     code = f"zk_{uuid.uuid4().hex[:6]}"
+    
     PENDING_AUTH_SESSIONS[code] = {
         "status": "pending",
         "created_at": time.time(),
         "token": None,
-        "user": None
+        "user": None,
+        "host": raw_host
     }
-    auth_url = f"https://t.me/{TELEGRAM_BOT_USERNAME}?start=auth_{code}"
+    
+    # Encode host to base64url so bot can reach the exact site instance
+    try:
+        clean_host = raw_host.strip()
+        host_b64 = base64.urlsafe_b64encode(clean_host.encode()).decode().rstrip("=")
+        param = f"a_{code}_{host_b64}"
+        if len(param) > 64:
+            param = f"auth_{code}"
+    except Exception:
+        param = f"auth_{code}"
+        
+    auth_url = f"https://t.me/{TELEGRAM_BOT_USERNAME}?start={param}"
     return web.json_response({
         "code": code,
         "bot_username": TELEGRAM_BOT_USERNAME,
@@ -162,6 +181,7 @@ async def handle_telegram_check_session(request: web.Request):
 async def handle_telegram_confirm_session(request: web.Request):
     """
     Called by internal bot poller or external bot webhook to confirm Telegram login.
+    Returns token for direct link generation.
     """
     try:
         data = await request.json()
@@ -171,20 +191,27 @@ async def handle_telegram_confirm_session(request: web.Request):
         first_name = data.get("first_name", "")
         photo_url = data.get("photo_url", "")
         
-        if not code or not tg_id:
-            return web.json_response({"error": "Missing code or telegram_id"}, status=400)
+        if not tg_id:
+            return web.json_response({"error": "Missing telegram_id"}, status=400)
             
         user = await get_or_create_telegram_user(tg_id, tg_username, first_name, photo_url)
         token = create_access_token(user["id"])
         
-        PENDING_AUTH_SESSIONS[code] = {
-            "status": "authenticated",
+        if code:
+            PENDING_AUTH_SESSIONS[code] = {
+                "status": "authenticated",
+                "token": token,
+                "user": user,
+                "created_at": time.time()
+            }
+            logger.info("Confirmed Telegram session %s for user %s (@%s)", code, tg_id, tg_username)
+            
+        return web.json_response({
+            "success": True,
+            "user_id": user["id"],
             "token": token,
-            "user": user,
-            "created_at": time.time()
-        }
-        logger.info("Confirmed Telegram session %s for user %s (@%s)", code, tg_id, tg_username)
-        return web.json_response({"success": True, "user_id": user["id"]})
+            "user": user
+        })
     except Exception as e:
         logger.error("Confirm session error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -558,9 +585,35 @@ async def run_telegram_bot_poller(app):
                             tg_username = from_user.get("username", "")
                             tg_first_name = from_user.get("first_name", "")
                             
-                            # Handle /start auth_<code_id>
-                            if text.startswith("/start auth_"):
-                                auth_code = text.split("auth_")[1].strip()
+                            # Handle /start with auth code
+                            if text.startswith("/start a_") or text.startswith("/start auth_"):
+                                raw_param = text.split("/start", 1)[1].strip()
+                                auth_code = ""
+                                target_host = ""
+                                
+                                if raw_param.startswith("a_"):
+                                    parts = raw_param.split("_")
+                                    if len(parts) >= 4 and parts[1] == "zk":
+                                        auth_code = f"zk_{parts[2]}"
+                                        host_b64 = parts[3]
+                                    elif len(parts) >= 3:
+                                        auth_code = parts[1]
+                                        host_b64 = parts[2]
+                                    else:
+                                        auth_code = raw_param
+                                        host_b64 = ""
+                                        
+                                    if host_b64:
+                                        try:
+                                            pad = 4 - (len(host_b64) % 4)
+                                            if pad != 4:
+                                                host_b64 += "=" * pad
+                                            target_host = base64.urlsafe_b64decode(host_b64.encode()).decode()
+                                        except Exception:
+                                            target_host = ""
+                                else:
+                                    auth_code = raw_param.replace("auth_", "").strip()
+
                                 user = await get_or_create_telegram_user(
                                     telegram_id=tg_id,
                                     username=tg_username,
@@ -568,23 +621,46 @@ async def run_telegram_bot_poller(app):
                                     photo_url=""
                                 )
                                 token = create_access_token(user["id"])
-                                PENDING_AUTH_SESSIONS[auth_code] = {
-                                    "status": "authenticated",
-                                    "token": token,
-                                    "user": user,
-                                    "created_at": time.time()
-                                }
-                                logger.info("Telegram session %s authenticated for user %s (@%s)", auth_code, tg_id, tg_username)
+                                if auth_code:
+                                    PENDING_AUTH_SESSIONS[auth_code] = {
+                                        "status": "authenticated",
+                                        "token": token,
+                                        "user": user,
+                                        "created_at": time.time()
+                                    }
+                                    logger.info("Telegram session %s authenticated for user %s (@%s)", auth_code, tg_id, tg_username)
+
+                                # Determine target URL
+                                scheme = "http" if ("localhost" in target_host or "127.0.0.1" in target_host) else "https"
+                                site_base = f"{scheme}://{target_host}" if target_host else os.environ.get("WEB_URL", "").rstrip("/")
+                                if not site_base:
+                                    site_base = "http://localhost:8080"
+                                    
+                                redirect_url = f"{site_base}/?auth_token={token}"
                                 
+                                # Send cross-host confirm if target is external
+                                if target_host and "localhost" not in target_host:
+                                    try:
+                                        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=4)) as s:
+                                            await s.post(f"{site_base}/api/auth/telegram/confirm-session", json={
+                                                "code": auth_code,
+                                                "telegram_id": tg_id,
+                                                "username": tg_username,
+                                                "first_name": tg_first_name
+                                            })
+                                    except Exception:
+                                        pass
+
                                 reply_text = (
                                     f"🎉 <b>Авторизация успешна!</b>\n\n"
                                     f"Вы успешно вошли на сайт <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
-                                    f"🎁 Ваш баланс: <b>{user.get('tokens', 1000)} токенов ✦</b>\n"
-                                    f"Вкладка браузера уже автоматически обновилась — добро пожаловать в студию! 🚀"
+                                    f"💎 Ваш баланс: <b>{user.get('tokens', 1000):,} ZK токенов</b>\n\n"
+                                    f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт в свой аккаунт:</b>"
                                 )
                                 kb = {
                                     "inline_keyboard": [
-                                        [{"text": "🌐 Вернуться на сайт ZYKO.AI", "url": "https://zuko-voice.zeabur.app"}]
+                                        [{"text": "🚀 Войти на сайт ZYKO.AI", "url": redirect_url}],
+                                        [{"text": "📱 Открыть Mini App", "web_app": {"url": redirect_url}}]
                                     ]
                                 }
                                 send_url = f"{url}/sendMessage"
