@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import base64
 import logging
 import asyncio
 import time
@@ -123,7 +124,11 @@ async def handle_telegram_create_session(request: web.Request):
     except Exception:
         body = {}
         
-    raw_host = body.get("host") or request.host or "localhost:8080"
+    raw_host = body.get("host") or request.host or "zyko.zeabur.app"
+    clean_host = raw_host.strip()
+    if "zeabur.app" in clean_host:
+        clean_host = "zyko.zeabur.app"
+        
     code = f"zk_{uuid.uuid4().hex[:6]}"
     
     PENDING_AUTH_SESSIONS[code] = {
@@ -131,12 +136,11 @@ async def handle_telegram_create_session(request: web.Request):
         "created_at": time.time(),
         "token": None,
         "user": None,
-        "host": raw_host
+        "host": clean_host
     }
     
     # Encode host to base64url so bot can reach the exact site instance
     try:
-        clean_host = raw_host.strip()
         host_b64 = base64.urlsafe_b64encode(clean_host.encode()).decode().rstrip("=")
         param = f"a_{code}_{host_b64}"
         if len(param) > 64:
@@ -630,11 +634,14 @@ async def run_telegram_bot_poller(app):
                                     }
                                     logger.info("Telegram session %s authenticated for user %s (@%s)", auth_code, tg_id, tg_username)
 
-                                # Determine target URL
-                                scheme = "http" if ("localhost" in target_host or "127.0.0.1" in target_host) else "https"
-                                site_base = f"{scheme}://{target_host}" if target_host else os.environ.get("WEB_URL", "").rstrip("/")
-                                if not site_base:
-                                    site_base = "http://localhost:8080"
+                                # Determine target URL - default strictly to https://zyko.zeabur.app
+                                if target_host and ("localhost" in target_host or "127.0.0.1" in target_host):
+                                    site_base = f"http://{target_host}"
+                                elif target_host and "zeabur.app" in target_host:
+                                    site_base = f"https://{target_host}"
+                                else:
+                                    site_base = os.environ.get("WEB_URL") or "https://zyko.zeabur.app"
+                                site_base = site_base.rstrip("/")
                                     
                                 redirect_url = f"{site_base}/?auth_token={token}"
                                 
