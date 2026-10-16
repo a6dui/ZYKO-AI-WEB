@@ -710,7 +710,7 @@ async def run_telegram_bot_poller(app):
                                 )
                                 kb = {
                                     "inline_keyboard": [
-                                        [{"text": "🌐 Открыть ZYKO.AI Web", "url": "https://zuko-voice.zeabur.app"}]
+                                        [{"text": "🌐 Открыть ZYKO.AI Web", "url": "https://zyko.zeabur.app"}]
                                     ]
                                 }
                                 send_url = f"{url}/sendMessage"
