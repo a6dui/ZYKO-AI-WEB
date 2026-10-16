@@ -32,39 +32,39 @@ PLANS = {
         "price_eur_monthly": 8.90,
         "price_eur_annual": 7.56,
         "price_rub": 890,
-        "tokens": 3120,
-        "desc": "Limited set of neural networks including Kling, Nano Banana"
+        "tokens": 30000,
+        "desc": "Essential neural starter: Kling 4.0, Nano Banana 2.1, ElevenLabs Audio"
     },
     "Pro": {
         "name": "Pro",
         "price_eur_monthly": 16.90,
         "price_eur_annual": 14.36,
         "price_rub": 1490,
-        "tokens": 8160,
-        "desc": "Full neural network package: Seedance 2.5, Kling, Nano Banana, Veo 3.1"
+        "tokens": 80000,
+        "desc": "Full neural network package: Seedance 2.5, Kling, Nano Banana, Veo 3.1 & ElevenLabs"
     },
     "VIP": {
         "name": "VIP",
         "price_eur_monthly": 39.90,
         "price_eur_annual": 33.90,
         "price_rub": 3490,
-        "tokens": 20400,
-        "desc": "Full package + Topaz 4K + 6x more requests"
+        "tokens": 200000,
+        "desc": "Full package + Topaz 4K + 6x more requests for high-volume creators"
     },
     "Elite": {
         "name": "Elite",
         "price_eur_monthly": 59.90,
         "price_eur_annual": 50.91,
         "price_rub": 5290,
-        "tokens": 31200,
-        "desc": "Unlimited generation in Veo 3.1 Lite, Runway, Topaz"
+        "tokens": 300000,
+        "desc": "Unlimited generation in Veo 3.1, Runway, Topaz & ElevenLabs Voice Clone"
     },
     "Ultra Elite": {
         "name": "Ultra Elite",
         "price_eur_monthly": 119.00,
         "price_eur_annual": 101.15,
         "price_rub": 9990,
-        "tokens": 36000,
+        "tokens": 500000,
         "desc": "Unlimited Veo, Nano Banana, MiniMax, Claude Sonnet 3.7 & Gemini Pro"
     }
 }

@@ -15,7 +15,7 @@ async def init_db():
                 telegram_id INTEGER UNIQUE,
                 name TEXT,
                 avatar TEXT,
-                tokens INTEGER DEFAULT 1000,
+                tokens INTEGER DEFAULT 10000,
                 tier TEXT DEFAULT 'Free',
                 tier_expires_at TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -68,7 +68,7 @@ async def get_or_create_google_user(google_id: str, email: str, name: str, avata
                     return dict(await c2.fetchone())
             else:
                 cursor_ins = await db.execute(
-                    "INSERT INTO users (google_id, email, name, avatar, tokens, tier) VALUES (?, ?, ?, ?, 1000, 'Free')",
+                    "INSERT INTO users (google_id, email, name, avatar, tokens, tier) VALUES (?, ?, ?, ?, 10000, 'Free')",
                     (google_id, email, name, avatar)
                 )
                 await db.commit()
@@ -93,7 +93,7 @@ async def get_or_create_telegram_user(telegram_id: int, username: str, first_nam
                     return dict(await c2.fetchone())
             else:
                 cursor_ins = await db.execute(
-                    "INSERT INTO users (telegram_id, name, avatar, tokens, tier) VALUES (?, ?, ?, 1000, 'Free')",
+                    "INSERT INTO users (telegram_id, name, avatar, tokens, tier) VALUES (?, ?, ?, 10000, 'Free')",
                     (telegram_id, display_name, photo_url)
                 )
                 await db.commit()
@@ -109,7 +109,7 @@ async def get_or_create_demo_user() -> dict:
             if row:
                 return dict(row)
         cursor_ins = await db.execute(
-            "INSERT INTO users (email, name, tokens, tier) VALUES ('demo@zyko.ai', 'Creator (Demo)', 2000, 'Pro')"
+            "INSERT INTO users (email, name, tokens, tier) VALUES ('demo@zyko.ai', 'Creator (Demo)', 10000, 'Pro')"
         )
         await db.commit()
         user_id = cursor_ins.lastrowid
