@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="zykoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#28dcac"/>
+      <stop offset="100%" stop-color="#0ea582"/>
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="464" height="464" rx="120" fill="url(#zykoGrad)"/>
+  <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="'Arial Black', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-weight="900" font-size="270" fill="#000000">Z</text>
+</svg>

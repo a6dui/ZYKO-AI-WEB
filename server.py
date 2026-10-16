@@ -596,7 +596,7 @@ async def handle_favicon(request: web.Request):
 async def handle_root_file(request: web.Request):
     fname = request.match_info.get("fname", "")
     allowed = {
-        "favicon.ico", "favicon.png", "favicon-32x32.png", "favicon-16x16.png",
+        "favicon.ico", "favicon.svg", "favicon.png", "favicon-32x32.png", "favicon-16x16.png",
         "apple-touch-icon.png", "apple-touch-icon-precomposed.png", "icon-192.png",
         "icon-512.png", "site.webmanifest"
     }
@@ -681,7 +681,7 @@ def create_app():
     app.router.add_get("/health", handle_health)
     app.router.add_get("/api/config/public", handle_public_config)
     app.router.add_get("/favicon.ico", handle_favicon)
-    app.router.add_get("/{fname:(?:favicon(?:-32x32|-16x16)?\\.png|apple-touch-icon(?:-precomposed)?\\.png|icon-(?:192|512)\\.png|site\\.webmanifest)}", handle_root_file)
+    app.router.add_get("/{fname:(?:favicon(?:-32x32|-16x16)?\\.png|favicon\\.svg|apple-touch-icon(?:-precomposed)?\\.png|icon-(?:192|512)\\.png|site\\.webmanifest)}", handle_root_file)
     app.router.add_get("/api/system/settings", handle_get_system_settings)
     
     # Admin Panel API
