@@ -2495,14 +2495,36 @@
 
       // Check URL Hash for initial tab
       const hash = window.location.hash.replace('#', '');
-      if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit', 'profile', 'plans', 'pricing'].includes(hash)) {
-        if (hash === 'plans' || hash === 'pricing') {
-          switchTab('profile');
-          switchUserSubtab('pricing');
-        } else {
-          switchTab(hash);
-        }
+      const userSubtabsMap = {
+        'profile': 'profile',
+        'plans': 'pricing',
+        'pricing': 'pricing',
+        'tokens': 'tokens',
+        'purchase-tokens': 'tokens',
+        'history': 'history',
+        'token-history': 'history',
+        'feed': 'feed',
+        'generation-feed': 'feed',
+        'affiliate': 'affiliate',
+        'affiliate-program': 'affiliate'
+      };
+
+      if (userSubtabsMap[hash]) {
+        switchTab('profile');
+        switchUserSubtab(userSubtabsMap[hash]);
+      } else if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].includes(hash)) {
+        switchTab(hash);
       }
+
+      window.addEventListener('hashchange', () => {
+        const h = window.location.hash.replace('#', '');
+        if (userSubtabsMap[h]) {
+          switchTab('profile');
+          switchUserSubtab(userSubtabsMap[h]);
+        } else if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].includes(h)) {
+          switchTab(h);
+        }
+      });
 
       // Load local history
       loadLocalHistory();
