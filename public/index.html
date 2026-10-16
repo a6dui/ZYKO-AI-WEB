@@ -241,12 +241,6 @@
               <button onclick="switchTab('trends'); closeBurgerDropdown(); window.scrollTo({top: 0, behavior: 'smooth'});" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                 <span>🏠</span> <span data-i18n="drawer_home">Home</span>
               </button>
-              <button onclick="openAcademyModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-                <span>🎓</span> <span data-i18n="drawer_academy">Academy</span>
-              </button>
-              <button onclick="openContestModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-                <span>🏆</span> <span data-i18n="drawer_contest">Contest</span>
-              </button>
               <button onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                 <span>❓</span> <span data-i18n="drawer_faq">FAQ</span>
               </button>
@@ -318,18 +312,61 @@
         <button onclick="switchTab('toolkit')" id="tab-btn-toolkit" class="nav-tab hover:text-white transition" data-i18n="nav_toolkit">Toolkit</button>
       </nav>
 
-      <!-- Right Actions: Quick Prompt, TG Bot, Notification, User Profile -->
+      <!-- Right Actions: Notification, User Profile / Sign in -->
       <div class="flex items-center gap-2.5" id="header-actions">
-        <button onclick="openPromptModal()" title="Quick AI Expander (🪄)" class="text-stone-300 hover:text-emerald-400 p-2 rounded-xl hover:bg-white/5 transition flex items-center justify-center">
-          <span class="text-base">🪄</span>
-        </button>
-
-        <!-- Notifications Bell -->
-        <div class="relative group">
-          <button onclick="toggleNotificationDrawer()" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative">
+        <!-- Notifications Bell & Popover -->
+        <div class="relative" id="notification-bell-container">
+          <button onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative" title="Notifications">
             <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           </button>
+
+          <!-- Notification Popover -->
+          <div id="notification-drawer" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50 backdrop-blur-xl">
+            <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-400 text-sm">🔔</span>
+                <span class="text-xs font-bold text-white">Уведомления</span>
+                <span id="notification-count-badge" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full">3 новых</span>
+              </div>
+              <button onclick="markAllNotificationsRead()" class="text-[10px] text-stone-400 hover:text-emerald-400 transition">Прочитать все</button>
+            </div>
+
+            <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs">
+              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('profile'); closeNotificationDrawer();">
+                <span class="text-lg shrink-0">⚡</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-white text-[11px] truncate">+5.5 ZK токенов начислено</span>
+                    <span class="text-[9px] text-stone-500">Только что</span>
+                  </div>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Вам начислен стартовый баланс токенов для тестирования всех 100+ нейросетей.</p>
+                </div>
+              </div>
+
+              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('video'); closeNotificationDrawer();">
+                <span class="text-lg shrink-0">🎬</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-white text-[11px] truncate">Wan 3.0 & Veo 3.1 доступны</span>
+                    <span class="text-[9px] text-stone-500">1 час назад</span>
+                  </div>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Кинематографические нейросети видеогенерации до 30 секунд добавлены в Видео Студию.</p>
+                </div>
+              </div>
+
+              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('agents'); closeNotificationDrawer();">
+                <span class="text-lg shrink-0">🤖</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-white text-[11px] truncate">Автономные AI Агенты</span>
+                    <span class="text-[9px] text-stone-500">Вчера</span>
+                  </div>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Создавайте персональных агентов с глубоким поиском, памятью и авто-генерацией.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Logged Out State -->
@@ -391,6 +428,31 @@
       </div>
     </div>
   </header>
+
+  <!-- MOBILE SUB-NAVIGATION BAR (Visible on screens < lg) -->
+  <div id="mobile-studio-nav" class="lg:hidden sticky top-[53px] z-40 bg-[#0c1110]/95 backdrop-blur-xl border-b border-white/10 px-3 py-2 overflow-x-auto no-scrollbar flex items-center gap-2">
+    <button onclick="switchTab('trends')" id="mob-tab-btn-trends" class="mob-nav-tab active shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition bg-emerald-500 text-black shadow-md shadow-emerald-500/20">
+      <span>🔥</span> <span data-i18n="nav_trends">Trends</span>
+    </button>
+    <button onclick="switchTab('agents')" id="mob-tab-btn-agents" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>🤖</span> <span data-i18n="nav_agents">Agents</span>
+    </button>
+    <button onclick="switchTab('text')" id="mob-tab-btn-text" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>💬</span> <span data-i18n="nav_llm">LLM Studio</span>
+    </button>
+    <button onclick="switchTab('image')" id="mob-tab-btn-image" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>🖼️</span> <span data-i18n="nav_image">Image</span>
+    </button>
+    <button onclick="switchTab('video')" id="mob-tab-btn-video" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>🎬</span> <span data-i18n="nav_video">Video</span>
+    </button>
+    <button onclick="switchTab('audio')" id="mob-tab-btn-audio" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>🎙️</span> <span data-i18n="nav_audio">Audio</span>
+    </button>
+    <button onclick="switchTab('toolkit')" id="mob-tab-btn-toolkit" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+      <span>🧰</span> <span data-i18n="nav_toolkit">Toolkit</span>
+    </button>
+  </div>
 
 
 
@@ -890,10 +952,10 @@
 
 
     <!-- ================= WORKSPACE SHELL (SHARED BY AGENTS, LLM, IMAGE, VIDEO, AUDIO) ================= -->
-    <div id="workspace-shell" class="hidden flex h-[calc(100vh-53px)] overflow-hidden">
+    <div id="workspace-shell" class="hidden flex h-[calc(100vh-53px)] overflow-hidden relative">
 
-      <!-- 1. LEFT MINI RAIL DOCK -->
-      <div class="w-14 bg-[#0a0e0d] border-r border-white/10 flex flex-col justify-between items-center py-4 z-20">
+      <!-- 1. LEFT MINI RAIL DOCK (Visible on desktop) -->
+      <div class="hidden md:flex w-14 bg-[#0a0e0d] border-r border-white/10 flex-col justify-between items-center py-4 z-20 shrink-0">
         <div class="flex flex-col items-center gap-4">
           <button onclick="toggleHistoryDrawer()" class="p-2.5 rounded-xl hover:bg-white/10 text-stone-400 hover:text-white transition" title="Chats & Projects">
             <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -910,15 +972,18 @@
         </div>
       </div>
 
+      <!-- Backdrop for mobile history drawer -->
+      <div id="history-backdrop" onclick="toggleHistoryDrawer(false)" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"></div>
+
       <!-- 2. EXPANDABLE SECONDARY DRAWER (CHATS / PROJECTS) -->
-      <aside id="workspace-history-drawer" class="w-64 bg-[#0d1211] border-r border-white/10 flex flex-col justify-between z-10 transition-all duration-300">
+      <aside id="workspace-history-drawer" class="hidden md:hidden fixed md:static inset-y-0 left-0 w-72 md:w-64 bg-[#0d1211] border-r border-white/10 flex flex-col justify-between z-50 transition-all duration-300 shadow-2xl shrink-0">
         <div>
           <!-- Search & Close -->
           <div class="p-3 border-b border-white/10 flex items-center gap-2">
             <div class="relative flex-1">
               <input id="history-search-input" oninput="filterHistoryList(this.value)" type="text" placeholder="Search..." class="w-full bg-black/50 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400">
             </div>
-            <button onclick="toggleHistoryDrawer()" class="text-stone-400 hover:text-white p-1 rounded hover:bg-white/10">✕</button>
+            <button onclick="toggleHistoryDrawer(false)" class="text-stone-400 hover:text-white p-1 rounded hover:bg-white/10">✕</button>
           </div>
 
           <!-- Tabs: Chats / Projects -->
@@ -940,25 +1005,42 @@
       </aside>
 
       <!-- ================= STUDIO CENTER STAGE ================= -->
-      <div class="flex-1 flex overflow-hidden">
+      <div class="flex-1 flex flex-col overflow-hidden relative min-w-0">
+        
+        <!-- Studio Mobile Topbar (Visible on screens < md) -->
+        <div id="studio-mobile-bar" class="md:hidden flex items-center justify-between px-3 py-2 border-b border-white/10 bg-[#0c100e]/95 backdrop-blur shrink-0 z-20">
+          <div class="flex items-center gap-1.5">
+            <button onclick="toggleHistoryDrawer(true)" class="px-2.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-stone-300 text-xs flex items-center gap-1 hover:bg-white/10 active:scale-95 transition">
+              <span>💬</span> <span data-i18n="mob_history">История</span>
+            </button>
+            <button onclick="startNewSession()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-1 font-semibold hover:bg-emerald-500/20 active:scale-95 transition">
+              <span>+</span> <span data-i18n="mob_new">Новый</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="toggleMobileControlPanel(true)" id="mobile-control-panel-btn" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-1.5 font-bold hover:bg-emerald-500/25 active:scale-95 transition">
+              <span>⚙️</span> <span data-i18n="mob_settings">Модели & Параметры</span>
+            </button>
+          </div>
+        </div>
         
         <!-- ================= VIEW 2: AGENTS STUDIO (SCREENSHOT 1) ================= -->
-        <div id="view-agents" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-8">
-            <div class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-2xl">
+        <div id="view-agents" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-8">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-4 sm:mb-6 shadow-2xl">
               🤖
             </div>
-            <h2 class="text-2xl md:text-3xl font-bold text-white mb-3" data-i18n="agent_title">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3" data-i18n="agent_title">
               Create and communicate with your personal agent
             </h2>
-            <p class="text-xs md:text-sm text-stone-400 max-w-xl mx-auto mb-8 leading-relaxed" data-i18n="agent_desc">
+            <p class="text-xs md:text-sm text-stone-400 max-w-xl mx-auto mb-4 sm:mb-8 leading-relaxed" data-i18n="agent_desc">
               Agents memorize instructions, speech manner, study on your data, know how to look on the Internet, issue files, launch code, work in the neural networks GPT Image, Veo 3.1, Suno.
             </p>
 
             <!-- Agent Selector Dropdown -->
-            <div class="max-w-md mx-auto mb-8">
+            <div class="max-w-md mx-auto mb-4 sm:mb-8">
               <div class="relative">
-                <select id="agent-persona-select" onchange="onSelectAgentPersona(this.value)" class="w-full bg-[#111614] border border-white/15 hover:border-emerald-400 rounded-2xl px-4 py-3.5 text-xs text-white appearance-none focus:outline-none cursor-pointer transition shadow-lg">
+                <select id="agent-persona-select" onchange="onSelectAgentPersona(this.value)" class="w-full bg-[#111614] border border-white/15 hover:border-emerald-400 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white appearance-none focus:outline-none cursor-pointer transition shadow-lg">
                   <option value="agent_creative">🧠 Creative & Media Director (Veo, Kling, Nano Banana)</option>
                   <option value="agent_code">💻 Full-Stack & Neural Architect (Python, API, Code)</option>
                   <option value="agent_voice">🎙️ Voice & Audio Director (ElevenLabs, RVC, Suno)</option>
@@ -970,13 +1052,13 @@
             </div>
 
             <!-- Agent Chat Messages Stream -->
-            <div id="agent-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-6 max-h-96 overflow-y-auto p-4 rounded-2xl bg-black/40 border border-white/10"></div>
+            <div id="agent-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
           <!-- Bottom Prompt Input Box (Matching Syntx) -->
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
-              <textarea id="agent-prompt-input" rows="2" placeholder="Write your prompt or instructions for the agent..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <textarea id="agent-prompt-input" rows="2" placeholder="Write your prompt or instructions for the agent..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex items-center justify-between pt-2 border-t border-white/5">
                 <div class="flex items-center gap-3 text-stone-400 text-xs">
                   <button title="Attach reference file" class="hover:text-white transition">📎</button>
@@ -996,20 +1078,20 @@
           </div>
         </div>
 
-                <!-- ================= VIEW 3: LLM STUDIO (SCREENSHOT 2) ================= -->
-        <div id="view-text" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+        <!-- ================= VIEW 3: LLM STUDIO (SCREENSHOT 2) ================= -->
+        <div id="view-text" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- LLM Icon (SVG) -->
-            <div id="llm-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
-              <svg class="w-8 h-8 text-emerald-400 fill-current" viewBox="0 0 24 24">
+            <div id="llm-model-icon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
+              <svg class="w-7 h-7 sm:w-8 sm:h-8 text-emerald-400 fill-current" viewBox="0 0 24 24">
                 <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/>
               </svg>
             </div>
-            <h2 id="llm-model-title" class="text-2xl font-bold text-white mb-2">Google Gemini</h2>
-            <p id="llm-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-4 leading-relaxed">
+            <h2 id="llm-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Google Gemini</h2>
+            <p id="llm-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
               Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities. It is well suited for everyday work with text, code, research, and creative workflows.
             </p>
-            <div id="llm-capabilities-row" class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+            <div id="llm-capabilities-row" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
               <span class="text-emerald-400">Key capabilities:</span>
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">2M context</span> •
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">ultra fast</span> •
@@ -1017,18 +1099,18 @@
             </div>
 
             <!-- Chat messages stream -->
-            <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-6 max-h-96 overflow-y-auto p-4 rounded-2xl bg-black/40 border border-white/10"></div>
+            <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
           <!-- Bottom Prompt Box (Screenshot 2) -->
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1">🔒 Write your prompt...</span>
                 <span id="llm-char-count">0 / 25000</span>
               </div>
-              <textarea id="llm-prompt-input" oninput="document.getElementById('llm-char-count').textContent = this.value.length + ' / 25000'" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
-              <div class="flex items-center justify-between pt-2 border-t border-white/5">
+              <textarea id="llm-prompt-input" oninput="document.getElementById('llm-char-count').textContent = this.value.length + ' / 25000'" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5">
                 <div class="flex items-center gap-3 text-stone-400 text-xs">
                   <button title="Attach file" class="hover:text-white transition">📎</button>
                   <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300">
@@ -1051,17 +1133,17 @@
         </div>
 
         <!-- ================= VIEW 4: IMAGE STUDIO (SCREENSHOT 3 & 4) ================= -->
-        <div id="view-image" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+        <div id="view-image" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- Banana / Flux Icon -->
-            <div id="image-model-icon" class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
+            <div id="image-model-icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
               🍌
             </div>
-            <h2 id="image-model-title" class="text-2xl font-bold text-white mb-2">Nano Banana</h2>
-            <p id="image-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-4 leading-relaxed">
+            <h2 id="image-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Nano Banana</h2>
+            <p id="image-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
               Nano Banana 2 is suited for tasks with the highest quality requirements. It works precisely with references, preserves style, characters, and details more accurately.
             </p>
-            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
               <span class="text-emerald-400">Key capabilities:</span>
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">maximum quality</span> •
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">precise reference handling</span> •
@@ -1069,17 +1151,17 @@
             </div>
 
             <!-- Image Generation Live Gallery -->
-            <div id="image-generation-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto mb-6">
+            <div id="image-generation-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 max-w-2xl mx-auto mb-4 sm:mb-6">
               <!-- Dynamically populated -->
             </div>
           </div>
 
           <!-- Bottom Prompt Box (Screenshot 3: 9:16, 2K, Expander, Mic, ⚡ 3) -->
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
-              <textarea id="image-prompt-input" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <textarea id="image-prompt-input" rows="2" placeholder="Write your prompt..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   <button title="Attach reference image" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
                   <!-- Aspect Ratio Pill -->
                   <select id="image-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
@@ -1114,10 +1196,10 @@
         </div>
 
         <!-- ================= VIEW 5: VIDEO STUDIO (SCREENSHOTS 1, 2 & 3) ================= -->
-        <div id="view-video" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+        <div id="view-video" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- Kling Loop Ribbon Icon -->
-            <div id="video-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-4 shadow-xl">
+            <div id="video-model-icon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
               <svg class="w-8 h-8 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5-7.5-3.358-7.5-7.5 3.358-7.5 7.5-7.5zm0 3a4.5 4.5 0 100 9 4.5 4.5 0 000-9z"/>
               </svg>
@@ -1148,15 +1230,15 @@
           </div>
 
           <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 ⚡) -->
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1">🔒 Write your prompt and use @... to mention references</span>
                 <span id="video-char-count">0 / 35000</span>
               </div>
-              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 35000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <textarea id="video-prompt-input" oninput="document.getElementById('video-char-count').textContent = this.value.length + ' / 35000'" rows="2" placeholder="Describe video scene (e.g. Drone diving through neon cyberpunk skyscrapers...)" class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   <button title="Attach reference image or video" class="text-stone-400 hover:text-white p-1 text-xs">📎</button>
                   <select id="video-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[10px] text-stone-300 font-semibold focus:outline-none cursor-pointer">
                     <option value="16:9" selected>🖥️ 16:9</option>
@@ -1192,18 +1274,18 @@
           </div>
         </div>
 
-<!-- ================= VIEW 6: AUDIO & VOICE STUDIO (SCREENSHOT 4) ================= -->
-        <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+        <!-- ================= VIEW 6: AUDIO & VOICE STUDIO (SCREENSHOT 4) ================= -->
+        <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- Elevenlabs Vertical Double Bar Icon -->
-            <div id="audio-model-icon" class="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-xl tracking-tighter">
+            <div id="audio-model-icon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-xl sm:text-2xl font-black mx-auto mb-3 sm:mb-4 shadow-xl tracking-tighter">
               ||
             </div>
-            <h2 id="audio-model-title" class="text-2xl font-bold text-white mb-2">Elevenlabs</h2>
-            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 leading-relaxed">
+            <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Elevenlabs</h2>
+            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3 sm:mb-4 leading-relaxed">
               Eleven v4 creates natural, emotionally expressive speech with precise control through tags. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
-            <div class="flex items-center justify-center gap-2 text-[10px] font-semibold text-stone-400 mb-6">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
               <span class="text-emerald-400">Key capabilities:</span>
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">emotion tags</span> •
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">accent-free voice</span> •
@@ -1211,10 +1293,10 @@
             </div>
 
             <!-- Voice & Character Selector Card -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto text-left mb-6">
-              <div class="bg-[#111614] border border-white/10 rounded-2xl p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto text-left mb-4 sm:mb-6">
+              <div class="bg-[#111614] border border-white/10 rounded-2xl p-3.5 sm:p-4">
                 <label class="block text-xs font-bold text-emerald-400 mb-2">Select Character / Voice:</label>
-                <select id="audio-voice-select" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                <select id="audio-voice-select" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:outline-none">
                   <option value="21m0aC4C9KstEPqMsrxW">Rachel — Natural & Expressive</option>
                   <option value="AZnzlk1XvdvUeBnXmlld">Domi — Energetic & Modern</option>
                   <option value="EXAVITQu4vr4xnSDxMaL">Bella — Warm & Natural</option>
@@ -1227,7 +1309,7 @@
               </div>
 
               <!-- Audio Preview Player -->
-              <div class="bg-[#111614] border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
+              <div class="bg-[#111614] border border-white/10 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between">
                 <div class="text-xs font-bold text-stone-300 mb-2">Synthesized Audio Player:</div>
                 <audio id="audio-player-preview" controls class="w-full h-9"></audio>
                 <div id="audio-status-text" class="text-[11px] text-stone-500 mt-2">Ready to synthesize with tags like [laughing]</div>
@@ -1236,13 +1318,13 @@
           </div>
 
           <!-- Bottom Prompt Box (Screenshot 4: 0/10000, 🎚️, 🎙️, 0,4 ⚡) -->
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-3 shadow-2xl transition">
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 focus-within:border-emerald-400/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1">🔒 Type text with tags like [laughing] for more expressive speech...</span>
                 <span id="audio-char-count">0 / 10000</span>
               </div>
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-sm sm:text-xs text-white placeholder-stone-500 focus:outline-none resize-none"></textarea>
               <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-3 text-stone-400 text-xs">
                   <button title="Voice Settings" class="hover:text-white transition">🎚️</button>
@@ -1261,25 +1343,25 @@
           </div>
         </div>
 
-<!-- ================= VIEW 7: TOOLKIT / INPAINT STUDIO (SCREENSHOT 5) ================= -->
-        <div id="view-toolkit" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-6">
+        <!-- ================= VIEW 7: TOOLKIT / INPAINT STUDIO (SCREENSHOT 5) ================= -->
+        <div id="view-toolkit" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- Big Drag & Drop File Zone (Screenshot 5) -->
-            <div id="toolkit-dropzone" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-3xl p-12 transition bg-[#0d1211] cursor-pointer max-w-xl mx-auto mb-6 group shadow-2xl" onclick="document.getElementById('toolkit-file-input').click()">
+            <div id="toolkit-dropzone" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-3xl p-6 sm:p-10 md:p-12 transition bg-[#0d1211] cursor-pointer max-w-xl mx-auto mb-4 sm:mb-6 group shadow-2xl" onclick="document.getElementById('toolkit-file-input').click()">
               <input type="file" id="toolkit-file-input" class="hidden" accept="image/jpeg,image/png" onchange="handleToolkitUpload(this.files)">
-              <div class="w-14 h-14 rounded-2xl bg-white/5 text-stone-300 group-hover:text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-4 transition">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/5 text-stone-300 group-hover:text-emerald-400 flex items-center justify-center text-xl sm:text-2xl mx-auto mb-3 sm:mb-4 transition">
                 📤
               </div>
-              <h3 class="text-sm font-bold text-white mb-1">Drop file here or click to upload</h3>
-              <p class="text-[11px] text-stone-500">JPEG, PNG (max. 50MB) • 1 file remaining</p>
+              <h3 class="text-xs sm:text-sm font-bold text-white mb-1">Drop file here or click to upload</h3>
+              <p class="text-[10px] sm:text-[11px] text-stone-500">JPEG, PNG (max. 50MB) • 1 file remaining</p>
             </div>
 
             <!-- Upload Source Action Buttons (Screenshot 5) -->
-            <div class="flex items-center justify-center gap-3 max-w-md mx-auto mb-8">
-              <button onclick="document.getElementById('toolkit-file-input').click()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 max-w-md mx-auto mb-4 sm:mb-8">
+              <button onclick="document.getElementById('toolkit-file-input').click()" class="w-full sm:flex-1 flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
                 <span>📎</span> <span>Select from uploaded</span>
               </button>
-              <button onclick="openGeneratedSelector()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
+              <button onclick="openGeneratedSelector()" class="w-full sm:flex-1 flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-2xl bg-[#141b18] hover:bg-[#18221f] border border-white/10 hover:border-emerald-400/40 text-xs font-semibold text-stone-200 transition">
                 <span>📄</span> <span>Select from the generated</span>
               </button>
             </div>
@@ -1294,13 +1376,13 @@
             </div>
           </div>
 
-          <div class="max-w-3xl w-full mx-auto pb-4">
-            <div class="bg-[#121615] border border-white/15 rounded-2xl p-3 shadow-2xl flex items-center justify-between text-xs">
-              <div class="flex items-center gap-3">
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-4">
+            <div class="bg-[#121615] border border-white/15 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <button title="Brush highlight mask" class="text-stone-400 hover:text-emerald-400 transition flex items-center gap-1.5 font-medium text-xs">
-                  <span>🖌️</span> Brush Size: 24px
+                  <span>🖌️</span> Brush: 24px
                 </button>
-                <input type="range" min="5" max="80" value="24" class="w-28 accent-emerald-400">
+                <input type="range" min="5" max="80" value="24" class="w-24 sm:w-28 accent-emerald-400">
               </div>
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
@@ -1314,9 +1396,21 @@
 
       </div>
 
-            <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
-      <aside id="workspace-control-panel" class="w-72 bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-10">
+      <!-- Backdrop for mobile control panel -->
+      <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-40 md:hidden"></div>
+
+      <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
+      <aside id="workspace-control-panel" class="hidden md:block md:w-72 fixed md:static inset-y-0 right-0 w-80 max-w-[85vw] bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-50 shadow-2xl transition-all duration-300 shrink-0">
         
+        <!-- Mobile Drawer Header (Visible only on < md) -->
+        <div class="md:hidden flex items-center justify-between pb-3 border-b border-white/10 mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-base text-emerald-400">⚙️</span>
+            <span class="font-bold text-white text-xs sm:text-sm">Параметры и Модели</span>
+          </div>
+          <button onclick="toggleMobileControlPanel(false)" class="px-2.5 py-1 rounded-lg bg-white/10 text-stone-300 hover:text-white text-xs font-semibold">✕ Закрыть</button>
+        </div>
+
         <!-- Model Filter Info Header -->
         <div class="flex items-center justify-between text-stone-400 pb-2 border-b border-white/10">
           <span class="font-bold flex items-center gap-1.5 text-stone-300">
@@ -3064,6 +3158,65 @@
     </div>
   </div>
 
+  <!-- ================= 7. DEDICATED MODEL STATUS DASHBOARD MODAL (SYNTAX STYLE) ================= -->
+  <div id="status-page-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto" onclick="if(event.target === this) closeStatusModal()">
+    <div class="relative w-full max-w-4xl bg-[#141719] border border-white/10 rounded-2xl shadow-2xl p-4 sm:p-6 my-auto text-stone-200 overflow-hidden" onclick="event.stopPropagation()">
+      <!-- Close Button -->
+      <button onclick="closeStatusModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition z-10" title="Close">
+        <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- 1. Header Card (Exact replica from Screenshot 1) -->
+      <div class="bg-[#1c2023] border border-white/10 rounded-xl p-4 flex items-center justify-between mb-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold text-lg">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="text-base sm:text-lg font-black text-white tracking-wider">ZYKO.AI</span>
+        </div>
+        <div class="flex items-center gap-2 pr-8 sm:pr-0">
+          <span class="text-xs text-stone-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+            <span>🌐</span> <span class="hidden sm:inline">Global Engine Status</span> <span class="sm:hidden">Online</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- 2. Operational Banner (Exact mint pill from Screenshot 1) -->
+      <div class="bg-[#bbf7d0] text-[#14532d] rounded-xl px-4 py-3 flex items-center gap-2.5 mb-4 shadow-sm">
+        <div class="w-5 h-5 rounded-full bg-[#16a34a] text-white flex items-center justify-center text-xs font-black shrink-0">✓</div>
+        <span class="text-xs sm:text-sm font-semibold leading-tight">We're not aware of any issues affecting our systems</span>
+      </div>
+
+      <!-- 3. System Status Main Card -->
+      <div class="bg-[#1c2023] border border-white/10 rounded-xl p-3.5 sm:p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-white/10 gap-2.5">
+          <h3 class="text-base sm:text-lg font-bold text-white">System Status</h3>
+          <div class="flex items-center gap-2 text-xs text-stone-400">
+            <button class="hover:text-white transition p-1 text-sm font-bold">‹</button>
+            <span class="font-medium" id="status-date-range">Sep 2026 — Oct 2026.</span>
+            <button class="hover:text-white transition p-1 text-sm font-bold">›</button>
+          </div>
+        </div>
+
+        <!-- Segmented Control Tabs (ZYKO Web / ZYKO Bot) -->
+        <div class="grid grid-cols-2 gap-1.5 bg-[#121517] p-1 rounded-xl my-3.5 text-xs font-semibold">
+          <button onclick="switchStatusSystem('web')" id="btn-status-web" class="py-2 rounded-lg text-center transition bg-[#282d32] text-white shadow-sm">ZYKO Web</button>
+          <button onclick="switchStatusSystem('bot')" id="btn-status-bot" class="py-2 rounded-lg text-center transition text-stone-400 hover:text-white">ZYKO Bot</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative mb-3">
+          <input type="text" id="status-search-input" oninput="filterStatusComponents(this.value)" placeholder="Search 38+ models & engines (GPT, Flux, ElevenLabs, Claude...)..." class="w-full bg-[#121517] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400/60">
+        </div>
+
+        <!-- Components List Container -->
+        <div id="status-components-list" class="divide-y divide-white/5 max-h-[50vh] sm:max-h-[55vh] overflow-y-auto pr-1 no-scrollbar space-y-1">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
     // Global State
@@ -3160,7 +3313,10 @@
         profile_google_acc: "Google Account",
         profile_tg_acc: "Telegram Account",
         btn_change: "Change",
-        btn_link: "Link"
+        btn_link: "Link",
+        mob_history: "History",
+        mob_new: "New",
+        mob_settings: "Settings"
       },
       ru: {
         nav_trends: "Тренды",
@@ -3243,7 +3399,10 @@
         profile_google_acc: "Google аккаунт",
         profile_tg_acc: "Telegram аккаунт",
         btn_change: "Изменить",
-        btn_link: "Связать"
+        btn_link: "Связать",
+        mob_history: "История",
+        mob_new: "Новый",
+        mob_settings: "Параметры"
       },
       es: {
         nav_trends: "Tendencias",
@@ -3702,17 +3861,44 @@
       currentTab = tabId;
       window.location.hash = tabId;
 
-      // Update Nav pills
+      // Update Desktop Nav pills
       document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
       const activeBtn = document.getElementById(`tab-btn-${tabId}`);
       if (activeBtn) activeBtn.classList.add('active');
+
+      // Update Mobile Nav pills
+      document.querySelectorAll('.mob-nav-tab').forEach(btn => {
+        btn.classList.remove('active', 'bg-emerald-500', 'text-black', 'shadow-md', 'shadow-emerald-500/20');
+        btn.classList.add('text-stone-300', 'bg-white/5');
+      });
+      const activeMobBtn = document.getElementById(`mob-tab-btn-${tabId}`);
+      if (activeMobBtn) {
+        activeMobBtn.classList.remove('text-stone-300', 'bg-white/5');
+        activeMobBtn.classList.add('active', 'bg-emerald-500', 'text-black', 'shadow-md', 'shadow-emerald-500/20');
+        try {
+          activeMobBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        } catch(e) {}
+      }
+
+      // Close mobile drawers when switching tabs
+      toggleMobileControlPanel(false);
+      toggleHistoryDrawer(false);
 
       const viewTrends = document.getElementById('view-trends');
       const workspaceShell = document.getElementById('workspace-shell');
       const controlPanel = document.getElementById('workspace-control-panel');
       const studioViews = ['agents', 'text', 'image', 'video', 'audio', 'toolkit'];
-
       const userDash = document.getElementById('view-user-dashboard');
+
+      // Show/Hide mobile settings button based on tab
+      const mobControlBtn = document.getElementById('mobile-control-panel-btn');
+      if (mobControlBtn) {
+        if (tabId === 'agents' || tabId === 'trends' || tabId === 'profile') {
+          mobControlBtn.classList.add('hidden');
+        } else {
+          mobControlBtn.classList.remove('hidden');
+        }
+      }
 
       if (tabId === 'trends') {
         viewTrends.classList.remove('hidden');
@@ -3736,11 +3922,18 @@
           }
         });
 
-        // Screenshot 1: In 'agents' tab, there is NO model choice on the right panel!
-        if (tabId === 'agents') {
-          controlPanel.classList.add('hidden');
+        // Responsive control panel logic
+        if (window.innerWidth >= 768) {
+          if (tabId === 'agents') {
+            controlPanel.classList.add('hidden');
+          } else {
+            controlPanel.classList.remove('hidden');
+          }
         } else {
-          controlPanel.classList.remove('hidden');
+          controlPanel.classList.add('hidden');
+        }
+
+        if (tabId !== 'agents') {
           // Switch right control groups: text, image, video, audio, toolkit
           ['text', 'image', 'video', 'audio', 'toolkit'].forEach(g => {
             const grp = document.getElementById(`control-group-${g}`);
@@ -4129,10 +4322,81 @@
       }
     }
 
-    function toggleHistoryDrawer() {
+    function toggleHistoryDrawer(forceOpen) {
       const drawer = document.getElementById('workspace-history-drawer');
+      const backdrop = document.getElementById('history-backdrop');
+      if (!drawer) return;
+      const isCurrentlyOpen = !drawer.classList.contains('hidden');
+      const shouldOpen = forceOpen !== undefined ? forceOpen : !isCurrentlyOpen;
+
+      if (shouldOpen) {
+        drawer.classList.remove('hidden');
+        if (backdrop && window.innerWidth < 768) backdrop.classList.remove('hidden');
+      } else {
+        drawer.classList.add('hidden');
+        if (backdrop) backdrop.classList.add('hidden');
+      }
+    }
+
+    function toggleMobileControlPanel(forceOpen) {
+      const panel = document.getElementById('workspace-control-panel');
+      const backdrop = document.getElementById('mobile-control-backdrop');
+      if (!panel) return;
+      const isMobile = window.innerWidth < 768;
+      if (!isMobile) return;
+
+      const isCurrentlyOpen = panel.getAttribute('data-mobile-open') === 'true' && !panel.classList.contains('hidden');
+      const shouldOpen = forceOpen !== undefined ? forceOpen : !isCurrentlyOpen;
+
+      if (shouldOpen) {
+        panel.classList.remove('hidden');
+        panel.setAttribute('data-mobile-open', 'true');
+        if (backdrop) backdrop.classList.remove('hidden');
+      } else {
+        panel.setAttribute('data-mobile-open', 'false');
+        panel.classList.add('hidden');
+        if (backdrop) backdrop.classList.add('hidden');
+      }
+    }
+
+    // Notifications Drawer Controller
+    function toggleNotificationDrawer(e) {
+      if (e) e.stopPropagation();
+      const drawer = document.getElementById('notification-drawer');
+      if (!drawer) return;
       drawer.classList.toggle('hidden');
     }
+
+    function closeNotificationDrawer() {
+      const drawer = document.getElementById('notification-drawer');
+      if (drawer) drawer.classList.add('hidden');
+    }
+
+    function markAllNotificationsRead() {
+      const dot = document.getElementById('notification-unread-dot');
+      const badge = document.getElementById('notification-count-badge');
+      if (dot) dot.classList.add('hidden');
+      if (badge) {
+        badge.textContent = '0 новых';
+        badge.className = 'bg-white/10 text-stone-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full';
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      const panel = document.getElementById('workspace-control-panel');
+      const backdrop = document.getElementById('mobile-control-backdrop');
+      if (!panel) return;
+      if (window.innerWidth >= 768) {
+        if (currentTab !== 'agents' && currentTab !== 'trends' && currentTab !== 'profile') {
+          panel.classList.remove('hidden');
+        }
+        if (backdrop) backdrop.classList.add('hidden');
+      } else {
+        if (panel.getAttribute('data-mobile-open') !== 'true') {
+          panel.classList.add('hidden');
+        }
+      }
+    });
 
     function startNewSession() {
       document.getElementById('agent-chat-messages').innerHTML = '';
@@ -4170,26 +4434,382 @@
       document.getElementById('info-modal').classList.remove('hidden');
     }
 
+    // 13. Model Status Dashboard System (Faithful to SYNTX Screenshots)
+    const STATUS_COMPONENTS_DATA = [
+      { id: 'tg_bot', name: 'Telegram Bot Status', system: 'bot', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      {
+        id: 'chatgpt', name: 'Chat GPT', system: 'both', uptime: '99.77%', status: 'operational', history: 'chatgpt_incidents', count: 24,
+        components: [
+          { name: 'GPT-4o Omnimodal (High-res Vision)', uptime: '100%' },
+          { name: 'GPT-4o mini (High-speed & Lightweight)', uptime: '100%' },
+          { name: 'o1 Reasoning Engine (Math & Code)', uptime: '99.8%' },
+          { name: 'o3-mini Fast Deep-think', uptime: '100%' },
+          { name: 'ChatGPT Plus Turbo v6', uptime: '100%' },
+          { name: 'DALL-E 3 Image Generation', uptime: '100%' },
+          { name: 'GPT-4 Turbo Vision', uptime: '100%' },
+          { name: 'GPT-4.5 Orion Research Preview', uptime: '99.5%' },
+          { name: 'Voice Whisper Large v3', uptime: '100%' },
+          { name: 'TTS-1 HD High Quality Voice', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'flux', name: 'Flux', system: 'both', uptime: '99.53%', status: 'operational', history: 'flux_incidents', count: 9,
+        components: [
+          { name: 'Flux 1.1 Pro (BFL API)', uptime: '100%' },
+          { name: 'Flux Schnell (4-step Ultra)', uptime: '100%' },
+          { name: 'Flux Realism LoRA v2.4', uptime: '99.2%' },
+          { name: 'Flux Dev High Definition', uptime: '100%' },
+          { name: 'Flux Fill & Inpaint Model', uptime: '100%' },
+          { name: 'Flux Redux Image-to-Image', uptime: '100%' },
+          { name: 'Flux Depth ControlNet', uptime: '99.7%' },
+          { name: 'Flux Canny Edge Preserver', uptime: '100%' },
+          { name: 'Flux Ultra 2K Raw Output', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'elevenlabs', name: 'ElevenLabs', system: 'both', uptime: '99.95%', status: 'operational', history: 'elevenlabs_incidents', count: 4,
+        components: [
+          { name: 'Eleven Multilingual v2', uptime: '100%' },
+          { name: 'Eleven Turbo v2.5 (Sub-100ms)', uptime: '100%' },
+          { name: 'Instant Voice Cloning Engine', uptime: '99.8%' },
+          { name: 'Sound Effects (Cinematic SFX)', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'luma', name: 'Luma', system: 'both', uptime: '99.80%', status: 'operational', history: 'luma_incidents', count: 3,
+        components: [
+          { name: 'Dream Machine 1.5 High-Motion', uptime: '100%' },
+          { name: 'Luma Photon Image Gen', uptime: '99.6%' },
+          { name: 'Luma Keyframes Camera Control', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'runway', name: 'Runway', system: 'both', uptime: '98.51%', status: 'operational', history: 'runway_incidents', count: 3,
+        components: [
+          { name: 'Gen-3 Alpha Cinematic', uptime: '98.5%' },
+          { name: 'Gen-3 Alpha Turbo', uptime: '99.1%' },
+          { name: 'Motion Brush & Director Mode', uptime: '98.0%' }
+        ]
+      },
+      {
+        id: 'kling', name: 'Kling', system: 'both', uptime: '99.89%', status: 'operational', history: 'kling_incidents', count: 4,
+        components: [
+          { name: 'Kling 4.0 HQ (30s Extended)', uptime: '100%' },
+          { name: 'Kling 1.5 Standard 1080p', uptime: '99.8%' },
+          { name: 'Kling Lip-Sync Multilingual', uptime: '100%' },
+          { name: 'Kling Camera Motion Control', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'minimax', name: 'MiniMax', system: 'both', uptime: '99.90%', status: 'operational', history: 'minimax_incidents', count: 3,
+        components: [
+          { name: 'Hailuo Video-01 Cinematic', uptime: '100%' },
+          { name: 'MiniMax Speech 2.0 HD', uptime: '99.8%' },
+          { name: 'MiniMax Text 01 4M Context', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'google_veo', name: 'Google Veo', system: 'both', uptime: '99.79%', status: 'operational', history: 'veo_incidents', count: 2,
+        components: [
+          { name: 'Google Veo 3.1 1080p Cinematic', uptime: '99.8%' },
+          { name: 'Google Veo 2.0 HD Generation', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'gemini', name: 'Gemini', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', count: 8,
+        components: [
+          { name: 'Gemini 2.5 Pro (2M Context)', uptime: '100%' },
+          { name: 'Gemini 2.0 Flash Fast', uptime: '100%' },
+          { name: 'Gemini 2.0 Flash Thinking', uptime: '100%' },
+          { name: 'Gemini 1.5 Pro Long-context', uptime: '100%' },
+          { name: 'Gemini Multimodal Live Stream', uptime: '100%' },
+          { name: 'Gemini Code Assist Engine', uptime: '100%' },
+          { name: 'Imagen 3 on Vertex AI', uptime: '100%' },
+          { name: 'Gemini Web Search Grounding', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'sora_images', name: 'Sora Images', system: 'both', uptime: '99.68%', status: 'operational', history: 'sora_incidents', count: 5,
+        components: [
+          { name: 'Sora Diffusion Frame Synth', uptime: '99.7%' },
+          { name: 'Sora Photoreal 4K', uptime: '100%' },
+          { name: 'Sora Temporal Consistency Layer', uptime: '99.4%' },
+          { name: 'Sora Character Sheet Consistency', uptime: '100%' },
+          { name: 'Sora Cinematic Aspect Ratios', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'higgsfield', name: 'Higgsfield', system: 'both', uptime: '99.94%', status: 'operational', history: 'higgsfield_incidents', count: 4,
+        components: [
+          { name: 'DoP Cinema Camera Controls', uptime: '100%' },
+          { name: 'Anime Action Dynamics', uptime: '99.8%' },
+          { name: 'Motion Presets VFX', uptime: '100%' },
+          { name: 'Higgsfield High Frame Rate', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'bytedance', name: 'Bytedance', system: 'both', uptime: '99.60%', status: 'operational', history: 'bytedance_incidents', count: 3,
+        components: [
+          { name: 'Seaweed Video Generator', uptime: '99.5%' },
+          { name: 'Doubao 1.5 Pro', uptime: '100%' },
+          { name: 'PixDance Character Mover', uptime: '99.3%' }
+        ]
+      },
+      {
+        id: 'nano_banana', name: 'Nano Banana', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', count: 4,
+        components: [
+          { name: 'Nano Banana 2.1 Ultra Photoreal', uptime: '100%' },
+          { name: 'Nano Banana Speed Edition', uptime: '100%' },
+          { name: 'Style Match & Reference Lock', uptime: '100%' },
+          { name: 'Prompt Auto-Expander Engine', uptime: '100%' }
+        ]
+      },
+      { id: 'deepseek_r1', name: 'DeepSeek R1', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      {
+        id: 'qwen', name: 'Qwen', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', count: 5,
+        components: [
+          { name: 'Qwen 2.5 Max (Flagship)', uptime: '100%' },
+          { name: 'Qwen 2.5 Coder 32B Instruct', uptime: '100%' },
+          { name: 'Qwen 2.5 72B High-Precision', uptime: '100%' },
+          { name: 'Qwen VL Max (Visual Language)', uptime: '100%' },
+          { name: 'Qwen Math Olympiad Reasoning', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'claude', name: 'Claude', system: 'both', uptime: '100%', status: 'operational', history: 'claude_incidents', count: 15,
+        components: [
+          { name: 'Claude 3.7 Sonnet (Hybrid Reasoning)', uptime: '100%' },
+          { name: 'Claude 3.5 Sonnet v2', uptime: '100%' },
+          { name: 'Claude 3.5 Haiku (Lightning)', uptime: '100%' },
+          { name: 'Claude 3 Opus (Deep Analysis)', uptime: '100%' },
+          { name: 'Claude Interactive Artifacts Engine', uptime: '100%' },
+          { name: 'Claude Extended Context (200k)', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'grok', name: 'Grok', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', count: 5,
+        components: [
+          { name: 'Grok 3 Thinking (100k Context)', uptime: '100%' },
+          { name: 'Grok 2 Multimodal Vision', uptime: '100%' },
+          { name: 'Grok 2 Mini Speed', uptime: '100%' },
+          { name: 'X Real-time Search Grounding', uptime: '100%' },
+          { name: 'Grok Unfiltered Logic Core', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'perplexity', name: 'Perplexity', system: 'both', uptime: '99.97%', status: 'operational', history: 'perplexity_incidents', count: 3,
+        components: [
+          { name: 'Sonar Deep Research (Web Index)', uptime: '100%' },
+          { name: 'Sonar Pro Academic Citations', uptime: '99.9%' },
+          { name: 'Sonar Small Live Search', uptime: '100%' }
+        ]
+      },
+      {
+        id: 'grok_image', name: 'Grok Image', system: 'both', uptime: '99.21%', status: 'operational', history: 'grok_img_incidents', count: 4,
+        components: [
+          { name: 'Aurora Flux Photorealism', uptime: '99.1%' },
+          { name: 'Flux Uncensored Creative', uptime: '99.3%' },
+          { name: 'Flux High Dynamic Range', uptime: '99.5%' },
+          { name: 'Fast Preview Renderer', uptime: '100%' }
+        ]
+      },
+      { id: 'faceswap', name: 'FaceSwap', system: 'both', uptime: '99.55%', status: 'operational', history: 'faceswap_incidents', components: [] },
+      { id: 'ideogram', name: 'IdeoGram', system: 'both', uptime: '99.81%', status: 'operational', history: 'ideogram_incidents', components: [] },
+      { id: 'photomaker', name: 'PhotoMaker', system: 'both', uptime: '100%', status: 'operational', history: 'photomaker_incidents', components: [] },
+      { id: 'image_editor', name: 'Image Editor', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'did_avatars', name: 'D-ID Avatars', system: 'both', uptime: '99.74%', status: 'operational', history: 'did_incidents', components: [] },
+      { id: 'suno', name: 'Suno', system: 'both', uptime: '99.64%', status: 'operational', history: 'suno_incidents', components: [] },
+      { id: 'audio2text', name: 'Audio 2 Text', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'pika', name: 'Pika', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'stable_diffusion', name: 'Stable Diffusion', system: 'both', uptime: '99.66%', status: 'operational', history: 'sd_incidents', components: [] },
+      { id: 'switch_x', name: 'Switch X', system: 'web', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'text_to_speech', name: 'Text To Speech', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'flux_video', name: 'Flux Video', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'glm_52', name: 'GLM 5.2', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'gemini_4_argon', name: 'Gemini 4 Argon', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'gemini_4_barium', name: 'Gemini 4 Barium', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'deepseek_v4_pro', name: 'DeepSeek V4 Pro', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'deepseek_v41_flash', name: 'DeepSeek V4.1 Flash', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] },
+      { id: 'glm_53', name: 'GLM 5.3', system: 'both', uptime: '100%', status: 'operational', history: 'all_green', components: [] }
+    ];
+
+    let currentStatusSystem = 'web';
+
+    function generateHistoryBars(historyKey) {
+      const totalBars = 54;
+      let bars = [];
+      for (let i = 0; i < totalBars; i++) {
+        let color = '#10b981'; // Green
+        let tooltip = `Day ${i + 1}: 100% Operational`;
+
+        if (historyKey === 'chatgpt_incidents' && (i >= 39 && i <= 43)) {
+          color = '#ef4444'; // Red
+          tooltip = `Day ${i + 1}: Latency Degraded (Resolved)`;
+        } else if (historyKey === 'chatgpt_incidents' && i === 52) {
+          color = '#ef4444';
+          tooltip = `Day ${i + 1}: Service Restart`;
+        } else if (historyKey === 'flux_incidents' && (i >= 38 && i <= 40)) {
+          color = '#ef4444';
+          tooltip = `Day ${i + 1}: Queue Overload`;
+        } else if (historyKey === 'elevenlabs_incidents' && i === 47) {
+          color = '#ef4444';
+          tooltip = `Day ${i + 1}: API Maintenance`;
+        } else if (historyKey === 'luma_incidents' && (i === 3 || i === 33 || i === 52)) {
+          color = '#ef4444';
+          tooltip = `Day ${i + 1}: Rendering Cluster Reboot`;
+        } else if (historyKey === 'runway_incidents') {
+          if (i >= 26 && i <= 28) { color = '#f59e0b'; tooltip = `Day ${i + 1}: Queue Lag`; }
+          else if (i >= 29 && i <= 32) { color = '#ef4444'; tooltip = `Day ${i + 1}: Partial Outage`; }
+          else if (i === 34) { color = '#ef4444'; tooltip = `Day ${i + 1}: Fix Applied`; }
+          else if (i === 42) { color = '#f59e0b'; tooltip = `Day ${i + 1}: High Load`; }
+        } else if (historyKey === 'kling_incidents' && (i === 11 || i === 46)) {
+          color = '#ef4444'; tooltip = `Day ${i + 1}: Minor Incident`;
+        } else if (historyKey === 'minimax_incidents' && (i === 13 || i === 16)) {
+          color = '#ef4444'; tooltip = `Day ${i + 1}: High Traffic Spike`;
+        } else if (historyKey === 'veo_incidents') {
+          if (i === 3 || i === 7 || i === 10) { color = '#ef4444'; tooltip = `Day ${i + 1}: Latency`; }
+          else if (i === 31) { color = '#3b82f6'; tooltip = `Day ${i + 1}: Scheduled Maintenance`; }
+          else if (i === 33) { color = '#f59e0b'; tooltip = `Day ${i + 1}: Minor Degradation`; }
+        } else if (historyKey === 'sora_incidents' && (i >= 32 && i <= 34 || i === 51)) {
+          color = '#ef4444'; tooltip = `Day ${i + 1}: Compute Spike`;
+        } else if (historyKey === 'higgsfield_incidents' && (i === 39 || i === 40)) {
+          color = '#ef4444'; tooltip = `Day ${i + 1}: Node Recovery`;
+        } else if (historyKey === 'bytedance_incidents') {
+          if (i === 34) { color = '#ef4444'; }
+          else if (i === 39 || i === 40) { color = '#f59e0b'; }
+          else if (i === 43) { color = '#ef4444'; }
+        } else if (historyKey === 'claude_incidents' && (i >= 3 && i <= 5)) {
+          color = '#f59e0b'; tooltip = `Day ${i + 1}: High Demand Rate Limit`;
+        } else if (historyKey === 'perplexity_incidents' && i === 52) {
+          color = '#ef4444'; tooltip = `Day ${i + 1}: Search Grounding Glitch`;
+        } else if (historyKey === 'grok_img_incidents') {
+          if (i >= 3 && i <= 4) color = '#f59e0b';
+          else if (i >= 40 && i <= 43) color = '#ef4444';
+          else if (i >= 47 && i <= 49) color = '#ef4444';
+        } else if (historyKey === 'faceswap_incidents' && (i === 22 || i === 50)) {
+          color = '#ef4444';
+        } else if (historyKey === 'ideogram_incidents' && i === 20) {
+          color = '#ef4444';
+        } else if (historyKey === 'photomaker_incidents' && i === 24) {
+          color = '#3b82f6'; tooltip = `Day ${i + 1}: Model Update`;
+        } else if (historyKey === 'did_incidents' && i === 50) {
+          color = '#ef4444';
+        } else if (historyKey === 'suno_incidents') {
+          if (i === 1) color = '#f59e0b';
+          else if (i === 11 || i === 22 || i === 31 || i === 32 || i === 52) color = '#ef4444';
+        } else if (historyKey === 'sd_incidents' && (i === 36 || i === 51)) {
+          color = '#ef4444';
+        }
+
+        bars.push(`<span class="inline-block h-3.5 sm:h-4 w-[3.5px] sm:w-[4.5px] md:w-[5px] rounded-sm transition-transform hover:scale-125 cursor-pointer mx-[0.5px]" style="background-color: ${color};" title="${tooltip}"></span>`);
+      }
+      return bars.join('');
+    }
+
+    function renderStatusComponents(searchFilter = '') {
+      const container = document.getElementById('status-components-list');
+      if (!container) return;
+
+      const q = (searchFilter || '').trim().toLowerCase();
+      const filtered = STATUS_COMPONENTS_DATA.filter(item => {
+        const matchesSys = (currentStatusSystem === 'web' || item.system === 'bot' || item.system === 'both');
+        if (!matchesSys) return false;
+        if (!q) return true;
+        const inName = item.name.toLowerCase().includes(q);
+        const inSubs = item.components && item.components.some(s => s.name.toLowerCase().includes(q));
+        return inName || inSubs;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-stone-500 text-xs">No models or engines found matching "${searchFilter}".</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const barsHtml = generateHistoryBars(item.history);
+        const hasSubs = item.components && item.components.length > 0;
+        return `
+          <div class="py-3 px-1 transition border-b border-white/5 hover:bg-white/[0.02] last:border-0">
+            <div class="flex items-center justify-between gap-2 mb-1.5 cursor-pointer" onclick="toggleStatusComponent('${item.id}')">
+              <div class="flex items-center gap-2 flex-wrap min-w-0">
+                <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                <span class="font-bold text-white text-xs sm:text-sm truncate">${item.name}</span>
+                ${item.count ? `
+                  <span class="text-[10px] sm:text-[11px] text-stone-400 hover:text-white bg-white/5 border border-white/10 px-2 py-0.5 rounded-full flex items-center gap-1 transition">
+                    <span>${item.count} components</span> <span id="status-arrow-${item.id}">▾</span>
+                  </span>
+                ` : ''}
+              </div>
+              <div class="text-[11px] sm:text-xs text-stone-400 font-medium shrink-0">
+                Uptime <span class="text-stone-200 font-semibold">${item.uptime}</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between overflow-x-auto no-scrollbar py-1">
+              ${barsHtml}
+            </div>
+            ${hasSubs ? `
+              <div id="status-sub-${item.id}" class="hidden mt-2 pt-2 pl-3 sm:pl-4 border-l-2 border-emerald-500/30 space-y-1.5 bg-black/25 p-2 rounded-xl text-xs">
+                ${item.components.map(sub => `
+                  <div class="flex items-center justify-between text-xs py-1 border-b border-white/5 last:border-0">
+                    <div class="flex items-center gap-2 min-w-0">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+                      <span class="text-stone-300 font-medium text-[11px] sm:text-xs truncate">${sub.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                      <span class="text-[10px] text-emerald-400 font-semibold">Operational</span>
+                      <span class="text-[11px] text-stone-400 font-medium">${sub.uptime}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleStatusComponent(id) {
+      const sub = document.getElementById(`status-sub-${id}`);
+      const arrow = document.getElementById(`status-arrow-${id}`);
+      if (!sub) return;
+      sub.classList.toggle('hidden');
+      if (arrow) {
+        arrow.textContent = sub.classList.contains('hidden') ? '▾' : '▴';
+      }
+    }
+
+    function switchStatusSystem(sys) {
+      currentStatusSystem = sys;
+      const btnWeb = document.getElementById('btn-status-web');
+      const btnBot = document.getElementById('btn-status-bot');
+      if (btnWeb && btnBot) {
+        if (sys === 'web') {
+          btnWeb.className = 'py-2 rounded-lg text-center transition bg-[#282d32] text-white shadow-sm';
+          btnBot.className = 'py-2 rounded-lg text-center transition text-stone-400 hover:text-white';
+        } else {
+          btnBot.className = 'py-2 rounded-lg text-center transition bg-[#282d32] text-white shadow-sm';
+          btnWeb.className = 'py-2 rounded-lg text-center transition text-stone-400 hover:text-white';
+        }
+      }
+      const searchInput = document.getElementById('status-search-input');
+      renderStatusComponents(searchInput ? searchInput.value : '');
+    }
+
+    function filterStatusComponents(query) {
+      renderStatusComponents(query);
+    }
+
     function openStatusModal() {
-      document.getElementById('info-modal-icon').textContent = '⚡';
-      document.getElementById('info-modal-title').textContent = 'Model Operational Status';
-      document.getElementById('info-modal-content').innerHTML = `
-        <div class="space-y-2">
-          <div class="flex justify-between items-center p-2.5 rounded-xl bg-white/5 border border-white/10">
-            <span>Nano Banana 2.1</span> <span class="text-emerald-400 font-bold">100% Operational</span>
-          </div>
-          <div class="flex justify-between items-center p-2.5 rounded-xl bg-white/5 border border-white/10">
-            <span>Kling 1.5 HD & Wan 3.0</span> <span class="text-emerald-400 font-bold">99.9% Operational</span>
-          </div>
-          <div class="flex justify-between items-center p-2.5 rounded-xl bg-white/5 border border-white/10">
-            <span>ElevenLabs Voice Pool</span> <span class="text-emerald-400 font-bold">99.8% Operational</span>
-          </div>
-          <div class="flex justify-between items-center p-2.5 rounded-xl bg-white/5 border border-white/10">
-            <span>ChatGPT & Claude 3.7</span> <span class="text-emerald-400 font-bold">100% Operational</span>
-          </div>
-        </div>
-      `;
-      document.getElementById('info-modal').classList.remove('hidden');
+      const modal = document.getElementById('status-page-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        renderStatusComponents();
+      }
+    }
+
+    function closeStatusModal() {
+      const modal = document.getElementById('status-page-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function closeInfoModal() {
@@ -5126,6 +5746,14 @@
       if (burgerMenu && !burgerMenu.classList.contains('hidden')) {
         if (!burgerMenu.contains(e.target) && (!burgerBtn || !burgerBtn.contains(e.target))) {
           closeBurgerDropdown();
+        }
+      }
+
+      const notifDrawer = document.getElementById('notification-drawer');
+      const notifBtn = document.getElementById('notification-bell-btn');
+      if (notifDrawer && !notifDrawer.classList.contains('hidden')) {
+        if (!notifDrawer.contains(e.target) && (!notifBtn || !notifBtn.contains(e.target))) {
+          closeNotificationDrawer();
         }
       }
     });
