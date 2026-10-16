@@ -4668,21 +4668,37 @@
           const tokEl = document.getElementById('admin-stat-tokens');
           const genEl = document.getElementById('admin-stat-gens');
 
-          if (uEl) uEl.textContent = (ov.users_count || 0).toLocaleString();
-          if (txEl) txEl.textContent = (ov.tx_count || 0).toLocaleString();
-          if (revEl) revEl.textContent = `${(ov.rev_eur || 0).toFixed(2)} € / ${(ov.rev_rub || 0).toFixed(0)} ₽`;
-          if (tokEl) tokEl.textContent = `${Math.round(ov.total_tokens || 0).toLocaleString()} ⚡`;
-          if (genEl) genEl.textContent = (ov.gens_count || 0).toLocaleString();
+          const usersCount = ov.total_users ?? ov.users_count ?? 0;
+          const txCount = ov.completed_transactions ?? ov.tx_count ?? 0;
+          const revenue = ov.total_revenue ?? ov.rev_eur ?? 0;
+          const tokensCount = ov.total_tokens ?? 0;
+          const gensCount = ov.total_generations ?? ov.gens_count ?? 0;
 
-          // Tiers breakdown
+          if (uEl) uEl.textContent = Number(usersCount).toLocaleString();
+          if (txEl) txEl.textContent = Number(txCount).toLocaleString();
+          if (revEl) revEl.textContent = `${Number(revenue).toFixed(2)} €`;
+          if (tokEl) tokEl.textContent = `${Math.round(Number(tokensCount)).toLocaleString()} ⚡`;
+          if (genEl) genEl.textContent = Number(gensCount).toLocaleString();
+
+          // Tiers breakdown (supports array or dict)
           const tiersEl = document.getElementById('admin-stat-tiers');
-          if (tiersEl && ov.tier_counts) {
-            tiersEl.innerHTML = ov.tier_counts.map(tc => `
-              <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/30 border border-white/5">
-                <span class="font-semibold text-stone-200">${tc.tier}</span>
-                <span class="font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-lg border border-emerald-500/20">${tc.count} чел.</span>
-              </div>
-            `).join('');
+          if (tiersEl) {
+            let tierList = [];
+            if (Array.isArray(ov.tier_counts)) {
+              tierList = ov.tier_counts;
+            } else if (ov.tier_distribution && typeof ov.tier_distribution === 'object') {
+              tierList = Object.entries(ov.tier_distribution).map(([tier, count]) => ({ tier, count }));
+            }
+            if (tierList.length === 0) {
+              tiersEl.innerHTML = '<div class="text-stone-500 text-center py-2">Все пользователи на Free тарифе</div>';
+            } else {
+              tiersEl.innerHTML = tierList.map(tc => `
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/30 border border-white/5">
+                  <span class="font-semibold text-stone-200">${tc.tier || 'Free'}</span>
+                  <span class="font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-lg border border-emerald-500/20">${tc.count} чел.</span>
+                </div>
+              `).join('');
+            }
           }
 
           if (data.settings) {
@@ -4936,24 +4952,27 @@
 
     // Tab 5: Settings & Announcement Banner
     function populateBannerInputs(settings) {
-      if (settings.announcement_banner_text) {
+      const text = settings.announcement_banner_text || settings.banner_text;
+      if (text) {
         const input = document.getElementById('admin-setting-banner-text');
-        if (input) input.value = settings.announcement_banner_text;
+        if (input) input.value = text;
         const promo = document.getElementById('promo-text');
-        if (promo) promo.textContent = settings.announcement_banner_text;
+        if (promo) promo.textContent = text;
       }
-      if (settings.announcement_banner_btn) {
+      const btn = settings.announcement_banner_btn || settings.banner_btn || 'Create Video';
+      if (btn) {
         const btnInput = document.getElementById('admin-setting-banner-btn-text');
-        if (btnInput) btnInput.value = settings.announcement_banner_btn;
+        if (btnInput) btnInput.value = btn;
         const promoBtn = document.getElementById('promo-action-btn');
-        if (promoBtn) promoBtn.textContent = settings.announcement_banner_btn;
+        if (promoBtn) promoBtn.textContent = btn;
       }
-      if (settings.announcement_banner_tab) {
+      const tab = settings.announcement_banner_tab || settings.banner_link_tab || 'video';
+      if (tab) {
         const tabInput = document.getElementById('admin-setting-banner-tab');
-        if (tabInput) tabInput.value = settings.announcement_banner_tab;
+        if (tabInput) tabInput.value = tab;
         const promoBtn = document.getElementById('promo-action-btn');
         if (promoBtn) {
-          promoBtn.onclick = () => switchTab(settings.announcement_banner_tab);
+          promoBtn.onclick = () => switchTab(tab);
         }
       }
     }
@@ -4977,21 +4996,38 @@
       const targetTab = document.getElementById('admin-setting-banner-tab').value;
 
       try {
-        await fetch('/api/admin/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: 'announcement_banner_text', value: text })
-        });
-        await fetch('/api/admin/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: 'announcement_banner_btn', value: btnText })
-        });
-        await fetch('/api/admin/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: 'announcement_banner_tab', value: targetTab })
-        });
+        await Promise.all([
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'announcement_banner_text', value: text })
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'banner_text', value: text })
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'announcement_banner_btn', value: btnText })
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'banner_btn', value: btnText })
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'announcement_banner_tab', value: targetTab })
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'banner_link_tab', value: targetTab })
+          })
+        ]);
 
         populateBannerInputs({
           announcement_banner_text: text,
