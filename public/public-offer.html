@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Agreement (Public Offer) • ZYKO.AI</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0b0d0e;
+      color: #d1d5db;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0d0e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272a2e;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f444a;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-[#0b0d0e]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Left: Language Dropdown (Exact Replica from Screenshot) -->
+      <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
+        <button onclick="toggleLangDropdown()" id="lang-toggle-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#181b1e] hover:bg-[#202428] border border-white/10 text-xs sm:text-sm font-medium text-stone-200 transition shadow-sm">
+          <span id="current-lang-flag">🇬🇧</span>
+          <span id="current-lang-name">English</span>
+          <svg class="w-3.5 h-3.5 text-stone-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="lang-menu" class="hidden absolute left-0 mt-2 w-44 rounded-2xl bg-[#16191c] border border-white/10 shadow-2xl p-1.5 z-50 text-xs sm:text-sm divide-y divide-white/5">
+          <div class="space-y-0.5">
+            <button onclick="selectLanguage('en')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇬🇧</span> <span>English</span>
+            </button>
+            <button onclick="selectLanguage('ru')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇷🇺</span> <span>Русский</span>
+            </button>
+            <button onclick="selectLanguage('es')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇪🇸</span> <span>Español</span>
+            </button>
+            <button onclick="selectLanguage('pt')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇧🇷</span> <span>Português</span>
+            </button>
+            <button onclick="selectLanguage('de')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇩🇪</span> <span>Deutsch</span>
+            </button>
+            <button onclick="selectLanguage('lv')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇱🇻</span> <span>Latviešu</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Switch Documents (Privacy Policy / Public Offer) -->
+      <div class="flex items-center gap-1.5 bg-[#141719] border border-white/10 p-1 rounded-xl text-xs font-semibold">
+        <a href="/privacy-policy" class="px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition">Privacy Policy</a>
+        <a href="/public-offer" class="px-3 py-1.5 rounded-lg bg-[#272c30] text-white shadow-sm transition">Public Offer</a>
+      </div>
+
+      <!-- Right: Back to ZYKO.AI -->
+      <a href="/" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">
+        <span>←</span> <span class="hidden sm:inline">Back to</span> <span>ZYKO.AI</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Legal Document Body -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
+    
+    <!-- Top Center Logo -->
+    <div class="flex flex-col items-center justify-center mb-8 sm:mb-12">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <img src="/favicon.svg" alt="ZYKO" class="w-12 h-12 rounded-2xl shadow-xl shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
+      </a>
+      <span class="mt-2 text-xs font-mono tracking-widest text-emerald-400 font-bold uppercase">ZYKO.AI LEGAL CENTER</span>
+    </div>
+
+    <!-- Document Title & Header -->
+    <h1 id="doc-title" class="text-2xl sm:text-4xl md:text-5xl font-black text-stone-100 tracking-tight leading-tight mb-4">
+      Service Agreement (Public Offer)
+    </h1>
+
+    <div class="space-y-1 text-xs sm:text-sm text-stone-400 font-mono mb-8 sm:mb-12 border-b border-white/10 pb-6">
+      <div>[Updated] 3 Jul, 2026</div>
+      <div>Current version dated July 3, 2026</div>
+    </div>
+
+    <!-- Dynamic Document Body Container -->
+    <article id="doc-content" class="space-y-8 sm:space-y-10 text-xs sm:text-sm leading-relaxed text-stone-300">
+      <!-- Injected via JavaScript for Instant Multilingual Translation -->
+    </article>
+
+    <!-- Footer of the Legal Page -->
+    <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+      <div>
+        © 2026 ZYKO AI INTELLIGENCE – FZCO. All rights reserved.
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/privacy-policy" class="hover:text-stone-300 underline underline-offset-4">Privacy Policy</a>
+        <a href="https://t.me/Zykolandstore" target="_blank" class="hover:text-emerald-400">Telegram Support</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('click', function(e) {
+      const wrapper = document.getElementById('lang-dropdown-wrapper');
+      const menu = document.getElementById('lang-menu');
+      if (wrapper && menu && !wrapper.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function toggleLangDropdown() {
+      const menu = document.getElementById('lang-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    const LANGUAGES = {
+      en: { flag: '🇬🇧', name: 'English' },
+      ru: { flag: '🇷🇺', name: 'Русский' },
+      es: { flag: '🇪🇸', name: 'Español' },
+      pt: { flag: '🇧🇷', name: 'Português' },
+      de: { flag: '🇩🇪', name: 'Deutsch' },
+      lv: { flag: '🇱🇻', name: 'Latviešu' }
+    };
+
+    const OFFER_TEXTS = {
+      en: {
+        title: "Service Agreement (Public Offer)",
+        updated: "[Updated] 3 Jul, 2026",
+        revision: "Current version dated July 3, 2026",
+        content: `
+          <div class="p-4 rounded-xl bg-[#141719] border border-white/10 space-y-2 mb-6">
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b>, a company registered under the laws of the United Arab Emirates on October 21, 2025, under registration number 70517, taxpayer number 105317427000001, with its registered address at Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, United Arab Emirates, hereinafter referred to as the <b>“Contractor”</b>, hereby publishes this public offer to enter into an agreement for the provision of services.</p>
+          </div>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">1. General Provisions</h2>
+            <p><b>1.1.</b> This public offer (hereinafter referred to as the “Offer”) is addressed to any individual or legal entity (hereinafter referred to as the “Customer”) and constitutes an official invitation to enter into an agreement for the provision of cloud artificial intelligence computing services.</p>
+            <p><b>1.2.</b> Acceptance of the Offer by way of payment by the Customer means the conclusion of an agreement in accordance with the laws of the United Arab Emirates.</p>
+            <p><b>1.3.</b> In view of the foregoing, we recommend that you carefully read the terms of this Offer before using the Platform.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">2. Terms and Definitions</h2>
+            <ul class="list-disc pl-5 space-y-1.5 text-stone-300">
+              <li><b>Services:</b> Provision of access to ZYKO AI, including the ability to generate media across 100+ neural networks (ChatGPT, Claude, Flux, Kling, Veo, ElevenLabs, etc.).</li>
+              <li><b>Platform:</b> Software facilities available via the Telegram bot <a href="https://t.me/ZykoAi_bot" target="_blank" class="text-emerald-400 underline">@ZykoAi_bot</a> and web pages at <a href="https://zyko.study" class="text-emerald-400 underline">https://zyko.study</a>.</li>
+              <li><b>Tokens:</b> The internal accounting unit (ZK) used to pay for generations across artificial intelligence models.</li>
+              <li><b>Demo Mode:</b> Complimentary test token quota provided upon registration.</li>
+            </ul>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">3. Subject Matter of the Agreement</h2>
+            <p><b>3.1.</b> The Contractor provides the Customer with remote access to ZYKO AI functionality: natural language processing, generative image synthesis, video generation, voice synthesis, and autonomous neural agents.</p>
+            <p><b>3.2. Commercial Rights:</b> The Customer owns full commercial rights to texts, graphics, video, and audio materials created through the Platform under an active subscription.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">4. Cost and Payment Procedure</h2>
+            <p><b>4.1.</b> Services are provided on a subscription basis (1 month, 3 months, 6 months, 12 months) or direct token top-ups (Basic, Pro, VIP, Elite, Ultra Elite).</p>
+            <p><b>4.2.</b> All payments are processed securely via certified payment providers adhering to PCI DSS requirements.</p>
+            <p><b>4.3. Token Longevity:</b> Unused tokens do not expire and remain associated with the Customer’s account balance.</p>
+            <p><b>4.4. Subscription Cancellation:</b> Subscriptions with recurring billing can be cancelled at any time through the personal account settings or by messaging support at least 24 hours prior to the next billing cycle.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">5. Refund Terms</h2>
+            <p><b>5.1.</b> Refunds are possible within 14 days of initial subscription purchase strictly if the Customer has not initiated any generations or token consumption. In accordance with EU Directive 2011/83/EU, access to immediate digital execution constitutes waiver of refund once digital services have commenced.</p>
+            <p><b>5.2.</b> To submit a refund inquiry, contact support via Telegram <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a> or email <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a>.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">6. Intellectual Property</h2>
+            <p><b>6.1.</b> Exclusive rights to creative materials generated by the Customer belong to the Customer.</p>
+            <p><b>6.2.</b> The Contractor retains all proprietary rights to the platform software, algorithms, code, design, and trademarks of ZYKO.AI.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">7. Contractor's Details & Legal Address</h2>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+              <div><b>Company Name:</b> ZYKO AI INTELLIGENCE – FZCO</div>
+              <div><b>Registration Number:</b> 70517</div>
+              <div><b>Tax / VAT Number:</b> 105317427000001</div>
+              <div><b>Date of Registration:</b> 21.10.2025</div>
+              <div><b>Registered Address:</b> Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, United Arab Emirates</div>
+              <div><b>Telegram Support:</b> <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></div>
+              <div><b>E-mail:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></div>
+              <div><b>Official Website:</b> <a href="https://zyko.study" target="_blank" class="text-emerald-400 underline">https://zyko.study</a></div>
+            </div>
+          </section>
+        `
+      },
+      ru: {
+        title: "Договор оферты на оказание услуг (Public Offer)",
+        updated: "[Обновлено] 3 июля 2026 г.",
+        revision: "Действующая редакция от 3 июля 2026 г.",
+        content: `
+          <div class="p-4 rounded-xl bg-[#141719] border border-white/10 space-y-2 mb-6">
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b>, компания, зарегистрированная в соответствии с законодательством Объединенных Арабских Эмиратов 21 октября 2025 года под регистрационным номером 70517, номер налогоплательщика 105317427000001, с юридическим адресом: Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, United Arab Emirates, именуемая в дальнейшем <b>«Исполнитель»</b>, публикует настоящую публичную оферту на заключение договора об оказании услуг.</p>
+          </div>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">1. Общие положения</h2>
+            <p><b>1.1.</b> Настоящая публичная оферта (далее — «Оферта») адресована любому физическому или юридическому лицу (далее — «Заказчик») и является официальным предложением заключить договор на условиях, изложенных в настоящем документе.</p>
+            <p><b>1.2.</b> Оплата Заказчиком услуг Исполнителя является полным и безоговорочным акцептом настоящей Оферты и равносильна заключению договора в соответствии с законами ОАЭ.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">2. Предмет Договора</h2>
+            <p><b>2.1.</b> Исполнитель предоставляет Заказчику удаленный доступ к платформе ZYKO AI для генерации текстов, кода, изображений, видео и аудио в 100+ нейросетях через сайт <a href="https://zyko.study" class="text-emerald-400">zyko.study</a> и Telegram-бота <a href="https://t.me/ZykoAi_bot" target="_blank" class="text-emerald-400">@ZykoAi_bot</a>.</p>
+            <p><b>2.2. Коммерческие права:</b> Заказчик обладает полными правами на использование сгенерированных материалов в личных и коммерческих целях.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">3. Стоимость и порядок оплаты</h2>
+            <p><b>3.1.</b> Услуги предоставляются по тарифам (Basic, Pro, VIP, Elite, Ultra Elite) или прямым пакетам токенов ZK.</p>
+            <p><b>3.2.</b> Неизрасходованные токены не сгорают и сохраняются на балансе пользователя.</p>
+            <p><b>3.3.</b> Автопродление подписки может быть отключено в любой момент не позднее 24 часов до окончания расчетного периода.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">4. Условия возврата</h2>
+            <p>Возврат средств возможен при первичной покупке в течение 14 дней исключительно при условии, что Заказчик не начал использование сервиса и не производил генераций.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">5. Реквизиты Исполнителя</h2>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+              <div><b>Наименование:</b> ZYKO AI INTELLIGENCE – FZCO</div>
+              <div><b>Регистрационный номер:</b> 70517</div>
+              <div><b>Налоговый номер:</b> 105317427000001</div>
+              <div><b>Адрес:</b> Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, UAE</div>
+              <div><b>Поддержка в Telegram:</b> <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></div>
+              <div><b>Email:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></div>
+              <div><b>Сайт:</b> <a href="https://zyko.study" target="_blank" class="text-emerald-400 underline">https://zyko.study</a></div>
+            </div>
+          </section>
+        `
+      },
+      es: {
+        title: "Contrato de Servicios (Oferta Pública)",
+        updated: "[Actualizado] 3 de julio de 2026",
+        revision: "Versión vigente de 3 de julio de 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Contrato de Servicios ZYKO AI</h2>
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b> (Registro 70517, Dubai Silicon Oasis, EAU) publica esta oferta pública para la prestación de servicios de computación en la nube e inteligencia artificial a través de <a href="https://zyko.study" class="text-emerald-400">zyko.study</a> y Telegram <a href="https://t.me/ZykoAi_bot" class="text-emerald-400">@ZykoAi_bot</a>.</p>
+            <p><b>Derechos comerciales:</b> Todos los contenidos generados pertenecen al cliente con derechos de uso comercial.</p>
+            <p><b>Contacto:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> / Telegram: <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      },
+      pt: {
+        title: "Contrato de Prestação de Serviços (Oferta Pública)",
+        updated: "[Atualizado] 3 de julho de 2026",
+        revision: "Versão vigente de 3 de julho de 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Contrato de Serviços ZYKO AI</h2>
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b> (Registro 70517, Dubai, Emirados Árabes Unidos) apresenta esta oferta pública para acesso a modelos de inteligência artificial em <a href="https://zyko.study" class="text-emerald-400">zyko.study</a>.</p>
+            <p><b>Direitos comerciais:</b> Todas as criações geradas com planos ativos incluem direitos comerciais totais.</p>
+            <p><b>Suporte:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> ou Telegram <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      },
+      de: {
+        title: "Dienstleistungsvertrag (Öffentliches Angebot)",
+        updated: "[Aktualisiert] 3. Juli 2026",
+        revision: "Fassung vom 3. Juli 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Nutzungsvertrag ZYKO AI</h2>
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b> (Registernummer 70517, Dubai, VAE) veröffentlicht dieses Angebot für den Zugriff auf KI-Modelle über <a href="https://zyko.study" class="text-emerald-400">zyko.study</a>.</p>
+            <p><b>Kommerzielle Rechte:</b> Alle generierten Medien gehören dem Kunden mit uneingeschränkten gewerblichen Nutzungsrechten.</p>
+            <p><b>Kontakt:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> / <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      },
+      lv: {
+        title: "Pakalpojumu līgums (Publiskā oferta)",
+        updated: "[Atjaunināts] 2026. gada 3. jūlijs",
+        revision: "Redakcija: 2026. gada 3. jūlijs",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Pakalpojumu sniegšanas noteikumi ZYKO AI</h2>
+            <p><b>ZYKO AI INTELLIGENCE – FZCO</b> (Reģ. nr. 70517, Dubaija, AAE) piedāvā mākoņpakalpojumus un mākslīgā intelekta modeļu izmantošanu vietnē <a href="https://zyko.study" class="text-emerald-400">zyko.study</a>.</p>
+            <p><b>Komerciālās tiesības:</b> Lietotājs saņem pilnas komerciālās tiesības uz iegūtajiem materiāliem.</p>
+            <p><b>Atbalsts:</b> <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> vai Telegram <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      }
+    };
+
+    let currentLang = localStorage.getItem('zyko_legal_lang') || 'en';
+
+    function renderDocument(lang) {
+      const data = OFFER_TEXTS[lang] || OFFER_TEXTS['en'];
+      const langCfg = LANGUAGES[lang] || LANGUAGES['en'];
+
+      document.getElementById('current-lang-flag').textContent = langCfg.flag;
+      document.getElementById('current-lang-name').textContent = langCfg.name;
+      document.getElementById('doc-title').textContent = data.title;
+      document.getElementById('doc-content').innerHTML = data.content;
+      document.documentElement.lang = lang;
+    }
+
+    function selectLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('zyko_legal_lang', lang);
+      renderDocument(lang);
+      const menu = document.getElementById('lang-menu');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    // Initial render
+    renderDocument(currentLang);
+  </script>
+</body>
+</html>

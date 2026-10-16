@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy • ZYKO.AI</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0b0d0e;
+      color: #d1d5db;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0d0e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272a2e;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f444a;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-[#0b0d0e]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Left: Language Dropdown (Exact Replica from Screenshot) -->
+      <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
+        <button onclick="toggleLangDropdown()" id="lang-toggle-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#181b1e] hover:bg-[#202428] border border-white/10 text-xs sm:text-sm font-medium text-stone-200 transition shadow-sm">
+          <span id="current-lang-flag">🇬🇧</span>
+          <span id="current-lang-name">English</span>
+          <svg class="w-3.5 h-3.5 text-stone-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <!-- Dropdown Menu (Styled 1-to-1 with screenshot) -->
+        <div id="lang-menu" class="hidden absolute left-0 mt-2 w-44 rounded-2xl bg-[#16191c] border border-white/10 shadow-2xl p-1.5 z-50 text-xs sm:text-sm divide-y divide-white/5">
+          <div class="space-y-0.5">
+            <button onclick="selectLanguage('en')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇬🇧</span> <span>English</span>
+            </button>
+            <button onclick="selectLanguage('ru')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇷🇺</span> <span>Русский</span>
+            </button>
+            <button onclick="selectLanguage('es')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇪🇸</span> <span>Español</span>
+            </button>
+            <button onclick="selectLanguage('pt')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇧🇷</span> <span>Português</span>
+            </button>
+            <button onclick="selectLanguage('de')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇩🇪</span> <span>Deutsch</span>
+            </button>
+            <button onclick="selectLanguage('lv')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition text-left">
+              <span>🇱🇻</span> <span>Latviešu</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Switch Documents (Privacy Policy / Public Offer) -->
+      <div class="flex items-center gap-1.5 bg-[#141719] border border-white/10 p-1 rounded-xl text-xs font-semibold">
+        <a href="/privacy-policy" class="px-3 py-1.5 rounded-lg bg-[#272c30] text-white shadow-sm transition">Privacy Policy</a>
+        <a href="/public-offer" class="px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition">Public Offer</a>
+      </div>
+
+      <!-- Right: Back to ZYKO.AI -->
+      <a href="/" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition">
+        <span>←</span> <span class="hidden sm:inline">Back to</span> <span>ZYKO.AI</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Legal Document Body -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
+    
+    <!-- Top Center Logo (Match Screenshot Style) -->
+    <div class="flex flex-col items-center justify-center mb-8 sm:mb-12">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <img src="/favicon.svg" alt="ZYKO" class="w-12 h-12 rounded-2xl shadow-xl shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
+      </a>
+      <span class="mt-2 text-xs font-mono tracking-widest text-emerald-400 font-bold uppercase">ZYKO.AI LEGAL CENTER</span>
+    </div>
+
+    <!-- Document Title & Header (Matches Screenshot Typography) -->
+    <h1 id="doc-title" class="text-2xl sm:text-4xl md:text-5xl font-black text-stone-100 tracking-tight leading-tight mb-4">
+      Privacy Policy of the ZYKO AI and Terms of Personal Data Processing (GDPR)
+    </h1>
+
+    <div class="space-y-1 text-xs sm:text-sm text-stone-400 font-mono mb-8 sm:mb-12 border-b border-white/10 pb-6">
+      <div>[Updated] 4 Jul, 2026</div>
+      <div>Date of last revision: July 3, 2026</div>
+    </div>
+
+    <!-- Dynamic Document Body Container -->
+    <article id="doc-content" class="space-y-8 sm:space-y-10 text-xs sm:text-sm leading-relaxed text-stone-300">
+      <!-- Injected via JavaScript for Instant Multilingual Translation -->
+    </article>
+
+    <!-- Footer of the Legal Page -->
+    <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+      <div>
+        © 2026 ZYKO AI INTELLIGENCE – FZCO. All rights reserved.
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/public-offer" class="hover:text-stone-300 underline underline-offset-4">Public Offer</a>
+        <a href="https://t.me/Zykolandstore" target="_blank" class="hover:text-emerald-400">Telegram Support</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Close dropdown on outside click
+    window.addEventListener('click', function(e) {
+      const wrapper = document.getElementById('lang-dropdown-wrapper');
+      const menu = document.getElementById('lang-menu');
+      if (wrapper && menu && !wrapper.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function toggleLangDropdown() {
+      const menu = document.getElementById('lang-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    const LANGUAGES = {
+      en: { flag: '🇬🇧', name: 'English' },
+      ru: { flag: '🇷🇺', name: 'Русский' },
+      es: { flag: '🇪🇸', name: 'Español' },
+      pt: { flag: '🇧🇷', name: 'Português' },
+      de: { flag: '🇩🇪', name: 'Deutsch' },
+      lv: { flag: '🇱🇻', name: 'Latviešu' }
+    };
+
+    const PRIVACY_TEXTS = {
+      en: {
+        title: "Privacy Policy of the ZYKO AI and Terms of Personal Data Processing (GDPR)",
+        updated: "[Updated] 4 Jul, 2026",
+        revision: "Date of last revision: July 3, 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Preamble</h2>
+            <p>This Privacy Policy and Personal Data Processing Policy (hereinafter referred to as the “Policy”) governs the procedure for collecting, storing, using, and disclosing information received from users when using ZYKO AI (hereinafter referred to in the text as “ZYKO AI”). The Policy has been developed in accordance with the personal data protection legislation of the United Arab Emirates and other applicable regulatory legal acts. In cases where the processing of personal data falls within the scope of the legislation of other jurisdictions, including Regulation (EU) 2016/679 (General Data Protection Regulation, GDPR), the Company takes the necessary measures to comply with the relevant requirements.</p>
+            <p>By using ZYKO AI, the user confirms that they have read this Policy, understand its provisions, and agree to the terms of processing of their personal data in accordance with it.</p>
+            <p>We undertake to maintain data confidentiality and ensure the security of personal information. All information on how we collect, use, protect, and disclose data is set out in detail in this Policy. We strive to make the process as transparent as possible and provide users with complete information on exactly how their data is used.</p>
+            <p>ZYKO AI reserves the right to amend or update this Policy at any time. All changes will be published on this page and will take effect from the moment of publication. We recommend periodically checking this page to stay informed of current changes.</p>
+            <div class="p-3.5 rounded-xl bg-[#141719] border border-white/10 space-y-1 text-xs">
+              <div class="font-bold text-white">If you have any questions or wishes regarding our Privacy Policy, contact us:</div>
+              <div>Email: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></div>
+              <div>Telegram: <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></div>
+            </div>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">1. General Provisions</h2>
+            <p><b>1.1.</b> This Privacy Policy establishes the procedure for collecting, using, storing, transferring, and otherwise processing personal data of individuals and legal entities (hereinafter referred to as the “Users”) carried out by <b>ZYKO AI INTELLIGENCE – FZCO</b>, a company registered under the laws of the United Arab Emirates under registration number 70517, taxpayer number 105317427000001, with its registered address at Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, United Arab Emirates (hereinafter referred to as the “Company”), within the use of ZYKO AI available in the Telegram messenger and web platform at <a href="https://zyko.study" class="text-emerald-400">zyko.study</a>.</p>
+            <p><b>1.2.</b> The Company independently determines the purposes and methods of processing Users’ personal data and acts as the party responsible for such processing in accordance with the applicable personal data protection legislation of the United Arab Emirates and GDPR requirements where applicable.</p>
+            <p><b>1.3.</b> The Policy applies to all Users of ZYKO AI, regardless of their citizenship or location, to the extent provided by applicable legislation.</p>
+            <p><b>1.4.</b> If the user does not agree with the terms of this Policy, the user must immediately stop using ZYKO AI.</p>
+            <p><b>1.5.</b> The Company takes the necessary organizational and technical measures to protect Users’ personal data.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">2. Personal Data Subject to Processing</h2>
+            <p><b>2.1.</b> In the course of Users’ interaction with ZYKO AI, the Company collects and processes only those personal data that are necessary to ensure functionality, stable operation, and the fulfilment of obligations.</p>
+            <p><b>2.2.</b> The personal data of Users subject to processing include:</p>
+            <ul class="list-disc pl-5 space-y-1.5 text-stone-300">
+              <li><b>Telegram ID:</b> Unique user identifier, username (if specified), displayed name, and interface language.</li>
+              <li><b>Interaction data:</b> History of messages, commands, generation requests, and timestamps of requests.</li>
+              <li><b>Contact details:</b> Email address if authorization is made via Google or email/password.</li>
+            </ul>
+            <p><b>2.3.</b> The Company does not intentionally request and does not seek to process special or sensitive categories of personal data (health, political views, biometrics, etc.).</p>
+            <p><b>2.4.</b> In the event of payment instruments, payment information is processed directly by certified payment gateways (PCI DSS certified), which act as separate data controllers.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">3. Purposes of Personal Data Processing</h2>
+            <p><b>3.1.</b> Processing is carried out exclusively for:</p>
+            <ul class="list-disc pl-5 space-y-1 text-stone-300">
+              <li>Ensuring core AI functionality (processing requests in ChatGPT, Claude, Flux, ElevenLabs, Kling, Veo, etc.);</li>
+              <li>Maintaining token balance and subscription management;</li>
+              <li>Technical support and resolving issues;</li>
+              <li>Compliance with tax, accounting, and legal requirements.</li>
+            </ul>
+            <p><b>3.2. Data Transfer to Third Parties:</b> Third-party providers (cloud infrastructure, AI inference engines) receive access strictly to anonymized request data needed to compute generations.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">4. Legal Bases for Personal Data Processing</h2>
+            <p><b>4.1.</b> The Company processes Users’ personal data based on:</p>
+            <ul class="list-disc pl-5 space-y-1 text-stone-300">
+              <li><b>User consent</b> (which can be withdrawn at any time);</li>
+              <li><b>Performance of a contract</b> (providing AI services and fulfilling token orders);</li>
+              <li><b>Compliance with legal obligations</b>;</li>
+              <li><b>Legitimate interests</b> (security, fraud prevention, server uptime).</li>
+            </ul>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">5. Personal Data Retention Periods</h2>
+            <p><b>5.1.</b> Data related to the use of ZYKO AI is stored for 12 months from the User’s last interaction, unless longer storage is required by accounting legislation.</p>
+            <p><b>5.2.</b> Support communications are kept for 6 months after resolution.</p>
+            <p><b>5.3.</b> The User may submit a request for complete account and data erasure by writing to <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a>.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">6. Users’ Rights as Data Subjects (GDPR)</h2>
+            <p>Users are entitled to all rights provided under GDPR and UAE Data Protection laws:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/5"><b>• Right of access:</b> Request a copy of processed data.</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/5"><b>• Right to rectification:</b> Correct inaccurate data.</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/5"><b>• Right to erasure:</b> Request deletion of your account.</div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/5"><b>• Right to portability:</b> Export your data in machine format.</div>
+            </div>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">7. Security Mechanisms & Encryption</h2>
+            <p>All data transmitted to ZYKO AI is protected using industry-standard TLS 1.3 / SSL encryption. Access to server infrastructure is restricted to authorized personnel under non-disclosure agreements.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">8. Cookies and Storage Technologies</h2>
+            <p>ZYKO AI uses minimal local storage and session tokens strictly necessary for user authentication, language preferences, and maintaining session state.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">9. Official Contacts & Channels</h2>
+            <p>Official communication channels for privacy inquiries:</p>
+            <ul class="list-disc pl-5 space-y-1 text-stone-300">
+              <li>Email: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></li>
+              <li>Telegram Bot: <a href="https://t.me/ZykoAi_bot" target="_blank" class="text-emerald-400 underline">@ZykoAi_bot</a></li>
+              <li>Support & Community: <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></li>
+              <li>Website: <a href="https://zyko.study" class="text-emerald-400 underline">https://zyko.study</a></li>
+            </ul>
+          </section>
+        `
+      },
+      ru: {
+        title: "Политика конфиденциальности ZYKO AI и обработка персональных данных (GDPR)",
+        updated: "[Обновлено] 4 июля 2026 г.",
+        revision: "Дата последней редакции: 3 июля 2026 г.",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Преамбула</h2>
+            <p>Настоящая Политика конфиденциальности и обработки персональных данных (далее — «Политика») определяет порядок сбора, хранения, использования и раскрытия информации, получаемой от пользователей при использовании ZYKO AI (далее — «ZYKO AI»). Политика разработана в соответствии с законодательством о защите персональных данных Объединенных Арабских Эмиратов и другими применимыми нормативными актами. В случаях, когда обработка данных подпадает под действие законодательства других юрисдикций, включая Регламент (ЕС) 2016/679 (GDPR), Компания принимает необходимые меры для соблюдения соответствующих требований.</p>
+            <p>Используя ZYKO AI, пользователь подтверждает, что ознакомлен с настоящей Политикой, понимает ее положения и согласен с условиями обработки своих данных.</p>
+            <p>Мы обязуемся соблюдать конфиденциальность и обеспечивать безопасность персональной информации. ZYKO AI оставляет за собой право вносить изменения в Политику в любое время.</p>
+            <div class="p-3.5 rounded-xl bg-[#141719] border border-white/10 space-y-1 text-xs">
+              <div class="font-bold text-white">Контакты по вопросам персональных данных:</div>
+              <div>Email: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></div>
+              <div>Telegram: <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></div>
+            </div>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">1. Общие положения</h2>
+            <p><b>1.1.</b> Настоящая Политика устанавливает порядок обработки персональных данных Пользователей, осуществляемой компанией <b>ZYKO AI INTELLIGENCE – FZCO</b>, зарегистрированной в ОАЭ под регистрационным номером 70517, налоговый номер 105317427000001, адрес: Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, UAE (далее — «Компания»), при использовании сервиса ZYKO AI в Telegram и на сайте <a href="https://zyko.study" class="text-emerald-400">zyko.study</a>.</p>
+            <p><b>1.2.</b> Компания самостоятельно определяет цели и способы обработки данных Пользователей в соответствии с нормами ОАЭ и GDPR.</p>
+            <p><b>1.3.</b> Политика распространяется на всех Пользователей вне зависимости от их гражданства или места нахождения.</p>
+            <p><b>1.4.</b> При несогласии с условиями Пользователь обязан прекратить использование ZYKO AI.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">2. Состав обрабатываемых данных</h2>
+            <p><b>2.1.</b> Компания обрабатывает только те данные, которые необходимы для функционирования платформы:</p>
+            <ul class="list-disc pl-5 space-y-1.5 text-stone-300">
+              <li>Идентификатор Telegram (Telegram ID), юзернейм, имя профиля и язык интерфейса;</li>
+              <li>История команд и промптов, отправляемых в нейросети;</li>
+              <li>Email при авторизации через Google или электронную почту;</li>
+              <li>Статус подписки и баланс токенов ZK.</li>
+            </ul>
+            <p><b>2.2.</b> Компания не запрашивает и не обрабатывает специальные или биометрические категории данных.</p>
+            <p><b>2.3.</b> Платежные данные обрабатываются непосредственно сертифицированными провайдерами (PCI DSS) и не хранятся на серверах Компании.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">3. Цели обработки данных</h2>
+            <p>Данные обрабатываются исключительно для выполнения генераций в 100+ нейросетях (ChatGPT, Flux, ElevenLabs, Midjourney/Nano Banana, Kling, Veo и др.), начисления токенов, технической поддержки и соблюдения законодательства.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">4. Сроки хранения и удаление данных</h2>
+            <p>Данные сессий и запросов хранятся в течение 12 месяцев с момента последней активности. Пользователь вправе в любой момент направить запрос на полное удаление своего аккаунта и истории в службу поддержки: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a>.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">5. Права субъектов данных (GDPR)</h2>
+            <p>Пользователю гарантируются право на доступ к данным, право на исправление, право на забвение (удаление), право на ограничение обработки и перенос данных.</p>
+          </section>
+
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">6. Официальные контакты сервиса</h2>
+            <ul class="list-disc pl-5 space-y-1 text-stone-300">
+              <li>Официальный сайт: <a href="https://zyko.study" class="text-emerald-400 underline">https://zyko.study</a></li>
+              <li>Telegram бот: <a href="https://t.me/ZykoAi_bot" target="_blank" class="text-emerald-400 underline">@ZykoAi_bot</a></li>
+              <li>Служба заботы: <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline">@Zykolandstore</a></li>
+              <li>Email: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a></li>
+            </ul>
+          </section>
+        `
+      },
+      es: {
+        title: "Política de Privacidad de ZYKO AI y Tratamiento de Datos (GDPR)",
+        updated: "[Actualizado] 4 de julio de 2026",
+        revision: "Última revisión: 3 de julio de 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Preámbulo</h2>
+            <p>Esta Política de Privacidad regula el tratamiento de datos de los usuarios en <b>ZYKO AI</b> con arreglo a las leyes de los EAU y el Reglamento General de Protección de Datos (GDPR).</p>
+            <p><b>1. Responsable:</b> ZYKO AI INTELLIGENCE – FZCO, Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, EAU. Registro: 70517.</p>
+            <p><b>2. Datos tratados:</b> Identificador de Telegram, correo electrónico, historial de solicitudes a modelos de IA y saldo de tokens ZK.</p>
+            <p><b>3. Derechos del usuario:</b> Acceso, rectificación, supresión ("derecho al olvido") y portabilidad contactando a <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> o <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      },
+      pt: {
+        title: "Política de Privacidade do ZYKO AI e Proteção de Dados (GDPR)",
+        updated: "[Atualizado] 4 de julho de 2026",
+        revision: "Última revisão: 3 de julho de 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Preâmbulo</h2>
+            <p>Esta Política de Privacidade regula o tratamento de informações dos usuários no <b>ZYKO AI</b> conforme a legislação dos Emirados Árabes Unidos e o GDPR.</p>
+            <p><b>1. Empresa:</b> ZYKO AI INTELLIGENCE – FZCO, Dubai Silicon Oasis, Dubai, Emirados Árabes Unidos.</p>
+            <p><b>2. Dados coletados:</b> Telegram ID, e-mail, histórico de comandos enviados às redes neurais e saldo de tokens.</p>
+            <p><b>3. Suporte:</b> Dúvidas ou exclusão de dados: <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> ou Telegram <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      },
+      de: {
+        title: "Datenschutzerklärung von ZYKO AI und DSGVO-Bestimmungen",
+        updated: "[Aktualisiert] 4. Juli 2026",
+        revision: "Stand: 3. Juli 2026",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Präambel</h2>
+            <p>Diese Datenschutzerklärung regelt die Verarbeitung personenbezogener Daten bei der Nutzung von <b>ZYKO AI</b> gemäß den Gesetzen der VAE und der DSGVO (GDPR).</p>
+            <p><b>1. Verantwortlicher:</b> ZYKO AI INTELLIGENCE – FZCO, Building A1, Dubai Digital Park, Dubai, VAE.</p>
+            <p><b>2. Erfasste Daten:</b> Telegram-ID, E-Mail-Adresse, KI-Generierungsanfragen und Token-Guthaben.</p>
+            <p><b>3. Betroffenenrechte:</b> Auskunft, Berichtigung und Löschung via <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a>.</p>
+          </section>
+        `
+      },
+      lv: {
+        title: "ZYKO AI Privātuma politika un personas datu apstrāde (GDPR)",
+        updated: "[Atjaunināts] 2026. gada 4. jūlijs",
+        revision: "Pēdējā redakcija: 2026. gada 3. jūlijs",
+        content: `
+          <section class="space-y-3">
+            <h2 class="text-base sm:text-lg font-bold text-white">Preambula</h2>
+            <p>Šī Privātuma politika nosaka kārtību, kādā <b>ZYKO AI</b> apstrādā lietotāju datus saskaņā ar AAE likumdošanu un Vispārīgo datu aizsardzības regulu (GDPR).</p>
+            <p><b>1. Pārzinis:</b> ZYKO AI INTELLIGENCE – FZCO, Dubai Digital Park, Dubaija, AAE.</p>
+            <p><b>2. Apstrādājamie dati:</b> Telegram ID, e-pasts, mākslīgā intelekta pieprasījumu vēsture un žetonu bilance.</p>
+            <p><b>3. Kontakti:</b> Jautājumu gadījumā rakstiet uz <a href="mailto:support@zyko.study" class="text-emerald-400 underline">support@zyko.study</a> vai Telegram <a href="https://t.me/Zykolandstore" class="text-emerald-400 underline">@Zykolandstore</a>.</p>
+          </section>
+        `
+      }
+    };
+
+    let currentLang = localStorage.getItem('zyko_legal_lang') || 'en';
+
+    function renderDocument(lang) {
+      const data = PRIVACY_TEXTS[lang] || PRIVACY_TEXTS['en'];
+      const langCfg = LANGUAGES[lang] || LANGUAGES['en'];
+
+      document.getElementById('current-lang-flag').textContent = langCfg.flag;
+      document.getElementById('current-lang-name').textContent = langCfg.name;
+      document.getElementById('doc-title').textContent = data.title;
+      document.getElementById('doc-content').innerHTML = data.content;
+      document.documentElement.lang = lang;
+    }
+
+    function selectLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('zyko_legal_lang', lang);
+      renderDocument(lang);
+      const menu = document.getElementById('lang-menu');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    // Initial render
+    renderDocument(currentLang);
+  </script>
+</body>
+</html>

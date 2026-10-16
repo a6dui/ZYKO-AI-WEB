@@ -966,9 +966,12 @@ def create_app():
     app.router.add_post("/api/generate/video", handle_generate_video)
     app.router.add_post("/api/generate/music", handle_generate_music)
     
-    # Frontend SPA
+    # Frontend SPA & Legal Documents
     app.router.add_get("/", handle_index)
     app.router.add_get("/landing", handle_index)
+    app.router.add_get("/privacy-policy", make_file_handler("privacy-policy.html", "text/html"))
+    app.router.add_get("/public-offer", make_file_handler("public-offer.html", "text/html"))
+    app.router.add_get("/terms", make_file_handler("public-offer.html", "text/html"))
     
     public_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
     if os.path.exists(public_dir):
