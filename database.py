@@ -104,12 +104,12 @@ async def get_or_create_telegram_user(telegram_id: int, username: str, first_nam
 async def get_or_create_demo_user() -> dict:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT * FROM users WHERE email = 'demo@zyko.ai'") as cursor:
+        async with db.execute("SELECT * FROM users WHERE email = 'foryafrom@gmail.com' OR email = 'demo@zyko.ai'") as cursor:
             row = await cursor.fetchone()
             if row:
                 return dict(row)
         cursor_ins = await db.execute(
-            "INSERT INTO users (email, name, tokens, tier) VALUES ('demo@zyko.ai', 'Creator (Demo)', 2000, 'Pro')"
+            "INSERT INTO users (email, name, tokens, tier) VALUES ('foryafrom@gmail.com', 'Дима', 5.5, 'Free')"
         )
         await db.commit()
         user_id = cursor_ins.lastrowid

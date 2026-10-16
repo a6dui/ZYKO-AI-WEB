@@ -169,12 +169,12 @@
   </div>
 
   <!-- 1. TOP NOTIFICATION BAR -->
-  <div id="top-bar" class="bg-gradient-to-r from-[#042f2e] via-[#064e3b] to-[#042f2e] border-b border-emerald-500/25 text-xs py-2 px-4 flex items-center justify-between transition-all duration-300">
+  <div id="top-bar" class="bg-gradient-to-r from-[#1c0808] via-[#350d0d] to-[#1c0808] border-b border-red-500/25 text-xs py-2 px-4 flex items-center justify-between transition-all duration-300">
     <div></div>
     <div class="flex items-center gap-3">
-      <span id="promo-text" class="text-stone-200 font-medium">The new Nano Banana 2.1 is here</span>
-      <span class="text-emerald-500/50">|</span>
-      <button onclick="switchTab('image'); openModelDropdown();" id="promo-action-btn" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-1 rounded-md text-[11px] font-semibold transition">Create image</button>
+      <span id="promo-text" class="text-stone-200 font-medium">Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity</span>
+      <span class="text-red-500/50">|</span>
+      <button onclick="switchTab('video');" id="promo-action-btn" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-1 rounded-md text-[11px] font-semibold transition">Create Video</button>
     </div>
     <button onclick="dismissTopBar()" class="text-stone-400 hover:text-white text-sm px-2 transition" title="Close announcement">✕</button>
   </div>
@@ -231,25 +231,50 @@
         </button>
 
         <!-- Logged In State (Initially hidden) -->
-        <div id="user-profile-header" class="hidden flex items-center gap-2">
-          <div class="flex items-center gap-2 bg-[#141b18] border border-emerald-500/30 rounded-xl px-2.5 py-1">
-            <span class="text-[11px] font-black text-emerald-400">✦ <span id="header-user-tokens">1 000</span> ⚡</span>
-            <span id="header-user-tier" class="bg-emerald-500/20 text-emerald-300 text-[9px] font-black px-1.5 py-0.2 rounded uppercase">PRO</span>
+        <div id="user-profile-header" class="hidden flex items-center gap-3">
+          <!-- Token balance pill -->
+          <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition">
+            <span class="text-amber-400 font-black text-xs">⚡</span>
+            <span id="header-user-tokens" class="text-xs font-black text-white">5,5</span>
+            <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">FREE</span>
           </div>
-          <div class="relative group cursor-pointer">
-            <div id="header-user-avatar-wrap" class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-black font-black flex items-center justify-center text-sm border border-emerald-400 overflow-hidden shadow">
-              <span id="header-user-initial">U</span>
-              <img id="header-user-avatar" src="" class="hidden w-full h-full object-cover" alt="Avatar">
-            </div>
-            <!-- Dropdown -->
-            <div class="absolute right-0 top-10 w-48 bg-[#111514] border border-white/15 rounded-2xl shadow-2xl p-2 hidden group-hover:block space-y-1 text-xs z-50">
-              <div id="header-user-name" class="font-bold text-white px-2 py-1.5 truncate border-b border-white/10 mb-1">User</div>
-              <button onclick="openPaymentModal('Pro')" class="w-full text-left px-2.5 py-2 rounded-xl text-emerald-400 hover:bg-emerald-500/10 font-bold flex items-center gap-2">
-                <span>⚡</span> <span data-i18n="topup">Пополнить ZK</span>
-              </button>
-              <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/5 flex items-center gap-2">
-                <span>🚪</span> <span data-i18n="logout">Выйти</span>
-              </button>
+
+          <!-- Avatar with Dropdown (Screenshot 4) -->
+          <div class="relative">
+            <button onclick="toggleAvatarDropdown(event)" id="header-user-avatar-btn" class="w-8 h-8 rounded-full bg-[#8b5cf6] text-white font-serif-editorial text-base font-bold flex items-center justify-center border border-white/20 hover:scale-105 transition shadow">
+              <span id="header-user-initial">Д</span>
+              <img id="header-user-avatar" src="" class="hidden w-full h-full rounded-full object-cover" alt="Avatar">
+            </button>
+
+            <!-- Dropdown Menu (Screenshot 4) -->
+            <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-11 w-56 bg-[#1a1615] border border-white/15 rounded-2xl shadow-2xl p-2.5 z-50">
+              <div class="px-2.5 py-1.5">
+                <div id="dropdown-user-handle" class="text-xs font-semibold text-stone-200 truncate">@foryafrom-em</div>
+                <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">FREE</div>
+                <div class="text-sm font-extrabold text-white flex items-center gap-1.5 mt-1.5">
+                  <span class="text-amber-400">⚡</span>
+                  <span id="dropdown-user-tokens">5,5</span>
+                </div>
+              </div>
+              <div class="border-t border-white/10 my-2"></div>
+              <div class="space-y-0.5 text-xs font-medium">
+                <button onclick="switchTab('profile'); switchUserSubtab('profile'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                  <span>👤</span> <span>Profile</span>
+                </button>
+                <button onclick="switchTab('profile'); switchUserSubtab('feed'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                  <span>🖼️</span> <span>Generation feed</span>
+                </button>
+                <button onclick="switchTab('profile'); switchUserSubtab('pricing'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                  <span>⍟</span> <span>Pricing</span>
+                </button>
+                <button onclick="switchTab('profile'); switchUserSubtab('affiliate'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                  <span>🔗</span> <span>Affiliate program</span>
+                </button>
+                <div class="border-t border-white/10 my-1"></div>
+                <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-red-500/10 text-stone-400 hover:text-red-400 flex items-center gap-2.5 transition">
+                  <span>🚪</span> <span>Log out</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -367,25 +392,31 @@
       </section>
 
       <!-- WHAT'S TRENDING WORLDWIDE (3D PERSPECTIVE SLIDER) -->
-      <section id="trends" class="glow-section py-20 px-6 relative">
+      <section id="trends" class="glow-section py-16 px-6 relative">
         <div class="max-w-7xl mx-auto">
-          <div class="text-center max-w-3xl mx-auto mb-10">
-            <h2 class="font-serif-editorial text-5xl md:text-6xl tracking-normal leading-tight mb-3">
-              What’s trending <span class="text-emerald-400">worldwide</span>
+          <!-- Trends Headline (Exact Match to Screenshot 4) -->
+          <div class="text-center max-w-4xl mx-auto mb-8">
+            <h2 class="font-serif-editorial text-5xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100">
+              Trends in just a few clicks
             </h2>
             <p class="text-stone-300 text-sm md:text-base font-medium">
-              Recreate the most popular looks, effects, and ideas in just a few clicks.
+              Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.
             </p>
           </div>
 
-          <!-- Model Category Pills -->
+          <!-- Model Category Pills (Exact Match to Screenshot 4) -->
           <div class="flex items-center justify-center gap-2 flex-wrap mb-10 text-xs">
-            <button onclick="switchModelCategory('all', this)" class="bg-[#f5f0eb] text-black font-bold px-4 py-2 rounded-full transition shadow">All</button>
-            <button onclick="switchModelCategory('kling', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Kling 1.5</button>
-            <button onclick="switchModelCategory('banana', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Nano Banana 2.1</button>
-            <button onclick="switchModelCategory('seedance', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Seedance 2.5</button>
-            <button onclick="switchModelCategory('veo', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Veo 3.1</button>
-            <button onclick="switchModelCategory('eleven', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">ElevenLabs HD</button>
+            <button onclick="switchModelCategory('all', this)" class="bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40">All</button>
+            <button onclick="switchModelCategory('new', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">New</button>
+            <button onclick="switchModelCategory('featuring', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Featuring You</button>
+            <button onclick="switchModelCategory('popular', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Popular</button>
+            <button onclick="switchModelCategory('anime', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Anime</button>
+            <button onclick="switchModelCategory('cartoons', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Cartoons</button>
+            <button onclick="switchModelCategory('movies', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Movies</button>
+            <button onclick="switchModelCategory('fantasy', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Fantasy</button>
+            <button onclick="switchModelCategory('fashion', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Fashion</button>
+            <button onclick="switchModelCategory('products', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Products</button>
+            <button onclick="switchModelCategory('realistic', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition">Realistic</button>
           </div>
 
           <!-- 3D Card Grid with Perspective Tilt -->
@@ -1565,6 +1596,425 @@
 
     </div>
 
+  
+    <!-- ================= VIEW 3: USER DASHBOARD (PROFILE & PLANS - SCREENSHOTS 1, 2, 3) ================= -->
+    <section id="view-user-dashboard" class="hidden min-h-[calc(100vh-53px)] bg-[#0d0f0e] text-stone-200">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row min-h-[calc(100vh-53px)]">
+        
+        <!-- LEFT SIDEBAR NAVIGATION (SCREENSHOTS 1, 2, 3) -->
+        <aside class="w-full md:w-64 bg-[#111413] border-r border-white/5 p-5 flex flex-col justify-between shrink-0">
+          <div>
+            <!-- Navigation Items -->
+            <nav class="space-y-1.5 text-xs font-semibold">
+              <button onclick="switchUserSubtab('profile')" id="user-nav-btn-profile" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#ea580c] bg-white/5 font-bold transition">
+                <span class="text-sm">👤</span>
+                <span>Profile</span>
+              </button>
+              <button onclick="switchUserSubtab('pricing')" id="user-nav-btn-pricing" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
+                <span class="text-sm">⍟</span>
+                <span>Pricing</span>
+              </button>
+              <button onclick="switchUserSubtab('tokens')" id="user-nav-btn-tokens" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
+                <span class="text-sm">⚡</span>
+                <span>Purchase Tokens</span>
+              </button>
+              <button onclick="switchUserSubtab('history')" id="user-nav-btn-history" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
+                <span class="text-sm">🕒</span>
+                <span>Token History</span>
+              </button>
+              <button onclick="switchUserSubtab('feed')" id="user-nav-btn-feed" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
+                <span class="text-sm">🖼️</span>
+                <span>Generation feed</span>
+              </button>
+              <button onclick="switchUserSubtab('affiliate')" id="user-nav-btn-affiliate" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
+                <span class="text-sm">🔗</span>
+                <span>Affiliate program</span>
+              </button>
+              <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-stone-400 hover:text-red-400 hover:bg-white/5 transition">
+                <span class="text-sm">🚪</span>
+                <span>Log out</span>
+              </button>
+            </nav>
+          </div>
+
+          <!-- Left Nav Footer (Socials + Legal) -->
+          <div class="pt-8 border-t border-white/5 mt-8 space-y-4">
+            <!-- Social Icons -->
+            <div class="flex items-center gap-3 text-stone-400 text-sm">
+              <a href="#" class="hover:text-white transition">📸</a>
+              <a href="#" class="hover:text-white transition">💬</a>
+              <a href="#" class="hover:text-white transition">👾</a>
+              <a href="#" class="hover:text-white transition">▶️</a>
+              <a href="#" class="hover:text-white transition">💼</a>
+            </div>
+            <!-- Legal Links -->
+            <div class="space-y-1 text-[11px] text-stone-500">
+              <a href="/terms" class="block hover:text-stone-300 underline underline-offset-2">Privacy Policy</a>
+              <a href="/terms" class="block hover:text-stone-300 underline underline-offset-2">Public Offer</a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- RIGHT MAIN CONTENT -->
+        <div class="flex-1 p-6 md:p-10 overflow-y-auto max-w-5xl">
+          
+          <!-- SUBVIEW 1: PROFILE (SCREENSHOTS 1 & 2) -->
+          <div id="user-subtab-profile" class="space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Profile</h2>
+
+            <!-- Card 1: User Identity Card -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
+              <div id="profile-card-avatar" class="w-16 h-16 rounded-2xl bg-[#8b5cf6] text-white text-3xl font-serif-editorial flex items-center justify-center font-bold shadow-md shadow-purple-900/30">
+                <span id="profile-card-initial">Д</span>
+              </div>
+              <div>
+                <h3 id="profile-card-name" class="font-serif-editorial text-2xl text-stone-100 font-bold leading-tight">Дима</h3>
+                <div class="flex items-center gap-1.5 text-xs text-stone-400 mt-1">
+                  <span class="text-white font-bold">G</span>
+                  <span id="profile-card-email">foryafrom@gmail.com</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Subscription & Purchase Tokens Card -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-sm">
+              <!-- Left: Subscription -->
+              <div class="space-y-3">
+                <div class="text-xs text-stone-400 font-medium">Subscription</div>
+                <div id="profile-card-tier" class="text-4xl font-serif-editorial tracking-widest text-[#ea580c] font-black uppercase">
+                  FREE
+                </div>
+                <div>
+                  <button onclick="switchUserSubtab('pricing')" class="bg-[#ea580c] hover:bg-[#f97316] text-white font-bold text-xs px-6 py-2.5 rounded-full transition shadow-lg shadow-orange-900/30 active:scale-95">
+                    Buy subscription
+                  </button>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div class="hidden md:block absolute top-6 bottom-6 left-1/2 w-px bg-white/10"></div>
+
+              <!-- Right: Purchase Tokens -->
+              <div class="md:pl-8 space-y-3">
+                <div class="text-xs text-stone-400 font-medium flex items-center gap-1">
+                  <span>Purchase Tokens</span> <span class="cursor-pointer text-stone-500">ⓘ</span>
+                </div>
+                <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2">
+                  <span id="profile-card-tokens">5,5</span>
+                  <span class="text-amber-400">⚡</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Plan usage limits -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-5 shadow-sm">
+              <h4 class="text-lg font-bold text-white">Plan usage limits</h4>
+              
+              <!-- Session Limit -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-stone-300 font-semibold">Current session</span>
+                  <span class="text-stone-400 font-semibold">0% used</span>
+                </div>
+                <div class="text-[11px] text-stone-500">Not started</div>
+                <div class="w-full bg-stone-800 rounded-full h-1.5 overflow-hidden">
+                  <div class="bg-[#e7dfd5] h-full rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Weekly Limit -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-stone-300 font-semibold">Weekly</span>
+                  <span class="text-stone-400 font-semibold">0% used</span>
+                </div>
+                <div class="text-[11px] text-stone-500">Not started</div>
+                <div class="w-full bg-stone-800 rounded-full h-1.5 overflow-hidden">
+                  <div class="bg-[#e7dfd5] h-full rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] text-stone-500 pt-2 border-t border-white/5">
+                <span>Last updated: 8s ago</span>
+                <button onclick="refreshUsageLimits()" class="text-stone-400 hover:text-white transition">↺</button>
+              </div>
+            </div>
+
+            <!-- Two Bottom Cards (Screenshot 2) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Card 4: Free Perks -->
+              <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-4 shadow-sm">
+                <h4 class="text-lg font-bold text-white">Free</h4>
+                <ul class="text-xs text-stone-400 space-y-2 leading-relaxed">
+                  <li class="flex items-center gap-2"><span>•</span> Test requests in almost all tools</li>
+                  <li class="flex items-center gap-2"><span>•</span> 5 demos in the language models</li>
+                  <li class="flex items-center gap-2"><span>•</span> 3 requests/day on Stable Diffusion</li>
+                  <li class="flex items-center gap-2"><span>•</span> 5 requests/day in flux.1</li>
+                </ul>
+              </div>
+
+              <!-- Card 5: Referrals -->
+              <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-4 shadow-sm">
+                <h4 class="text-lg font-bold text-white">Referrals</h4>
+                <div class="space-y-2 text-xs">
+                  <div class="flex items-center justify-between">
+                    <span class="text-stone-400 flex items-center gap-1.5">👥 PARTNER TOKENS</span>
+                    <span class="font-bold text-white">⚡ 0</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-stone-400 flex items-center gap-1.5">💵 AVAILABLE FUNDS</span>
+                    <span class="font-bold text-white">~ $0.00</span>
+                  </div>
+                </div>
+                <div class="h-px bg-red-600/60 my-2"></div>
+                <p class="text-xs text-stone-400 leading-relaxed">
+                  Send your unique link to friends/colleagues to earn money with ZYKO
+                </p>
+                <div class="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                  <span class="text-stone-400">🔗</span>
+                  <input id="profile-ref-link-input" type="text" readonly value="https://zyko.ai/welcome/U4M3Zw5y" class="bg-transparent text-stone-200 text-xs w-full focus:outline-none">
+                  <button onclick="copyReferralLink()" class="text-emerald-400 hover:text-emerald-300 font-bold shrink-0">Copy</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SUBVIEW 2: PRICING (SCREENSHOT 3) -->
+          <div id="user-subtab-pricing" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Pricing</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Card: Basic -->
+              <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">Basic</h3>
+                  
+                  <!-- Token Toggle Pill -->
+                  <div class="flex items-center gap-1.5 mb-5">
+                    <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <span class="px-3 py-1 rounded text-stone-400">0 TOKENS</span>
+                      <span class="px-3 py-1 rounded bg-[#ea580c] text-white">3120 TOKENS</span>
+                    </div>
+                    <span class="text-stone-500 cursor-pointer text-xs">ⓘ</span>
+                  </div>
+
+                  <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                    <p class="font-medium text-stone-400">Limited set of neural networks including:</p>
+                    <p class="font-semibold text-white">Kling, Nano banana and <span class="underline cursor-pointer text-stone-300">more</span></p>
+                    <div class="pt-2 space-y-1.5 text-stone-300">
+                      <div>+ Create up to 516 videos</div>
+                      <div>+ Generate up to 10404 images</div>
+                      <div>+ Create up to 624 songs</div>
+                      <div>+ Basic access to text-based models in LLM Studio</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/10 space-y-4">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-xs text-stone-500 line-through">€342.90</span>
+                    <span class="text-3xl font-black text-white">€7.56</span>
+                    <span class="text-stone-500 text-xs">per month</span>
+                  </div>
+                  <button onclick="openPaymentModal('Basic')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
+                    Pick your plan
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card: Pro (TOP CHOICE) -->
+              <div class="bg-[#171a19] border border-orange-500/30 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative overflow-hidden">
+                <!-- TOP CHOICE BADGE -->
+                <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-600 to-amber-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md flex items-center gap-1">
+                  <span>★</span> <span>TOP CHOICE</span>
+                </div>
+
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">Pro</h3>
+                  
+                  <!-- Token Toggle Pill -->
+                  <div class="flex items-center gap-1.5 mb-5">
+                    <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <span class="px-3 py-1 rounded text-stone-400">0 TOKENS</span>
+                      <span class="px-3 py-1 rounded bg-[#ea580c] text-white">8160 TOKENS</span>
+                    </div>
+                    <span class="text-stone-500 cursor-pointer text-xs">ⓘ</span>
+                  </div>
+
+                  <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                    <p class="font-medium text-stone-400">Full neural network package:</p>
+                    <p class="font-semibold text-white">Seedance 2.0/2.5, Kling, Nano banana, Veo 3.1 and <span class="underline cursor-pointer text-stone-300">more</span></p>
+                    <div class="pt-2 space-y-1.5 text-stone-300">
+                      <div>+ Create up to 1360 videos</div>
+                      <div>+ Generate up to 27200 images</div>
+                      <div>+ Create up to 1632 songs</div>
+                      <div>+ Create GPT agents</div>
+                      <div>+ Enhance video (Topaz) and image quality</div>
+                      <div class="text-amber-300 font-bold">+ 3× more requests <span class="font-normal text-stone-300">than on the Basic plan</span></div>
+                      <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">GPT 5 Nano, DeepSeek V3, Claude Haiku 4.5, and Gemini 3.5 Flash Lite</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/10 space-y-4">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-xs text-stone-500 line-through">€595.80</span>
+                    <span class="text-3xl font-black text-white">€14.36</span>
+                    <span class="text-stone-500 text-xs">per month</span>
+                  </div>
+                  <button onclick="openPaymentModal('Pro')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
+                    Pick your plan
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card: VIP -->
+              <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">VIP</h3>
+                  <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-5">
+                    <span class="px-3 py-1 rounded bg-[#ea580c] text-white">20400 TOKENS</span>
+                  </div>
+                  <div class="text-xs text-stone-300 space-y-2 mb-6">
+                    <p class="font-medium text-stone-400">Full package + Topaz 4K + 6x more requests</p>
+                    <div class="pt-2 space-y-1.5 text-stone-300">
+                      <div>+ High-volume rendering & audio mastering</div>
+                      <div>+ Priority compute queue for all video models</div>
+                      <div>+ Ultra fast ElevenLabs voice clones</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-4 border-t border-white/10 space-y-4">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-black text-white">€33.90</span>
+                    <span class="text-stone-500 text-xs">per month</span>
+                  </div>
+                  <button onclick="openPaymentModal('VIP')" class="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition active:scale-95">
+                    Pick your plan
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card: Elite -->
+              <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">Elite</h3>
+                  <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-5">
+                    <span class="px-3 py-1 rounded bg-[#ea580c] text-white">31200 TOKENS</span>
+                  </div>
+                  <div class="text-xs text-stone-300 space-y-2 mb-6">
+                    <p class="font-medium text-stone-400">Unlimited generation in Veo 3.1 Lite & Runway</p>
+                    <div class="pt-2 space-y-1.5 text-stone-300">
+                      <div>+ Instant Topaz AI upscaling</div>
+                      <div>+ Direct API Access token included</div>
+                      <div>+ Dedicated customer success manager</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-4 border-t border-white/10 space-y-4">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-black text-white">€50.91</span>
+                    <span class="text-stone-500 text-xs">per month</span>
+                  </div>
+                  <button onclick="openPaymentModal('Elite')" class="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition active:scale-95">
+                    Pick your plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 3: TOKENS -->
+          <div id="user-subtab-tokens" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Purchase Tokens</h2>
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6">
+              <p class="text-xs text-stone-400 mb-6">Buy instant token packs without subscription commitments. Tokens never expire.</p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-5 bg-black/40 border border-white/10 rounded-2xl text-center space-y-3">
+                  <div class="text-2xl font-black text-white">1 000 ⚡</div>
+                  <div class="text-xs text-stone-400">Essential refill</div>
+                  <div class="text-lg font-bold text-emerald-400">€4.90</div>
+                  <button onclick="openPaymentModal('Basic')" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition">Buy pack</button>
+                </div>
+                <div class="p-5 bg-black/40 border border-emerald-500/30 rounded-2xl text-center space-y-3">
+                  <div class="text-2xl font-black text-white">5 000 ⚡</div>
+                  <div class="text-xs text-stone-400">Creator pack</div>
+                  <div class="text-lg font-bold text-emerald-400">€19.90</div>
+                  <button onclick="openPaymentModal('Pro')" class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold rounded-xl transition">Buy pack</button>
+                </div>
+                <div class="p-5 bg-black/40 border border-white/10 rounded-2xl text-center space-y-3">
+                  <div class="text-2xl font-black text-white">15 000 ⚡</div>
+                  <div class="text-xs text-stone-400">Studio pack</div>
+                  <div class="text-lg font-bold text-emerald-400">€49.90</div>
+                  <button onclick="openPaymentModal('VIP')" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition">Buy pack</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 4: HISTORY -->
+          <div id="user-subtab-history" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Token History</h2>
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6">
+              <div class="text-xs text-stone-400">Your recent token transactions and generations.</div>
+              <div id="profile-history-list" class="mt-4 space-y-2">
+                <div class="p-3 bg-black/30 rounded-xl flex items-center justify-between text-xs">
+                  <div>
+                    <div class="font-bold text-white">Welcome Bonus</div>
+                    <div class="text-[10px] text-stone-500">Account registration</div>
+                  </div>
+                  <span class="text-emerald-400 font-bold">+1,000 ⚡</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 5: FEED -->
+          <div id="user-subtab-feed" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Generation Feed</h2>
+            <div id="profile-feed-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <!-- Dynamically populated from local history -->
+              <div class="aspect-square bg-black/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center text-center p-4 text-xs text-stone-500">
+                <span>🎨</span>
+                <span class="mt-2">No generations yet</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 6: AFFILIATE -->
+          <div id="user-subtab-affiliate" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Affiliate Program</h2>
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-4">
+              <p class="text-xs text-stone-300 leading-relaxed">
+                Invite friends and colleagues to ZYKO.AI and receive <strong class="text-emerald-400">20% lifetime commission</strong> from every token top-up and subscription payment they make.
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+                <div class="p-4 bg-black/30 rounded-xl">
+                  <div class="text-stone-400 text-xs">Invited users</div>
+                  <div class="text-2xl font-bold text-white mt-1">0</div>
+                </div>
+                <div class="p-4 bg-black/30 rounded-xl">
+                  <div class="text-stone-400 text-xs">Partner Tokens</div>
+                  <div class="text-2xl font-bold text-amber-400 mt-1">0 ⚡</div>
+                </div>
+                <div class="p-4 bg-black/30 rounded-xl">
+                  <div class="text-stone-400 text-xs">Available Funds</div>
+                  <div class="text-2xl font-bold text-emerald-400 mt-1">$0.00</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                <span class="text-stone-400">🔗</span>
+                <input id="profile-aff-link-input" type="text" readonly value="https://zyko.ai/welcome/U4M3Zw5y" class="bg-transparent text-stone-200 text-xs w-full focus:outline-none">
+                <button onclick="copyAffiliateLink()" class="text-emerald-400 hover:text-emerald-300 font-bold shrink-0">Copy Link</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ================= FLOATING MINI-PLAYER PIP (SCREENSHOT 5) ================= -->
@@ -1935,8 +2385,13 @@
 
       // Check URL Hash for initial tab
       const hash = window.location.hash.replace('#', '');
-      if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].includes(hash)) {
-        switchTab(hash);
+      if (['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit', 'profile', 'plans', 'pricing'].includes(hash)) {
+        if (hash === 'plans' || hash === 'pricing') {
+          switchTab('profile');
+          switchUserSubtab('pricing');
+        } else {
+          switchTab(hash);
+        }
       }
 
       // Load local history
@@ -2066,11 +2521,20 @@
       const controlPanel = document.getElementById('workspace-control-panel');
       const studioViews = ['agents', 'text', 'image', 'video', 'audio', 'toolkit'];
 
+      const userDash = document.getElementById('view-user-dashboard');
+
       if (tabId === 'trends') {
         viewTrends.classList.remove('hidden');
         workspaceShell.classList.add('hidden');
+        if (userDash) userDash.classList.add('hidden');
+      } else if (tabId === 'profile') {
+        viewTrends.classList.add('hidden');
+        workspaceShell.classList.add('hidden');
+        if (userDash) userDash.classList.remove('hidden');
+        switchUserSubtab('profile');
       } else {
         viewTrends.classList.add('hidden');
+        if (userDash) userDash.classList.add('hidden');
         workspaceShell.classList.remove('hidden');
         
         studioViews.forEach(v => {
@@ -2678,16 +3142,44 @@
       const profile = document.getElementById('user-profile-header');
       profile.classList.remove('hidden');
 
-      document.getElementById('header-user-tokens').textContent = (user.tokens || 1000).toLocaleString();
-      document.getElementById('header-user-tier').textContent = user.tier || 'FREE';
-      document.getElementById('header-user-name').textContent = user.name || 'User';
-      document.getElementById('header-user-initial').textContent = (user.name || 'U')[0].toUpperCase();
+      const tokVal = (user.tokens != null ? user.tokens : 5.5).toString().replace('.', ',');
+      const initialChar = (user.name || user.email || 'Д')[0].toUpperCase();
+      const userName = user.name || 'Дима';
+      const userEmail = user.email || 'foryafrom@gmail.com';
+      const userHandle = '@' + (userEmail.split('@')[0] || 'foryafrom-em');
+      const userTier = (user.tier || 'FREE').toUpperCase();
+
+      document.getElementById('header-user-tokens').textContent = tokVal;
+      document.getElementById('header-user-tier').textContent = userTier;
+      document.getElementById('header-user-initial').textContent = initialChar;
+
+      // Dropdown elements
+      const dTokens = document.getElementById('dropdown-user-tokens');
+      if (dTokens) dTokens.textContent = tokVal;
+      const dTier = document.getElementById('dropdown-user-tier');
+      if (dTier) dTier.textContent = userTier;
+      const dHandle = document.getElementById('dropdown-user-handle');
+      if (dHandle) dHandle.textContent = userHandle;
+
+      // Profile Dashboard elements
+      const pName = document.getElementById('profile-card-name');
+      if (pName) pName.textContent = userName;
+      const pEmail = document.getElementById('profile-card-email');
+      if (pEmail) pEmail.textContent = userEmail;
+      const pInitial = document.getElementById('profile-card-initial');
+      if (pInitial) pInitial.textContent = initialChar;
+      const pTokens = document.getElementById('profile-card-tokens');
+      if (pTokens) pTokens.textContent = tokVal;
+      const pTier = document.getElementById('profile-card-tier');
+      if (pTier) pTier.textContent = userTier;
 
       if (user.avatar) {
         const img = document.getElementById('header-user-avatar');
-        img.src = user.avatar;
-        img.classList.remove('hidden');
-        document.getElementById('header-user-initial').classList.add('hidden');
+        if (img) {
+          img.src = user.avatar;
+          img.classList.remove('hidden');
+          document.getElementById('header-user-initial').classList.add('hidden');
+        }
       }
     }
 
@@ -3017,6 +3509,72 @@
         closeInfoModal();
       }
     });
+  
+    // --- USER PROFILE & DASHBOARD LOGIC (SCREENSHOTS 1, 2, 3, 4) ---
+    function toggleAvatarDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('avatar-dropdown-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function closeAvatarDropdown() {
+      const menu = document.getElementById('avatar-dropdown-menu');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('avatar-dropdown-menu');
+      const btn = document.getElementById('header-user-avatar-btn');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && (!btn || !btn.contains(e.target))) {
+          menu.classList.add('hidden');
+        }
+      }
+    });
+
+    function switchUserSubtab(subtab) {
+      const tabs = ['profile', 'pricing', 'tokens', 'history', 'feed', 'affiliate'];
+      tabs.forEach(t => {
+        const el = document.getElementById(`user-subtab-${t}`);
+        const btn = document.getElementById(`user-nav-btn-${t}`);
+        if (el) el.classList.toggle('hidden', t !== subtab);
+        if (btn) {
+          if (t === subtab) {
+            btn.classList.add('text-[#ea580c]', 'bg-white/5', 'font-bold');
+            btn.classList.remove('text-stone-300');
+          } else {
+            btn.classList.remove('text-[#ea580c]', 'bg-white/5', 'font-bold');
+            btn.classList.add('text-stone-300');
+          }
+        }
+      });
+      // Scroll to top of dashboard content
+      const dash = document.getElementById('view-user-dashboard');
+      if (dash) dash.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copyReferralLink() {
+      const input = document.getElementById('profile-ref-link-input');
+      if (input) {
+        input.select();
+        navigator.clipboard.writeText(input.value);
+        alert('Referral link copied to clipboard!');
+      }
+    }
+
+    function copyAffiliateLink() {
+      const input = document.getElementById('profile-aff-link-input');
+      if (input) {
+        input.select();
+        navigator.clipboard.writeText(input.value);
+        alert('Affiliate link copied to clipboard!');
+      }
+    }
+
+    function refreshUsageLimits() {
+      alert('Usage limits updated. You are currently in Free tier.');
+    }
+
   </script>
 </body>
 </html>
