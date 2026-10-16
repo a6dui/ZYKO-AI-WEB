@@ -77,6 +77,10 @@ PLANS = {
 
 # --- 1. Stripe Checkout ---
 
+def get_telegram_bot_username() -> str:
+    raw = os.environ.get("TELEGRAM_BOT_USERNAME", "").strip()
+    return "ZykoAi_bot" if (not raw or raw == "ElevenlabsA_bot") else raw
+
 async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, cycle: str, origin_url: str) -> dict:
     plan = PLANS.get(plan_name, PLANS["Pro"])
     unit_price = plan["price_eur_annual"] if cycle == "annual" else plan["price_eur_monthly"]
@@ -162,7 +166,7 @@ async def create_platega_payment(user_id: int, plan_name: str, origin_url: str, 
     await create_transaction(user_id, "platega", order_id, amount_rub, "RUB", plan["tokens"], plan_name)
     
     if not PLATEGA_MERCHANT_ID or not PLATEGA_SECRET:
-        bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
+        bot_user = get_telegram_bot_username()
         return {
             "url": f"https://t.me/{bot_user}?start=sub_{plan_name.lower()}",
             "order_id": order_id,
@@ -214,7 +218,7 @@ async def create_platega_payment(user_id: int, plan_name: str, origin_url: str, 
     except Exception as e:
         logger.error("Platega network error: %s", e)
         
-    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
+    bot_user = get_telegram_bot_username()
     tg_sub_url = f"https://t.me/{bot_user}?start=sub_{plan_name.lower()}"
     return {
         "url": tg_sub_url,
@@ -279,7 +283,7 @@ async def create_cryptopay_payment(user_id: int, plan_name: str, cycle: str) -> 
     
     await create_transaction(user_id, "crypto", order_id, amount_usd, "USD", plan["tokens"], plan_name)
     
-    bot_user = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
+    bot_user = get_telegram_bot_username()
     if not CRYPTO_PAY_TOKEN:
         return {
             "url": f"https://t.me/{bot_user}?start=crypto_{plan_name.lower()}",

@@ -37,8 +37,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 logger = logging.getLogger("zyko_server")
 
 PORT = int(os.environ.get("PORT", 8080))
-TELEGRAM_BOT_USERNAME = os.environ.get("TELEGRAM_BOT_USERNAME", "ZykoAi_bot")
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", os.environ.get("ELEVENLABS_BOT_TOKEN", "8824462987:AAFQ_K1QLmi9ZKiyq6gnYnFUGpgBWsXBFqs")).strip()
+_raw_bot = os.environ.get("TELEGRAM_BOT_USERNAME", "").strip()
+TELEGRAM_BOT_USERNAME = "ZykoAi_bot" if (not _raw_bot or _raw_bot == "ElevenlabsA_bot") else _raw_bot
+
+_raw_token = os.environ.get("TELEGRAM_BOT_TOKEN", os.environ.get("ELEVENLABS_BOT_TOKEN", "")).strip()
+TELEGRAM_BOT_TOKEN = "8824462987:AAFQ_K1QLmi9ZKiyq6gnYnFUGpgBWsXBFqs" if (not _raw_token or _raw_token.startswith("8921688906")) else _raw_token
 
 # In-memory store for pending Telegram web logins: code -> {status, token, user, created_at}
 PENDING_AUTH_SESSIONS = {}
