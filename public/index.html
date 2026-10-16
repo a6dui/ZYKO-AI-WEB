@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZYKO.AI — 100+ AI Models in One Place | Web & Telegram</title>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="icon" type="image/jpeg" sizes="192x192" href="/static/assets/zyko_bot_avatar.jpg">
-  <link rel="apple-touch-icon" href="/static/assets/zyko_bot_avatar.jpg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=3">
+  <link rel="shortcut icon" href="/favicon.ico?v=3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="description" content="One subscription. Unlimited access to top AI tools: Nano Banana, Kling, FLUX, Veo, Seedance, ElevenLabs, ChatGPT, Claude, and 100+ neural networks in Web and Telegram.">
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Identity Services -->
@@ -183,68 +185,73 @@
   <header class="sticky top-0 z-50 bg-[#0c1110]/90 backdrop-blur-xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
-      <!-- Left: Logo + Hamburger Dropdown (Screenshot 5) -->
-      <div class="flex items-center gap-3.5 relative">
-        <button onclick="toggleBurgerDropdown(event)" id="burger-menu-btn" class="p-1.5 -ml-1 text-stone-300 hover:text-white hover:bg-white/10 rounded-lg transition" title="Open navigation menu">
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
-        </button>
+      <!-- Left: Logo + Floating Hamburger Dropdown (Screenshot 5) -->
+      <div class="flex items-center gap-3.5">
+        <div class="relative">
+          <button onclick="toggleBurgerDropdown(event)" id="burger-menu-btn" class="p-2 -ml-1 text-stone-300 hover:text-white hover:bg-white/10 rounded-xl transition flex items-center justify-center" title="Open navigation menu">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+          </button>
 
-        <!-- Floating Hamburger Dropdown (Screenshot 5) -->
-        <div id="burger-dropdown-menu" class="hidden absolute left-0 top-11 w-52 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl">
-          <div class="space-y-0.5 text-xs font-semibold text-stone-300">
-            <button onclick="switchTab('trends'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <span>🏠</span> <span data-i18n="drawer_home">Home</span>
-            </button>
-            <button onclick="openAcademyModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <span>🎓</span> <span data-i18n="drawer_academy">Academy</span>
-            </button>
-            <button onclick="openContestModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <span>🏆</span> <span data-i18n="drawer_contest">Contest</span>
-            </button>
-            <button onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <span>❓</span> <span data-i18n="drawer_faq">FAQ</span>
-            </button>
-            <button onclick="openStatusModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <span>📈</span> <span data-i18n="drawer_status">Status Page</span>
-            </button>
-            <a href="https://t.me/Zykolandstore" target="_blank" onclick="closeBurgerDropdown();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
-              <div class="flex items-center gap-3">
-                <span>🎧</span> <span data-i18n="drawer_support">Support</span>
-              </div>
-              <span class="text-stone-500 text-xs">›</span>
-            </a>
-
-            <!-- Language Flyout Item (Screenshot 5) -->
-            <div class="relative group/lang">
-              <button onclick="toggleLangFlyout(event)" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+          <!-- Floating Hamburger Dropdown (Screenshot 5) -->
+          <div id="burger-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-56 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl">
+            <div class="space-y-0.5 text-xs font-semibold text-stone-300">
+              <button onclick="switchTab('trends'); closeBurgerDropdown(); window.scrollTo({top: 0, behavior: 'smooth'});" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>🏠</span> <span data-i18n="drawer_home">Home</span>
+              </button>
+              <button onclick="openAcademyModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>🎓</span> <span data-i18n="drawer_academy">Academy</span>
+              </button>
+              <button onclick="openContestModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>🏆</span> <span data-i18n="drawer_contest">Contest</span>
+              </button>
+              <button onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>❓</span> <span data-i18n="drawer_faq">FAQ</span>
+              </button>
+              <button onclick="openStatusModal(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>📈</span> <span data-i18n="drawer_status">Status Page</span>
+              </button>
+              <a href="https://t.me/Zykolandstore" target="_blank" onclick="closeBurgerDropdown();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                 <div class="flex items-center gap-3">
-                  <span id="active-lang-flag">🇬🇧</span> <span id="active-lang-label">English</span>
+                  <span>🎧</span> <span data-i18n="drawer_support">Support</span>
                 </div>
                 <span class="text-stone-500 text-xs">›</span>
-              </button>
-              
-              <!-- Submenu flyout (Screenshot 5) -->
-              <div id="lang-flyout-menu" class="hidden group-hover/lang:block md:absolute left-full top-0 ml-1.5 w-44 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-1.5 z-50 backdrop-blur-xl space-y-0.5">
-                <button onclick="setLanguage('en'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
-                  <span>🇬🇧</span> English
+              </a>
+
+              <!-- Language Flyout Item (Screenshot 5) -->
+              <div class="relative group/lang">
+                <button onclick="toggleLangFlyout(event)" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                  <div class="flex items-center gap-3">
+                    <span id="active-lang-flag">🇬🇧</span> <span id="active-lang-label">English</span>
+                  </div>
+                  <span class="text-stone-500 text-xs">›</span>
                 </button>
-                <button onclick="setLanguage('ru'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
-                  <span>🇷🇺</span> Русский
-                </button>
-                <button onclick="setLanguage('es'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
-                  <span>🇪🇸</span> Español
-                </button>
-                <button onclick="setLanguage('de'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
-                  <span>🇩🇪</span> Deutsch
+                
+                <!-- Submenu flyout (Screenshot 5) -->
+                <div id="lang-flyout-menu" class="hidden group-hover/lang:block md:absolute left-full top-0 ml-1.5 w-48 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-1.5 z-50 backdrop-blur-xl space-y-0.5">
+                  <button onclick="setLanguage('en'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                    <span>🇬🇧</span> English
+                  </button>
+                  <button onclick="setLanguage('ru'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                    <span>🇷🇺</span> Русский
+                  </button>
+                  <button onclick="setLanguage('es'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                    <span>🇪🇸</span> Español
+                  </button>
+                  <button onclick="setLanguage('pt'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                    <span>🇧🇷</span> Português
+                  </button>
+                  <button onclick="setLanguage('de'); closeBurgerDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/10 text-xs font-semibold text-stone-200">
+                    <span>🇩🇪</span> Deutsch
+                  </button>
+                </div>
+              </div>
+
+              <!-- Admin Panel Shortcut -->
+              <div class="border-t border-white/10 my-1 pt-1">
+                <button onclick="openAdminPanel(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold transition text-left border border-emerald-500/20">
+                  <span>🛡️</span> <span>Admin Panel</span>
                 </button>
               </div>
-            </div>
-
-            <!-- Admin Panel Shortcut -->
-            <div class="border-t border-white/10 my-1 pt-1">
-              <button onclick="openAdminPanel(); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold transition text-left border border-emerald-500/20">
-                <span>🛡️</span> <span>Admin Panel</span>
-              </button>
             </div>
           </div>
         </div>
@@ -3106,6 +3113,28 @@
         agent_title: "Erstelle und kommuniziere mit deinem persönlichen Agenten",
         agent_desc: "Agenten merken sich Anweisungen, Sprachstil und lernen aus Ihren Daten.",
         payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben."
+      },
+      pt: {
+        nav_trends: "Tendências",
+        nav_agents: "Agentes",
+        nav_llm: "Estúdio LLM",
+        nav_image: "Imagem",
+        nav_video: "Vídeo",
+        nav_audio: "Áudio",
+        nav_toolkit: "Ferramentas",
+        sign_in: "Entrar",
+        topup: "Recarregar ZK",
+        logout: "Sair",
+        drawer_home: "Início",
+        drawer_academy: "Academia",
+        drawer_contest: "Concurso",
+        drawer_faq: "Perguntas frequentes",
+        drawer_status: "Status das IAs",
+        drawer_support: "Suporte",
+        drawer_language: "Idioma",
+        agent_title: "Crie e converse com seu agente pessoal",
+        agent_desc: "Os agentes memorizam instruções, estilo de conversa e aprendem com seus dados.",
+        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens creditados na sua conta."
       }
     };
 
@@ -4423,6 +4452,7 @@
     // --- USER PROFILE & DASHBOARD LOGIC (SCREENSHOTS 1, 2, 3, 4) ---
     function toggleAvatarDropdown(e) {
       if (e) e.stopPropagation();
+      closeBurgerDropdown();
       const menu = document.getElementById('avatar-dropdown-menu');
       if (menu) menu.classList.toggle('hidden');
     }
@@ -4547,6 +4577,7 @@
     // =========================================================================
     function toggleBurgerDropdown(e) {
       if (e) e.stopPropagation();
+      closeAvatarDropdown();
       const menu = document.getElementById('burger-dropdown-menu');
       if (menu) menu.classList.toggle('hidden');
     }
@@ -4568,6 +4599,7 @@
       en: { flag: '🇬🇧', label: 'English' },
       ru: { flag: '🇷🇺', label: 'Русский' },
       es: { flag: '🇪🇸', label: 'Español' },
+      pt: { flag: '🇧🇷', label: 'Português' },
       de: { flag: '🇩🇪', label: 'Deutsch' }
     };
 
