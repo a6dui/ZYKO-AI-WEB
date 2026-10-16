@@ -2080,45 +2080,164 @@
             </div>
           </div>
 
-          <!-- SUBVIEW 5: FEED -->
+          <!-- SUBVIEW 5: FEED (EXACT MATCH TO SCREENSHOT 1) -->
           <div id="user-subtab-feed" class="hidden space-y-6">
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">Generation Feed</h2>
-            <div id="profile-feed-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <!-- Dynamically populated from local history -->
-              <div class="aspect-square bg-black/40 border border-white/10 rounded-2xl flex flex-col items-center justify-center text-center p-4 text-xs text-stone-500">
-                <span>🎨</span>
-                <span class="mt-2">No generations yet</span>
+            <div>
+              <h2 class="text-3xl font-extrabold text-white tracking-tight mb-2">Feed</h2>
+              <div class="text-xs text-stone-400 font-semibold mb-3">Filter</div>
+              
+              <!-- Filter Row with Type Pills & Grid Toggle -->
+              <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-2 text-xs font-semibold">
+                  <button onclick="filterFeedType('text', this)" id="feed-filter-text" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
+                    <span>💬</span> <span>Text</span>
+                  </button>
+                  <button onclick="filterFeedType('image', this)" id="feed-filter-image" class="px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition">
+                    <span>🖼️</span> <span>Image</span>
+                  </button>
+                  <button onclick="filterFeedType('video', this)" id="feed-filter-video" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
+                    <span>📹</span> <span>Video</span>
+                  </button>
+                  <button onclick="filterFeedType('audio', this)" id="feed-filter-audio" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
+                    <span>🎵</span> <span>Audio</span>
+                  </button>
+                </div>
+
+                <!-- View Switchers (List / Grid) -->
+                <div class="flex items-center gap-1 text-stone-400">
+                  <button onclick="setFeedLayout('list')" class="p-1.5 hover:text-white transition" title="List View">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+                  </button>
+                  <button onclick="setFeedLayout('grid')" class="p-1.5 text-stone-200 hover:text-white transition" title="Grid View">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm-9 9h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
+                  </button>
+                </div>
               </div>
+            </div>
+
+            <!-- Feed Content Area: Empty State by default (Screenshot 1) -->
+            <div id="feed-empty-state" class="py-24 flex flex-col items-center justify-center text-center">
+              <div class="w-12 h-12 text-[#f5efe6] mx-auto mb-3 flex items-center justify-center">
+                <svg class="w-10 h-10 fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
+              </div>
+              <h4 class="text-sm font-semibold text-stone-200 mb-1">There's nothing here yet</h4>
+              <p class="text-xs text-stone-500 mb-5">Create your first file, and the feed will start filling up</p>
+              <button onclick="switchTab('image')" class="bg-transparent border border-white/20 hover:border-white/50 text-stone-200 hover:text-white text-xs font-semibold px-6 py-2 rounded-full transition shadow active:scale-95">
+                + Create
+              </button>
+            </div>
+
+            <!-- Grid of User Generations (hidden when empty) -->
+            <div id="profile-feed-grid" class="hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <!-- Dynamically populated from local history when user creates -->
             </div>
           </div>
 
-          <!-- SUBVIEW 6: AFFILIATE -->
-          <div id="user-subtab-affiliate" class="hidden space-y-6">
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">Affiliate Program</h2>
-            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-4">
-              <p class="text-xs text-stone-300 leading-relaxed">
-                Invite friends and colleagues to ZYKO.AI and receive <strong class="text-emerald-400">20% lifetime commission</strong> from every token top-up and subscription payment they make.
-              </p>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
-                <div class="p-4 bg-black/30 rounded-xl">
-                  <div class="text-stone-400 text-xs">Invited users</div>
-                  <div class="text-2xl font-bold text-white mt-1">0</div>
-                </div>
-                <div class="p-4 bg-black/30 rounded-xl">
-                  <div class="text-stone-400 text-xs">Partner Tokens</div>
-                  <div class="text-2xl font-bold text-amber-400 mt-1">0 ⚡</div>
-                </div>
-                <div class="p-4 bg-black/30 rounded-xl">
-                  <div class="text-stone-400 text-xs">Available Funds</div>
-                  <div class="text-2xl font-bold text-emerald-400 mt-1">$0.00</div>
-                </div>
+          <!-- SUBVIEW 6: AFFILIATE / REFERRALS (EXACT MATCH TO SCREENSHOT 2) -->
+          <div id="user-subtab-affiliate" class="space-y-6">
+            <h2 class="text-2xl font-black uppercase tracking-wider text-white">REFERRALS</h2>
+
+            <!-- Card 1: 3-Level Commission Announcement Banner (Screenshot 2) -->
+            <div class="bg-[#1a1413] border border-orange-500/20 rounded-2xl p-5 flex items-start gap-4 shadow-sm">
+              <div class="w-8 h-8 rounded-xl bg-orange-500/10 text-[#ea580c] flex items-center justify-center text-lg shrink-0 mt-0.5">
+                👥
               </div>
-              <div class="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs">
-                <span class="text-stone-400">🔗</span>
-                <input id="profile-aff-link-input" type="text" readonly value="https://zyko.ai/welcome/U4M3Zw5y" class="bg-transparent text-stone-200 text-xs w-full focus:outline-none">
-                <button onclick="copyAffiliateLink()" class="text-emerald-400 hover:text-emerald-300 font-bold shrink-0">Copy Link</button>
+              <div class="space-y-1.5 text-xs">
+                <p class="text-stone-200 font-medium">
+                  Join the ZYKO.AI affiliate program and earn income from three levels: from users you invite and those they invite.
+                </p>
+                <p class="text-stone-400 leading-relaxed">
+                  <strong class="text-white font-bold">15% from payments made by users you invited, 10% from the second level, and 5% from the third level.</strong> Reward is accrued with no time limit as long as users continue paying for the subscription.
+                </p>
               </div>
             </div>
+
+            <!-- Card 2: Partner Tokens & Available Funds + Unique Link Card (Screenshot 2) -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-sm">
+              <!-- Left Column: Stats -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-stone-400 flex items-center gap-2 font-medium">
+                    <span>👥</span> <span>PARTNER TOKENS</span>
+                  </span>
+                  <span class="font-extrabold text-white text-sm">⚡ 0</span>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-stone-400 flex items-center gap-2 font-medium">
+                    <span>💵</span> <span>AVAILABLE FUNDS</span>
+                  </span>
+                  <span class="font-extrabold text-white text-sm">~ $0.00</span>
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="hidden md:block absolute top-6 bottom-6 left-1/2 w-px bg-white/10"></div>
+
+              <!-- Right Column: Unique Link (Screenshot 2) -->
+              <div class="md:pl-8 space-y-3">
+                <p class="text-xs text-stone-300">
+                  Send your unique link to friends/colleagues to earn money with ZYKO
+                </p>
+                <div class="flex items-center gap-2 bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs">
+                  <span class="text-stone-400">🔗</span>
+                  <input id="affiliate-ref-link-input" type="text" readonly value="https://zyko.ai/welcome/U4M3Zw5y" class="bg-transparent text-stone-200 text-xs w-full focus:outline-none select-all font-mono">
+                  <button onclick="copyAffiliateUniqueLink()" class="text-[#ea580c] hover:text-[#f97316] font-bold shrink-0 ml-1">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: My Referrers Table (Screenshot 2) -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 shadow-sm space-y-6">
+              <!-- Header with Toggle -->
+              <div class="flex items-center justify-between">
+                <h4 class="text-base font-bold text-white">My referrers</h4>
+                <label class="flex items-center gap-2 text-xs text-stone-400 cursor-pointer">
+                  <input type="checkbox" id="referrers-active-toggle" class="w-4 h-4 accent-[#ea580c] rounded">
+                  <span>The most active</span>
+                </label>
+              </div>
+
+              <!-- 4 Stat Counters Row -->
+              <div class="grid grid-cols-4 gap-4 py-2 border-b border-white/10 text-xs">
+                <div>
+                  <div class="text-stone-500 mb-1">Participants</div>
+                  <div class="text-2xl font-bold text-white">0</div>
+                </div>
+                <div>
+                  <div class="text-stone-500 mb-1">1 level</div>
+                  <div class="text-2xl font-bold text-white">0</div>
+                </div>
+                <div>
+                  <div class="text-stone-500 mb-1">2 level</div>
+                  <div class="text-2xl font-bold text-white">0</div>
+                </div>
+                <div>
+                  <div class="text-stone-500 mb-1">3 level</div>
+                  <div class="text-2xl font-bold text-white">0</div>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead>
+                    <tr class="text-stone-400 border-b border-white/10 pb-2.5">
+                      <th class="py-2.5 font-medium w-1/3">Level</th>
+                      <th class="py-2.5 font-medium w-1/3">Payments</th>
+                      <th class="py-2.5 font-medium w-1/3 text-right">Registration date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="3" class="py-14 text-center text-stone-500 font-medium">
+                        No Data
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -3690,6 +3809,35 @@
 
     function openContactSupport() {
       window.open('https://t.me/Zykolandstore', '_blank');
+    }
+
+    
+    function filterFeedType(type, btn) {
+      const container = btn.parentElement;
+      container.querySelectorAll('button').forEach(b => {
+        b.className = 'px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition';
+      });
+      btn.className = 'px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition';
+    }
+
+    function setFeedLayout(layout) {
+      const grid = document.getElementById('profile-feed-grid');
+      if (grid) {
+        if (layout === 'list') {
+          grid.className = 'grid grid-cols-1 gap-3';
+        } else {
+          grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+        }
+      }
+    }
+
+    function copyAffiliateUniqueLink() {
+      const input = document.getElementById('affiliate-ref-link-input');
+      if (input) {
+        input.select();
+        navigator.clipboard.writeText(input.value);
+        alert('Affiliate link copied: ' + input.value);
+      }
     }
 
     function switchUserSubtab(subtab) {
