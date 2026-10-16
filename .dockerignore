@@ -1,0 +1,8 @@
+.git
+.gitignore
+zyko_web.db
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env.local
