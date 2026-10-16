@@ -1,0 +1,6 @@
+{
+  "$schema": "https://schema.zeabur.app/config.json",
+  "build": {
+    "type": "docker"
+  }
+}

@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYKO.AI — 100+ AI Models in One Place | Web & Telegram</title>
+  <meta name="description" content="One subscription. Unlimited access to top AI tools: Kling, FLUX, Veo, Seedance, ElevenLabs, Suno and 100+ neural networks in Web and Telegram.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Identity Services (Google Sign-In) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#050807',
+            cardbg: '#111514',
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #050807;
+      color: #f5f5f4;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-serif-editorial {
+      font-family: 'Instrument Serif', Georgia, serif;
+    }
+    .glow-section {
+      background: radial-gradient(ellipse 80% 50% at 50% 45%, rgba(16, 185, 129, 0.18), rgba(6, 182, 212, 0.06) 55%, transparent 80%);
+    }
+    .glow-footer {
+      background: linear-gradient(to top, rgba(16, 185, 129, 0.32) 0%, rgba(13, 148, 136, 0.1) 45%, transparent 100%);
+    }
+    .pro-card-gradient {
+      background: linear-gradient(155deg, rgba(16, 185, 129, 0.32) 0%, rgba(10, 15, 13, 0.96) 65%);
+    }
+    .enterprise-card-gradient {
+      background: linear-gradient(155deg, rgba(20, 32, 27, 0.92) 0%, rgba(16, 185, 129, 0.25) 100%);
+    }
+    .perspective-slider {
+      perspective: 1200px;
+    }
+    .tilt-card {
+      transform: rotateY(-8deg) rotateX(2deg);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+      will-change: transform;
+    }
+    .tilt-card:hover {
+      transform: rotateY(0deg) rotateX(0deg) scale(1.04);
+      box-shadow: 0 16px 36px -10px rgba(16, 185, 129, 0.35);
+      border-color: rgba(52, 211, 153, 0.6);
+      z-index: 20;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: rotateY(-8deg) rotateX(2deg) translateY(0px); }
+      50% { transform: rotateY(-8deg) rotateX(2deg) translateY(-8px); }
+    }
+    .animate-tilt {
+      animation: floatSlow 5s ease-in-out infinite;
+    }
+    .modal-backdrop {
+      background: rgba(3, 7, 5, 0.88);
+      backdrop-filter: blur(14px);
+    }
+    .comparison-container {
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+    .comparison-before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 50%;
+      overflow: hidden;
+      border-right: 2px solid #34d399;
+      box-shadow: 2px 0 12px rgba(52, 211, 153, 0.5);
+    }
+    .comparison-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #10b981;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 280px;
+      opacity: 1;
+    }
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+      color: #34d399;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #050807; }
+    ::-webkit-scrollbar-thumb { background: #192723; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+  </style>
+</head>
+<body class="selection:bg-emerald-400 selection:text-black">
+
+  <!-- Payment Status Banner (if returning from Stripe or Platega) -->
+  <div id="payment-alert" class="hidden bg-emerald-500 text-black py-2.5 px-4 text-center text-xs font-black tracking-wide flex items-center justify-center gap-2 shadow-lg">
+    <span>🎉 Оплата успешно подтверждена! Токены зачислены на ваш баланс.</span>
+    <button onclick="this.parentElement.style.display='none'" class="bg-black/20 hover:bg-black/40 text-black px-2 py-0.5 rounded text-xs">✕</button>
+  </div>
+
+  <!-- 1. TOP NOTIFICATION BAR -->
+  <div id="top-bar" class="bg-gradient-to-r from-[#042f2e] via-[#064e3b] to-[#042f2e] border-b border-emerald-500/25 text-xs py-2 px-4 flex items-center justify-between transition-all duration-300">
+    <div></div>
+    <div class="flex items-center gap-3">
+      <span id="promo-text" class="text-stone-200 font-medium transition-opacity duration-300">The new Nano Banana 2.1 is here</span>
+      <span class="text-emerald-500/50">|</span>
+      <a href="#tools" id="promo-action-btn" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-1 rounded-md text-[11px] font-semibold transition">Create image</a>
+    </div>
+    <button onclick="dismissTopBar()" class="text-stone-400 hover:text-white text-sm px-2 transition" title="Close announcement">✕</button>
+  </div>
+
+  <!-- STICKY HEADER -->
+  <header class="sticky top-0 z-50 bg-[#0e1412]/85 backdrop-blur-xl border-b border-white/10 px-6 py-3 transition-all duration-200">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Logo Left -->
+      <div class="flex items-center gap-3">
+        <a href="#" class="flex items-center gap-2.5 font-black text-xl tracking-tighter group">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 text-black flex items-center justify-center font-black shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition">Z</span>
+          <span class="text-stone-100 font-extrabold tracking-tight text-lg">ZYKO<span class="text-emerald-400">.AI</span></span>
+        </a>
+        <button onclick="toggleMobileNav()" class="md:hidden text-stone-300 hover:text-white p-1 text-lg">☰</button>
+      </div>
+
+      <!-- Center Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-stone-300">
+        <a href="#trends" class="hover:text-white flex items-center gap-1.5 transition">
+          Trends <span class="bg-gradient-to-r from-emerald-400 to-teal-400 text-black font-extrabold text-[10px] px-1.5 py-0.5 rounded shadow-sm">New</span>
+        </a>
+        <a href="#tools" class="hover:text-emerald-400 transition">Tools</a>
+        <a href="#pricing" class="hover:text-emerald-400 transition">Pricing</a>
+        <a href="#faq" class="hover:text-emerald-400 transition">FAQ</a>
+      </nav>
+
+      <!-- Right Actions: Auth State -->
+      <div class="flex items-center gap-3" id="header-actions">
+        <button onclick="openPromptModal()" title="Quick AI Generator" class="text-stone-300 hover:text-emerald-400 p-2 rounded-lg hover:bg-white/5 transition flex items-center justify-center">
+          <span class="text-base">🪄</span>
+        </button>
+        <a href="https://t.me/voiceaichannel_bot" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 bg-white/5 hover:bg-emerald-500/10 border border-white/15 hover:border-emerald-400/40 text-xs font-semibold px-3.5 py-2 rounded-xl text-emerald-300 transition">
+          <span>✈️</span> TG Bot
+        </a>
+
+        <!-- Logged Out State -->
+        <button id="btn-login-header" onclick="openAuthModal()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/25 active:scale-95">
+          <span>👤</span> Sign in
+        </button>
+
+        <!-- Logged In State (Initially hidden) -->
+        <div id="user-profile-header" class="hidden flex items-center gap-2.5">
+          <div class="flex items-center gap-2 bg-[#16201c] border border-emerald-500/30 rounded-xl px-2.5 py-1.5">
+            <span class="text-[11px] font-black text-emerald-400">✦ <span id="header-user-tokens">1 000</span> ZK</span>
+            <span id="header-user-tier" class="bg-emerald-500/20 text-emerald-300 text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase">PRO</span>
+          </div>
+          <div class="relative group cursor-pointer">
+            <img id="header-user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-8 h-8 rounded-xl object-cover border border-emerald-400" alt="User Avatar">
+            <!-- Dropdown -->
+            <div class="absolute right-0 top-10 w-44 bg-[#111514] border border-white/15 rounded-xl shadow-2xl p-2 hidden group-hover:block space-y-1 text-xs">
+              <div id="header-user-name" class="font-bold text-white px-2 py-1 truncate">User</div>
+              <button onclick="openPaymentModal('Pro')" class="w-full text-left px-2 py-1.5 rounded-lg text-emerald-400 hover:bg-white/5 font-semibold">+ Пополнить ZK</button>
+              <button onclick="handleLogout()" class="w-full text-left px-2 py-1.5 rounded-lg text-stone-400 hover:text-white hover:bg-white/5">Выйти</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobile-nav" class="hidden md:hidden pt-4 pb-2 border-t border-white/10 mt-3 space-y-2 text-sm font-medium">
+      <a href="#trends" onclick="toggleMobileNav()" class="block py-2 px-3 hover:bg-white/5 rounded-lg text-stone-200">Trends</a>
+      <a href="#tools" onclick="toggleMobileNav()" class="block py-2 px-3 hover:bg-white/5 rounded-lg text-stone-200">Tools</a>
+      <a href="#pricing" onclick="toggleMobileNav()" class="block py-2 px-3 hover:bg-white/5 rounded-lg text-stone-200">Pricing</a>
+      <a href="#faq" onclick="toggleMobileNav()" class="block py-2 px-3 hover:bg-white/5 rounded-lg text-stone-200">FAQ</a>
+      <div class="pt-2 flex gap-2">
+        <a href="https://t.me/voiceaichannel_bot" target="_blank" class="flex-1 text-center py-2 bg-white/10 rounded-xl text-xs text-emerald-300 font-semibold">✈️ Telegram Bot</a>
+        <button onclick="toggleMobileNav(); openAuthModal();" class="flex-1 py-2 bg-emerald-500 text-black rounded-xl text-xs font-bold">Sign in</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SCREENSHOT 1: HERO BLOCK WITH FULLSCREEN VIDEO BACKGROUND -->
+  <section class="relative w-full h-[88vh] min-h-[580px] flex items-end overflow-hidden border-b border-white/5">
+    <video id="heroVideo" autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-70 contrast-110 transition-opacity duration-700">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-working-on-her-laptop-in-a-creative-office-42525-large.mp4" type="video/mp4">
+    </video>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-[#050807] via-[#050807]/50 to-emerald-950/25"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050807]/90 via-[#050807]/40 to-transparent"></div>
+
+    <div class="relative z-10 max-w-7xl w-full mx-auto px-6 md:px-8 pb-16 flex items-end justify-between">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-4 backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Next-Gen AI Platform 2026
+        </div>
+        <h1 class="text-6xl md:text-8xl font-black tracking-tight text-[#f5f0eb] mb-3 drop-shadow-md">
+          ZYKO.AI
+        </h1>
+        <p class="text-2xl md:text-4xl font-extrabold text-emerald-400 leading-tight mb-8 drop-shadow">
+          One subscription.<br>
+          Unlimited access to top AI tools.
+        </p>
+        <div class="flex flex-wrap gap-3.5">
+          <a href="#pricing" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-sm px-7 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-xl shadow-emerald-500/30 transition hover:scale-105 active:scale-95">
+            Try for free <span>✦</span>
+          </a>
+          <a href="https://t.me/voiceaichannel_bot" target="_blank" class="bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 hover:border-emerald-400/50 text-white font-semibold text-sm px-6 py-3.5 rounded-xl inline-flex items-center gap-2 transition hover:scale-105">
+            <span>✈️</span> Open Telegram Bot
+          </a>
+        </div>
+      </div>
+
+      <button onclick="toggleHeroVideo()" id="videoToggleBtn" title="Play / Pause video background" class="w-10 h-10 rounded-full bg-[#f5f0eb]/90 hover:bg-white text-black flex items-center justify-center text-xs font-bold shadow-xl transition hover:scale-110 active:scale-90">
+        ⏸
+      </button>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 2: WHAT'S TRENDING WORLDWIDE -->
+  <section id="trends" class="glow-section py-24 px-6 relative border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-6">
+        <div class="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-stone-400 text-[11px] font-semibold uppercase tracking-wider mb-3">
+          ✦ Inspiration Feed
+        </div>
+        <h2 class="font-serif-editorial text-6xl md:text-7xl tracking-normal leading-none mb-4">
+          What’s trending <span class="text-emerald-400 italic">worldwide</span>
+        </h2>
+        <p class="text-stone-300 text-base md:text-lg font-medium leading-snug">
+          Recreate the most popular looks, effects,<br>and ideas in just a few clicks.
+        </p>
+      </div>
+
+      <div class="flex justify-end mb-6">
+        <a href="#tools" class="text-xs font-semibold text-stone-200 border-b border-stone-400 pb-1 hover:text-emerald-400 hover:border-emerald-400 transition flex items-center gap-1">
+          All trends <span>✦</span>
+        </a>
+      </div>
+
+      <!-- 4-колоночная статичная сетка со смещением -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
+        <div class="lg:mt-8 space-y-5">
+          <div onclick="openTrendModal('Gothic Castle in Mist', 'Atmospheric medieval fortress bridge with cinematic volumetric fog and ultra-detailed stone textures', 'FLUX.1 Ultra', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[3/4] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80" alt="Gothic Castle in Mist" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Gothic Castle in Mist</span>
+              <span class="text-[10px] text-emerald-300">Model: FLUX.1 Ultra ✦</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div onclick="openTrendModal('Cosmic Lake Reflections', 'Lone boat on crystal mirror water under starry galaxy nebula night sky', 'Seedream 5 Pro', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[4/3] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=80" alt="Cosmic Lake" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Cosmic Lake Reflections</span>
+              <span class="text-[10px] text-emerald-300">Model: Seedream 5 Pro ✦</span>
+            </div>
+          </div>
+          <div onclick="openTrendModal('Cinematic Portrait in Meadow', 'Golden hour natural sunlight lens flare with authentic freckles and shallow depth of field', 'Nano Banana 2.1', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[4/3] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop&q=80" alt="Cinematic Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Golden Hour Portrait</span>
+              <span class="text-[10px] text-emerald-300">Model: Nano Banana 2.1 ✦</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div onclick="openTrendModal('Editorial Studio Portrait', 'High fashion studio headshot with rembrandt lighting, sharp eyes and authentic skin pores', 'Nano Banana Pro', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[3/4.3] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80" alt="Studio Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Studio Editorial Portrait</span>
+              <span class="text-[10px] text-emerald-300">Model: Nano Banana Pro ✦</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:mt-8 space-y-5">
+          <div onclick="openTrendModal('Cyber Neon Glow', 'Futuristic cyberpunk portrait bathed in vibrant ultraviolet and teal rim lighting', 'Kling 3.0', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[4/3] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" alt="Cyber Neon" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Cyber Neon Aura</span>
+              <span class="text-[10px] text-emerald-300">Model: Kling 3.0 ✦</span>
+            </div>
+          </div>
+          <div onclick="openTrendModal('Abstract Liquid Waves', 'Iridescent metallic fluids twisting in zero gravity with neon caustics and glass reflections', 'Topaz Astra', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80')" class="rounded-2xl overflow-hidden aspect-[4/3] bg-stone-900 border border-white/10 group cursor-pointer relative shadow-lg">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80" alt="Abstract Waves" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end">
+              <span class="text-xs font-bold text-white">Iridescent 3D Waves</span>
+              <span class="text-[10px] text-emerald-300">Model: Topaz Astra ✦</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 3: AI TOOLS + INTERACTIVE TABS + 3D ANIMATED SLIDER -->
+  <section id="tools" class="glow-section py-24 px-6 overflow-hidden border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-[#f5f0eb] mb-3">
+          AI tools for images, video, text and audio
+        </h2>
+        <p class="text-stone-300 text-lg md:text-xl font-medium">
+          New models every week. 100+ and counting
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-2.5 mt-8" id="tools-tab-bar">
+          <button onclick="switchToolTab('Seedance 2.5', this)" class="tool-tab bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition">
+            📊 Seedance 2.5
+          </button>
+          <button onclick="switchToolTab('Nano Banana', this)" class="tool-tab bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition">
+            🍌 Nano Banana
+          </button>
+          <button onclick="switchToolTab('Seedream', this)" class="tool-tab bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition">
+            📊 Seedream
+          </button>
+          <button onclick="switchToolTab('Kling', this)" class="tool-tab bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition">
+            🔗 Kling
+          </button>
+          <button onclick="switchToolTab('Veo', this)" class="tool-tab bg-emerald-500 text-black text-xs font-bold px-5 py-2.5 rounded-lg shadow-lg shadow-emerald-500/25 transition">
+            ✪ Veo
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mt-14">
+        <div class="lg:col-span-4 space-y-6">
+          <h3 id="activeModelTitle" class="font-serif-editorial text-6xl text-[#f5f0eb] transition-all duration-300">Veo</h3>
+          <p id="activeModelDesc" class="text-stone-300 text-xs md:text-sm leading-relaxed transition-all duration-300 min-h-[100px]">
+            An AI model for video generation with cinematic quality. It is designed for realistic scenes, complex camera angles, and consistent camera movement. Best suited for creating cinematic video with atmospheric scenes, landscapes, and narrative sequences where scale, depth, and visual coherence matter.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="#pricing" class="inline-block bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/25 hover:scale-105">
+              Start creating ✦
+            </a>
+            <button onclick="openPromptModal()" class="inline-block bg-white/5 hover:bg-white/10 border border-white/15 text-white font-semibold text-xs px-4 py-3.5 rounded-xl transition">
+              Test Prompt 🪄
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 perspective-slider grid grid-cols-2 sm:grid-cols-4 gap-4" id="toolCardsGrid">
+          <div class="tilt-card animate-tilt rounded-2xl overflow-hidden aspect-[3/4] border border-white/10 relative group bg-stone-900 shadow-xl">
+            <img id="card-img-0" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Veo Sample 1">
+            <span class="absolute bottom-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[10px] font-bold px-2 py-0.5 rounded text-emerald-300 border border-white/10">▶ Live Render</span>
+          </div>
+          <div class="tilt-card animate-tilt rounded-2xl overflow-hidden aspect-[3/4] border border-white/10 relative group bg-stone-900 shadow-xl" style="animation-delay: 0.7s">
+            <img id="card-img-1" src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&auto=format&fit=crop&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Veo Sample 2">
+            <span class="absolute bottom-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[10px] font-bold px-2 py-0.5 rounded text-emerald-300 border border-white/10">▶ Live Render</span>
+          </div>
+          <div class="tilt-card animate-tilt rounded-2xl overflow-hidden aspect-[3/4] border border-white/10 relative group bg-stone-900 shadow-xl" style="animation-delay: 1.4s">
+            <img id="card-img-2" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Veo Sample 3">
+            <span class="absolute bottom-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[10px] font-bold px-2 py-0.5 rounded text-emerald-300 border border-white/10">▶ Live Render</span>
+          </div>
+          <div class="tilt-card animate-tilt rounded-2xl overflow-hidden aspect-[3/4] border border-white/10 relative group bg-stone-900 shadow-xl" style="animation-delay: 2.1s">
+            <img id="card-img-3" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Veo Sample 4">
+            <span class="absolute bottom-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[10px] font-bold px-2 py-0.5 rounded text-emerald-300 border border-white/10">▶ Live Render</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 4: MORE AI MODELS IN ONE PLACE -->
+  <section class="glow-section py-20 px-6 border-b border-white/5">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-[#f5f0eb] mb-12">
+        More AI models in one place
+      </h2>
+
+      <div class="flex flex-wrap justify-center gap-3">
+        <span onclick="triggerModelPill('Nano Banana', 'Fast photorealistic image generation')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🍌 Nano Banana</span>
+        <span onclick="triggerModelPill('Kling', 'Cinematic video generation with physical realism')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🔗 Kling</span>
+        <span onclick="triggerModelPill('Topaz Astra', 'AI video and photo upscaler to 4K')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✦ Topaz Astra</span>
+        <span onclick="triggerModelPill('GPT Image', 'OpenAI advanced multi-modal image synthesis')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⚛ GPT Image</span>
+        <span onclick="triggerModelPill('Google Veo', 'DeepMind cinema video generation')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✪ Google Veo</span>
+        <span onclick="triggerModelPill('Seedream', 'Dreamlike artistic illustrations and concepts')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">📊 Seedream</span>
+        <span onclick="triggerModelPill('Seedance 2.5 Editor', 'Motion synthesis and character choreo')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">📊 Seedance 2.5 Editor</span>
+
+        <span onclick="triggerModelPill('Seedream 5 Pro Editor', 'Next-gen high-res artistic styling')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">📊 Seedream 5 Pro Editor</span>
+        <span onclick="triggerModelPill('Flux', 'State-of-the-art open weight 4K photo model')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⛰ Flux</span>
+        <span onclick="triggerModelPill('Runway Frames', 'Frame-by-frame cinematic director engine')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🅁 Runway Frames</span>
+        <span onclick="triggerModelPill('Seedance', 'Dynamic character dance and lip movements')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">📊 Seedance</span>
+        <span onclick="triggerModelPill('Grok Imagine', 'xAI raw visual creativity')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⊘ Grok Imagine</span>
+        <span onclick="triggerModelPill('Luma', '3D neural radiance fields and video')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">◢ Luma</span>
+        <span onclick="triggerModelPill('Higgsfield Soul', 'Emotional expressive human portraits')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">〰 Higgsfield Soul</span>
+
+        <span onclick="triggerModelPill('Ideogram', 'Flawless typography inside images')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🫧 Ideogram</span>
+        <span onclick="triggerModelPill('Wan', 'High fidelity video synthesis up to 30s')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✦ Wan</span>
+        <span onclick="triggerModelPill('Runway', 'Gen-3 Alpha realistic camera motions')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🅁 Runway</span>
+        <span onclick="triggerModelPill('Hailuo Minimax', 'High speed HD video generator')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">川 Hailuo Minimax</span>
+        <span onclick="triggerModelPill('HeyGen', 'Realistic photo lip sync and avatars')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">▷ HeyGen</span>
+        <span onclick="triggerModelPill('Beeble', 'Studio virtual lighting and relighting')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🐝 Beeble</span>
+        <span onclick="triggerModelPill('HappyHorse', 'Whimsical animated characters and shorts')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🎠 HappyHorse</span>
+        <span onclick="triggerModelPill('FLUX 3 Video', 'Next generation image-to-video')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⛰ FLUX 3 Video</span>
+
+        <span onclick="triggerModelPill('Wan Video', 'Extended clip rendering')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✦ Wan Video</span>
+        <span onclick="triggerModelPill('Higgsfield', 'Creative cinematic scene composition')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">〰 Higgsfield</span>
+        <span onclick="triggerModelPill('Nano Banana Pro Editor', 'Precision face replacement & inpainting')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🍌 Nano Banana Pro Editor</span>
+        <span onclick="triggerModelPill('Clarity', 'Sub-pixel image enhancement')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">C Clarity</span>
+        <span onclick="triggerModelPill('Magnific', 'Hallucinatory detail upscaling')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">△ Magnific</span>
+        <span onclick="triggerModelPill('Elevenlabs', 'Ultra-realistic voice cloning & TTS')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">‖ Elevenlabs</span>
+        <span onclick="triggerModelPill('Topaz AI', 'Professional video frame interpolation 60fps')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✦ Topaz AI</span>
+        <span onclick="triggerModelPill('ChatGPT', 'GPT-4o & o3 conversational assistant')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⚛ ChatGPT</span>
+
+        <span onclick="triggerModelPill('Claude', 'Anthropic Claude 3.7 Sonnet thinking model')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✳ Claude</span>
+        <span onclick="triggerModelPill('Gemini', 'Google Gemini 2.5 Pro 2M context')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✦ Gemini</span>
+        <span onclick="triggerModelPill('Grok', 'xAI Grok-3 with real-time X web search')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">⊘ Grok</span>
+        <span onclick="triggerModelPill('Deepseek', 'DeepSeek R1 reasoning architecture')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🐳 Deepseek</span>
+        <span onclick="triggerModelPill('Perplexity', 'Citation-backed search engine')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">✵ Perplexity</span>
+        <span onclick="triggerModelPill('Qwen', 'Alibaba Qwen 2.5 multi-lingual coder')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">❖ Qwen</span>
+        <span onclick="triggerModelPill('Zhipu AI', 'GLM-4 Vision & Text')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">Z Zhipu AI</span>
+        <span onclick="triggerModelPill('Suno', 'Suno v4 full vocal music creation')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">🎵 Suno</span>
+        <span onclick="triggerModelPill('Video to audio', 'Foley and sound effect generation from video')" class="bg-[#141817] hover:border-emerald-400 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-200 transition cursor-pointer hover:scale-105 active:scale-95 shadow-sm">Video to audio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 5, 6, 7: PRICING (6 КАРТОЧЕК С ПОЛОСКАМИ ТОКЕНОВ) -->
+  <section id="pricing" class="py-24 px-6 max-w-7xl mx-auto border-b border-white/5">
+    <div class="relative flex flex-col items-center mb-14">
+      <h2 class="text-5xl md:text-6xl font-bold text-[#f5f0eb] mb-6">Pricing</h2>
+      <button onclick="openCompareModal()" class="md:absolute md:right-0 md:top-4 border border-white/20 hover:border-emerald-400 text-xs px-4 py-2 rounded-xl text-stone-200 transition mb-4 md:mb-0 hover:bg-white/5 flex items-center gap-1.5">
+        Compare plans <span>✦</span>
+      </button>
+
+      <!-- Переключатель Annual / Monthly -->
+      <div class="flex gap-2 p-1 bg-[#111514] border border-white/10 rounded-xl">
+        <button id="billing-annual-btn" onclick="setBillingCycle('annual')" class="bg-[#f5f0eb] text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow">
+          Annual <span class="bg-emerald-500 text-black text-[10px] font-black px-1.5 py-0.5 rounded">-15%</span>
+        </button>
+        <button id="billing-monthly-btn" onclick="setBillingCycle('monthly')" class="text-stone-300 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
+          Monthly
+        </button>
+      </div>
+    </div>
+
+    <!-- 6 тарифов -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- 1. BASIC -->
+      <div class="bg-[#111514] border border-white/15 hover:border-white/30 rounded-2xl p-7 flex flex-col justify-between transition duration-300 shadow-lg">
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">Basic</h3>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="flex-1 grid grid-cols-2 border border-white/20 rounded-lg overflow-hidden text-[10px] font-bold">
+              <div class="py-2 text-center text-stone-300 bg-black/40">0 TOKENS</div>
+              <div class="py-2 text-center text-black bg-emerald-500">3120 TOKENS</div>
+            </div>
+            <button onclick="showTokenInfo(3120)" class="text-stone-400 hover:text-white text-sm">ⓘ</button>
+          </div>
+          <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+            Limited set of neural networks including:<br>
+            <b class="text-stone-100">Kling, Nano banana and <span class="text-emerald-400 underline cursor-pointer" onclick="openCompareModal()">more</span></b>
+          </p>
+          <ul class="text-xs text-stone-300 space-y-2 mb-6">
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 516 videos</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Generate up to 10404 images</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 624 songs</li>
+            <li class="flex items-center gap-2 pt-2 border-t border-white/10"><span class="text-emerald-400 font-bold">+</span> Basic access to text models in LLM Studio</li>
+          </ul>
+        </div>
+        <div class="pt-6 border-t border-white/10">
+          <div class="price-strikethrough text-xs text-stone-400 line-through">€342.90</div>
+          <div class="text-4xl font-extrabold text-[#f5f0eb] mb-1"><span class="price-val">€7.56</span> <span class="text-xs font-normal text-stone-400">per month</span></div>
+          <button onclick="openPaymentModal('Basic')" class="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-3.5 rounded-xl transition shadow-lg active:scale-95">Pick your plan</button>
+        </div>
+      </div>
+
+      <!-- 2. PRO (TOP CHOICE) -->
+      <div class="pro-card-gradient border border-emerald-500/50 hover:border-emerald-400 rounded-2xl p-7 flex flex-col justify-between relative shadow-xl shadow-emerald-500/10 transition duration-300">
+        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-emerald-400 to-lime-400 text-black text-[10px] font-black px-3.5 py-1.5 rounded-lg shadow-lg">
+          ☆ TOP CHOICE
+        </div>
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">Pro</h3>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="flex-1 grid grid-cols-2 border border-white/25 rounded-lg overflow-hidden text-[10px] font-bold">
+              <div class="py-2 text-center text-stone-200 bg-black/40">0 TOKENS</div>
+              <div class="py-2 text-center text-black bg-emerald-400">8160 TOKENS</div>
+            </div>
+            <button onclick="showTokenInfo(8160)" class="text-stone-300 hover:text-white text-sm">ⓘ</button>
+          </div>
+          <p class="text-xs text-stone-200 mb-4 leading-relaxed">
+            Full neural network package:<br>
+            <b class="text-stone-100">Seedance 2.0/2.5, Kling, Nano banana, Veo 3.1 and <span class="text-emerald-300 underline cursor-pointer" onclick="openCompareModal()">more</span></b>
+          </p>
+          <ul class="text-xs text-stone-200 space-y-2 mb-6">
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 1360 videos</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Generate up to 27200 images</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 1632 songs</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create GPT agents</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Enhance video (Topaz) and image quality</li>
+            <li class="flex items-center gap-2 pt-2 border-t border-white/10 font-bold text-white"><span class="text-emerald-400 font-bold">+</span> 3× more requests than on Basic plan</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Unlimited in LLM Studio: GPT 5 Nano, DeepSeek</li>
+          </ul>
+        </div>
+        <div class="pt-6 border-t border-white/15">
+          <div class="price-strikethrough text-xs text-stone-300 line-through">€595.80</div>
+          <div class="text-4xl font-extrabold text-[#f5f0eb] mb-1"><span class="price-val">€14.36</span> <span class="text-xs font-normal text-stone-300">per month</span></div>
+          <button onclick="openPaymentModal('Pro')" class="mt-4 w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/30 active:scale-95">Pick your plan</button>
+        </div>
+      </div>
+
+      <!-- 3. VIP -->
+      <div class="bg-[#111514] border border-white/15 hover:border-white/30 rounded-2xl p-7 flex flex-col justify-between transition duration-300 shadow-lg">
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">VIP</h3>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="flex-1 border border-white/20 rounded-lg overflow-hidden text-[10px] font-bold bg-gradient-to-r from-emerald-500 to-teal-700 py-2 text-center text-black">
+              20400 TOKENS
+            </div>
+            <button onclick="showTokenInfo(20400)" class="text-stone-400 hover:text-white text-sm">ⓘ</button>
+          </div>
+          <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+            Full neural network package:<br>
+            <b class="text-stone-100">Seedance 2.0/2.5, Kling, Nano banana, Veo 3.1 and <span class="text-emerald-400 underline cursor-pointer" onclick="openCompareModal()">more</span></b>
+          </p>
+          <ul class="text-xs text-stone-300 space-y-2 mb-6">
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 3400 videos</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Generate up to 68000 images</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create up to 4080 songs</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create GPT agents</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Enhance video (Topaz) and image quality</li>
+            <li class="flex items-center gap-2 pt-2 border-t border-white/10 font-bold text-white"><span class="text-emerald-400 font-bold">+</span> 6× more requests than on Basic plan</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Unlimited in LLM Studio: all Pro models</li>
+          </ul>
+        </div>
+        <div class="pt-6 border-t border-white/10">
+          <div class="price-strikethrough text-xs text-stone-400 line-through">€908.10</div>
+          <div class="text-4xl font-extrabold text-[#f5f0eb] mb-1"><span class="price-val">€33.90</span> <span class="text-xs font-normal text-stone-400">per month</span></div>
+          <button onclick="openPaymentModal('VIP')" class="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-3.5 rounded-xl transition shadow-lg active:scale-95">Pick your plan</button>
+        </div>
+      </div>
+
+      <!-- 4. ELITE -->
+      <div class="bg-[#111514] border border-white/15 hover:border-white/30 rounded-2xl p-7 flex flex-col justify-between transition duration-300 shadow-lg">
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">Elite</h3>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="flex-1 grid grid-cols-2 border border-white/20 rounded-lg overflow-hidden text-[10px] font-bold">
+              <div class="py-2 text-center text-stone-300 bg-black/40">0 TOKENS</div>
+              <div class="py-2 text-center text-black bg-emerald-500">31200 TOKENS</div>
+            </div>
+            <button onclick="showTokenInfo(31200)" class="text-stone-400 hover:text-white text-sm">ⓘ</button>
+          </div>
+          <p class="text-xs text-stone-300 mb-4">
+            Unlimited generation in<br>
+            <b class="text-stone-100">Veo 3.1 Lite**, Runway, Topaz, GPT Image and <span class="text-emerald-400 underline cursor-pointer" onclick="openCompareModal()">more</span></b>
+          </p>
+          <ul class="text-xs text-stone-300 space-y-2 mb-6">
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Create unlimited videos*</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Generate unlimited images*</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Record up to 6240 songs</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">+</span> Enhance video quality (Topaz)</li>
+            <li class="flex items-center gap-2 pt-2 border-t border-white/10 font-bold text-white"><span class="text-emerald-400 font-bold">+</span> 10× more requests than on Basic plan</li>
+          </ul>
+        </div>
+        <div class="pt-6 border-t border-white/10">
+          <div class="price-strikethrough text-xs text-stone-400 line-through">€1,049.40</div>
+          <div class="text-4xl font-extrabold text-[#f5f0eb] mb-1"><span class="price-val">€50.91</span> <span class="text-xs font-normal text-stone-400">per month</span></div>
+          <button onclick="openPaymentModal('Elite')" class="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-3.5 rounded-xl transition shadow-lg active:scale-95">Pick your plan</button>
+        </div>
+      </div>
+
+      <!-- 5. ULTRA ELITE (BEST VALUE) -->
+      <div class="bg-[#111514] border border-cyan-500/40 hover:border-cyan-400 rounded-2xl p-7 flex flex-col justify-between relative shadow-lg shadow-cyan-500/10 transition duration-300">
+        <div class="absolute -top-3.5 right-6 bg-cyan-600 text-white text-[10px] font-black px-3.5 py-1.5 rounded-lg shadow">
+          👑 BEST VALUE
+        </div>
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">Ultra Elite</h3>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="flex-1 grid grid-cols-2 border border-white/20 rounded-lg overflow-hidden text-[10px] font-bold">
+              <div class="py-2 text-center text-stone-300 bg-black/40">0 TOKENS</div>
+              <div class="py-2 text-center text-black bg-cyan-400">36000 TOKENS</div>
+            </div>
+            <button onclick="showTokenInfo(36000)" class="text-stone-400 hover:text-white text-sm">ⓘ</button>
+          </div>
+          <p class="text-xs text-stone-300 mb-4">
+            Unlimited generation in<br>
+            <b class="text-stone-100">Veo 3.1 Lite**, Nano banana, MiniMax 01/02, GPT Image, Runway, Topaz and <span class="text-emerald-400 underline cursor-pointer" onclick="openCompareModal()">more</span></b>
+          </p>
+          <ul class="text-xs text-stone-300 space-y-2 mb-6">
+            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">+</span> Create unlimited videos*</li>
+            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">+</span> Generate unlimited images</li>
+            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">+</span> Record up to 7200 songs*</li>
+            <li class="flex items-center gap-2 pt-2 border-t border-white/10 font-bold text-white"><span class="text-cyan-400 font-bold">+</span> 15× more requests than on Basic plan</li>
+            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">+</span> Unlimited in LLM Studio: Claude Sonnet 3.7 & Gemini Pro</li>
+          </ul>
+        </div>
+        <div class="pt-6 border-t border-white/10">
+          <div class="price-strikethrough text-xs text-stone-400 line-through">€1,341.90</div>
+          <div class="text-4xl font-extrabold text-[#f5f0eb] mb-1"><span class="price-val">€101.15</span> <span class="text-xs font-normal text-stone-400">per month</span></div>
+          <button onclick="openPaymentModal('Ultra Elite')" class="mt-4 w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs py-3.5 rounded-xl transition shadow-lg active:scale-95">Pick your plan</button>
+        </div>
+      </div>
+
+      <!-- 6. ENTERPRISE -->
+      <div class="enterprise-card-gradient border border-emerald-500/30 hover:border-emerald-400/60 rounded-2xl p-7 flex flex-col justify-between transition duration-300 shadow-lg">
+        <div>
+          <h3 class="font-serif-editorial text-5xl text-[#f5f0eb] mb-5">Enterprise</h3>
+          <p class="text-xs font-bold text-stone-100 mb-3">Do you need 15 or more subscriptions?</p>
+          <p class="text-xs text-stone-300 mb-5 leading-relaxed">
+            In the corporate tariff, special conditions are applied for business customers and online schools, and you will have your own personal manager in ZYKO.AI
+          </p>
+          <p class="text-xs font-bold text-emerald-400 mb-2">What do we offer?</p>
+          <ul class="text-xs text-stone-300 space-y-2 list-disc pl-4 mb-6">
+            <li>Individual customized token tariffs</li>
+            <li>Volume discounts for 15+ team seats</li>
+            <li>Dedicated SLA & priority rendering nodes</li>
+            <li>Custom API keys and webhooks integration</li>
+          </ul>
+        </div>
+        <div class="pt-6 space-y-2.5 border-t border-white/10">
+          <button onclick="openCompareModal()" class="w-full bg-black/50 hover:bg-black/70 border border-white/15 text-white font-bold text-xs py-3.5 rounded-xl transition">Explore Features</button>
+          <a href="https://t.me/Zykolandstore" target="_blank" class="w-full text-center block bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/20">Submit a request ✈️</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 8: START CREATING WITH THE BEST AI -->
+  <section class="px-6 py-20 max-w-7xl mx-auto border-b border-white/5">
+    <div class="bg-[#111514] border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-32 -right-32 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-10">
+        <div class="lg:col-span-5">
+          <h2 class="text-4xl md:text-5xl font-bold text-[#f5f0eb] leading-tight">
+            Start creating with the best AI
+          </h2>
+        </div>
+        <div class="lg:col-span-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+          Create and enhance images, video and audio with the latest AI models.<br>
+          All from a single dashboard for continuous creative workflow from idea to result.
+        </div>
+        <div class="lg:col-span-2 flex lg:justify-end">
+          <a href="#pricing" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-bold text-xs px-6 py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/25 hover:scale-105">
+            Start creating ✦
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div class="space-y-3 group">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900 border border-white/10 relative shadow-md">
+            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Create image">
+            <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-[10px] font-semibold px-2 py-0.5 rounded text-stone-200">FLUX.1 Ultra</span>
+          </div>
+          <button onclick="openPromptModal()" class="w-full border border-white/20 hover:border-emerald-400 text-xs font-semibold py-3 rounded-xl text-stone-200 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5">
+            🖼 Create image →
+          </button>
+        </div>
+
+        <div class="space-y-3 group">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900 border border-white/10 relative shadow-md">
+            <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Create video">
+            <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-[10px] font-semibold px-2 py-0.5 rounded text-stone-200">Kling 3.0 HD</span>
+          </div>
+          <button onclick="openPromptModal()" class="w-full border border-white/20 hover:border-emerald-400 text-xs font-semibold py-3 rounded-xl text-stone-200 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5">
+            🎬 Create video →
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900 border border-emerald-500/40 relative shadow-md comparison-container cursor-ew-resize" id="enhancer-box" onmousemove="handleEnhanceDrag(event)" ontouchmove="handleEnhanceTouch(event)">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=95" class="w-full h-full object-cover" alt="Enhanced 4K">
+            <div class="comparison-before" id="comparison-before">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=20" class="h-full object-cover filter blur-[3px]" style="width: 250px; max-width: none;" alt="Original low res">
+            </div>
+            <div class="comparison-handle" id="comparison-handle">↔</div>
+            <span class="absolute bottom-2.5 left-2.5 bg-black/70 backdrop-blur-md text-[9px] font-bold px-1.5 py-0.5 rounded text-emerald-400 pointer-events-none">Topaz 4K Upscale</span>
+          </div>
+          <button onclick="openPromptModal()" class="w-full border border-emerald-500/40 hover:border-emerald-400 text-xs font-semibold py-3 rounded-xl text-emerald-300 hover:bg-emerald-500/10 transition flex items-center justify-center gap-1.5">
+            🪄 Enhance quality →
+          </button>
+        </div>
+
+        <div class="space-y-3 group">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900 border border-white/10 relative shadow-md">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Open Chat">
+            <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-[10px] font-semibold px-2 py-0.5 rounded text-stone-200">Claude & GPT-4o</span>
+          </div>
+          <button onclick="openPromptModal()" class="w-full border border-white/20 hover:border-emerald-400 text-xs font-semibold py-3 rounded-xl text-stone-200 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5">
+            💬 Open Chat →
+          </button>
+        </div>
+
+        <div class="space-y-3 group">
+          <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900 border border-white/10 relative shadow-md">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Record a song">
+            <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-[10px] font-semibold px-2 py-0.5 rounded text-stone-200">Suno v4 & SFX</span>
+          </div>
+          <button onclick="openPromptModal()" class="w-full border border-white/20 hover:border-emerald-400 text-xs font-semibold py-3 rounded-xl text-stone-200 hover:text-white hover:bg-white/5 transition flex items-center justify-center gap-1.5">
+            🎵 Record a song →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 9: GOT QUESTIONS? FAQ -->
+  <section id="faq" class="py-24 px-6 max-w-7xl mx-auto border-b border-white/5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+        <h2 class="font-serif-editorial text-6xl md:text-7xl text-[#f5f0eb] leading-tight">
+          Got<br><span class="text-emerald-400 italic">Questions?</span>
+        </h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          Find answers to the most common questions about ZYKO.AI subscriptions, models, generation tokens, and commercial licensing.
+        </p>
+        <div class="pt-2">
+          <a href="https://t.me/Zykolandstore" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/20">
+            <span>✈️</span> Contact support
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8 space-y-3.5">
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>Can I try the tools for free?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Yes! Upon joining our Telegram Bot or registering on the web with Google, you receive a free welcome token package allowing you to generate sample images, short video clips, voiceovers, and test conversations with AI models without entering bank card details.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>Does one subscription give access to 100+ AI tools?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Exactly. Instead of paying $20/month separately for Midjourney, $25 for Runway, $20 for ChatGPT Plus, and $30 for ElevenLabs (totaling over $150/month), ZYKO.AI gives you all top-tier neural networks inside one convenient account and unified token pool.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>What are tokens and how do they work?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Tokens are universal internal units spent only when you trigger a generation. Light operations (e.g. text generation or fast images) consume very few tokens, while intensive 4K video rendering or Topaz upscaling requires more. Unused subscription tokens rollover every billing period.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>Can I use generated images, videos, and voices commercially?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Yes. All paid tiers (Basic, Pro, VIP, Elite, Ultra Elite, Enterprise) include full commercial rights. You can monetize generated content on YouTube, TikTok, commercial advertisements, client projects, and music streaming platforms.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>How does the Telegram Bot integration work?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Our Telegram Bot (@voiceaichannel_bot) is 100% synchronized with your Web Studio. You can send prompts on the go right inside Telegram messenger, get instant MP4 video and MP3 audio downloads, or open the WebApp interface with one tap.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>Can I switch or cancel my plan at any time?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Absolutely. You can upgrade, downgrade, or cancel your subscription at any moment with 1 click in your account settings or via the Telegram bot. No hidden cancellation fees.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>Which AI models are included in the Pro & VIP tiers?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            Pro and VIP include access to Google Veo 3.1, Seedance 2.5, Kling, FLUX.1 Ultra, Nano Banana Pro, Topaz Video AI, Claude 3.7 Sonnet, Gemini 2.5 Pro, Suno v4 music, ElevenLabs Voice cloning, and 12 RVC Streamer voice models.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden transition duration-200">
+          <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-5 flex items-center justify-between text-sm md:text-base font-semibold text-stone-200 hover:text-white">
+            <span>What payment methods do you accept?</span>
+            <span class="faq-chevron text-stone-400 text-lg transition duration-300">▼</span>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-xs md:text-sm text-stone-300 leading-relaxed">
+            We accept all major credit and debit cards (Visa, MasterCard, Mir) via Stripe and Platega, SBP instant bank transfers, CryptoPay (USDT, TON, BTC, ETH), and Telegram Stars.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT 10: 5-COLUMN CYBER EMERALD FOOTER -->
+  <footer class="glow-footer pt-20 pb-12 px-6 border-t border-emerald-500/20 relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
+        <div class="col-span-2 md:col-span-1 space-y-4">
+          <div class="flex items-center gap-2 font-black text-xl tracking-tight">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500 text-black flex items-center justify-center font-bold text-sm">Z</span>
+            <span class="text-white">ZYKO<span class="text-emerald-400">.AI</span></span>
+          </div>
+          <p class="text-xs text-stone-400 leading-relaxed">
+            Unified creative studio powering 100+ state-of-the-art AI models for web creators and teams.
+          </p>
+          <div class="flex items-center gap-2 text-xs text-emerald-400 font-semibold pt-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            All 100+ Systems Operational
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-stone-200">Text & Code</div>
+          <ul class="text-xs space-y-2 text-stone-400">
+            <li><a href="#tools" class="hover:text-emerald-400 transition">ChatGPT-4o</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Claude 3.7 Sonnet</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Gemini 2.5 Pro</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">DeepSeek R1</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Grok 3 Reasoning</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Perplexity Search</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-stone-200">Image & Art</div>
+          <ul class="text-xs space-y-2 text-stone-400">
+            <li><a href="#tools" class="hover:text-emerald-400 transition">FLUX.1 Ultra 4K</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Nano Banana 2.1</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Ideogram Typography</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Midjourney v6.1</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Topaz AI Upscaler</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Img2Img Style Transfer</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-stone-200">Cinema & Video</div>
+          <ul class="text-xs space-y-2 text-stone-400">
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Google Veo 3.1</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Kling 3.0 Motion</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Seedance 2.5</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Runway Gen-3</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Luma Dream Machine</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">HeyGen Lip Sync</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-stone-200">Voice & Audio</div>
+          <ul class="text-xs space-y-2 text-stone-400">
+            <li><a href="#tools" class="hover:text-emerald-400 transition">ElevenLabs Neural</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">12 RVC Streamers</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Live Voice Changer</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Suno v4 Music Songs</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Cinematic SFX Loops</a></li>
+            <li><a href="#tools" class="hover:text-emerald-400 transition">Cartesia Sonic (150ms)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-400">
+        <div>
+          © 2026 ZYKO.AI Inc. All rights reserved. Built with Cyber Emerald design.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-white transition">Terms of Service</a>
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+          <a href="https://t.me/voiceaichannel_bot" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">
+            <span>✈️</span> Telegram Bot
+          </a>
+          <a href="https://t.me/Zykolandstore" target="_blank" class="hover:text-white transition">Support</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. AUTH / SIGN IN MODAL (GOOGLE + TELEGRAM) -->
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAuthModal()">
+    <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-8 max-w-md w-full relative shadow-2xl" onclick="event.stopPropagation()">
+      <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center text-xl font-black mb-5 shadow-lg shadow-emerald-500/30">
+        Z
+      </div>
+      <h3 class="text-2xl font-bold text-white mb-2">Welcome to ZYKO.AI</h3>
+      <p class="text-xs text-stone-300 mb-6 leading-relaxed">
+        Sign in to sync your universal token balance across Web and Telegram, save past generations, and unlock 4K models.
+      </p>
+
+      <div class="space-y-4">
+        <!-- Google Sign-In Button Container -->
+        <div id="g_id_signin" class="w-full flex justify-center"></div>
+
+        <div class="flex items-center gap-3 my-2">
+          <div class="flex-1 h-px bg-white/10"></div>
+          <span class="text-[10px] text-stone-500 uppercase tracking-widest">or continue with</span>
+          <div class="flex-1 h-px bg-white/10"></div>
+        </div>
+
+        <!-- Telegram Sign In -->
+        <div id="telegram-login-container" class="flex justify-center">
+          <a href="https://t.me/voiceaichannel_bot?start=auth_web" target="_blank" class="w-full flex items-center justify-center gap-2 bg-[#229ed9]/15 hover:bg-[#229ed9]/25 border border-[#229ed9]/40 text-[#229ed9] font-bold text-xs py-3.5 rounded-xl transition">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.88 8.01-3.44 3.82-1.58 4.61-1.86 5.13-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.38z"/></svg>
+            Sign in with Telegram
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-5 border-t border-white/10 text-center text-[11px] text-stone-500">
+        By continuing you accept our <a href="#" class="text-emerald-400 underline">Terms</a> & <a href="#" class="text-emerald-400 underline">Privacy Policy</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PAYMENT CHECKOUT MODAL (STRIPE / PLATEGA / CRYPTO) -->
+  <div id="payment-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePaymentModal()">
+    <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-7 max-w-lg w-full relative shadow-2xl" onclick="event.stopPropagation()">
+      <button onclick="closePaymentModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
+      
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">✦ Checkout</span>
+      </div>
+      <h3 class="text-2xl font-bold text-white mb-1">Subscribe to <span id="checkout-plan-name" class="text-emerald-400">Pro</span></h3>
+      <p class="text-xs text-stone-400 mb-5">Select your preferred payment gateway for instant token activation.</p>
+
+      <div class="bg-black/40 border border-white/10 rounded-2xl p-4 mb-5 flex justify-between items-center">
+        <div>
+          <div class="text-[11px] text-stone-400">Package Included:</div>
+          <div class="text-sm font-bold text-white"><span id="checkout-tokens-count">8,160</span> ZK Tokens</div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] text-stone-400">Amount:</div>
+          <div class="text-xl font-black text-emerald-400"><span id="checkout-price-val">€14.36</span></div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Stripe Option -->
+        <button onclick="executePayment('stripe')" class="w-full flex items-center justify-between p-4 rounded-2xl border border-white/15 hover:border-emerald-400 bg-white/5 hover:bg-emerald-500/10 transition text-left group">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">💳</span>
+            <div>
+              <div class="text-xs font-bold text-white group-hover:text-emerald-300">Bank Card / Apple Pay / Google Pay</div>
+              <div class="text-[10px] text-stone-400">International cards via Stripe (Visa, MC, Amex)</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 font-bold text-xs">Stripe →</span>
+        </button>
+
+        <!-- Platega Option -->
+        <button onclick="executePayment('platega')" class="w-full flex items-center justify-between p-4 rounded-2xl border border-white/15 hover:border-emerald-400 bg-white/5 hover:bg-emerald-500/10 transition text-left group">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">🇷🇺</span>
+            <div>
+              <div class="text-xs font-bold text-white group-hover:text-emerald-300">СБП / Карты РФ / Mir</div>
+              <div class="text-[10px] text-stone-400">Мгновенная оплата через СБП и любые банки РФ</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 font-bold text-xs">Platega →</span>
+        </button>
+
+        <!-- Crypto Option -->
+        <button onclick="executePayment('crypto')" class="w-full flex items-center justify-between p-4 rounded-2xl border border-white/15 hover:border-emerald-400 bg-white/5 hover:bg-emerald-500/10 transition text-left group">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">💎</span>
+            <div>
+              <div class="text-xs font-bold text-white group-hover:text-emerald-300">CryptoBot (USDT, TON, BTC)</div>
+              <div class="text-[10px] text-stone-400">Direct instant cryptocurrency invoice</div>
+            </div>
+          </div>
+          <span class="text-emerald-400 font-bold text-xs">CryptoPay →</span>
+        </button>
+      </div>
+
+      <div id="payment-loading" class="hidden mt-4 text-center text-xs text-emerald-400 animate-pulse font-semibold">
+        Redirecting to secure payment gateway...
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. QUICK PROMPT WAND MODAL (🪄) -->
+  <div id="prompt-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePromptModal()">
+    <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-7 max-w-lg w-full relative shadow-2xl" onclick="event.stopPropagation()">
+      <button onclick="closePromptModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
+      <div class="flex items-center gap-2 mb-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+        <span>🪄 Quick Prompt Neural Expander</span>
+      </div>
+      <h3 class="text-xl font-bold text-white mb-3">Instant AI Generation</h3>
+      <p class="text-xs text-stone-300 mb-4">
+        Type any rough idea — our neural prompt expander refines it into studio-grade photography & video prompts.
+      </p>
+
+      <div class="space-y-3">
+        <textarea id="prompt-input" rows="3" placeholder="e.g. A neon cyber cat wearing headphones walking on a rain-slicked Tokyo street, 8K ultra realistic..." class="w-full bg-black/60 border border-white/15 focus:border-emerald-400 rounded-xl p-3 text-xs text-white placeholder-stone-500 focus:outline-none transition"></textarea>
+        
+        <div class="flex flex-wrap gap-2 text-[10px]">
+          <button onclick="fillSamplePrompt('Cyberpunk detective in rainy futuristic street, anamorphic lens flare, photorealistic')" class="bg-white/5 hover:bg-white/10 border border-white/10 px-2.5 py-1 rounded-md text-stone-300">Cyberpunk detective</button>
+          <button onclick="fillSamplePrompt('Macro close up of colorful hummingbird sipping nectar from bioluminescent flower')" class="bg-white/5 hover:bg-white/10 border border-white/10 px-2.5 py-1 rounded-md text-stone-300">Macro Hummingbird</button>
+          <button onclick="fillSamplePrompt('Cinematic drone footage sweeping over misty Nordic fjord during sunrise, 4K')" class="bg-white/5 hover:bg-white/10 border border-white/10 px-2.5 py-1 rounded-md text-stone-300">Nordic Fjord Video</button>
+        </div>
+
+        <div id="prompt-result-box" class="hidden bg-black/40 border border-emerald-500/30 rounded-xl p-3 text-xs text-stone-200">
+          <div class="text-[10px] text-emerald-400 font-bold uppercase mb-1">Studio Expanded Prompt:</div>
+          <div id="prompt-result-text"></div>
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button id="btn-expand-prompt" onclick="expandPromptAction()" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
+            🪄 Expand & Generate
+          </button>
+          <button onclick="sendPromptToBot()" class="flex-1 text-center bg-white/10 hover:bg-white/20 border border-white/15 text-white font-semibold text-xs py-3 rounded-xl transition">
+            Launch in TG Bot ✈️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TREND PREVIEW MODAL -->
+  <div id="trend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeTrendModal()">
+    <div class="bg-[#111514] border border-white/15 rounded-3xl overflow-hidden max-w-2xl w-full relative shadow-2xl flex flex-col md:flex-row" onclick="event.stopPropagation()">
+      <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition">✕</button>
+      <div class="md:w-1/2 aspect-square md:aspect-auto bg-black">
+        <img id="trend-modal-img" src="" class="w-full h-full object-cover" alt="Trend visual">
+      </div>
+      <div class="md:w-1/2 p-6 flex flex-col justify-between">
+        <div>
+          <span id="trend-modal-model" class="inline-block bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-md mb-2">Model</span>
+          <h3 id="trend-modal-title" class="text-xl font-bold text-white mb-2">Title</h3>
+          <p id="trend-modal-desc" class="text-xs text-stone-300 mb-6 leading-relaxed">Prompt description</p>
+        </div>
+        <div class="space-y-2">
+          <a href="https://t.me/voiceaichannel_bot" target="_blank" class="w-full text-center block bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs py-3 rounded-xl transition shadow-md">
+            Recreate in Telegram Bot ✈️
+          </a>
+          <button onclick="openPromptModalWithPrompt()" class="w-full text-center block bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-3 rounded-xl transition border border-white/10">
+            Open in Quick Generator 🪄
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. COMPARE PLANS MODAL -->
+  <div id="compare-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeCompareModal()">
+    <div class="bg-[#111514] border border-emerald-500/30 rounded-3xl p-6 md:p-8 max-w-4xl w-full relative shadow-2xl max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <button onclick="closeCompareModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
+      <h3 class="text-2xl font-bold text-white mb-1">Detailed Plan Comparison</h3>
+      <p class="text-xs text-stone-400 mb-6">Compare model access, generation quotas, and features across all 6 tiers.</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 text-stone-400">
+              <th class="py-3 px-3">Feature / Tier</th>
+              <th class="py-3 px-3 font-semibold text-stone-200">Basic</th>
+              <th class="py-3 px-3 font-bold text-emerald-400">Pro (Top)</th>
+              <th class="py-3 px-3 font-semibold text-stone-200">VIP</th>
+              <th class="py-3 px-3 font-semibold text-stone-200">Elite</th>
+              <th class="py-3 px-3 font-bold text-cyan-400">Ultra Elite</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-stone-300">
+            <tr>
+              <td class="py-3 px-3 font-medium">Monthly Tokens</td>
+              <td class="py-3 px-3">3,120 ZK</td>
+              <td class="py-3 px-3 font-bold text-emerald-300">8,160 ZK</td>
+              <td class="py-3 px-3">20,400 ZK</td>
+              <td class="py-3 px-3">31,200 ZK</td>
+              <td class="py-3 px-3 font-bold text-cyan-300">36,000 ZK</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Kling & Nano Banana</td>
+              <td class="py-3 px-3 text-emerald-400">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-cyan-400 font-bold">✓ Included</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Google Veo & Seedance 2.5</td>
+              <td class="py-3 px-3 text-stone-500">—</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Unlimited*</td>
+              <td class="py-3 px-3 text-cyan-400 font-bold">✓ Unlimited*</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Topaz 4K Video & Photo Upscale</td>
+              <td class="py-3 px-3 text-stone-500">—</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Included</td>
+              <td class="py-3 px-3 text-cyan-400 font-bold">✓ Priority Node</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">LLM Studio (Claude / GPT-4o / DeepSeek)</td>
+              <td class="py-3 px-3">Basic</td>
+              <td class="py-3 px-3 text-emerald-300">GPT 5 Nano + DeepSeek</td>
+              <td class="py-3 px-3 text-emerald-300">All Pro Models</td>
+              <td class="py-3 px-3 text-emerald-300">All Pro Models</td>
+              <td class="py-3 px-3 text-cyan-300 font-bold">Claude 3.7 + Gemini 2.5</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">12 RVC Streamers & Voice Cloning</td>
+              <td class="py-3 px-3 text-stone-400">Standard</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ 3 Clone Slots</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ 5 Clone Slots</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ 10 Clone Slots</td>
+              <td class="py-3 px-3 text-cyan-400 font-bold">✓ Unlimited Slots</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Commercial License</td>
+              <td class="py-3 px-3 text-emerald-400">✓ Yes</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Yes</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Yes</td>
+              <td class="py-3 px-3 text-emerald-400 font-bold">✓ Yes</td>
+              <td class="py-3 px-3 text-cyan-400 font-bold">✓ Enterprise</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="#pricing" onclick="closeCompareModal()" class="inline-block bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-8 py-3.5 rounded-xl transition">
+          Choose a Plan Now ✦
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    let currentUser = null;
+    let currentSelectedPlan = 'Pro';
+    let currentBillingCycle = 'annual';
+
+    // 1. Initial State & Config Load
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check URL params for payment alerts
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'success') {
+        const alertBox = document.getElementById('payment-alert');
+        if (alertBox) alertBox.classList.remove('hidden');
+      }
+
+      // Check current user session
+      await checkAuthStatus();
+
+      // Load public config (Google Client ID, Telegram username)
+      try {
+        const cfgResp = await fetch('/api/config/public');
+        if (cfgResp.ok) {
+          const cfg = await cfgResp.json();
+          initGoogleSignIn(cfg.google_client_id);
+        }
+      } catch (e) {
+        console.warn('Config fetch error:', e);
+      }
+    });
+
+    // 2. Google Identity Services Initialization
+    function initGoogleSignIn(clientId) {
+      if (!window.google || !clientId) return;
+      try {
+        google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleCredentialResponse,
+          auto_select: false
+        });
+        google.accounts.id.renderButton(
+          document.getElementById('g_id_signin'),
+          { theme: 'filled_black', size: 'large', width: '320', shape: 'pill', text: 'continue_with' }
+        );
+      } catch (err) {
+        console.warn('GSI init error:', err);
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      try {
+        const resp = await fetch('/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ credential: response.credential })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          currentUser = data.user;
+          updateUserUI(currentUser);
+          closeAuthModal();
+        } else {
+          alert('Google Auth failed. Please try again.');
+        }
+      } catch (e) {
+        console.error('Google auth error:', e);
+      }
+    }
+
+    // 3. User Session Check
+    async function checkAuthStatus() {
+      try {
+        const resp = await fetch('/api/auth/me');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.authenticated && data.user) {
+            currentUser = data.user;
+            updateUserUI(currentUser);
+          }
+        }
+      } catch (e) {
+        console.warn('Auth check error:', e);
+      }
+    }
+
+    function updateUserUI(user) {
+      if (!user) return;
+      document.getElementById('btn-login-header').classList.add('hidden');
+      const profile = document.getElementById('user-profile-header');
+      profile.classList.remove('hidden');
+
+      document.getElementById('header-user-tokens').textContent = user.tokens.toLocaleString();
+      document.getElementById('header-user-tier').textContent = user.tier || 'FREE';
+      document.getElementById('header-user-name').textContent = user.name || 'User';
+      if (user.avatar) {
+        document.getElementById('header-user-avatar').src = user.avatar;
+      }
+    }
+
+    async function handleLogout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.reload();
+    }
+
+    // 4. Payment Modal & Execution
+    const planPrices = {
+      'Basic': { tokens: '3,120', eurAnnual: '€7.56', eurMonthly: '€8.90' },
+      'Pro': { tokens: '8,160', eurAnnual: '€14.36', eurMonthly: '€16.90' },
+      'VIP': { tokens: '20,400', eurAnnual: '€33.90', eurMonthly: '€39.90' },
+      'Elite': { tokens: '31,200', eurAnnual: '€50.91', eurMonthly: '€59.90' },
+      'Ultra Elite': { tokens: '36,000', eurAnnual: '€101.15', eurMonthly: '€119.00' }
+    };
+
+    function openPaymentModal(planName) {
+      currentSelectedPlan = planName;
+      const data = planPrices[planName] || planPrices['Pro'];
+      document.getElementById('checkout-plan-name').textContent = planName;
+      document.getElementById('checkout-tokens-count').textContent = data.tokens;
+      document.getElementById('checkout-price-val').textContent = currentBillingCycle === 'annual' ? data.eurAnnual : data.eurMonthly;
+      document.getElementById('payment-loading').classList.add('hidden');
+      document.getElementById('payment-modal').classList.remove('hidden');
+    }
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+    }
+
+    async function executePayment(gateway) {
+      document.getElementById('payment-loading').classList.remove('hidden');
+      try {
+        let endpoint = '/api/payments/stripe/create-checkout';
+        if (gateway === 'platega') endpoint = '/api/payments/platega/create-invoice';
+        if (gateway === 'crypto') endpoint = '/api/payments/crypto/create-invoice';
+
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: currentSelectedPlan,
+            cycle: currentBillingCycle
+          })
+        });
+
+        if (resp.ok) {
+          const res = await resp.json();
+          if (res.url) {
+            window.location.href = res.url;
+            return;
+          }
+        }
+        alert('Could not start checkout session. Please contact support.');
+      } catch (e) {
+        console.error('Payment error:', e);
+        alert('Payment gateway connection error: ' + e);
+      } finally {
+        document.getElementById('payment-loading').classList.add('hidden');
+      }
+    }
+
+    // 5. Prompt AI Expansion
+    async function expandPromptAction() {
+      const input = document.getElementById('prompt-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const btn = document.getElementById('btn-expand-prompt');
+      btn.textContent = 'Expanding prompt... ⏳';
+      try {
+        const resp = await fetch('/api/ai/expand-prompt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: val })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          document.getElementById('prompt-result-text').textContent = data.expanded;
+          document.getElementById('prompt-result-box').classList.remove('hidden');
+          input.value = data.expanded;
+        }
+      } catch (e) {
+        console.warn('AI expand error:', e);
+      } finally {
+        btn.textContent = '🪄 Expand & Generate';
+      }
+    }
+
+    function sendPromptToBot() {
+      const p = encodeURIComponent(document.getElementById('prompt-input').value || 'Cinematic artwork');
+      window.open(`https://t.me/voiceaichannel_bot?start=prompt_${p.slice(0, 50)}`, '_blank');
+      closePromptModal();
+    }
+
+    // 6. Tools Tab Switcher & 3D Tilt
+    const toolData = {
+      'Veo': {
+        title: 'Veo',
+        desc: 'An AI model for video generation with cinematic quality. It is designed for realistic scenes, complex camera angles, and consistent camera movement. Best suited for creating cinematic video with atmospheric scenes, landscapes, and narrative sequences where scale, depth, and visual coherence matter.',
+        images: [
+          'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop&q=80'
+        ]
+      },
+      'Seedance 2.5': {
+        title: 'Seedance 2.5',
+        desc: 'Next-generation motion synthesis model capable of complex human choreography, multi-subject tracking, and photorealistic character replacement in 9:16 vertical video with millimeter precision lip synchronization.',
+        images: [
+          'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80'
+        ]
+      },
+      'Nano Banana': {
+        title: 'Nano Banana',
+        desc: 'Ultra-fast photorealistic portrait and subject rendering with natural skin micro-texture, real-time lighting physics, and sub-second generation speed perfect for creator content workflows.',
+        images: [
+          'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80'
+        ]
+      },
+      'Seedream': {
+        title: 'Seedream',
+        desc: 'Dreamlike artistic illustrations, concept art, and vibrant worldbuilding. Combines painterly aesthetic control with rich cinematic color palettes and fantasy environments.',
+        images: [
+          'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80'
+        ]
+      },
+      'Kling': {
+        title: 'Kling',
+        desc: 'Cinematic high frame rate video generation with physical realism, realistic cloth simulation, and consistent camera dynamics up to 1080p full HD resolution.',
+        images: [
+          'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&auto=format&fit=crop&q=80'
+        ]
+      }
+    };
+
+    function switchToolTab(modelKey, btn) {
+      document.querySelectorAll('.tool-tab').forEach(b => {
+        b.className = 'tool-tab bg-stone-800/80 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-4 py-2.5 rounded-lg border border-white/10 transition';
+      });
+      btn.className = 'tool-tab bg-emerald-500 text-black text-xs font-bold px-5 py-2.5 rounded-lg shadow-lg shadow-emerald-500/25 transition';
+
+      const data = toolData[modelKey];
+      if (!data) return;
+
+      const titleEl = document.getElementById('activeModelTitle');
+      const descEl = document.getElementById('activeModelDesc');
+
+      titleEl.style.opacity = '0';
+      descEl.style.opacity = '0';
+
+      setTimeout(() => {
+        titleEl.textContent = data.title;
+        descEl.textContent = data.desc;
+        titleEl.style.opacity = '1';
+        descEl.style.opacity = '1';
+
+        data.images.forEach((src, idx) => {
+          const img = document.getElementById(`card-img-${idx}`);
+          if (img) img.src = src;
+        });
+      }, 200);
+    }
+
+    // 7. Pricing Toggle
+    const pricingData = {
+      annual: {
+        'Basic': { price: '€7.56', strike: '€342.90' },
+        'Pro': { price: '€14.36', strike: '€595.80' },
+        'VIP': { price: '€33.90', strike: '€908.10' },
+        'Elite': { price: '€50.91', strike: '€1,049.40' },
+        'Ultra Elite': { price: '€101.15', strike: '€1,341.90' }
+      },
+      monthly: {
+        'Basic': { price: '€8.90', strike: '€12.90' },
+        'Pro': { price: '€16.90', strike: '€24.90' },
+        'VIP': { price: '€39.90', strike: '€59.90' },
+        'Elite': { price: '€59.90', strike: '€89.90' },
+        'Ultra Elite': { price: '€119.00', strike: '€169.00' }
+      }
+    };
+
+    function setBillingCycle(cycle) {
+      currentBillingCycle = cycle;
+      const annualBtn = document.getElementById('billing-annual-btn');
+      const monthlyBtn = document.getElementById('billing-monthly-btn');
+
+      if (cycle === 'annual') {
+        annualBtn.className = 'bg-[#f5f0eb] text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow';
+        monthlyBtn.className = 'text-stone-300 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition';
+      } else {
+        monthlyBtn.className = 'bg-[#f5f0eb] text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow';
+        annualBtn.className = 'text-stone-300 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition';
+      }
+
+      const cards = document.querySelectorAll('#pricing .grid > div');
+      const tiers = ['Basic', 'Pro', 'VIP', 'Elite', 'Ultra Elite'];
+      tiers.forEach((t, i) => {
+        if (cards[i]) {
+          const valEl = cards[i].querySelector('.price-val');
+          const strikeEl = cards[i].querySelector('.price-strikethrough');
+          if (valEl) valEl.textContent = pricingData[cycle][t].price;
+          if (strikeEl) strikeEl.textContent = pricingData[cycle][t].strike;
+        }
+      });
+    }
+
+    // 8. Enhancer Slider
+    function handleEnhanceDrag(e) {
+      const container = document.getElementById('enhancer-box');
+      const before = document.getElementById('comparison-before');
+      const handle = document.getElementById('comparison-handle');
+      if (!container || !before || !handle) return;
+      const rect = container.getBoundingClientRect();
+      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+      const percent = (x / rect.width) * 100;
+      before.style.width = percent + '%';
+      handle.style.left = percent + '%';
+    }
+
+    function handleEnhanceTouch(e) {
+      if (!e.touches[0]) return;
+      const container = document.getElementById('enhancer-box');
+      const before = document.getElementById('comparison-before');
+      const handle = document.getElementById('comparison-handle');
+      if (!container || !before || !handle) return;
+      const rect = container.getBoundingClientRect();
+      const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
+      const percent = (x / rect.width) * 100;
+      before.style.width = percent + '%';
+      handle.style.left = percent + '%';
+    }
+
+    // 9. Video Toggle
+    function toggleHeroVideo() {
+      const video = document.getElementById('heroVideo');
+      const btn = document.getElementById('videoToggleBtn');
+      if (!video) return;
+      if (video.paused) {
+        video.play();
+        btn.textContent = '⏸';
+      } else {
+        video.pause();
+        btn.textContent = '▶';
+      }
+    }
+
+    // 10. Top Bar Dismiss
+    function dismissTopBar() {
+      const topBar = document.getElementById('top-bar');
+      if (topBar) {
+        topBar.style.height = '0px';
+        topBar.style.padding = '0px';
+        topBar.style.overflow = 'hidden';
+        topBar.style.opacity = '0';
+        setTimeout(() => topBar.style.display = 'none', 300);
+      }
+    }
+
+    // 11. FAQ Accordion
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    }
+
+    // Modals helpers
+    function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
+    function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+    function openPromptModal() { document.getElementById('prompt-modal').classList.remove('hidden'); }
+    function closePromptModal() { document.getElementById('prompt-modal').classList.add('hidden'); }
+    function fillSamplePrompt(t) { document.getElementById('prompt-input').value = t; }
+    function openCompareModal() { document.getElementById('compare-modal').classList.remove('hidden'); }
+    function closeCompareModal() { document.getElementById('compare-modal').classList.add('hidden'); }
+
+    function openTrendModal(title, desc, model, imgUrl) {
+      document.getElementById('trend-modal-title').textContent = title;
+      document.getElementById('trend-modal-desc').textContent = desc;
+      document.getElementById('trend-modal-model').textContent = 'Model: ' + model;
+      document.getElementById('trend-modal-img').src = imgUrl;
+      document.getElementById('trend-modal').classList.remove('hidden');
+    }
+    function closeTrendModal() { document.getElementById('trend-modal').classList.add('hidden'); }
+    function openPromptModalWithPrompt() {
+      const t = document.getElementById('trend-modal-desc').textContent;
+      closeTrendModal();
+      openPromptModal();
+      document.getElementById('prompt-input').value = t;
+    }
+
+    function triggerModelPill(name, desc) {
+      openPromptModal();
+      document.getElementById('prompt-input').value = `[Model: ${name}] High quality studio render of `;
+    }
+
+    function showTokenInfo(tokens) {
+      alert(`✦ ${tokens} Tokens ZK per month.\n\nTokens are spent proportionally: 1 image = ~1-2 tokens, 1000 characters of speech = ~2 tokens, 10s video = ~10-15 tokens. Tokens do not expire while your subscription is active!`);
+    }
+
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobile-nav');
+      if (nav) nav.classList.toggle('hidden');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAuthModal();
+        closePromptModal();
+        closeTrendModal();
+        closeCompareModal();
+        closePaymentModal();
+      }
+    });
+  </script>
+</body>
+</html>
