@@ -1780,32 +1780,33 @@
 
           </div>
 
-          <!-- SUBVIEW 2: PRICING (SCREENSHOT 3) -->
+          <!-- SUBVIEW 2: PRICING (EXACT MATCH TO SCREENSHOTS 1, 2, 3) -->
           <div id="user-subtab-pricing" class="hidden space-y-6">
             <h2 class="text-3xl font-extrabold text-white tracking-tight">Pricing</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Card: Basic -->
+              
+              <!-- 1. Card: Basic (Screenshot 1) -->
               <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
                 <div>
                   <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">Basic</h3>
                   
                   <!-- Token Toggle Pill -->
                   <div class="flex items-center gap-1.5 mb-5">
-                    <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
-                      <span class="px-3 py-1 rounded text-stone-400">0 TOKENS</span>
-                      <span class="px-3 py-1 rounded bg-[#ea580c] text-white">3120 TOKENS</span>
+                    <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <button onclick="togglePlanTokens('Basic', 0, '€6.70', this)" class="px-3 py-1 rounded text-stone-400 hover:text-white transition">0 TOKENS</button>
+                      <button onclick="togglePlanTokens('Basic', 3120, '€7.56', this)" class="px-3 py-1 rounded bg-[#ea580c] text-white transition">3120 TOKENS</button>
                     </div>
-                    <span class="text-stone-500 cursor-pointer text-xs">ⓘ</span>
+                    <span class="text-stone-500 cursor-pointer text-xs" title="Tokens included monthly">ⓘ</span>
                   </div>
 
                   <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
                     <p class="font-medium text-stone-400">Limited set of neural networks including:</p>
                     <p class="font-semibold text-white">Kling, Nano banana and <span class="underline cursor-pointer text-stone-300">more</span></p>
                     <div class="pt-2 space-y-1.5 text-stone-300">
-                      <div>+ Create up to 516 videos</div>
-                      <div>+ Generate up to 10404 images</div>
-                      <div>+ Create up to 624 songs</div>
+                      <div>+ Create videos</div>
+                      <div>+ Generate images</div>
+                      <div>+ Create songs</div>
                       <div>+ Basic access to text-based models in LLM Studio</div>
                     </div>
                   </div>
@@ -1814,7 +1815,7 @@
                 <div class="pt-4 border-t border-white/10 space-y-4">
                   <div class="flex items-baseline gap-2">
                     <span class="text-xs text-stone-500 line-through">€342.90</span>
-                    <span class="text-3xl font-black text-white">€7.56</span>
+                    <span id="price-val-Basic" class="text-3xl font-black text-white">€7.56</span>
                     <span class="text-stone-500 text-xs">per month</span>
                   </div>
                   <button onclick="openPaymentModal('Basic')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
@@ -1823,9 +1824,8 @@
                 </div>
               </div>
 
-              <!-- Card: Pro (TOP CHOICE) -->
+              <!-- 2. Card: Pro (Screenshot 1) -->
               <div class="bg-[#171a19] border border-orange-500/30 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative overflow-hidden">
-                <!-- TOP CHOICE BADGE -->
                 <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-600 to-amber-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md flex items-center gap-1">
                   <span>★</span> <span>TOP CHOICE</span>
                 </div>
@@ -1835,22 +1835,22 @@
                   
                   <!-- Token Toggle Pill -->
                   <div class="flex items-center gap-1.5 mb-5">
-                    <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
-                      <span class="px-3 py-1 rounded text-stone-400">0 TOKENS</span>
-                      <span class="px-3 py-1 rounded bg-[#ea580c] text-white">8160 TOKENS</span>
+                    <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <button onclick="togglePlanTokens('Pro', 0, '€12.66', this)" class="px-3 py-1 rounded text-stone-400 hover:text-white transition">0 TOKENS</button>
+                      <button onclick="togglePlanTokens('Pro', 8160, '€14.36', this)" class="px-3 py-1 rounded bg-[#ea580c] text-white transition">8160 TOKENS</button>
                     </div>
-                    <span class="text-stone-500 cursor-pointer text-xs">ⓘ</span>
+                    <span class="text-stone-500 cursor-pointer text-xs" title="Tokens included monthly">ⓘ</span>
                   </div>
 
                   <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
                     <p class="font-medium text-stone-400">Full neural network package:</p>
                     <p class="font-semibold text-white">Seedance 2.0/2.5, Kling, Nano banana, Veo 3.1 and <span class="underline cursor-pointer text-stone-300">more</span></p>
                     <div class="pt-2 space-y-1.5 text-stone-300">
-                      <div>+ Create up to 1360 videos</div>
-                      <div>+ Generate up to 27200 images</div>
-                      <div>+ Create up to 1632 songs</div>
+                      <div>+ Create videos</div>
+                      <div>+ Generate images</div>
+                      <div>+ Create songs</div>
                       <div>+ Create GPT agents</div>
-                      <div>+ Enhance video (Topaz) and image quality</div>
+                      <div>+ Enhance video and image quality (Topaz)</div>
                       <div class="text-amber-300 font-bold">+ 3× more requests <span class="font-normal text-stone-300">than on the Basic plan</span></div>
                       <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">GPT 5 Nano, DeepSeek V3, Claude Haiku 4.5, and Gemini 3.5 Flash Lite</span></div>
                     </div>
@@ -1860,7 +1860,7 @@
                 <div class="pt-4 border-t border-white/10 space-y-4">
                   <div class="flex items-baseline gap-2">
                     <span class="text-xs text-stone-500 line-through">€595.80</span>
-                    <span class="text-3xl font-black text-white">€14.36</span>
+                    <span id="price-val-Pro" class="text-3xl font-black text-white">€14.36</span>
                     <span class="text-stone-500 text-xs">per month</span>
                   </div>
                   <button onclick="openPaymentModal('Pro')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
@@ -1869,104 +1869,214 @@
                 </div>
               </div>
 
-              <!-- Card: VIP -->
+              <!-- 3. Card: VIP (Screenshot 2) -->
               <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
                 <div>
                   <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">VIP</h3>
-                  <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-5">
-                    <span class="px-3 py-1 rounded bg-[#ea580c] text-white">20400 TOKENS</span>
+                  
+                  <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-5">
+                    <span class="px-4 py-1 rounded bg-[#ea580c] text-white">20400 TOKENS</span>
+                    <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
                   </div>
-                  <div class="text-xs text-stone-300 space-y-2 mb-6">
-                    <p class="font-medium text-stone-400">Full package + Topaz 4K + 6x more requests</p>
+
+                  <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                    <p class="font-medium text-stone-400">Full neural network package:</p>
+                    <p class="font-semibold text-white">Seedance 2.0/2.5, Kling, Nano banana, Veo 3.1 and <span class="underline cursor-pointer text-stone-300">more</span></p>
                     <div class="pt-2 space-y-1.5 text-stone-300">
-                      <div>+ High-volume rendering & audio mastering</div>
-                      <div>+ Priority compute queue for all video models</div>
-                      <div>+ Ultra fast ElevenLabs voice clones</div>
+                      <div>+ Create up to 3400 videos</div>
+                      <div>+ Generate up to 68000 images</div>
+                      <div>+ Create up to 4080 songs</div>
+                      <div>+ Create GPT agents</div>
+                      <div>+ Enhance video (Topaz) and image quality</div>
+                      <div class="text-amber-300 font-bold">+ 6× more requests <span class="font-normal text-stone-300">than on the Basic plan</span></div>
+                      <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">all Pro models, plus Grok 4.3 and Qwen 3.7 Plus</span></div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pt-4 border-t border-white/10 space-y-4">
                   <div class="flex items-baseline gap-2">
+                    <span class="text-xs text-stone-500 line-through">€908.10</span>
                     <span class="text-3xl font-black text-white">€33.90</span>
                     <span class="text-stone-500 text-xs">per month</span>
                   </div>
-                  <button onclick="openPaymentModal('VIP')" class="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition active:scale-95">
+                  <button onclick="openPaymentModal('VIP')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
                     Pick your plan
                   </button>
                 </div>
               </div>
 
-              <!-- Card: Elite -->
+              <!-- 4. Card: Elite (Screenshot 2) -->
               <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
                 <div>
                   <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4">Elite</h3>
-                  <div class="inline-flex items-center bg-black/50 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-5">
-                    <span class="px-3 py-1 rounded bg-[#ea580c] text-white">31200 TOKENS</span>
+                  
+                  <!-- Token Toggle Pill -->
+                  <div class="flex items-center gap-1.5 mb-5">
+                    <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <button onclick="togglePlanTokens('Elite', 0, '€45.90', this)" class="px-3 py-1 rounded text-stone-400 hover:text-white transition">0 TOKENS</button>
+                      <button onclick="togglePlanTokens('Elite', 31200, '€50.91', this)" class="px-3 py-1 rounded bg-[#ea580c] text-white transition">31200 TOKENS</button>
+                    </div>
+                    <span class="text-stone-500 cursor-pointer text-xs" title="Tokens included monthly">ⓘ</span>
                   </div>
-                  <div class="text-xs text-stone-300 space-y-2 mb-6">
-                    <p class="font-medium text-stone-400">Unlimited generation in Veo 3.1 Lite & Runway</p>
+
+                  <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                    <p class="font-medium text-stone-400">Unlimited generation in</p>
+                    <p class="font-semibold text-white">Veo 3.1 Lite**, Runway, Topaz, GPT Image and <span class="underline cursor-pointer text-stone-300">more</span></p>
                     <div class="pt-2 space-y-1.5 text-stone-300">
-                      <div>+ Instant Topaz AI upscaling</div>
-                      <div>+ Direct API Access token included</div>
-                      <div>+ Dedicated customer success manager</div>
+                      <div>+ Create unlimited videos*</div>
+                      <div>+ Generate unlimited images*</div>
+                      <div>+ Record up to 6240 songs</div>
+                      <div>+ Create GPT agents</div>
+                      <div>+ Enhance the quality of videos (Topaz) and images</div>
+                      <div class="text-amber-300 font-bold">+ 10× more requests <span class="font-normal text-stone-300">than on the Basic plan</span></div>
+                      <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">all VIP models, plus GPT 5.6 Luna and Gemini 3.5 Flash</span></div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pt-4 border-t border-white/10 space-y-4">
                   <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-white">€50.91</span>
+                    <span class="text-xs text-stone-500 line-through">€1,049.40</span>
+                    <span id="price-val-Elite" class="text-3xl font-black text-white">€50.91</span>
                     <span class="text-stone-500 text-xs">per month</span>
                   </div>
-                  <button onclick="openPaymentModal('Elite')" class="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs transition active:scale-95">
+                  <button onclick="openPaymentModal('Elite')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
                     Pick your plan
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- SUBVIEW 3: TOKENS -->
-          <div id="user-subtab-tokens" class="hidden space-y-6">
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">Purchase Tokens</h2>
-            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6">
-              <p class="text-xs text-stone-400 mb-6">Buy instant token packs without subscription commitments. Tokens never expire.</p>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="p-5 bg-black/40 border border-white/10 rounded-2xl text-center space-y-3">
-                  <div class="text-2xl font-black text-white">1 000 ⚡</div>
-                  <div class="text-xs text-stone-400">Essential refill</div>
-                  <div class="text-lg font-bold text-emerald-400">€4.90</div>
-                  <button onclick="openPaymentModal('Basic')" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition">Buy pack</button>
+              <!-- 5. Card: Ultra Elite (Screenshot 3) -->
+              <div class="bg-[#171a19] border-2 border-orange-500/50 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-2xl relative overflow-hidden">
+                <!-- BEST VALUE BADGE -->
+                <div class="absolute top-0 right-10 bg-gradient-to-r from-orange-600 via-red-600 to-purple-600 text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-b-xl shadow-lg flex items-center gap-1.5">
+                  <span>👑</span> <span>BEST VALUE</span>
                 </div>
-                <div class="p-5 bg-black/40 border border-emerald-500/30 rounded-2xl text-center space-y-3">
-                  <div class="text-2xl font-black text-white">5 000 ⚡</div>
-                  <div class="text-xs text-stone-400">Creator pack</div>
-                  <div class="text-lg font-bold text-emerald-400">€19.90</div>
-                  <button onclick="openPaymentModal('Pro')" class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold rounded-xl transition">Buy pack</button>
-                </div>
-                <div class="p-5 bg-black/40 border border-white/10 rounded-2xl text-center space-y-3">
-                  <div class="text-2xl font-black text-white">15 000 ⚡</div>
-                  <div class="text-xs text-stone-400">Studio pack</div>
-                  <div class="text-lg font-bold text-emerald-400">€49.90</div>
-                  <button onclick="openPaymentModal('VIP')" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition">Buy pack</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- SUBVIEW 4: HISTORY -->
-          <div id="user-subtab-history" class="hidden space-y-6">
-            <h2 class="text-3xl font-extrabold text-white tracking-tight">Token History</h2>
-            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6">
-              <div class="text-xs text-stone-400">Your recent token transactions and generations.</div>
-              <div id="profile-history-list" class="mt-4 space-y-2">
-                <div class="p-3 bg-black/30 rounded-xl flex items-center justify-between text-xs">
-                  <div>
-                    <div class="font-bold text-white">Welcome Bonus</div>
-                    <div class="text-[10px] text-stone-500">Account registration</div>
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-stone-100 font-bold mb-4 mt-2">Ultra Elite</h3>
+                  
+                  <!-- Token Toggle Pill -->
+                  <div class="flex items-center gap-1.5 mb-5">
+                    <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold">
+                      <button onclick="togglePlanTokens('Ultra', 0, '€89.90', this)" class="px-3 py-1 rounded text-stone-400 hover:text-white transition">0 TOKENS</button>
+                      <button onclick="togglePlanTokens('Ultra', 36000, '€101.15', this)" class="px-3 py-1 rounded bg-[#ea580c] text-white transition">36000 TOKENS</button>
+                    </div>
+                    <span class="text-stone-500 cursor-pointer text-xs" title="Tokens included monthly">ⓘ</span>
                   </div>
-                  <span class="text-emerald-400 font-bold">+1,000 ⚡</span>
+
+                  <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                    <p class="font-medium text-stone-400">Unlimited generation in</p>
+                    <p class="font-semibold text-white">Veo 3.1 Lite**, Nano banana, MiniMax 01/02, GPT Image, Runway, Topaz and <span class="underline cursor-pointer text-stone-300">more</span></p>
+                    <div class="pt-2 space-y-1.5 text-stone-300">
+                      <div>+ Create unlimited videos*</div>
+                      <div>+ Generate unlimited images*</div>
+                      <div>+ Record up to 7200 songs*</div>
+                      <div>+ Create GPT agents</div>
+                      <div>+ Enhance the quality of videos (Topaz) and images</div>
+                      <div class="text-amber-300 font-bold">+ 15× more requests <span class="font-normal text-stone-300">than on the Basic plan</span></div>
+                      <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">all Elite models, plus Claude Sonnet 5.0 and Gemini 3.1 Pro</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/10 space-y-4">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-xs text-stone-500 line-through">€1,341.90</span>
+                    <span id="price-val-Ultra" class="text-3xl font-black text-white">€101.15</span>
+                    <span class="text-stone-500 text-xs">per month</span>
+                  </div>
+                  <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95">
+                    Pick your plan
+                  </button>
                 </div>
               </div>
+
+              <!-- 6. Card: Enterprise (Screenshot 3) -->
+              <div class="bg-[#171a19] border border-white/10 rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-xl relative">
+                <div>
+                  <h3 class="font-serif-editorial text-4xl text-[#ea580c] font-bold mb-2">Enterprise</h3>
+                  <div class="text-sm font-bold text-stone-200 mb-3">Do you need 15 or more subscriptions?</div>
+                  <p class="text-xs text-stone-400 mb-5 leading-relaxed">
+                    In the corporate tariff, special conditions are applied for business customers and online schools, and you will have your own personal manager in ZYKO.AI
+                  </p>
+
+                  <div class="space-y-2 text-xs text-stone-300 mb-6">
+                    <div class="font-bold text-white mb-1">What do we offer?</div>
+                    <div class="flex items-center gap-2"><span>•</span> <span>Individual tariffs</span></div>
+                    <div class="flex items-center gap-2"><span>•</span> <span>Discounts on subscriptions for 15 or more people</span></div>
+                    <div class="flex items-center gap-2"><span>•</span> <span>Loyal and flexible cooperation terms</span></div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/10 space-y-2.5">
+                  <button onclick="openContactSupport()" class="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">
+                    Explore Features
+                  </button>
+                  <a href="https://t.me/Zykolandstore" target="_blank" class="w-full block text-center py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30">
+                    Submit a request
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SUBVIEW 3: TOKENS (EXACT MATCH TO SCREENSHOT 4) -->
+          <div id="user-subtab-tokens" class="hidden min-h-[500px] flex flex-col items-center justify-center text-center p-8">
+            <div class="max-w-md mx-auto space-y-4">
+              <!-- Info Circle Icon -->
+              <div class="w-16 h-16 rounded-full bg-[#f5efe6] text-black text-3xl font-serif-editorial flex items-center justify-center font-bold mx-auto shadow-xl">
+                i
+              </div>
+              <h3 class="text-2xl font-bold text-white tracking-tight">Buying tokens is not available</h3>
+              <p class="text-xs text-stone-400 leading-relaxed">
+                You cannot buy tokens without active subscription. Please issue one of the proposed subscriptions to buy additional tokens.
+              </p>
+              <div class="pt-2">
+                <button onclick="switchUserSubtab('pricing')" class="bg-[#26211f] hover:bg-[#342b28] border border-white/15 text-white font-semibold text-xs px-6 py-2.5 rounded-full transition shadow-lg active:scale-95">
+                  Buy a subscription
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBVIEW 4: HISTORY (EXACT MATCH TO SCREENSHOT 5) -->
+          <div id="user-subtab-history" class="hidden space-y-6">
+            <!-- Filter Pills (All | Tokens added | Tokens used) -->
+            <div class="inline-flex items-center bg-black/50 border border-white/15 rounded-xl p-1 text-xs font-semibold">
+              <button onclick="filterTokenHistory('all', this)" class="px-4 py-1.5 rounded-lg bg-[#c2410c] text-white font-bold transition">All</button>
+              <button onclick="filterTokenHistory('added', this)" class="px-4 py-1.5 rounded-lg text-stone-400 hover:text-white transition">Tokens added</button>
+              <button onclick="filterTokenHistory('used', this)" class="px-4 py-1.5 rounded-lg text-stone-400 hover:text-white transition">Tokens used</button>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="text-stone-400 border-b border-white/10 pb-3">
+                    <th class="py-3 px-2 font-medium w-1/4">Date</th>
+                    <th class="py-3 px-2 font-medium w-2/4">Description</th>
+                    <th class="py-3 px-2 font-medium w-1/8 text-right">Amount</th>
+                    <th class="py-3 px-2 font-medium w-1/8 text-right">Balance</th>
+                  </tr>
+                </thead>
+                <tbody id="token-history-table-body">
+                  <tr>
+                    <td colspan="4" class="py-16 text-center text-stone-500 font-medium">
+                      No Data
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-center gap-4 text-xs font-bold text-stone-500 pt-4 border-t border-white/5">
+              <button class="hover:text-white transition disabled:opacity-30" disabled>&lt;</button>
+              <span class="text-[#ea580c]">1</span>
+              <button class="hover:text-white transition disabled:opacity-30" disabled>&gt;</button>
             </div>
           </div>
 
@@ -3531,6 +3641,34 @@
         }
       }
     });
+
+    
+    function togglePlanTokens(plan, tokens, priceText, btn) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('button').forEach(b => {
+        b.classList.remove('bg-[#ea580c]', 'text-white');
+        b.classList.add('text-stone-400');
+      });
+      btn.classList.add('bg-[#ea580c]', 'text-white');
+      btn.classList.remove('text-stone-400');
+
+      const priceEl = document.getElementById(`price-val-${plan}`);
+      if (priceEl) priceEl.textContent = priceText;
+    }
+
+    function filterTokenHistory(type, btn) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('button').forEach(b => {
+        b.classList.remove('bg-[#c2410c]', 'text-white', 'font-bold');
+        b.classList.add('text-stone-400');
+      });
+      btn.classList.add('bg-[#c2410c]', 'text-white', 'font-bold');
+      btn.classList.remove('text-stone-400');
+    }
+
+    function openContactSupport() {
+      window.open('https://t.me/Zykolandstore', '_blank');
+    }
 
     function switchUserSubtab(subtab) {
       const tabs = ['profile', 'pricing', 'tokens', 'history', 'feed', 'affiliate'];
