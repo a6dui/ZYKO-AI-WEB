@@ -233,7 +233,7 @@
         <!-- Logged In State (Initially hidden) -->
         <div id="user-profile-header" class="hidden flex items-center gap-2">
           <div class="flex items-center gap-2 bg-[#141b18] border border-emerald-500/30 rounded-xl px-2.5 py-1">
-            <span class="text-[11px] font-black text-emerald-400">✦ <span id="header-user-tokens">10 000</span> Credits</span>
+            <span class="text-[11px] font-black text-emerald-400">✦ <span id="header-user-tokens">1 000</span> ⚡</span>
             <span id="header-user-tier" class="bg-emerald-500/20 text-emerald-300 text-[9px] font-black px-1.5 py-0.2 rounded uppercase">PRO</span>
           </div>
           <div class="relative group cursor-pointer">
@@ -493,7 +493,7 @@
                 <span class="text-2xl font-black text-white price-val">€7.56</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">30,000 Credits (⚡)</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4">3,120 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Essential neural network starter with Kling & Nano Banana.</p>
             </div>
             <button onclick="openPaymentModal('Basic')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select Basic</button>
@@ -508,7 +508,7 @@
                 <span class="text-3xl font-black text-white price-val">€14.36</span>
                 <span class="text-[10px] text-stone-400">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-extrabold mb-4">80,000 Credits (⚡)</div>
+              <div class="text-[11px] text-emerald-400 font-extrabold mb-4">8,160 ⚡</div>
               <p class="text-xs text-stone-300 mb-4 leading-relaxed">Full package: Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs.</p>
             </div>
             <button onclick="openPaymentModal('Pro')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25">Select Pro</button>
@@ -522,7 +522,7 @@
                 <span class="text-2xl font-black text-white price-val">€33.90</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">200,000 Credits (⚡)</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4">20,400 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Full package + Topaz 4K + 6x more requests for high-volume creators.</p>
             </div>
             <button onclick="openPaymentModal('VIP')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select VIP</button>
@@ -536,7 +536,7 @@
                 <span class="text-2xl font-black text-white price-val">€50.91</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">300,000 Credits (⚡)</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4">31,200 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited generations in Veo 3.1 Lite, Runway, and Topaz upscaler.</p>
             </div>
             <button onclick="openPaymentModal('Elite')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition">Select Elite</button>
@@ -550,7 +550,7 @@
                 <span class="text-2xl font-black text-white price-val">€101.15</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-cyan-400 font-bold mb-4">500,000 Credits (⚡)</div>
+              <div class="text-[11px] text-cyan-400 font-bold mb-4">36,000 ⚡</div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API.</p>
             </div>
             <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs transition">Select Ultra</button>
@@ -834,8 +834,8 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <button onclick="handleVoiceInput('llm')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
-                    250 ⚡
+                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
+                    1 ⚡
                   </div>
                   <button onclick="sendLLMMessage()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg shadow-emerald-500/20 active:scale-95">
                     <span>Send</span> <span>➢</span>
@@ -975,8 +975,9 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <button onclick="handleVoiceInput('video')" class="text-stone-400 hover:text-emerald-400 p-1.5 transition">🎙️</button>
-                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
-                    1 800 ⚡
+                  <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
+                    <span class="text-[10px] text-stone-500 line-through">25,7</span>
+                    <span>19,3 ⚡</span>
                   </div>
                   <button onclick="sendGenerateVideo()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
                     <span>Generate</span> <span>➢</span>
@@ -1044,8 +1045,8 @@
                   <button title="Voice input" onclick="handleVoiceInput('audio')" class="hover:text-emerald-400 transition">🎙️</button>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-[10px] font-bold text-amber-300">
-                    350 ⚡
+                  <div class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-xs font-bold text-amber-300">
+                    0,4 ⚡
                   </div>
                   <button onclick="sendGenerateTTS()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 transition shadow-lg active:scale-95">
                     <span>Synthesize</span> <span>➢</span>
@@ -1100,7 +1101,7 @@
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
                 <button onclick="sendToolkitInpaint()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg active:scale-95">
-                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">600 ⚡</span>
+                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">3 ⚡</span>
                 </button>
               </div>
             </div>
@@ -1138,16 +1139,40 @@
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <!-- LLM Models Dropdown (Exact Match to Screenshot 2) -->
+                            <!-- LLM Models Dropdown (Exact Match to Screenshot 2 with Authentic Brand SVGs) -->
               <div id="dropdown-menu-text" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
-                <button onclick="selectLLMModel('gemini', '✦', 'Gemini', 'Google Gemini 2.5 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-400"><span class="text-emerald-400">✦</span> Gemini</button>
-                <button onclick="selectLLMModel('chatgpt', '🌐', 'ChatGPT', 'GPT 6 Luna')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> ChatGPT</button>
-                <button onclick="selectLLMModel('claude', '☀️', 'Claude', 'Claude 3.7 Sonnet')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300"><span>☀️</span> Claude</button>
-                <button onclick="selectLLMModel('grok', '🌀', 'Grok', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok</button>
-                <button onclick="selectLLMModel('deepseek', '🐋', 'Deepseek', 'DeepSeek R1 Reasoning')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-cyan-300"><span>🐋</span> Deepseek</button>
-                <button onclick="selectLLMModel('perplexity', '✳️', 'Perplexity', 'Perplexity Search')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>✳️</span> Perplexity</button>
-                <button onclick="selectLLMModel('qwen', '🔷', 'Qwen', 'Qwen 2.5 Max')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔷</span> Qwen</button>
-                <button onclick="selectLLMModel('zhipu', '⬡', 'Zhipu AI', 'GLM-4')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>⬡</span> Zhipu AI</button>
+                <button onclick="selectLLMModel('gemini', 'gemini', 'Gemini', 'Google Gemini 2.5 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-400">
+                  <svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2C12 7.52 7.52 12 2 12c5.48 0 10 4.48 10 10 0-5.52 4.48-10 10-10-5.52 0-10-4.48-10-10z"/></svg>
+                  <span>Gemini</span>
+                </button>
+                <button onclick="selectLLMModel('chatgpt', 'chatgpt', 'ChatGPT', 'GPT 6 Luna')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zM12 15.86l-2.6-1.5v-3l2.6-1.5 2.6 1.5v3l-2.6 1.5z"/></svg>
+                  <span>ChatGPT</span>
+                </button>
+                <button onclick="selectLLMModel('claude', 'claude', 'Claude', 'Claude 3.7 Sonnet')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-300">
+                  <svg class="w-4 h-4 text-[#d97706] fill-current" viewBox="0 0 24 24"><path d="M12 2a1.5 1.5 0 0 1 1.5 1.5v3.17l2.24-2.24a1.5 1.5 0 1 1 2.12 2.12L15.62 8.8H18.8a1.5 1.5 0 0 1 1.5 1.5v.4a1.5 1.5 0 0 1-1.5 1.5h-3.18l2.24 2.24a1.5 1.5 0 0 1-2.12 2.12L13.5 14.32V17.5a1.5 1.5 0 0 1-1.5 1.5h-.4a1.5 1.5 0 0 1-1.5-1.5v-3.18l-2.24 2.24a1.5 1.5 0 0 1-2.12-2.12L8.08 12.2H4.9a1.5 1.5 0 0 1-1.5-1.5v-.4a1.5 1.5 0 0 1 1.5-1.5h3.18L5.84 6.56A1.5 1.5 0 0 1 7.96 4.44L10.2 6.68V3.5A1.5 1.5 0 0 1 11.7 2h.3z"/></svg>
+                  <span>Claude</span>
+                </button>
+                <button onclick="selectLLMModel('grok', 'grok', 'Grok', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>
+                  <span>Grok</span>
+                </button>
+                <button onclick="selectLLMModel('deepseek', 'deepseek', 'Deepseek', 'DeepSeek R1 Reasoning')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-cyan-300">
+                  <svg class="w-4 h-4 text-[#3b82f6] fill-current" viewBox="0 0 24 24"><path d="M3 14c0 4 4.5 6 9 6s9-2 9-6c0-3-3-5.5-7-5.8V5c0-1.5-1.5-2.5-3-1.5L8 5.5v2.8C4.8 9 3 11.3 3 14z"/></svg>
+                  <span>Deepseek</span>
+                </button>
+                <button onclick="selectLLMModel('perplexity', 'perplexity', 'Perplexity', 'Perplexity Search')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#14b8a6] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>
+                  <span>Perplexity</span>
+                </button>
+                <button onclick="selectLLMModel('qwen', 'qwen', 'Qwen', 'Qwen 2.5 Max')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#8b5cf6] fill-current" viewBox="0 0 24 24"><path d="M12 2l8 5v10l-8 5-8-5V7l8-5zm0 3.5L6.5 8.8v6.4L12 18.5l5.5-3.3V8.8L12 5.5z"/></svg>
+                  <span>Qwen</span>
+                </button>
+                <button onclick="selectLLMModel('zhipu', 'zhipu', 'Zhipu AI', 'GLM-4')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#06b6d4] fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4zM12 7l4 2.5v5L12 17l-4-2.5v-5L12 7z"/></svg>
+                  <span>Zhipu AI</span>
+                </button>
               </div>
             </div>
           </div>
@@ -1195,15 +1220,39 @@
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-                <button onclick="selectImageModel('seedream', '|||', 'Seedream', 'ByteDance Multimodal')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>|||</span> Seedream</button>
-                <button onclick="selectImageModel('banana', '🍌', 'Nano Banana', 'Banana 2')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🍌</span> Nano Banana</button>
-                <button onclick="selectImageModel('flux', '🔺', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🔺</span> Flux</button>
-                <button onclick="selectImageModel('chatgpt', '🌐', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> GPT Image</button>
-                <button onclick="selectImageModel('midjourney', '⛵', 'Midjourney', 'v6.1 Artistic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>⛵</span> Midjourney</button>
-                <button onclick="selectImageModel('runway', '🎞️', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway Frames</button>
-                <button onclick="selectImageModel('grok', '🌀', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
-                <button onclick="selectImageModel('luma', '🌙', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
+                            <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
+                <button onclick="selectImageModel('seedream', 'seedream', 'Seedream', 'ByteDance Multimodal')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
+                  <span>Seedream</span>
+                </button>
+                <button onclick="selectImageModel('banana', 'banana', 'Nano Banana', 'Banana 2.1')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="text-base">🍌</span>
+                  <span>Nano Banana</span>
+                </button>
+                <button onclick="selectImageModel('flux', 'flux', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>
+                  <span>Flux</span>
+                </button>
+                <button onclick="selectImageModel('chatgpt', 'chatgpt', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08z"/></svg>
+                  <span>GPT Image</span>
+                </button>
+                <button onclick="selectImageModel('midjourney', 'midjourney', 'Midjourney', 'v6.1 Artistic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M11 3v13.5l-6-3.5L11 3zm2 0l6 10-6 3.5V3zm-9 15h16l-3 3H7l-3-3z"/></svg>
+                  <span>Midjourney</span>
+                </button>
+                <button onclick="selectImageModel('runway', 'runway', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
+                  <span>Runway Frames</span>
+                </button>
+                <button onclick="selectImageModel('grok', 'grok', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>
+                  <span>Grok Imagine</span>
+                </button>
+                <button onclick="selectImageModel('luma', 'luma', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                  <span>Luma</span>
+                </button>
               </div>
             </div>
 
@@ -1289,16 +1338,43 @@
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-              <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-                <button onclick="selectVideoModel('seedance', '|||', 'Seedance', 'TikTok Video Engine')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400"><span>|||</span> Seedance</button>
-                <button onclick="selectVideoModel('kling', '♾️', 'Kling', 'Kling 4.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>♾️</span> Kling</button>
-                <button onclick="selectVideoModel('veo', '🌐', 'Google Veo', 'Veo 3.1 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌐</span> Google Veo</button>
-                <button onclick="selectVideoModel('runway', '🎞️', 'Runway', 'Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎞️</span> Runway</button>
-                <button onclick="selectVideoModel('wan', '🌊', 'Wan Video', 'Wan 3.0 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌊</span> Wan Video</button>
-                <button onclick="selectVideoModel('minimax', '🎬', 'Hailuo Minimax', 'Hailuo 01 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🎬</span> Hailuo Minimax</button>
-                <button onclick="selectVideoModel('luma_vid', '🌙', 'Luma', 'Dream Machine 1.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌙</span> Luma</button>
-                <button onclick="selectVideoModel('grok_vid', '🌀', 'Grok Imagine', 'Grok Video 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🌀</span> Grok Imagine</button>
-                <button onclick="selectVideoModel('heygen', '🗣️', 'HeyGen', 'Avatar 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200"><span>🗣️</span> HeyGen</button>
+                            <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
+                <button onclick="selectVideoModel('seedance', 'seedance', 'Seedance', 'TikTok Video Engine')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
+                  <span>Seedance</span>
+                </button>
+                <button onclick="selectVideoModel('kling', 'kling', 'Kling', 'Kling 4.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>
+                  <span>Kling</span>
+                </button>
+                <button onclick="selectVideoModel('veo', 'veo', 'Google Veo', 'Veo 3.1 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+                  <span>Google Veo</span>
+                </button>
+                <button onclick="selectVideoModel('runway', 'runway', 'Runway', 'Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
+                  <span>Runway</span>
+                </button>
+                <button onclick="selectVideoModel('wan', 'wan', 'Wan Video', 'Wan 3.0 Pro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#06b6d4] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15c3-3 6-3 9 0s6 3 9 0M3 9c3-3 6-3 9 0s6 3 9 0"/></svg>
+                  <span>Wan Video</span>
+                </button>
+                <button onclick="selectVideoModel('minimax', 'minimax', 'Hailuo Minimax', 'Hailuo 01 HD')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  <span>Hailuo Minimax</span>
+                </button>
+                <button onclick="selectVideoModel('luma_vid', 'luma_vid', 'Luma', 'Dream Machine 1.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                  <span>Luma</span>
+                </button>
+                <button onclick="selectVideoModel('grok_vid', 'grok_vid', 'Grok Imagine', 'Grok Video 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>
+                  <span>Grok Imagine</span>
+                </button>
+                <button onclick="selectVideoModel('heygen', 'heygen', 'HeyGen', 'Avatar 2.0')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <svg class="w-4 h-4 text-[#ec4899] fill-current" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2z"/></svg>
+                  <span>HeyGen</span>
+                </button>
               </div>
             </div>
 
@@ -1870,6 +1946,36 @@
     // 2. Tab Switcher
     
     // Model Version definitions (Screenshots 3 & 4)
+    
+    const SVG_ICONS = {
+      gemini: '<svg class="w-5 h-5 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2C12 7.52 7.52 12 2 12c5.48 0 10 4.48 10 10 0-5.52 4.48-10 10-10-5.52 0-10-4.48-10-10z"/></svg>',
+      chatgpt: '<svg class="w-5 h-5 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zM12 15.86l-2.6-1.5v-3l2.6-1.5 2.6 1.5v3l-2.6 1.5z"/></svg>',
+      claude: '<svg class="w-5 h-5 text-[#d97706] fill-current" viewBox="0 0 24 24"><path d="M12 2a1.5 1.5 0 0 1 1.5 1.5v3.17l2.24-2.24a1.5 1.5 0 1 1 2.12 2.12L15.62 8.8H18.8a1.5 1.5 0 0 1 1.5 1.5v.4a1.5 1.5 0 0 1-1.5 1.5h-3.18l2.24 2.24a1.5 1.5 0 0 1-2.12 2.12L13.5 14.32V17.5a1.5 1.5 0 0 1-1.5 1.5h-.4a1.5 1.5 0 0 1-1.5-1.5v-3.18l-2.24 2.24a1.5 1.5 0 0 1-2.12-2.12L8.08 12.2H4.9a1.5 1.5 0 0 1-1.5-1.5v-.4a1.5 1.5 0 0 1 1.5-1.5h3.18L5.84 6.56A1.5 1.5 0 0 1 7.96 4.44L10.2 6.68V3.5A1.5 1.5 0 0 1 11.7 2h.3z"/></svg>',
+      grok: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>',
+      grok_vid: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>',
+      deepseek: '<svg class="w-5 h-5 text-[#3b82f6] fill-current" viewBox="0 0 24 24"><path d="M3 14c0 4 4.5 6 9 6s9-2 9-6c0-3-3-5.5-7-5.8V5c0-1.5-1.5-2.5-3-1.5L8 5.5v2.8C4.8 9 3 11.3 3 14z"/></svg>',
+      perplexity: '<svg class="w-5 h-5 text-[#14b8a6] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>',
+      qwen: '<svg class="w-5 h-5 text-[#8b5cf6] fill-current" viewBox="0 0 24 24"><path d="M12 2l8 5v10l-8 5-8-5V7l8-5zm0 3.5L6.5 8.8v6.4L12 18.5l5.5-3.3V8.8L12 5.5z"/></svg>',
+      zhipu: '<svg class="w-5 h-5 text-[#06b6d4] fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v10l-7 4-7-4V7l7-4zM12 7l4 2.5v5L12 17l-4-2.5v-5L12 7z"/></svg>',
+      seedream: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>',
+      seedance: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>',
+      banana: '<span class="text-xl">🍌</span>',
+      flux: '<svg class="w-5 h-5 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>',
+      midjourney: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M11 3v13.5l-6-3.5L11 3zm2 0l6 10-6 3.5V3zm-9 15h16l-3 3H7l-3-3z"/></svg>',
+      runway: '<svg class="w-5 h-5 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>',
+      luma: '<svg class="w-5 h-5 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>',
+      luma_vid: '<svg class="w-5 h-5 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>',
+      kling: '<svg class="w-5 h-5 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>',
+      veo: '<svg class="w-5 h-5 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>',
+      wan: '<svg class="w-5 h-5 text-[#06b6d4] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15c3-3 6-3 9 0s6 3 9 0M3 9c3-3 6-3 9 0s6 3 9 0"/></svg>',
+      minimax: '<svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+      heygen: '<svg class="w-5 h-5 text-[#ec4899] fill-current" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2z"/></svg>'
+    };
+
+    function renderIcon(key) {
+      return SVG_ICONS[key] || '<span class="text-base font-bold">✦</span>';
+    }
+
     const MODEL_VERSIONS = {
       image: {
         seedream: ['5.0', '4.5', '4.0'],
@@ -1919,12 +2025,13 @@
       }
     }
 
-    function selectLLMModel(key, icon, name, sub) {
-      document.getElementById('active-text-icon').textContent = icon;
+    function selectLLMModel(key, iconKey, name, sub) {
+      document.getElementById('active-text-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('active-text-name').textContent = name;
       document.getElementById('active-text-sub').textContent = sub;
       document.getElementById('dropdown-menu-text').classList.add('hidden');
 
+      document.getElementById('llm-model-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('llm-model-title').textContent = name;
       const descMap = {
         gemini: 'Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities.',
@@ -2100,7 +2207,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 350 : 250);
+          deductTokensUI(deepRes ? 2 : 1);
           saveToHistory('chats', text.slice(0, 30), data.reply);
         } else {
           renderAgentBubble(chatBox, "❌ Request error. Please verify your balance or try again.");
@@ -2173,7 +2280,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 350 : 250);
+          deductTokensUI(deepRes ? 2 : 1);
           saveToHistory('chats', text.slice(0, 30), data.reply);
         } else {
           renderAgentBubble(chatBox, "❌ Generation failed. Check token balance.");
@@ -2227,7 +2334,7 @@
               </div>
             </div>
           `);
-          deductTokensUI(750);
+          deductTokensUI(2);
           saveToHistory('projects', prompt.slice(0, 30), imgUrl);
         } else {
           alert('Image generation failed. Please check your token balance.');
@@ -2271,7 +2378,7 @@
       const gallery = document.getElementById('video-generation-gallery');
 
       alert(`Video render started for ${duration}s scene. Rendering with Wan 3.0 & Kling...`);
-      deductTokensUI(1800);
+      deductTokensUI(19);
       
       gallery.insertAdjacentHTML('afterbegin', `
         <div class="rounded-2xl overflow-hidden border border-cyan-500/30 bg-black p-3 text-left">
@@ -2313,7 +2420,7 @@
           player.src = audioUrl;
           player.play();
           status.textContent = 'Speech generated successfully!';
-          deductTokensUI(350);
+          deductTokensUI(1);
           saveToHistory('projects', `Audio: ${text.slice(0, 20)}`, audioUrl);
         } else {
           status.textContent = 'Synthesis error. Check tokens.';
@@ -2826,23 +2933,24 @@
       if (menu) menu.classList.toggle('hidden');
     }
 
-    function selectImageModel(key, icon, name, sub) {
+    function selectImageModel(key, iconKey, name, sub) {
       activeImageModelKey = key;
-      document.getElementById('active-image-icon').textContent = icon;
+      document.getElementById('active-image-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('active-image-name').textContent = name;
       document.getElementById('active-image-sub').textContent = sub;
       document.getElementById('dropdown-menu-image').classList.add('hidden');
-      document.getElementById('image-model-icon').textContent = icon;
+      document.getElementById('image-model-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('image-model-title').textContent = name;
       updateVersionList('image', key);
     }
 
-    function selectVideoModel(key, icon, name, ver) {
+    function selectVideoModel(key, iconKey, name, ver) {
       activeVideoModelKey = key;
-      document.getElementById('active-video-icon').textContent = icon;
+      document.getElementById('active-video-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('active-video-name').textContent = name;
       document.getElementById('active-video-sub').textContent = ver;
       document.getElementById('dropdown-menu-video').classList.add('hidden');
+      document.getElementById('video-model-icon').innerHTML = renderIcon(iconKey);
       document.getElementById('video-model-title').textContent = name;
       updateVersionList('video', key);
     }
@@ -2872,7 +2980,7 @@
 
     function sendToolkitInpaint() {
       alert('Inpainting and neural reconstruction started! Cost: 3 ⚡');
-      deductTokensUI(750);
+      deductTokensUI(2);
     }
 
     function resetVideoFormat() {

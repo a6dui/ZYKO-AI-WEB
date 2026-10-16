@@ -356,7 +356,7 @@ async def handle_ai_chat(request: web.Request):
         deep_research = bool(data.get("deep_research", False))
         
         user = await get_current_user(request)
-        cost = 350 if deep_research else 250
+        cost = 2 if deep_research else 1
         if user:
             if not await deduct_tokens(user["id"], cost):
                 return web.json_response({"error": f"Insufficient tokens (requires {cost} Credits)"}, status=400)
@@ -382,12 +382,12 @@ async def handle_generate_tts(request: web.Request):
             return web.json_response({"error": "Text required"}, status=400)
             
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 350):
-            return web.json_response({"error": "Insufficient tokens (requires 350 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 1):
+            return web.json_response({"error": "Insufficient tokens (requires 1 Credit)"}, status=400)
             
         audio_bytes = await text_to_speech(text, voice_id, model_id)
         if user:
-            await log_generation(user["id"], "elevenlabs_tts", text[:100], "tts_audio", 350)
+            await log_generation(user["id"], "elevenlabs_tts", text[:100], "tts_audio", 1)
             
         return web.Response(body=audio_bytes, content_type="audio/mpeg")
     except Exception as e:
@@ -403,12 +403,12 @@ async def handle_generate_sfx(request: web.Request):
             return web.json_response({"error": "Prompt required"}, status=400)
             
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 300):
-            return web.json_response({"error": "Insufficient tokens (requires 300 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 1):
+            return web.json_response({"error": "Insufficient tokens (requires 1 Credit)"}, status=400)
             
         audio_bytes = await generate_sfx(prompt, duration)
         if user:
-            await log_generation(user["id"], "elevenlabs_sfx", prompt, "sfx_audio", 300)
+            await log_generation(user["id"], "elevenlabs_sfx", prompt, "sfx_audio", 1)
             
         return web.Response(body=audio_bytes, content_type="audio/mpeg")
     except Exception as e:
@@ -436,12 +436,12 @@ async def handle_generate_clone(request: web.Request):
             return web.json_response({"error": "Name and audio sample file required"}, status=400)
             
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 900):
-            return web.json_response({"error": "Insufficient tokens for voice cloning (requires 900 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 5):
+            return web.json_response({"error": "Insufficient tokens for voice cloning (requires 5 Credits)"}, status=400)
             
         res = await clone_voice(name, audio_bytes, filename)
         if user:
-            await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), 900)
+            await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), 5)
             
         return web.json_response({"status": "success", "voice": res})
     except Exception as e:
@@ -462,12 +462,12 @@ async def handle_generate_image(request: web.Request):
             return web.json_response({"error": "Prompt required"}, status=400)
             
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 750):
-            return web.json_response({"error": "Insufficient tokens (requires 750 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 2):
+            return web.json_response({"error": "Insufficient tokens (requires 2 Credits)"}, status=400)
             
         img_bytes = await generate_ai_image(prompt, aspect, model)
         if user:
-            await log_generation(user["id"], f"image_{model}", prompt, "image_result", 750)
+            await log_generation(user["id"], f"image_{model}", prompt, "image_result", 2)
             
         return web.Response(body=img_bytes, content_type="image/jpeg")
     except Exception as e:
@@ -485,12 +485,12 @@ async def handle_generate_video(request: web.Request):
             return web.json_response({"error": "Prompt required"}, status=400)
             
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 1800):
-            return web.json_response({"error": "Insufficient tokens (requires 1800 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 19):
+            return web.json_response({"error": "Insufficient tokens (requires 19 Credits)"}, status=400)
             
         res = await generate_ai_video(prompt, aspect, model)
         if user:
-            await log_generation(user["id"], f"video_{model}", prompt, res.get("video_url", ""), 1800)
+            await log_generation(user["id"], f"video_{model}", prompt, res.get("video_url", ""), 19)
             
         return web.json_response(res)
     except Exception as e:
@@ -505,12 +505,12 @@ async def handle_generate_music(request: web.Request):
         title = data.get("title", "AI Track")
         
         user = await get_current_user(request)
-        if user and not await deduct_tokens(user["id"], 800):
-            return web.json_response({"error": "Insufficient tokens (requires 800 Credits)"}, status=400)
+        if user and not await deduct_tokens(user["id"], 5):
+            return web.json_response({"error": "Insufficient tokens (requires 5 Credits)"}, status=400)
             
         res = await generate_ai_music(prompt, style, title)
         if user:
-            await log_generation(user["id"], "ai_music", prompt, res.get("audio_url", ""), 800)
+            await log_generation(user["id"], "ai_music", prompt, res.get("audio_url", ""), 5)
             
         return web.json_response(res)
     except Exception as e:
