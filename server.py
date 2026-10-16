@@ -30,7 +30,7 @@ from payments import (
     STRIPE_PUBLISHABLE_KEY,
     PLANS
 )
-from ai_service import generate_prompt_expansion
+from ai_service import generate_prompt_expansion, generate_llm_chat
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("zyko_server")
@@ -347,6 +347,30 @@ async def handle_expand_prompt(request: web.Request):
         logger.error("Expand prompt error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
+async def handle_ai_chat(request: web.Request):
+    try:
+        data = await request.json()
+        messages = data.get("messages", [])
+        model = data.get("model", "chatgpt")
+        system_prompt = data.get("system_prompt", "")
+        deep_research = bool(data.get("deep_research", False))
+        
+        user = await get_current_user(request)
+        cost = 2 if deep_research else 1
+        if user:
+            if not await deduct_tokens(user["id"], cost):
+                return web.json_response({"error": f"Insufficient tokens (requires {cost} ZK)"}, status=400)
+                
+        res = await generate_llm_chat(messages, model, system_prompt, deep_research)
+        if user:
+            last_prompt = messages[-1].get("content", "") if messages else "chat"
+            await log_generation(user["id"], f"llm_{model}", last_prompt[:100], "chat_response", cost)
+            
+        return web.json_response(res)
+    except Exception as e:
+        logger.error("AI Chat error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
 async def handle_generate_tts(request: web.Request):
     try:
         data = await request.json()
@@ -532,6 +556,7 @@ def create_app():
     
     # AI Services & ElevenLabs Generations
     app.router.add_post("/api/ai/expand-prompt", handle_expand_prompt)
+    app.router.add_post("/api/ai/chat", handle_ai_chat)
     app.router.add_post("/api/generate/tts", handle_generate_tts)
     app.router.add_post("/api/generate/sfx", handle_generate_sfx)
     app.router.add_post("/api/generate/clone", handle_generate_clone)
