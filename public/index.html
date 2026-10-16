@@ -942,22 +942,39 @@
       </p>
 
       <div class="space-y-4">
-        <!-- Google Sign-In Button Container -->
-        <div id="g_id_signin" class="w-full flex justify-center"></div>
+        <!-- Telegram Sign In with Live Session Polling -->
+        <div id="telegram-login-container" class="space-y-3">
+          <a id="tg-auth-btn" href="https://t.me/ElevenlabsA_bot?start=auth_web" target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-[#229ed9] to-[#1e8bc0] hover:from-[#1ea1e0] hover:to-[#177cb0] text-white font-bold text-xs py-3.5 rounded-xl transition shadow-lg shadow-sky-500/25 active:scale-95">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.88 8.01-3.44 3.82-1.58 4.61-1.86 5.13-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.38z"/></svg>
+            <span>Войти через Telegram (@ElevenlabsA_bot)</span>
+          </a>
+          
+          <div id="tg-auth-status" class="bg-black/50 border border-sky-500/30 rounded-xl p-3 text-center">
+            <div class="flex items-center justify-center gap-2 text-xs text-amber-300 font-semibold mb-1">
+              <span class="inline-block animate-spin">⏳</span>
+              <span id="tg-status-text">Нажмите синюю кнопку выше и отправьте <b>Start</b> в боте</span>
+            </div>
+            <p class="text-[11px] text-stone-400">
+              Сайт автоматически авторизует вас в течение 1 секунды после нажатия Start.
+            </p>
+          </div>
+
+          <div id="telegram-widget-wrapper" class="flex justify-center pt-1"></div>
+        </div>
 
         <div class="flex items-center gap-3 my-2">
           <div class="flex-1 h-px bg-white/10"></div>
-          <span class="text-[10px] text-stone-500 uppercase tracking-widest">or continue with</span>
+          <span class="text-[10px] text-stone-500 uppercase tracking-widest">или</span>
           <div class="flex-1 h-px bg-white/10"></div>
         </div>
 
-        <!-- Telegram Sign In -->
-        <div id="telegram-login-container" class="flex justify-center">
-          <a href="https://t.me/ElevenlabsA_bot?start=auth_web" target="_blank" class="w-full flex items-center justify-center gap-2 bg-[#229ed9]/15 hover:bg-[#229ed9]/25 border border-[#229ed9]/40 text-[#229ed9] font-bold text-xs py-3.5 rounded-xl transition">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.99-1.74 6.66-2.88 8.01-3.44 3.82-1.58 4.61-1.86 5.13-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.38z"/></svg>
-            Sign in with Telegram
-          </a>
-        </div>
+        <!-- Google Sign-In Button Container -->
+        <div id="g_id_signin" class="w-full flex justify-center"></div>
+
+        <!-- Instant Demo Access (1 Click) -->
+        <button onclick="handleDemoLogin()" class="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-emerald-500/10 border border-white/15 hover:border-emerald-400 text-stone-300 hover:text-emerald-300 font-semibold text-xs py-3 rounded-xl transition">
+          <span>⚡</span> Быстрый демо-вход (2 000 ZK)
+        </button>
       </div>
 
       <div class="mt-6 pt-5 border-t border-white/10 text-center text-[11px] text-stone-500">
@@ -1212,6 +1229,115 @@
         console.warn('Config fetch error:', e);
       }
     });
+
+    // 2. Telegram Auth Session & Live Polling
+    let currentTgAuthCode = null;
+    let tgAuthPollTimer = null;
+
+    async function startTelegramAuthSession() {
+      const statusBox = document.getElementById('tg-auth-status');
+      const statusText = document.getElementById('tg-status-text');
+      if (statusBox) {
+        statusBox.className = 'bg-black/50 border border-sky-500/30 rounded-xl p-3 text-center';
+      }
+      if (statusText) {
+        statusText.innerHTML = 'Нажмите кнопку выше и отправьте <b>Start</b> в боте';
+      }
+
+      try {
+        const resp = await fetch('/api/auth/telegram/create-session', { method: 'POST' });
+        if (resp.ok) {
+          const data = await resp.json();
+          currentTgAuthCode = data.code;
+          const btn = document.getElementById('tg-auth-btn');
+          if (btn && data.auth_url) {
+            btn.href = data.auth_url;
+          }
+          
+          // Render official Telegram widget if container exists
+          const widgetWrap = document.getElementById('telegram-widget-wrapper');
+          if (widgetWrap && data.bot_username && !widgetWrap.hasChildNodes()) {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://telegram.org/js/telegram-widget.js?22';
+            script.setAttribute('data-telegram-login', data.bot_username);
+            script.setAttribute('data-size', 'large');
+            script.setAttribute('data-radius', '12');
+            script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+            script.setAttribute('data-request-access', 'write');
+            widgetWrap.appendChild(script);
+          }
+
+          // Start polling status
+          if (tgAuthPollTimer) clearInterval(tgAuthPollTimer);
+          tgAuthPollTimer = setInterval(pollTelegramAuthStatus, 1500);
+        }
+      } catch (e) {
+        console.warn('Failed to start TG auth session:', e);
+      }
+    }
+
+    async function pollTelegramAuthStatus() {
+      if (!currentTgAuthCode) return;
+      try {
+        const resp = await fetch('/api/auth/telegram/check-session?code=' + encodeURIComponent(currentTgAuthCode));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.authenticated && data.user) {
+            clearInterval(tgAuthPollTimer);
+            tgAuthPollTimer = null;
+            currentUser = data.user;
+            
+            const statusBox = document.getElementById('tg-auth-status');
+            if (statusBox) {
+              statusBox.className = 'bg-emerald-500/20 border border-emerald-500/60 rounded-xl p-3 text-center';
+              statusBox.innerHTML = `
+                <div class="text-xs text-emerald-400 font-bold mb-1">🎉 Авторизация успешна!</div>
+                <div class="text-[11px] text-stone-200">Добро пожаловать, <b>${currentUser.name || 'User'}</b>!</div>
+              `;
+            }
+            updateUserUI(currentUser);
+            setTimeout(() => {
+              closeAuthModal();
+            }, 1200);
+          }
+        }
+      } catch (e) {
+        console.warn('Poll error:', e);
+      }
+    }
+
+    window.onTelegramAuth = async function(user) {
+      try {
+        const resp = await fetch('/api/auth/telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user)
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          currentUser = data.user;
+          updateUserUI(currentUser);
+          closeAuthModal();
+        }
+      } catch (e) {
+        console.error('Telegram widget error:', e);
+      }
+    };
+
+    async function handleDemoLogin() {
+      try {
+        const resp = await fetch('/api/auth/demo', { method: 'POST' });
+        if (resp.ok) {
+          const data = await resp.json();
+          currentUser = data.user;
+          updateUserUI(currentUser);
+          closeAuthModal();
+        }
+      } catch (e) {
+        alert('Demo login failed: ' + e);
+      }
+    }
 
     // 2. Google Identity Services Initialization
     function initGoogleSignIn(clientId) {
@@ -1558,8 +1684,17 @@
     }
 
     // Modals helpers
-    function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
-    function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+    function openAuthModal() {
+      document.getElementById('auth-modal').classList.remove('hidden');
+      startTelegramAuthSession();
+    }
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.add('hidden');
+      if (tgAuthPollTimer) {
+        clearInterval(tgAuthPollTimer);
+        tgAuthPollTimer = null;
+      }
+    }
     function openPromptModal() { document.getElementById('prompt-modal').classList.remove('hidden'); }
     function closePromptModal() { document.getElementById('prompt-modal').classList.add('hidden'); }
     function fillSamplePrompt(t) { document.getElementById('prompt-input').value = t; }

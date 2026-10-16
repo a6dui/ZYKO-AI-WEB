@@ -2,12 +2,22 @@ import os
 import sys
 import json
 import logging
+import asyncio
+import time
+import uuid
+import aiohttp
 from aiohttp import web
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from database import init_db, get_user_by_id, get_or_create_google_user, get_or_create_telegram_user
+from database import (
+    init_db,
+    get_user_by_id,
+    get_or_create_google_user,
+    get_or_create_telegram_user,
+    get_or_create_demo_user
+)
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, GOOGLE_CLIENT_ID
 from payments import (
     create_stripe_checkout,
@@ -26,6 +36,10 @@ logger = logging.getLogger("zyko_server")
 
 PORT = int(os.environ.get("PORT", 8080))
 TELEGRAM_BOT_USERNAME = os.environ.get("TELEGRAM_BOT_USERNAME", "ElevenlabsA_bot")
+TELEGRAM_BOT_TOKEN = os.environ.get("ELEVENLABS_BOT_TOKEN", os.environ.get("TELEGRAM_BOT_TOKEN", "8921688906:AAGCyxpieUlzuUrR80T_gtFBI1wO0f0NEJ8")).strip()
+
+# In-memory store for pending Telegram web logins: code -> {status, token, user, created_at}
+PENDING_AUTH_SESSIONS = {}
 
 async def get_current_user(request: web.Request):
     auth_header = request.headers.get("Authorization", "")
@@ -99,6 +113,95 @@ async def handle_telegram_auth(request: web.Request):
     except Exception as e:
         logger.error("Telegram Auth error: %s", e)
         return web.json_response({"error": str(e)}, status=400)
+
+async def handle_telegram_create_session(request: web.Request):
+    """
+    Creates a unique temporary session code for QR/deep-link bot authentication.
+    """
+    code = f"zk_{uuid.uuid4().hex[:6]}"
+    PENDING_AUTH_SESSIONS[code] = {
+        "status": "pending",
+        "created_at": time.time(),
+        "token": None,
+        "user": None
+    }
+    auth_url = f"https://t.me/{TELEGRAM_BOT_USERNAME}?start=auth_{code}"
+    return web.json_response({
+        "code": code,
+        "bot_username": TELEGRAM_BOT_USERNAME,
+        "auth_url": auth_url
+    })
+
+async def handle_telegram_check_session(request: web.Request):
+    """
+    Polls status of a pending Telegram login session.
+    """
+    code = request.query.get("code", "").strip()
+    session = PENDING_AUTH_SESSIONS.get(code)
+    if not session:
+        return web.json_response({"authenticated": False, "status": "expired"})
+        
+    # Check expiration (10 minutes)
+    if time.time() - session.get("created_at", 0) > 600:
+        PENDING_AUTH_SESSIONS.pop(code, None)
+        return web.json_response({"authenticated": False, "status": "expired"})
+        
+    if session.get("status") == "authenticated" and session.get("user"):
+        token = session.get("token")
+        resp = web.json_response({
+            "authenticated": True,
+            "status": "authenticated",
+            "token": token,
+            "user": session.get("user")
+        })
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        return resp
+        
+    return web.json_response({"authenticated": False, "status": "pending"})
+
+async def handle_telegram_confirm_session(request: web.Request):
+    """
+    Called by internal bot poller or external bot webhook to confirm Telegram login.
+    """
+    try:
+        data = await request.json()
+        code = data.get("code", "").strip()
+        tg_id = int(data.get("telegram_id", 0))
+        tg_username = data.get("username", "")
+        first_name = data.get("first_name", "")
+        photo_url = data.get("photo_url", "")
+        
+        if not code or not tg_id:
+            return web.json_response({"error": "Missing code or telegram_id"}, status=400)
+            
+        user = await get_or_create_telegram_user(tg_id, tg_username, first_name, photo_url)
+        token = create_access_token(user["id"])
+        
+        PENDING_AUTH_SESSIONS[code] = {
+            "status": "authenticated",
+            "token": token,
+            "user": user,
+            "created_at": time.time()
+        }
+        logger.info("Confirmed Telegram session %s for user %s (@%s)", code, tg_id, tg_username)
+        return web.json_response({"success": True, "user_id": user["id"]})
+    except Exception as e:
+        logger.error("Confirm session error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
+async def handle_demo_auth(request: web.Request):
+    """
+    Instant demo/test account access.
+    """
+    try:
+        user = await get_or_create_demo_user()
+        token = create_access_token(user["id"])
+        resp = web.json_response({"token": token, "user": user})
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        return resp
+    except Exception as e:
+        logger.error("Demo Auth error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
 
 async def handle_me(request: web.Request):
     user = await get_current_user(request)
@@ -379,6 +482,10 @@ def create_app():
     # Auth
     app.router.add_post("/api/auth/google", handle_google_auth)
     app.router.add_post("/api/auth/telegram", handle_telegram_auth)
+    app.router.add_post("/api/auth/telegram/create-session", handle_telegram_create_session)
+    app.router.add_get("/api/auth/telegram/check-session", handle_telegram_check_session)
+    app.router.add_post("/api/auth/telegram/confirm-session", handle_telegram_confirm_session)
+    app.router.add_post("/api/auth/demo", handle_demo_auth)
     app.router.add_get("/api/auth/me", handle_me)
     app.router.add_post("/api/auth/logout", handle_logout)
     
@@ -412,11 +519,124 @@ def create_app():
         
     return app
 
+async def run_telegram_bot_poller(app):
+    bot_token = TELEGRAM_BOT_TOKEN
+    if not bot_token:
+        logger.warning("No Telegram Bot token configured for poller.")
+        return
+
+    logger.info("Starting background Telegram Bot poller for @%s...", TELEGRAM_BOT_USERNAME)
+    offset = 0
+    url = f"https://api.telegram.org/bot{bot_token}"
+
+    try:
+        async with aiohttp.ClientSession() as s:
+            async with s.get(f"{url}/deleteWebhook?drop_pending_updates=False", timeout=8) as r:
+                pass
+    except Exception as e:
+        logger.debug("Could not delete webhook: %s", e)
+
+    while True:
+        try:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=40)) as session:
+                get_url = f"{url}/getUpdates?offset={offset}&timeout=20&allowed_updates=[\"message\"]"
+                async with session.get(get_url) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        updates = data.get("result", [])
+                        for update in updates:
+                            offset = update["update_id"] + 1
+                            msg = update.get("message", {})
+                            text = msg.get("text", "").strip()
+                            from_user = msg.get("from", {})
+                            chat_id = msg.get("chat", {}).get("id")
+                            
+                            if not text or not chat_id:
+                                continue
+                                
+                            tg_id = from_user.get("id")
+                            tg_username = from_user.get("username", "")
+                            tg_first_name = from_user.get("first_name", "")
+                            
+                            # Handle /start auth_<code_id>
+                            if text.startswith("/start auth_"):
+                                auth_code = text.split("auth_")[1].strip()
+                                user = await get_or_create_telegram_user(
+                                    telegram_id=tg_id,
+                                    username=tg_username,
+                                    first_name=tg_first_name,
+                                    photo_url=""
+                                )
+                                token = create_access_token(user["id"])
+                                PENDING_AUTH_SESSIONS[auth_code] = {
+                                    "status": "authenticated",
+                                    "token": token,
+                                    "user": user,
+                                    "created_at": time.time()
+                                }
+                                logger.info("Telegram session %s authenticated for user %s (@%s)", auth_code, tg_id, tg_username)
+                                
+                                reply_text = (
+                                    f"🎉 <b>Авторизация успешна!</b>\n\n"
+                                    f"Вы успешно вошли на сайт <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
+                                    f"🎁 Ваш баланс: <b>{user.get('tokens', 1000)} токенов ✦</b>\n"
+                                    f"Вкладка браузера уже автоматически обновилась — добро пожаловать в студию! 🚀"
+                                )
+                                kb = {
+                                    "inline_keyboard": [
+                                        [{"text": "🌐 Вернуться на сайт ZYKO.AI", "url": "https://zuko-voice.zeabur.app"}]
+                                    ]
+                                }
+                                send_url = f"{url}/sendMessage"
+                                await session.post(send_url, json={
+                                    "chat_id": chat_id,
+                                    "text": reply_text,
+                                    "parse_mode": "HTML",
+                                    "reply_markup": kb
+                                })
+                            elif text.startswith("/start"):
+                                reply_text = (
+                                    f"✨ <b>Добро пожаловать в ZYKO.AI!</b>\n\n"
+                                    f"Медиа-студия нового поколения: озвучка 40 персонажей, клонирование голоса, генерация 4K фото и видео.\n\n"
+                                    f"👇 Чтобы войти в аккаунт, откройте окно авторизации на сайте и нажмите <b>Войти через Telegram</b>."
+                                )
+                                kb = {
+                                    "inline_keyboard": [
+                                        [{"text": "🌐 Открыть ZYKO.AI Web", "url": "https://zuko-voice.zeabur.app"}]
+                                    ]
+                                }
+                                send_url = f"{url}/sendMessage"
+                                await session.post(send_url, json={
+                                    "chat_id": chat_id,
+                                    "text": reply_text,
+                                    "parse_mode": "HTML",
+                                    "reply_markup": kb
+                                })
+                    elif resp.status == 409:
+                        await asyncio.sleep(15)
+                    else:
+                        await asyncio.sleep(3)
+        except asyncio.CancelledError:
+            break
+        except Exception as e:
+            logger.debug("Bot listener loop: %s", e)
+            await asyncio.sleep(4)
+
 async def start_background_tasks(app):
     await init_db()
+    app["bot_task"] = asyncio.create_task(run_telegram_bot_poller(app))
+
+async def cleanup_background_tasks(app):
+    if "bot_task" in app and not app["bot_task"].done():
+        app["bot_task"].cancel()
+        try:
+            await app["bot_task"]
+        except asyncio.CancelledError:
+            pass
 
 if __name__ == "__main__":
     app = create_app()
     app.on_startup.append(start_background_tasks)
+    app.on_cleanup.append(cleanup_background_tasks)
     logger.info("Starting ZYKO.AI Web Server on port %s", PORT)
     web.run_app(app, host="0.0.0.0", port=PORT)

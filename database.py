@@ -101,6 +101,21 @@ async def get_or_create_telegram_user(telegram_id: int, username: str, first_nam
                 async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
                     return dict(await c2.fetchone())
 
+async def get_or_create_demo_user() -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM users WHERE email = 'demo@zyko.ai'") as cursor:
+            row = await cursor.fetchone()
+            if row:
+                return dict(row)
+        cursor_ins = await db.execute(
+            "INSERT INTO users (email, name, tokens, tier) VALUES ('demo@zyko.ai', 'Creator (Demo)', 2000, 'Pro')"
+        )
+        await db.commit()
+        user_id = cursor_ins.lastrowid
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
+            return dict(await c2.fetchone())
+
 async def get_user_by_id(user_id: int) -> dict:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
