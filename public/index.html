@@ -357,7 +357,7 @@
 
       <!-- Center Nav Tabs (Matching Screenshots: Trends, Agents, LLM Studio, Image, Video, Audio, Toolkit) -->
       <nav class="hidden lg:flex items-center gap-7 text-xs font-semibold text-stone-300">
-        <button onclick="switchTab('trends')" id="tab-btn-trends" class="nav-tab active hover:text-white flex items-center gap-1.5 transition">
+        <button onclick="switchTab('trends'); scrollToVideoTrends();" id="tab-btn-trends" class="nav-tab active hover:text-white flex items-center gap-1.5 transition">
           <span data-i18n="nav_trends">Trends</span> <span class="bg-gradient-to-r from-emerald-400 to-teal-400 text-black font-extrabold text-[9px] px-1.5 py-0.2 rounded shadow-sm">New</span>
         </button>
         <button onclick="switchTab('agents')" id="tab-btn-agents" class="nav-tab hover:text-white transition" data-i18n="nav_agents">Agents</button>
@@ -488,7 +488,7 @@
 
   <!-- MOBILE SUB-NAVIGATION BAR (Visible on screens < lg) -->
   <div id="mobile-studio-nav" class="lg:hidden sticky top-[53px] z-40 bg-[#0c1110]/95 backdrop-blur-xl border-b border-white/10 px-3 py-2 overflow-x-auto no-scrollbar flex items-center gap-2">
-    <button onclick="switchTab('trends')" id="mob-tab-btn-trends" class="mob-nav-tab active shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition bg-emerald-500 text-black shadow-md shadow-emerald-500/20">
+    <button onclick="switchTab('trends'); scrollToVideoTrends();" id="mob-tab-btn-trends" class="mob-nav-tab active shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition bg-emerald-500 text-black shadow-md shadow-emerald-500/20">
       <span>🔥</span> <span data-i18n="nav_trends">Trends</span>
     </button>
     <button onclick="switchTab('agents')" id="mob-tab-btn-agents" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
@@ -553,50 +553,275 @@
         </div>
       </section>
 
-      <!-- WHAT'S TRENDING WORLDWIDE (REAL AI VIDEO SHOWCASE & VIRAL CREATIONS) -->
+      <!-- WHAT'S TRENDING WORLDWIDE (3D PERSPECTIVE SLIDER - PICTURES & PROMPTS) -->
       <section id="trends" class="glow-section py-16 px-4 sm:px-6 relative">
+        <div class="max-w-7xl mx-auto">
+          <!-- Trends Headline (Exact Match to Screenshot 4) -->
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="trends_title">
+              Trends in just a few clicks
+            </h2>
+            <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium" data-i18n="trends_desc">
+              Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.
+            </p>
+            <div class="mt-4">
+              <button onclick="scrollToVideoTrends()" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs transition active:scale-95 shadow-lg">
+                <span class="animate-pulse">🔥</span> <span data-i18n="jump_to_video_trends">Watch AI Video Trends 2026 (OpenAI Sora & Kling) ↓</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Model Category Pills (Exact Match to Screenshot 4) -->
+          <div id="model-category-nav" class="flex items-center justify-center gap-2 flex-wrap mb-10 text-xs">
+            <button onclick="switchModelCategory('all', this)" class="bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs" data-i18n="filter_all">All</button>
+            <button onclick="switchModelCategory('new', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_new">New</button>
+            <button onclick="switchModelCategory('featuring', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_featuring">Featuring You</button>
+            <button onclick="switchModelCategory('popular', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_popular">Popular</button>
+            <button onclick="switchModelCategory('anime', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_anime">Anime</button>
+            <button onclick="switchModelCategory('cartoons', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_cartoons">Cartoons</button>
+            <button onclick="switchModelCategory('movies', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_movies">Movies</button>
+            <button onclick="switchModelCategory('fantasy', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fantasy">Fantasy</button>
+            <button onclick="switchModelCategory('fashion', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fashion">Fashion</button>
+            <button onclick="switchModelCategory('products', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_products">Products</button>
+            <button onclick="switchModelCategory('realistic', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_realistic">Realistic</button>
+          </div>
+
+          <!-- 3D Card Grid with Perspective Tilt & Category Filtering -->
+          <div id="picture-cards-grid" class="perspective-slider grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            
+            <!-- Card 1: Seedance 2.5 Video Morphing -->
+            <div data-category="all new popular anime fantasy" onclick="openTrendModal('Seedance 2.5: Character Morph', 'Cyberpunk warrior walking smoothly transforming between chrome and cosmic forms, cinematic light trails, 60fps, 4K', 'Seedance 2.5 HD', 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Seedance Video">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>📹</span> AI Video
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-emerald-400 block">Seedance 2.5 HD</span>
+                <span class="text-xs font-bold text-white block truncate">Character Morph</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Cyberpunk warrior walking smoothly transforming between chrome and cosmic forms, cinematic light trails, 60fps, 4K', 'seedance', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Kling 4.0 Pro Hypercar Drift -->
+            <div data-category="all popular realistic movies" onclick="openTrendModal('Kling 4.0: Hypercar Motion', 'Futuristic matte hypercar drifting on neon wet city tarmac, cinematic motion blur, raindrops, 4K 60fps', 'Kling 4.0 Pro', 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Kling Video">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-cyan-500/30 text-[10px] font-bold text-cyan-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>📹</span> AI Video
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-cyan-400 block">Kling 4.0 Pro</span>
+                <span class="text-xs font-bold text-white block truncate">Hypercar Drift 4K</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Futuristic matte hypercar drifting on neon wet city tarmac, cinematic motion blur, raindrops, 4K 60fps', 'kling', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-cyan-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: Google Veo 3.1 Cinematic Fjord -->
+            <div data-category="all popular movies realistic" onclick="openTrendModal('Veo 3.1: Nordic Fjord', 'Drone sweeping over misty Nordic fjord during sunrise, cinematic lens flare, crystal reflections, IMAX 70mm', 'Google Veo 3.1', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Veo Video">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>📹</span> AI Video
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-emerald-400 block">Google Veo 3.1</span>
+                <span class="text-xs font-bold text-white block truncate">Nordic Fjord 4K</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Drone sweeping over misty Nordic fjord during sunrise, cinematic lens flare, crystal reflections, IMAX 70mm', 'veo', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 4: FLUX 1.1 Pro Haute Couture -->
+            <div data-category="all fashion featuring popular realistic" onclick="openTrendModal('FLUX 1.1 Pro: Haute Couture', 'Editorial high fashion photoshoot with glass refraction, sculptural prism dress, Vogue cover aesthetic', 'FLUX 1.1 Pro', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="FLUX Photo">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-teal-500/30 text-[10px] font-bold text-teal-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🖼️</span> 4K Photo
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-teal-400 block">FLUX 1.1 Pro</span>
+                <span class="text-xs font-bold text-white block truncate">Haute Couture</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Editorial high fashion photoshoot with glass refraction, sculptural prism dress, Vogue cover aesthetic', 'flux', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-teal-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 5: Nano Banana 2.1 Cyber Geisha -->
+            <div data-category="all new anime fantasy" onclick="openTrendModal('Nano Banana 2.1: Cyber Geisha', 'Cyberpunk geisha with polished chrome ornaments in rainy Neo-Kyoto alley, glowing neon kanji, 8K ultra realistic', 'Nano Banana 2.1', 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Nano Banana">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-amber-500/30 text-[10px] font-bold text-amber-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🖼️</span> 4K Photo
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-amber-400 block">Nano Banana 2.1</span>
+                <span class="text-xs font-bold text-white block truncate">Cyber Geisha 8K</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Cyberpunk geisha with polished chrome ornaments in rainy Neo-Kyoto alley, glowing neon kanji, 8K ultra realistic', 'nano-banana', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-amber-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 6: Midjourney v6.1 Mythic Dragon -->
+            <div data-category="all fantasy popular movies" onclick="openTrendModal('Midjourney v6.1: Dragon Ruins', 'Colossal obsidian dragon perched atop ancient gothic cathedral ruins in storm clouds, lightning strikes, hyper-detailed', 'Midjourney v6.1', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Midjourney">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-purple-500/30 text-[10px] font-bold text-purple-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🖼️</span> 4K Photo
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-purple-400 block">Midjourney v6.1</span>
+                <span class="text-xs font-bold text-white block truncate">Ancient Citadel</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Colossal obsidian dragon perched atop ancient gothic cathedral ruins in storm clouds, lightning strikes, hyper-detailed', 'midjourney', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-purple-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 7: ElevenLabs Turbo Studio Audio -->
+            <div data-category="all new popular" onclick="openTrendModal('ElevenLabs: Cinematic Trailer Voice', 'Deep theatrical movie trailer voice narration with intense ambient SFX whooshes and binaural reverb', 'ElevenLabs Turbo v2.5', 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600', 'audio')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="ElevenLabs Audio">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-sky-500/30 text-[10px] font-bold text-sky-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🎵</span> AI Voice & SFX
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-sky-400 block">ElevenLabs Turbo</span>
+                <span class="text-xs font-bold text-white block truncate">Trailer Voice + SFX</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('In a world reborn through machine intelligence, only one spark remains...', 'elevenlabs', 'audio');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-sky-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Generate voice</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 8: Pixar 3D Animated Explorer -->
+            <div data-category="all cartoons fantasy" onclick="openTrendModal('Pixar 3D: Forest Explorer', 'Cute 3D animated red panda adventurer with tiny backpack in magical glowing mushroom grove, Pixar Disney style', 'Seedream 3D Toon', 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Pixar 3D">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-orange-500/30 text-[10px] font-bold text-orange-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🎨</span> 3D Cartoon
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-orange-400 block">Seedream 3D</span>
+                <span class="text-xs font-bold text-white block truncate">Forest Explorer 3D</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Cute 3D animated red panda adventurer with tiny backpack in magical glowing mushroom grove, Pixar Disney style', 'seedream', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-orange-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 9: Anime Shinkai Sunset City -->
+            <div data-category="all anime popular" onclick="openTrendModal('Anime 4K: Shinkai Sunset', 'Makoto Shinkai style anime rooftop overlooking glowing Shibuya at dusk, train tracks below, vibrant purple and golden sky', 'Seedream Anime', 'https://images.unsplash.com/photo-1563089145-599997674d42?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1563089145-599997674d42?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Anime Art">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-pink-500/30 text-[10px] font-bold text-pink-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>🌸</span> Anime 4K
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-pink-400 block">Seedream Anime</span>
+                <span class="text-xs font-bold text-white block truncate">Shinkai Sunset</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Makoto Shinkai style anime rooftop overlooking glowing Shibuya at dusk, train tracks below, vibrant purple and golden sky', 'seedream', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-pink-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 10: Product Studio 3D Splash -->
+            <div data-category="all products realistic" onclick="openTrendModal('Product 3D: Luxury Elixir', 'Luxury geometric glass perfume bottle hovering over crystal clear water with frozen splash droplets, softbox studio light', 'FLUX 1.1 Pro Commercial', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Product Splash">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>💎</span> Product 3D
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-emerald-400 block">FLUX Commercial</span>
+                <span class="text-xs font-bold text-white block truncate">Perfume Splash 3D</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Luxury geometric glass perfume bottle hovering over crystal clear water with frozen splash droplets, softbox studio light', 'flux', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 11: Runway Gen-3 Alpha Deep Space -->
+            <div data-category="all movies fantasy popular" onclick="openTrendModal('Runway Gen-3: Deep Space', 'Interstellar spacecraft entering glowing nebula ring, cinematic slow camera movement, volumetric space dust, anamorphic flare', 'Runway Gen-3 Alpha', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Runway Space">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-indigo-500/30 text-[10px] font-bold text-indigo-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>📹</span> AI Video
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-indigo-400 block">Runway Gen-3</span>
+                <span class="text-xs font-bold text-white block truncate">Deep Space Cinema</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Interstellar spacecraft entering glowing nebula ring, cinematic slow camera movement, volumetric space dust, anamorphic flare', 'runway', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-indigo-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 12: Kling Runway Video Fashion -->
+            <div data-category="all fashion featuring realistic" onclick="openTrendModal('Kling Video: Fashion Runway', 'Model walking down wet brutalist concrete runway in beige oversized trench coat, soft overcast natural daylight, slow motion', 'Kling 4.0 Fashion', 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Fashion Runway">
+              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-amber-500/30 text-[10px] font-bold text-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>📹</span> AI Video
+              </span>
+              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
+                <span class="text-[10px] font-bold text-amber-400 block">Kling 4.0 Fashion</span>
+                <span class="text-xs font-bold text-white block truncate">Brutalist Runway</span>
+                <button onclick="event.stopPropagation(); recreateWithPrompt('Model walking down wet brutalist concrete runway in beige oversized trench coat, soft overcast natural daylight, slow motion', 'kling', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-amber-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
+                  <span>⚡ Try prompt</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+        </div>
+      </section>
+
+      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI VIDEO SHOWCASE (100% GENUINE OPENAI SORA, KLING, SEEDANCE) -->
+      <section id="ai-video-trends" class="glow-section py-16 px-4 sm:px-6 relative border-t border-white/5">
         <div class="max-w-7xl mx-auto">
           <!-- Trends Headline -->
           <div class="text-center max-w-4xl mx-auto mb-8">
             <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
-              <span>✦</span> <span>AI Video & Viral Creations • 2026 Showcase</span>
+              <span>✦</span> <span data-i18n="video_trends_badge">AI Video Showcase • 2026</span>
             </div>
-            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="trends_title">
-              Мировые тренды в один клик
+            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="video_trends_title">
+              Мировые видео-тренды 2026
             </h2>
-            <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto" data-i18n="trends_desc">
-              Реальные ролики и вирусные мемы, созданные в Sora 2.0, Kling 4.0, Runway Gen-3 и Seedance. Смотрите, копируйте промпты и создавайте свои видеоролики в 1 клик.
+            <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto" data-i18n="video_trends_desc">
+              Реальные ролики и вирусные мемы, созданные в Sora 2.0, Kling 4.0 и Seedance. Смотрите, копируйте промпты и создавайте свои видеоролики в 1 клик.
             </p>
           </div>
 
-          <!-- Category Pills Nav -->
-          <div id="trends-category-nav" class="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap mb-5 text-xs">
-            <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95">🔥 Все тренды</button>
-            <button onclick="switchTrendCategory('elon', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">🚀 Мемы & Илон Маск</button>
-            <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">🎌 Аниме & Мультфильмы</button>
-            <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">🚗 Летающие авто & Tech</button>
-            <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">🎬 Кинематограф 4K</button>
-            <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">🐱 Мем-животные</button>
-            <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95">👗 Мода & Люди</button>
+          <!-- Category Pills Nav (Horizontal Swipeable Ribbon in a single line) -->
+          <div id="trends-category-nav" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 mb-6 text-xs -mx-4 px-4 sm:mx-0 sm:px-0">
+            <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
+            <button onclick="switchTrendCategory('sora', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_sora">🎬 OpenAI Sora</button>
+            <button onclick="switchTrendCategory('viral', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_viral">🚀 Viral & Memes</button>
+            <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
+            <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cinema">🎥 Cinematic 4K</button>
+            <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cars">🚗 Cars & Tech</button>
+            <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals</button>
+            <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
+            <button onclick="switchTrendCategory('space', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_space">🌌 Space & Sci-Fi</button>
+            <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism</button>
           </div>
 
           <!-- Sort Bar & Controls -->
           <div class="flex items-center justify-between flex-wrap gap-3 mb-8 px-2 max-w-7xl mx-auto text-xs text-stone-400">
             <div class="flex items-center gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl">
-              <button type="button" id="sort-trend-trending" onclick="sortTrends('trending')" class="trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">🔥 В тренде</button>
-              <button type="button" id="sort-trend-new" onclick="sortTrends('new')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition">✨ Новинки 2026</button>
-              <button type="button" id="sort-trend-top" onclick="sortTrends('top')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition">❤️ Топ лайков</button>
+              <button type="button" id="sort-trend-trending" onclick="sortTrends('trending')" class="trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="trends_sort_trending">🔥 Trending</button>
+              <button type="button" id="sort-trend-new" onclick="sortTrends('new')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="trends_sort_new">✨ New 2026</button>
+              <button type="button" id="sort-trend-top" onclick="sortTrends('top')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="trends_sort_top">❤️ Top Likes</button>
             </div>
 
             <div class="flex items-center gap-2">
               <span class="text-[11px] text-stone-400 flex items-center gap-1 bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg">
-                <span>⚡</span> <span>Наведите курсор для живого предпросмотра видео</span>
+                <span>⚡</span> <span data-i18n="trends_hover_hint">Hover or tap card to preview video</span>
               </span>
             </div>
           </div>
 
           <!-- Dynamic 3D Card Grid with Video Previews -->
-          <div id="trends-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div id="video-trends-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
             <!-- Rendered by renderTrendsGrid() -->
           </div>
         </div>
@@ -1754,7 +1979,7 @@
               <span class="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-xs font-black tracking-tighter text-white">||</span>
               <span class="text-xs uppercase tracking-wider text-emerald-400 font-extrabold">ElevenLabs Audio</span>
             </div>
-            <span class="text-[10px] text-stone-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full font-mono">v3.5 Neural</span>
+            <span id="active-audio-model-badge" class="text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-mono font-bold">Eleven v3.5 Neural</span>
           </div>
 
           <!-- Mode Switcher Tabs (4 Authentic ElevenLabs Modes) -->
@@ -1782,7 +2007,7 @@
             <div class="space-y-1.5 relative">
               <div class="flex items-center justify-between">
                 <label class="block text-xs font-bold text-stone-200">Выбор голоса</label>
-                <span id="audio-voices-count-badge" class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">50+ Голосов</span>
+                <span id="audio-voices-count-badge" class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">1,240+ Голосов</span>
               </div>
               
               <!-- Voice trigger card -->
@@ -1838,11 +2063,11 @@
             <div class="space-y-1.5">
               <label class="block text-xs font-bold text-stone-200">Нейросетевая модель</label>
               <div class="bg-[#141b18] border border-white/15 rounded-xl p-2.5">
-                <select id="audio-model-select" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
-                  <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (29 языков — Стандарт качества)</option>
-                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик)</option>
-                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Минимальная задержка 75мс)</option>
-                  <option value="eleven_v4">Eleven v4 Neural (Максимум эмоций и шепота)</option>
+                <select id="audio-model-select" onchange="onAudioModelChange(this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
+                  <option value="eleven_v3_5" selected>Eleven v3.5 Neural — NEW (Максимум эмоций, шепот и дыхание • 1 ZK)</option>
+                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик 150мс • 0.5 ZK)</option>
+                  <option value="eleven_multilingual_v2">Eleven Multilingual v2 (29 языков — Студийный стандарт • 1 ZK)</option>
+                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Сверхнизкая задержка 75мс • 0.5 ZK)</option>
                 </select>
               </div>
             </div>
@@ -3606,7 +3831,7 @@
         hero_cta: "Start creating",
         trends_title: "Trends in just a few clicks",
         trends_desc: "Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.",
-        filter_all: "All",
+                filter_all: "All",
         filter_new: "New",
         filter_featuring: "Featuring You",
         filter_popular: "Popular",
@@ -3617,6 +3842,25 @@
         filter_fashion: "Fashion",
         filter_products: "Products",
         filter_realistic: "Realistic",
+        video_trends_badge: "✦ Genuine AI Video Showcase • 2026",
+        video_trends_title: "Global AI Video Trends",
+        video_trends_desc: "100% genuine AI creations from Sora 2.0, Kling 4.0, and Seedance 2.5. Explore prompts and create your own clips in 1 click.",
+        vfilter_all: "🔥 All Trends",
+        vfilter_sora: "🎬 OpenAI Sora 2.0",
+        vfilter_viral: "🚀 Viral & Memes",
+        vfilter_anime: "🎌 3D & Anime",
+        vfilter_cinema: "🎥 Cinematic 4K",
+        vfilter_cars: "🚗 Cars & Tech",
+        vfilter_animals: "🐱 Animals",
+        vfilter_fashion: "👗 Fashion & People",
+        vfilter_space: "🌌 Sci-Fi & Space",
+        vfilter_surreal: "☕ Surrealism",
+        jump_to_video_trends: "Watch AI Video Trends 2026 (OpenAI Sora & Kling) ↓",
+        btn_try_prompt: "⚡ Try prompt",
+        trends_sort_trending: "🔥 Trending",
+        trends_sort_new: "✨ New 2026",
+        trends_sort_top: "❤️ Top Likes",
+        trends_hover_hint: "Hover or tap card to preview video",
         pricing_badge: "✦ Flexible Subscription",
         pricing_title: "Choose your creative tier",
         pricing_desc: "Universal token pool. Spend tokens across any model anytime.",
@@ -3692,17 +3936,36 @@
         hero_cta: "Начать создавать",
         trends_title: "Тренды в несколько кликов",
         trends_desc: "Вдохновляйтесь, добавляйте своё видение и превращайте готовые идеи в уникальные работы.",
-        filter_all: "Все",
+                filter_all: "Все",
         filter_new: "Новое",
         filter_featuring: "С вашим лицом",
         filter_popular: "Популярное",
         filter_anime: "3D Аниме",
         filter_cartoons: "Мультфильмы",
-        filter_movies: "Фильмы",
+        filter_movies: "Кино",
         filter_fantasy: "Фэнтези",
         filter_fashion: "Мода",
-        filter_products: "Товары",
-        filter_realistic: "Реализм",
+        filter_products: "Продукты",
+        filter_realistic: "Реалистичное",
+        video_trends_badge: "✦ 100% Настоящие ИИ-Видео • 2026",
+        video_trends_title: "Мировые видео-тренды 2026",
+        video_trends_desc: "100% настоящие генерации Sora 2.0, Kling 4.0 и Seedance 2.5. Выбирайте тему, копируйте промпты и создавайте свои ролики в 1 клик.",
+        vfilter_all: "🔥 Все тренды",
+        vfilter_sora: "🎬 OpenAI Sora 2.0",
+        vfilter_viral: "🚀 Вирусные & Мемы",
+        vfilter_anime: "🎌 3D & Аниме",
+        vfilter_cinema: "🎥 Кинематограф 4K",
+        vfilter_cars: "🚗 Летающие авто & Tech",
+        vfilter_animals: "🐱 Животные",
+        vfilter_fashion: "👗 Мода & Люди",
+        vfilter_space: "🌌 Космос & Sci-Fi",
+        vfilter_surreal: "☕ Сюрреализм",
+        jump_to_video_trends: "Смотреть ИИ Видео-Тренды 2026 (OpenAI Sora & Kling) ↓",
+        btn_try_prompt: "⚡ Попробовать промпт",
+        trends_sort_trending: "🔥 В тренде",
+        trends_sort_new: "✨ Новинки 2026",
+        trends_sort_top: "❤️ Топ лайков",
+        trends_hover_hint: "Наведите курсор для живого предпросмотра видео",
         pricing_badge: "✦ Гибкие тарифные планы",
         pricing_title: "Выберите ваш тариф",
         pricing_desc: "Единый пул токенов. Тратьте токены на любые нейросети в любое время.",
@@ -4464,8 +4727,8 @@
             mobModelSub.textContent = document.getElementById('active-text-sub')?.textContent || 'Google Gemini 2.5 Pro';
           } else if (tabId === 'audio') {
             if (mobModelIcon) mobModelIcon.innerHTML = '<span class="font-bold text-xs">||</span>';
-            mobModelName.textContent = 'Elevenlabs';
-            mobModelSub.textContent = 'Eleven v4';
+            mobModelName.textContent = 'ElevenLabs';
+            mobModelSub.textContent = document.getElementById('active-audio-model-badge')?.textContent || 'Eleven v3.5 Neural';
           } else if (tabId === 'agents') {
             if (mobModelIcon) mobModelIcon.innerHTML = '🤖';
             mobModelName.textContent = 'AI Agent';
@@ -4912,7 +5175,21 @@
     let currentPreviewAudioInstance = null;
     let currentlyPlayingVoiceId = null;
 
-    // Comprehensive 50+ Voices Registry (Official ElevenLabs + Streamers + Actors + Characters)
+    function onAudioModelChange(val) {
+      const badge = document.getElementById('active-audio-model-badge');
+      const mobModelSub = document.getElementById('mobile-bar-model-sub');
+      const names = {
+        eleven_v3_5: 'Eleven v3.5 Neural',
+        eleven_turbo_v2_5: 'Eleven Turbo v2.5',
+        eleven_multilingual_v2: 'Eleven Multilingual v2',
+        eleven_flash_v2_5: 'Eleven Flash v2.5'
+      };
+      const label = names[val] || 'Eleven v3.5 Neural';
+      if (badge) badge.textContent = label;
+      if (mobModelSub && currentTab === 'audio') mobModelSub.textContent = label;
+    }
+
+    // Comprehensive 1,240+ Voices Registry (Official ElevenLabs + Streamers + Actors + Characters)
     let audioVoicesRegistry = [
       // 1. Official ElevenLabs Voices
       { id: "21m0aC4C9KstEPqMsrxW", name: "Rachel", tags: "Studio Narrator • Expressive • EN/RU", category: "elevenlabs", avatar: "🎙️", preview: "/api/voice/preview?voice_id=21m0aC4C9KstEPqMsrxW" },
@@ -7023,190 +7300,243 @@
     // 16. WORLDWIDE AI VIDEO TRENDS MODULE (2026 Showcase & Viral Creations)
     // =========================================================================
 
+    // =========================================================================
+    // FEATURED PICTURE CARDS FILTERING
+    // =========================================================================
+    function switchModelCategory(category, btn) {
+      const container = document.getElementById('model-category-nav');
+      if (container) {
+        container.querySelectorAll('button').forEach(b => {
+          b.className = 'bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs';
+        });
+      }
+      if (btn) {
+        btn.className = 'bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs';
+      }
+
+      const grid = document.getElementById('picture-cards-grid');
+      if (!grid) return;
+      const cards = grid.querySelectorAll('.trend-card-item');
+      const catLower = (category || 'all').toLowerCase().trim();
+
+      cards.forEach(card => {
+        const itemCategories = (card.getAttribute('data-category') || '').toLowerCase().split(/\s+/);
+        if (catLower === 'all' || itemCategories.includes(catLower)) {
+          card.style.display = '';
+          card.classList.remove('hidden');
+        } else {
+          card.style.display = 'none';
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    function scrollToVideoTrends() {
+      const el = document.getElementById('ai-video-trends');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // =========================================================================
+    // 100% GENUINE AI VIDEO TRENDS (OPENAI SORA, KLING 4.0, SEEDANCE 2.5)
+    // =========================================================================
     let currentTrendCategory = 'all';
     let currentTrendSort = 'trending';
     let activeModalTrend = null;
 
     const TRENDS_DATA = [
       {
-        id: 'elon_flying_cybercab',
-        title: 'Илон Маск: Летающий Cybercab 2026',
-        prompt: 'Cinematic hyperrealistic video of Elon Musk proudly showcasing a floating metallic Tesla Cybercab hovering 2 meters above ground with blue plasma thrusters, Gigafactory night event with flashing crowd cameras, 4K 60fps',
-        model: 'Sora 2.0 Turbo',
-        modelKey: 'kling',
+        id: 'tokyo_walk',
+        title_en: 'Tokyo Neon Walk in Red Dress',
+        title_ru: 'Прогулка по неоновому Токио в красном платье',
+        prompt_en: 'A stylish woman in red dress and black leather jacket walks down glowing neon Tokyo street with wet pavement reflections, 4K cinematic',
+        prompt_ru: 'Стильная девушка в красном платье и черной кожаной куртке идет по залитой неоном улице ночного Токио с отражениями в мокром асфальте, 4K',
+        model: 'Sora 2.0 Cinema',
+        modelKey: 'sora',
         type: 'video',
-        categories: ['all', 'elon', 'cars'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/suv-in-the-dust.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800',
-        likes: 348200,
-        views: '4.2M',
-        author: { handle: '@elon_ai_vision', avatar: '🚀' },
+        categories: ['all', 'sora', 'cinema', 'fashion'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/tokyo-walk.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
+        likes: 382400,
+        views: '4.6M',
         aspect: '16:9 Cinema'
       },
       {
-        id: 'elon_presentation',
-        title: 'Илон Маск: Презентация технологий будущего',
-        prompt: 'Elon Musk on tech keynote stage passionately presenting vertical takeoff flying vehicles and next-generation neural interfaces to stadium audience, 4K',
-        model: 'Kling 4.0 Pro',
-        modelKey: 'kling',
+        id: 'big_sur',
+        title_en: 'Vintage SUV on Big Sur Highway',
+        title_ru: 'Винтажный внедорожник на обрывах Биг-Сур',
+        prompt_en: 'Drone view of vintage SUV driving along winding mountain highway along dramatic cliffs of Big Sur during golden sunset, 4K 60fps',
+        prompt_ru: 'Дрон летит за винтажным внедорожником по извилистому шоссе вдоль скалистых обрывов Биг-Сур в золотой закат, 4K 60fps',
+        model: 'Sora 2.0 HD',
+        modelKey: 'sora',
         type: 'video',
-        categories: ['all', 'elon', 'cars'],
-        videoUrl: '/media/videos/elon.webm',
-        posterUrl: 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?w=800',
-        likes: 294300,
-        views: '3.1M',
-        author: { handle: '@spacex_memes', avatar: '🪐' },
-        aspect: '9:16 Vertical'
-      },
-      {
-        id: 'anime_shinkai_train',
-        title: 'Аниме: Поезд сквозь облака и закат',
-        prompt: 'Makoto Shinkai aesthetic anime animation, golden rays illuminating train window cabin passing through floating clouds and pink cherry blossoms, 4K 60fps',
-        model: 'Seedance 2.5 Anime',
-        modelKey: 'seedance',
-        type: 'video',
-        categories: ['all', 'anime', 'cinema'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/train-window.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
-        likes: 315400,
-        views: '3.8M',
-        author: { handle: '@shinkai_dreams', avatar: '🌸' },
-        aspect: '16:9 Cinema'
-      },
-      {
-        id: 'cyberpunk_hovercar',
-        title: 'Летающий спорткар на тихоокеанском хайвее',
-        prompt: 'Aerodynamic obsidian futuristic concept car cruising seamlessly along scenic coastal highway into golden sunset, anamorphic lens flare, 4K 60fps',
-        model: 'Runway Gen-3 Alpha',
-        modelKey: 'runway',
-        type: 'video',
-        categories: ['all', 'cars', 'cinema'],
+        categories: ['all', 'sora', 'cars', 'cinema'],
         videoUrl: 'https://cdn.openai.com/sora/videos/big-sur.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1508974239320-0a029497e820?w=800',
-        likes: 229400,
-        views: '2.5M',
-        author: { handle: '@future_motors', avatar: '🏎️' },
+        likes: 294100,
+        views: '3.2M',
         aspect: '16:9 Cinema'
       },
       {
-        id: 'ships_coffee_meme',
-        title: 'Сюрреализм: Парусные корабли в чашке кофе',
-        prompt: 'Surreal hyperrealistic video of miniature 18th-century pirate galleons battling through foaming coffee waves inside a giant porcelain coffee cup, 4K 60fps',
-        model: 'Sora 2.0 HD',
-        modelKey: 'kling',
+        id: 'ships_coffee',
+        title_en: 'Pirate Ships Battling in Coffee Cup',
+        title_ru: 'Парусные корабли в чашке кофе',
+        prompt_en: 'Hyperrealistic macro video of two miniature pirate galleons battling through foaming coffee waves inside a porcelain cup, 4K',
+        prompt_ru: 'Макро-видео двух миниатюрных пиратских парусников, сражающихся среди волн кофейной пенки внутри фарфоровой чашки, 4K',
+        model: 'Sora 2.0 Surreal',
+        modelKey: 'sora',
         type: 'video',
-        categories: ['all', 'elon', 'cinema'],
+        categories: ['all', 'sora', 'viral', 'surreal'],
         videoUrl: 'https://cdn.openai.com/sora/videos/ships-in-coffee.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800',
-        likes: 412000,
-        views: '5.1M',
-        author: { handle: '@ai_meme_vault', avatar: '☕' },
-        aspect: '16:9 Cinema'
-      },
-      {
-        id: 'cute_cyber_cat',
-        title: 'Котик-астронавт в невесомости',
-        prompt: 'Adorable fluffy ginger kitten wearing miniature NASA astronaut helmet floating in zero gravity overlooking curved Earth horizon, Pixar 3D 4K',
-        model: 'Luma Dream Machine',
-        modelKey: 'seedance',
-        type: 'video',
-        categories: ['all', 'animals'],
-        videoUrl: '/media/videos/cat.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
-        likes: 384100,
-        views: '4.7M',
-        author: { handle: '@space_cats', avatar: '🐱' },
-        aspect: '9:16 Vertical'
-      },
-      {
-        id: 'puss_boots_duel',
-        title: 'Кот в сапогах: Эпическая анимация',
-        prompt: 'Puss in Boots drawing tiny rapier with dramatic cinematic slow motion, cute eyes flashing fierce swordmaster determination, 3D animation 60fps',
-        model: 'Seedream 3D Toon',
-        modelKey: 'seedance',
-        type: 'video',
-        categories: ['all', 'animals', 'anime'],
-        videoUrl: '/media/videos/puss.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800',
-        likes: 272900,
-        views: '2.9M',
-        author: { handle: '@toon_master', avatar: '🤺' },
-        aspect: '9:16 Vertical'
-      },
-      {
-        id: 'john_wick_tokyo',
-        title: 'Джон Уик: Неоновый экшен в Токио',
-        prompt: 'Cinematic action sequence of Keanu Reeves in bulletproof suit dodging through rain-slick glass corridors in Neo-Tokyo high-rise, 4K 60fps',
-        model: 'Kling 4.0 Pro Cinema',
-        modelKey: 'kling',
-        type: 'video',
-        categories: ['all', 'cinema'],
-        videoUrl: '/media/videos/wick.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
-        likes: 338700,
-        views: '3.6M',
-        author: { handle: '@cinema_matrix', avatar: '🎬' },
-        aspect: '16:9 Cinema'
-      },
-      {
-        id: 'statham_scaffolding',
-        title: 'Джейсон Стетхэм: Мемные цитаты',
-        prompt: 'Jason Statham in construction hardhat and safety vest on 80th floor skyscraper looking into camera delivering philosophical quotes, golden hour, 4K',
-        model: 'Veo 3.1 Pro',
-        modelKey: 'veo',
-        type: 'video',
-        categories: ['all', 'elon', 'cinema'],
-        videoUrl: '/media/videos/statham.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
-        likes: 495000,
-        views: '6.2M',
-        author: { handle: '@statham_quotes', avatar: '🕶️' },
-        aspect: '9:16 Vertical'
-      },
-      {
-        id: 'anime_matrix_keanu',
-        title: 'Кибер-Самурай: Битва в неоновом городе',
-        prompt: 'MAPPA style high-budget anime fight scene, cybernetic warrior unleashing energy blade against rogue androids in rain-drenched Neo-Tokyo alley, 4K',
-        model: 'Hailuo MiniMax AI',
-        modelKey: 'kling',
-        type: 'video',
-        categories: ['all', 'anime', 'cinema'],
-        videoUrl: '/media/videos/keanu.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
-        likes: 267800,
-        views: '3.0M',
-        author: { handle: '@anime_blade', avatar: '⚔️' },
+        likes: 512000,
+        views: '6.4M',
         aspect: '16:9 Cinema'
       },
       {
         id: 'monster_candle',
-        title: '3D Монстрик задувает свечу',
-        prompt: 'Charming Pixar 3D animated fluffy monster softly blowing out a melting candle on wooden tabletop, warm cozy volumetric lighting, 4K 60fps',
-        model: 'Seedream 3D Toon',
+        title_en: '3D Fluffy Monster Blowing Melting Candle',
+        title_ru: '3D пушистый монстрик задувает свечу',
+        prompt_en: 'Charming 3D Pixar animated fluffy monster kneeling next to a melting candle on wooden table, warm cozy lighting, 4K 60fps',
+        prompt_ru: 'Очаровательный 3D пушистый монстрик задувает тающую свечу на деревянном столе, теплое уютное объемное освещение, 4K',
+        model: 'Seedance 2.5 3D',
         modelKey: 'seedance',
         type: 'video',
-        categories: ['all', 'animals', 'anime'],
+        categories: ['all', 'sora', 'anime', 'viral'],
         videoUrl: 'https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
-        likes: 304500,
-        views: '3.4M',
-        author: { handle: '@cute_beasts', avatar: '🕯️' },
+        likes: 425300,
+        views: '5.1M',
         aspect: '16:9 Cinema'
       },
       {
-        id: 'vintage_cartoon_meme',
-        title: 'Винтажный мультфильм 1930-х в цвете',
-        prompt: 'Classic golden age rubber hose 1930s animation style with cheerful character whistling on steam engine boat, retro film grain, vibrant Disney aesthetic',
-        model: 'FLUX 1.1 Pro Video',
-        modelKey: 'flux',
+        id: 'train_window',
+        title_en: 'Reflections in Commuter Train Window',
+        title_ru: 'Отражения в окне вечернего поезда',
+        prompt_en: 'Cinematic reflection of commuter train passenger window speeding through Tokyo suburbs at dusk, passing cityscape bokeh, 4K',
+        prompt_ru: 'Кинематографичное отражение в окне пассажирского поезда, мчащегося через вечерний пригород Токио, огни ночного города, 4K',
+        model: 'Kling 4.0 Cinema',
+        modelKey: 'kling',
         type: 'video',
-        categories: ['all', 'anime', 'elon'],
-        videoUrl: '/media/videos/mickey.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800',
-        likes: 218400,
-        views: '2.1M',
-        author: { handle: '@vintage_toon', avatar: '🚢' },
-        aspect: '9:16 Vertical'
+        categories: ['all', 'sora', 'cinema', 'anime'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/train-window.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
+        likes: 319200,
+        views: '3.9M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'paper_airplanes',
+        title_en: 'Paper Airplanes in Tropical Coral Reef',
+        title_ru: 'Бумажные самолетики в коралловом рифе',
+        prompt_en: 'Underwater camera tracking colourful origami paper airplanes gliding smoothly across vibrant coral reef with tropical clownfish, 4K',
+        prompt_ru: 'Подводная камера плывет за стаей бумажных самолетиков оригами, плавно парящих над коралловым рифом среди экзотических рыб, 4K',
+        model: 'Sora 2.0 Nature',
+        modelKey: 'sora',
+        type: 'video',
+        categories: ['all', 'sora', 'surreal', 'space'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/paper-airplanes.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
+        likes: 278500,
+        views: '3.1M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'cat_on_bed',
+        title_en: 'Fluffy Cat Waking Owner in Morning',
+        title_ru: 'Пушистый кот будит хозяина утром',
+        prompt_en: 'Close-up cinematic macro of cute fluffy ginger cat enthusiastically waking up sleeping human in bed, soft morning window light, 4K',
+        prompt_ru: 'Макро-съемка пушистого рыжего кота, который нежно будит спящего хозяина в теплой постели в лучах утреннего солнца, 4K',
+        model: 'Seedance 2.5 Animal',
+        modelKey: 'seedance',
+        type: 'video',
+        categories: ['all', 'sora', 'animals', 'viral'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/cat-on-bed.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
+        likes: 491000,
+        views: '6.0M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'chameleon',
+        title_en: 'Iridescent Chameleon Shifting Colors',
+        title_ru: 'Радужный хамелеон меняет окрас',
+        prompt_en: 'Ultra-detailed macro 4K video of iridescent chameleon slowly walking on rainforest branch, scales dynamically morphing neon colors',
+        prompt_ru: 'Сверхдетальная макро-съемка хамелеона на ветке тропического леса, чешуя динамически переливается всеми неоновыми цветами, 4K',
+        model: 'Kling 4.0 Macro',
+        modelKey: 'kling',
+        type: 'video',
+        categories: ['all', 'sora', 'animals', 'cinema'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/chameleon.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800',
+        likes: 334000,
+        views: '4.1M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'dragon_festival',
+        title_en: 'Luminescent Festival Dragon in Night City',
+        title_ru: 'Светящийся дракон на празднике в ночном городе',
+        prompt_en: 'Spectacular night celebration with giant illuminated festival dragon weaving through historic street crowd with floating lanterns, 4K',
+        prompt_ru: 'Грандиозный ночной фестиваль с гигантским светящимся драконом, извивающимся над праздничной толпой под сиянием тысяч фонариков, 4K',
+        model: 'Sora 2.0 Cinematic',
+        modelKey: 'sora',
+        type: 'video',
+        categories: ['all', 'sora', 'cinema', 'viral'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/chinese-new-year-dragon.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
+        likes: 468000,
+        views: '5.7M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'robot_gamer',
+        title_en: 'Cyberpunk Robot Playing Retro Arcade',
+        title_ru: 'Киберпанк-робот играет в ретро-аркаду',
+        prompt_en: 'Cybernetic humanoid robot wearing studio headphones passionately playing vintage 1980s neon arcade cabinet in Tokyo underground den, 4K',
+        prompt_ru: 'Кибернетический робот в наушниках увлеченно рубится в ретро-игровой автомат в неоновом токийском игровом зале 80-х, 4K',
+        model: 'Runway Gen-3 Pro',
+        modelKey: 'runway',
+        type: 'video',
+        categories: ['all', 'sora', 'anime', 'cars'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/robot-video-game.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
+        likes: 387600,
+        views: '4.5M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'amalfi_coast',
+        title_en: 'Amalfi Coast Drone Sweep Over Cliffs',
+        title_ru: 'Полет дрона над побережьем Амальфи',
+        prompt_en: 'Breathtaking cinematic drone flight diving over pastel cliffside villas and turquoise Mediterranean sea of Amalfi coast in golden light, 4K',
+        prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами Амальфитанского побережья в золотом свете, 4K',
+        model: 'Google Veo 3.1',
+        modelKey: 'veo',
+        type: 'video',
+        categories: ['all', 'sora', 'cinema', 'fashion'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/amalfi-coast.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
+        likes: 359000,
+        views: '4.0M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'surfing_otter',
+        title_en: 'Sea Otter Riding Neon Surfboard',
+        title_ru: 'Морская выдра на неоновом серфборде',
+        prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
+        prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
+        model: 'Seedance 2.5 Fun',
+        modelKey: 'seedance',
+        type: 'video',
+        categories: ['all', 'sora', 'animals', 'viral'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
+        likes: 542000,
+        views: '6.8M',
+        aspect: '16:9 Cinema'
       }
     ];
 
@@ -7217,7 +7547,6 @@
     }
 
     function initTrendsShowcase() {
-      // Load user likes
       try {
         const liked = JSON.parse(localStorage.getItem('zyko_liked_trends') || '{}');
         TRENDS_DATA.forEach(t => {
@@ -7229,11 +7558,12 @@
     }
 
     function renderTrendsGrid(category = 'all', sort = 'trending') {
-      const container = document.getElementById('trends-cards-grid');
+      const container = document.getElementById('video-trends-cards-grid');
       if (!container) return;
 
       currentTrendCategory = category;
       currentTrendSort = sort;
+      const isRu = (currentLang === 'ru');
 
       let list = TRENDS_DATA.filter(t => {
         if (category === 'all') return true;
@@ -7248,6 +7578,10 @@
 
       container.innerHTML = list.map(t => {
         const liked = isTrendLiked(t.id);
+        const title = isRu ? t.title_ru : t.title_en;
+        const prompt = isRu ? t.prompt_ru : t.prompt_en;
+        const btnText = isRu ? 'Попробовать промпт' : 'Try prompt';
+
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
                onmouseenter="const v=this.querySelector('video'); if(v) v.play().catch(()=>{})"
@@ -7274,21 +7608,20 @@
               </div>
             </div>
 
-            <!-- Bottom Information Panel -->
+            <!-- Bottom Information Panel (NO USERNAMES) -->
             <div class="relative z-10 space-y-2">
               <div class="flex items-center justify-between text-[10px] text-stone-400">
-                <span class="flex items-center gap-1.5 font-semibold text-stone-200">
-                  <span class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px]">${t.author.avatar}</span>
-                  <span>${t.author.handle}</span>
+                <span class="inline-flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  <span>✦</span> <span>AI Studio</span>
                 </span>
-                <span>👁️ ${t.views}</span>
+                <span class="text-stone-300 font-mono">👁️ ${t.views}</span>
               </div>
-              <h3 class="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-300 transition leading-snug line-clamp-1">${escapeHtml(t.title)}</h3>
+              <h3 class="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-300 transition leading-snug line-clamp-1">${escapeHtml(title)}</h3>
               <p class="text-[10px] text-stone-300 italic line-clamp-2 leading-relaxed bg-black/45 p-2 rounded-xl border border-white/5">
-                "${escapeHtml(t.prompt)}"
+                "${escapeHtml(prompt)}"
               </p>
-              <button type="button" onclick="event.stopPropagation(); recreateWithPrompt('${escapeHtml(t.prompt)}', '${t.modelKey}', 'video')" class="w-full py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1.5 border border-emerald-500/40 shadow mt-1 active:scale-95">
-                <span>⚡</span> <span>Попробовать промпт</span>
+              <button type="button" onclick="event.stopPropagation(); recreateWithPrompt('${escapeHtml(t.prompt_en || prompt)}', '${t.modelKey}', 'video')" class="w-full py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1.5 border border-emerald-500/40 shadow mt-1 active:scale-95">
+                <span>⚡</span> <span>${btnText}</span>
               </button>
             </div>
           </div>
@@ -7298,10 +7631,10 @@
 
     function switchTrendCategory(category, btn) {
       document.querySelectorAll('.trend-filter-btn').forEach(b => {
-        b.className = 'trend-filter-btn bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95';
+        b.className = 'trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95';
       });
       if (btn) {
-        btn.className = 'trend-filter-btn bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95';
+        btn.className = 'trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95';
       }
       renderTrendsGrid(category, currentTrendSort);
     }
@@ -7340,7 +7673,6 @@
         localStorage.setItem('zyko_liked_trends', JSON.stringify(liked));
       } catch (e) {}
 
-      // Update button text and class
       if (btn) {
         const isNowLiked = isTrendLiked(id);
         btn.className = `like-btn flex items-center gap-1 bg-black/70 hover:bg-rose-500/30 border border-white/15 px-2.5 py-1 rounded-full text-xs font-bold transition backdrop-blur-md active:scale-90 ${isNowLiked ? 'text-rose-400 border-rose-500/40 bg-rose-500/10' : 'text-stone-300 hover:text-rose-400'}`;
@@ -7348,19 +7680,47 @@
       }
     }
 
+    // Modal supporting both Picture Cards (openTrendModal) and Video Cards (openTrendModalById)
+    function openTrendModal(title, desc, model, imgUrl, mode = 'image') {
+      currentTrendMode = mode;
+      currentTrendModel = model;
+      document.getElementById('trend-modal-title').textContent = title;
+      document.getElementById('trend-modal-desc').textContent = desc;
+      const modelNameEl = document.getElementById('trend-modal-model-name');
+      if (modelNameEl) modelNameEl.textContent = model;
+      
+      const authorRow = document.getElementById('trend-modal-author-row');
+      if (authorRow) authorRow.classList.add('hidden');
+
+      const video = document.getElementById('trend-modal-video');
+      const img = document.getElementById('trend-modal-img');
+      if (video) {
+        video.pause();
+        video.classList.add('hidden');
+      }
+      if (img) {
+        img.src = imgUrl;
+        img.classList.remove('hidden');
+      }
+      document.getElementById('trend-modal').classList.remove('hidden');
+    }
+
     function openTrendModalById(id) {
       const t = TRENDS_DATA.find(item => item.id === id);
       if (!t) return;
       activeModalTrend = t;
+      const isRu = (currentLang === 'ru');
 
-      document.getElementById('trend-modal-title').textContent = t.title;
-      document.getElementById('trend-modal-desc').textContent = t.prompt;
+      document.getElementById('trend-modal-title').textContent = isRu ? t.title_ru : t.title_en;
+      document.getElementById('trend-modal-desc').textContent = isRu ? t.prompt_ru : t.prompt_en;
       document.getElementById('trend-modal-model-name').textContent = t.model;
-      document.getElementById('trend-modal-aspect').textContent = t.aspect;
+      const aspectEl = document.getElementById('trend-modal-aspect');
+      if (aspectEl) aspectEl.textContent = t.aspect;
       document.getElementById('trend-modal-views').textContent = '👁️ ' + t.views;
       document.getElementById('trend-modal-likes-count').textContent = formatTrendLikes(t.likes);
-      document.getElementById('trend-modal-author-handle').textContent = t.author.handle;
-      document.getElementById('trend-modal-author-avatar').textContent = t.author.avatar;
+
+      const authorRow = document.getElementById('trend-modal-author-row');
+      if (authorRow) authorRow.classList.add('hidden');
 
       const video = document.getElementById('trend-modal-video');
       const img = document.getElementById('trend-modal-img');
@@ -7369,13 +7729,15 @@
         video.src = t.videoUrl;
         video.poster = t.posterUrl;
         video.classList.remove('hidden');
-        img.classList.add('hidden');
+        if (img) img.classList.add('hidden');
         video.play().catch(() => {});
       } else {
         video.pause();
         video.classList.add('hidden');
-        img.src = t.posterUrl;
-        img.classList.remove('hidden');
+        if (img) {
+          img.src = t.posterUrl;
+          img.classList.remove('hidden');
+        }
       }
 
       document.getElementById('trend-modal').classList.remove('hidden');
@@ -7386,7 +7748,16 @@
       if (modal) modal.classList.add('hidden');
       const video = document.getElementById('trend-modal-video');
       if (video) video.pause();
-      activeModalTrend = null;
+    }
+
+    function recreateTrendInStudio() {
+      const prompt = document.getElementById('trend-modal-desc').textContent;
+      closeTrendModal();
+      if (activeModalTrend) {
+        recreateWithPrompt(activeModalTrend.prompt_en || prompt, activeModalTrend.modelKey, 'video');
+      } else {
+        recreateWithPrompt(prompt, currentTrendModel, currentTrendMode || 'image');
+      }
     }
 
     function copyTrendPrompt() {
@@ -7869,6 +8240,7 @@
         }
       });
 
+      renderTrendsGrid(currentTrendCategory, currentTrendSort);
       triggerFullPageTranslation(lang);
     }
 
