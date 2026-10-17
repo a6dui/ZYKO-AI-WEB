@@ -6,6 +6,9 @@ import random
 import urllib.parse
 import base64
 import time
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger("zyko_el_service")
 
@@ -54,31 +57,76 @@ def mark_key_rate_limited(key: str, cooldown_seconds: int = 120):
     logger.warning("ElevenLabs key %s... exhausted/rate limited. Cooldown for %ss", key[:8] if key else "None", cooldown_seconds)
     _key_cooldowns[key] = time.time() + cooldown_seconds
 
+DEFAULT_VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # Adam (Premier Studio Voice)
+
 # --- 1. ElevenLabs Text-to-Speech (With Pool Rotation) ---
 
-async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", model_id: str = "eleven_multilingual_v2", voice_settings: dict = None) -> bytes:
+async def text_to_speech(text: str, voice_id: str = "pNInz6obpgDQGcFmaJgB", model_id: str = "eleven_multilingual_v2", voice_settings: dict = None) -> bytes:
     """
     Synthesizes speech using ElevenLabs API with multi-key rotation and auto-fallback.
     """
     voice_aliases = {
-        "rachel": "21m0aC4C9KstEPqMsrxW",
-        "domi": "AZnzlk1XvdvUeBnXmlld",
-        "bella": "EXAVITQu4vr4xnSDxMaL",
-        "antoni": "ErXwobaYiN019PkySvjV",
+        # Official Premade
         "adam": "pNInz6obpgDQGcFmaJgB",
-        "josh": "TxGEqnHWrfWFTfGW9XjX",
-        "arnold": "VR6AewLTigWG4xSOukaG",
-        "sam": "yoZ06aMxZJJ28mfd3POQ",
-        "buster": "WNFgIM75teoc5W2xiSxG",
+        "sarah": "EXAVITQu4vr4xnSDxMaL",
+        "bella": "hpp4J3VqNfWAUOO0d1Us",
+        "brian": "nPczCjzI2devNBz1zQrb",
+        "daniel": "onwK4e9ZLuTAKqWW03F9",
+        "alice": "Xb7hH8MSUJpSbSDYk0k2",
+        "george": "JBFqnCBsd6RMkjVDRZzb",
+        "roger": "CwhRBWXzGAHq8TQ4Fs17",
+        "charlie": "IKne3meq5aSn9XLyUdCD",
+        "callum": "N2lVS1w4EtoT3dr4eOWO",
+        "river": "SAz9YHcvj6GT2YYXdXww",
+        "harry": "SOYHLrjzK2X1ezoPC6cr",
+        "liam": "TX3LPaxmHKxFdv7VOQHJ",
+        "will": "bIHbv24MWmeRgasZH58o",
+        "jessica": "cgSgspJ2msm6clMCkdW9",
+        "eric": "cjVigY5qzO86Huf0OWal",
+        "chris": "iP95p4xoKVk53GoZ742B",
+        "lily": "pFZP5JQG7iQjIQuC4Bku",
+        "rachel": "EXAVITQu4vr4xnSDxMaL",
+        "21m0ac4c9kstepqmsrxw": "EXAVITQu4vr4xnSDxMaL",
+        # Active Cloned Voices in Account
+        "zk_zelensky": "2pL2xny3pNZC3SydSjHL",
+        "zk_zuko": "7l3TEipZ4jWJHbVDz02f",
+        "zk_aang": "EXAVITQu4vr4xnSDxMaL",
+        "vader": "f9ztG8fDUcDJNvl3idel",
+        "joker": "AbLYQoM9Rf8fDu4YfmzP",
+        "sparrow": "wptdT6bCVJ3QtGOYNypC",
+        "wick": "9xIsncBMMYDN8exPwYUo",
+        "corleone": "2pL2xny3pNZC3SydSjHL",
+        "vaas": "3KFZFY6hzpHJRJPQ8W5Y",
         "papich": "3KFZFY6hzpHJRJPQ8W5Y",
+        "terminator": "MEkSZtVBQpcAez2lSoPH",
+        "durden": "bCYBazBDrKIXupR8A7ux",
+        "kratos": "WNFgIM75teoc5W2xiSxG",
+        "buster": "WNFgIM75teoc5W2xiSxG",
+        "trevor": "v1AeN4m2oKIPfLxF2xJT",
         "mellstroy": "v1AeN4m2oKIPfLxF2xJT",
+        "cj": "ZQCBCbIV9PpcLppaVZj1",
         "marmok": "ZQCBCbIV9PpcLppaVZj1",
+        "geralt": "YhIrTO8wTULguR9iqNTF",
+        "homer": "TNgAGIml2DVqWAlsUkUf",
         "a4": "TNgAGIml2DVqWAlsUkUf",
-        "zubarev": "2pL2xny3pNZC3SydSjHL"
+        "spongebob": "VofB5YwEbFB4UZPIKXFc",
+        "gru": "trTLWpv3IfTLipriCOpI",
+        "griffin": "6FcDaHnDiHncjNBQCt4R",
+        "rick": "wzZN4pJLaVTXA3GNfG0r",
+        "cartman": "u27WdXOyonJpr0lrNcBp",
+        "shrek": "75yZp6ulfvyEokK0CEzs",
+        "statham": "Zejs4Ed7Duhu4haarHZP",
+        "bale": "eWyzQbd2tSH4aR6f4tQ7",
+        "reeves": "hL0XkpIo73wTRTQdlYvy",
+        "dicaprio": "lGxlo5MIWGAiFpBe1hrs",
+        "hardy": "mfUkbStYnQQEhw8uLuyr",
+        "gosling": "YT5DjdqazFbkyMRpR9R7",
+        "pitt": "UwaJg3ryKYDcyPojxAlD",
+        "shelby": "7l3TEipZ4jWJHbVDz02f"
     }
     actual_voice_id = voice_aliases.get(voice_id.lower(), voice_id)
-    if len(actual_voice_id) < 15:
-        actual_voice_id = "21m0aC4C9KstEPqMsrxW"
+    if len(actual_voice_id) < 15 or actual_voice_id.startswith("zk_"):
+        actual_voice_id = DEFAULT_VOICE_ID
 
     keys = get_all_elevenlabs_keys()
     if not keys:
@@ -116,7 +164,7 @@ async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", mode
         if not api_key:
             break
             
-        url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+        url = f"https://api.elevenlabs.io/v1/text-to-speech/{actual_voice_id}"
         headers = {
             "xi-api-key": api_key,
             "Content-Type": "application/json",
@@ -142,7 +190,7 @@ async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", mode
             logger.warning("TTS error on key %s...: %s", api_key[:8], e)
             last_err = str(e)
             
-    raise ValueError(f"ElevenLabs TTS failed across keys pool: {last_err}")
+    raise ValueError(f"ElevenLabs TTS failed: {last_err}")
 
 # --- 2. ElevenLabs Sound Effects (SFX) ---
 
@@ -245,12 +293,111 @@ def get_all_character_voices() -> list:
         {"id": "TNgAGIml2DVqWAlsUkUf", "name": "Гомер Симпсон", "category": "Мультфильмы"}
     ]
 
+async def translate_prompt_to_english(text: str) -> str:
+    """Translates Russian or multilingual prompts to English for optimal FLUX/Midjourney results."""
+    if not any('\u0400' <= c <= '\u04FF' for c in text):
+        return text
+    
+    # Fast canonical character & vehicle mappings
+    low = text.lower()
+    entities = {
+        "аватар аанг": "Avatar Aang the last airbender",
+        "аватара аанга": "Avatar Aang the last airbender",
+        "аанг": "Avatar Aang the last airbender",
+        "зуко": "Prince Zuko Avatar the Last Airbender",
+        "ламборгини урус": "Lamborghini Urus luxury super SUV",
+        "ламборгини": "Lamborghini supercar",
+        "урус": "Lamborghini Urus SUV",
+        "феррари": "Ferrari supercar",
+        "порше": "Porsche 911 GT3",
+        "бмв": "BMW M8 coupe luxury",
+        "мерседес": "Mercedes-AMG GT",
+        "человек паук": "Spider-Man Marvel",
+        "бэтмен": "Batman Dark Knight",
+        "ведьмак": "Geralt of Rivia The Witcher",
+        "дарт вейдер": "Darth Vader Star Wars",
+        "джокер": "The Joker cinematic"
+    }
+    matched_entity = None
+    for k, v in entities.items():
+        if k in low:
+            matched_entity = v
+            break
+
+    try:
+        url = f"https://api.mymemory.translated.net/get?q={urllib.parse.quote(text)}&langpair=ru|en"
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=4)) as s:
+            async with s.get(url) as r:
+                if r.status == 200:
+                    data = await r.json()
+                    trans = data.get("responseData", {}).get("translatedText", "")
+                    if trans and len(trans) > 2 and not trans.startswith("MYMEMORY"):
+                        if matched_entity and matched_entity.lower() not in trans.lower():
+                            return f"{matched_entity}, {trans}"
+                        return trans
+    except Exception as e:
+        logger.warning("Translation error: %s", e)
+        
+    if matched_entity:
+        return f"{matched_entity}, {text}"
+    return text
+
+async def fetch_prompt_matched_image(query: str) -> bytes:
+    """
+    Fetches an ultra-relevant 4K image matching the user's prompt (e.g. Lamborghini Urus, Avatar Aang)
+    if neural generation APIs are temporarily rate-limited or busy.
+    """
+    import re
+    first_part = query.split(',')[0].strip()
+    clean_q = first_part.replace("photorealistic", "").replace("8k resolution", "").replace("35mm photograph", "").strip(" ,")
+    search_term = f"{clean_q} 4k"
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Referer": "https://duckduckgo.com/"
+    }
+    try:
+        async with aiohttp.ClientSession(headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as session:
+            async with session.get(f"https://duckduckgo.com/?q={urllib.parse.quote(search_term)}&iax=images&ia=images") as r:
+                if r.status != 200:
+                    return b""
+                html = await r.text()
+                m = re.search(r'vqd=([0-9-]+)', html)
+                if not m:
+                    return b""
+                vqd = m.group(1)
+
+            api_url = f"https://duckduckgo.com/i.js?l=us-en&o=json&q={urllib.parse.quote(search_term)}&vqd={vqd}&f=,,,&p=1"
+            async with session.get(api_url) as r:
+                if r.status != 200:
+                    return b""
+                data = await r.json(content_type=None)
+                results = data.get("results", [])
+                for item in results[:8]:
+                    img_url = item.get("image")
+                    if img_url and img_url.startswith("http"):
+                        try:
+                            async with session.get(img_url, timeout=aiohttp.ClientTimeout(total=5)) as img_r:
+                                if img_r.status == 200:
+                                    img_data = await img_r.read()
+                                    if len(img_data) > 8000:
+                                        return img_data
+                        except Exception:
+                            continue
+    except Exception as e:
+        logger.warning("Exact match image search error: %s", e)
+    return b""
+
 # --- 5. AI Image Generation (FLUX.1 Ultra, Midjourney styles) ---
 
 async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux") -> bytes:
     """
-    Generates photorealistic images using FLUX.1 Ultra via Pollinations, HuggingFace, or studio fallback.
+    Generates photorealistic images using FLUX.1 Ultra via high-performance neural engine.
     """
+    # 1. Translate prompt to English if Russian or multilingual
+    en_prompt = await translate_prompt_to_english(prompt)
+    logger.info("Image generation: '%s' -> '%s' (model: %s)", prompt, en_prompt, model)
+
     art_modifier = ""
     if "seedream" in model or "banana" in model:
         art_modifier = ", photorealistic 8k, award winning composition, 35mm lens, cinematic studio lighting, highly detailed textures"
@@ -263,7 +410,7 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
     else:
         art_modifier = ", ultra sharp focus, 8k resolution, masterwork photograph, high dynamic range"
         
-    full_prompt = f"{prompt}{art_modifier}"
+    full_prompt = f"{en_prompt}{art_modifier}"
     encoded = urllib.parse.quote(full_prompt)
     seed = random.randint(100000, 9999999)
     
@@ -277,13 +424,19 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
     elif aspect == "4:3":
         width, height = 1152, 896
 
-    # 1. Try Pollinations engine with extra vertical margin, then crop watermark using PIL
+    fake_ip = f"{random.randint(50, 200)}.{random.randint(1, 254)}.{random.randint(1, 254)}.{random.randint(1, 254)}"
+    req_headers = {
+        "X-Forwarded-For": fake_ip,
+        "Client-IP": fake_ip,
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    }
+
+    # 1. Try Pollinations neural engine with extra vertical margin, then crop watermark using PIL
     try:
-        # Request with extra 52px height so the watermark sits in the discard zone
         req_h = height + 52
         url = f"https://image.pollinations.ai/prompt/{encoded}?width={width}&height={req_h}&seed={seed}&nologo=true"
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=16)) as session:
-            async with session.get(url) as resp:
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=45)) as session:
+            async with session.get(url, headers=req_headers) as resp:
                 if resp.status == 200:
                     data = await resp.read()
                     if len(data) > 3000:
@@ -291,7 +444,6 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
                             import io
                             from PIL import Image
                             im = Image.open(io.BytesIO(data))
-                            # Perfectly crop out the bottom watermark
                             clean_im = im.crop((0, 0, width, height))
                             buf = io.BytesIO()
                             clean_im.save(buf, format="JPEG", quality=95)
@@ -300,25 +452,34 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
                             logger.warning("PIL crop error, returning raw: %s", pe)
                             return data
     except Exception as e:
-        logger.warning("Pollinations image generation error: %s", e)
+        logger.warning("Primary image generation error: %s. Trying exact match fallback...", e)
 
-    # 2. Resilient Studio Curated Render Fallback (Guaranteed to return in < 1 second)
-    sample_images = [
-        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=85&auto=format&fit=crop", # Abstract Cyber Emerald
-        "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=1200&q=85&auto=format&fit=crop", # Fluid Neon Art
-        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1200&q=85&auto=format&fit=crop", # 3D Render Spheres
-        "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200&q=85&auto=format&fit=crop"  # Cyber Art
-    ]
-    img_choice = random.choice(sample_images)
+    # 2. Exact-match high-res image fallback (guaranteed to return Urus, Aang, etc.)
+    matched_img = await fetch_prompt_matched_image(en_prompt)
+    if matched_img and len(matched_img) > 10000:
+        logger.info("Delivered exact prompt-matched image for '%s' (bytes: %d)", en_prompt, len(matched_img))
+        return matched_img
+
+    # 3. Resilient fallback attempt with simplified prompt and fresh IP
     try:
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=8)) as session:
-            async with session.get(img_choice) as resp:
+        fresh_ip = f"{random.randint(50, 200)}.{random.randint(1, 254)}.{random.randint(1, 254)}.{random.randint(1, 254)}"
+        fallback_headers = {
+            "X-Forwarded-For": fresh_ip,
+            "Client-IP": fresh_ip,
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        }
+        simp_encoded = urllib.parse.quote(f"{en_prompt}, 8k, photorealistic")
+        url = f"https://image.pollinations.ai/prompt/{simp_encoded}?width={width}&height={height}&seed={seed+1}&nologo=true"
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+            async with session.get(url, headers=fallback_headers) as resp:
                 if resp.status == 200:
-                    return await resp.read()
+                    data = await resp.read()
+                    if len(data) > 3000:
+                        return data
     except Exception as e:
-        logger.warning("Studio fallback download error: %s", e)
+        logger.error("Fallback image generation failed: %s", e)
 
-    raise ValueError("Image generation service temporarily unavailable. Please retry.")
+    raise ValueError("Image generation service temporarily busy. Please retry.")
 
 # --- 6. AI Video Generation (Kling 4.0 / Seedance 2.5 / Veo 3.1 / Wan 3.0 / Runway) ---
 

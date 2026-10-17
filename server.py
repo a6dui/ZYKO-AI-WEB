@@ -742,7 +742,7 @@ async def handle_generate_tts(request: web.Request):
     try:
         data = await request.json()
         text = data.get("text", "").strip()
-        voice_id = data.get("voice_id", "21m0aC4C9KstEPqMsrxW")
+        voice_id = data.get("voice_id", "pNInz6obpgDQGcFmaJgB")
         model_id = data.get("model_id", "eleven_multilingual_v2")
         
         if not text:

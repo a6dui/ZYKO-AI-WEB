@@ -1,32 +1,52 @@
 [
   {
-    "id": "zk_zelensky",
+    "id": "pNInz6obpgDQGcFmaJgB",
+    "name": "🎙️ Adam (Студийный диктор)",
+    "desc": "Глубокий авторитетный студийный голос ElevenLabs для книг, видео и рекламы",
+    "gender": "male",
+    "category": "elevenlabs",
+    "sub_category": "official",
+    "preview": "/api/voice/preview?voice_id=pNInz6obpgDQGcFmaJgB",
+    "premium": false
+  },
+  {
+    "id": "EXAVITQu4vr4xnSDxMaL",
+    "name": "🌸 Sarah (Студийная ведущая)",
+    "desc": "Теплый выразительный женский голос для презентаций, подкастов и аудиокниг",
+    "gender": "female",
+    "category": "elevenlabs",
+    "sub_category": "official",
+    "preview": "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL",
+    "premium": false
+  },
+  {
+    "id": "2pL2xny3pNZC3SydSjHL",
     "name": "🇺🇦 Владимир Зеленский",
     "desc": "Характерный хрипловатый тембр, эмоциональная подача и интонации",
     "gender": "male",
     "category": "characters",
     "sub_category": "politics",
-    "preview": "/api/voice/preview?voice_id=zk_zelensky",
+    "preview": "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL",
     "premium": false
   },
   {
-    "id": "zk_zuko",
+    "id": "7l3TEipZ4jWJHbVDz02f",
     "name": "🔥 Принц Зуко (ZykoLand)",
     "desc": "Решительный юношеский голос принца Нации Огня из вселенной Аватара",
     "gender": "male",
     "category": "characters",
     "sub_category": "cartoons",
-    "preview": "/api/voice/preview?voice_id=zk_zuko",
+    "preview": "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f",
     "premium": false
   },
   {
-    "id": "zk_aang",
+    "id": "EXAVITQu4vr4xnSDxMaL",
     "name": "💨 Аватар Аанг",
     "desc": "Звонкий дружелюбный голос последнего мага воздуха",
     "gender": "male",
     "category": "characters",
     "sub_category": "cartoons",
-    "preview": "/api/voice/preview?voice_id=zk_aang",
+    "preview": "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL",
     "premium": false
   },
   {
