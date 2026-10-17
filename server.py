@@ -30,7 +30,8 @@ from database import (
     complete_transaction,
     get_user_by_email,
     create_email_user,
-    set_user_password
+    set_user_password,
+    get_user_usage_stats
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
@@ -605,6 +606,13 @@ async def handle_logout(request: web.Request):
     resp.del_cookie("zyko_token")
     return resp
 
+async def handle_user_usage_limits(request: web.Request):
+    user = await get_current_user(request)
+    if not user:
+        user = await get_or_create_demo_user()
+    stats = await get_user_usage_stats(user["id"])
+    return web.json_response({"success": True, "stats": stats})
+
 # --- Payments ---
 
 async def handle_stripe_create_checkout(request: web.Request):
@@ -1057,6 +1065,7 @@ def create_app():
     app.router.add_get("/api/auth/me", handle_me)
     app.router.add_post("/api/auth/logout", handle_logout)
     app.router.add_post("/api/user/link-account", handle_user_link_account)
+    app.router.add_get("/api/user/usage-limits", handle_user_usage_limits)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)

@@ -2391,17 +2391,20 @@
 
             <!-- Card 3: Plan usage limits -->
             <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-5 shadow-sm">
-              <h4 class="text-lg font-bold text-white">Plan usage limits</h4>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">Plan usage limits</h4>
+                <span id="usage-limits-tier-badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/5 text-stone-300 border border-white/10">Free Plan</span>
+              </div>
               
               <!-- Session Limit -->
               <div class="space-y-1.5">
                 <div class="flex items-center justify-between text-xs">
                   <span class="text-stone-300 font-semibold">Current session</span>
-                  <span class="text-stone-400 font-semibold">0% used</span>
+                  <span id="usage-session-pct" class="text-stone-400 font-semibold">0% used</span>
                 </div>
-                <div class="text-[11px] text-stone-500">Not started</div>
+                <div id="usage-session-status" class="text-[11px] text-stone-500">Not started</div>
                 <div class="w-full bg-stone-800 rounded-full h-1.5 overflow-hidden">
-                  <div class="bg-[#e7dfd5] h-full rounded-full" style="width: 0%"></div>
+                  <div id="usage-session-bar" class="bg-[#e7dfd5] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
               </div>
 
@@ -2409,17 +2412,17 @@
               <div class="space-y-1.5">
                 <div class="flex items-center justify-between text-xs">
                   <span class="text-stone-300 font-semibold">Weekly</span>
-                  <span class="text-stone-400 font-semibold">0% used</span>
+                  <span id="usage-weekly-pct" class="text-stone-400 font-semibold">0% used</span>
                 </div>
-                <div class="text-[11px] text-stone-500">Not started</div>
+                <div id="usage-weekly-status" class="text-[11px] text-stone-500">Not started</div>
                 <div class="w-full bg-stone-800 rounded-full h-1.5 overflow-hidden">
-                  <div class="bg-[#e7dfd5] h-full rounded-full" style="width: 0%"></div>
+                  <div id="usage-weekly-bar" class="bg-[#e7dfd5] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
               </div>
 
               <div class="flex items-center justify-between text-[11px] text-stone-500 pt-2 border-t border-white/5">
-                <span>Last updated: 8s ago</span>
-                <button onclick="refreshUsageLimits()" class="text-stone-400 hover:text-white transition">↺</button>
+                <span id="usage-last-updated">Last updated: Just now</span>
+                <button id="usage-refresh-btn" onclick="refreshUsageLimits(true)" title="Refresh usage limits" class="text-stone-400 hover:text-white transition active:rotate-180 duration-300">↺</button>
               </div>
             </div>
 
@@ -4346,6 +4349,12 @@
             updateUserUI(currentUser);
           }
         }
+      } catch (e) {}
+
+      // 1.1 Render cached plan usage limits
+      try {
+        if (typeof loadLocalUsageLimits === 'function') loadLocalUsageLimits();
+        if (typeof renderUsageLimitsUI === 'function') renderUsageLimitsUI();
       } catch (e) {}
 
       // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
@@ -8063,6 +8072,13 @@
           linkTgEl.textContent = 'Не привязан';
         }
       }
+
+      if (user && user.tier) {
+        usageLimitsState.tier = user.tier;
+      }
+      if (typeof refreshUsageLimits === 'function') {
+        refreshUsageLimits(false);
+      }
     }
 
     async function handleGoogleDirectPrompt() {
@@ -8125,12 +8141,34 @@
     }
 
     function deductTokensUI(amount) {
+      if (!amount || isNaN(amount) || amount <= 0) return;
+
+      // 1. Header tokens counter
       const el = document.getElementById('header-user-tokens');
       if (el) {
         let cur = parseInt(el.textContent.replace(/\D/g, '')) || 1000;
         cur = Math.max(0, cur - amount);
         el.textContent = cur.toLocaleString();
       }
+
+      // 2. Profile card tokens counter
+      const pTokens = document.getElementById('profile-card-tokens');
+      if (pTokens) {
+        let pCur = parseInt(pTokens.textContent.replace(/\D/g, '')) || 0;
+        pCur = Math.max(0, pCur - amount);
+        pTokens.textContent = pCur.toLocaleString();
+      }
+
+      // 3. Dropdown user tokens
+      const dTokens = document.getElementById('dropdown-user-tokens');
+      if (dTokens) {
+        let dCur = parseInt(dTokens.textContent.replace(/\D/g, '')) || 0;
+        dCur = Math.max(0, dCur - amount);
+        dTokens.textContent = dCur.toLocaleString();
+      }
+
+      // 4. Record expenditure in plan usage limits
+      recordUsageLimitExpenditure(amount);
     }
 
     async function handleLogout() {
@@ -9620,6 +9658,10 @@
           }
         }
       });
+      if (subtab === 'profile') {
+        renderUsageLimitsUI();
+        refreshUsageLimits(false);
+      }
       // Scroll to top of dashboard content
       const dash = document.getElementById('view-user-dashboard');
       if (dash) dash.scrollIntoView({ behavior: 'smooth' });
@@ -9643,9 +9685,162 @@
       }
     }
 
-    function refreshUsageLimits() {
-      alert('Usage limits updated. You are currently in Free tier.');
+    // =========================================================================
+    // PLAN USAGE LIMITS (PROFILE CARD 3)
+    // =========================================================================
+    const USAGE_TIER_LIMITS = {
+      'Free': { session: 150, weekly: 600 },
+      'Basic': { session: 500, weekly: 2000 },
+      'Pro': { session: 1200, weekly: 5000 },
+      'VIP': { session: 3000, weekly: 12000 },
+      'Elite': { session: 5000, weekly: 20000 },
+      'Ultra Elite': { session: 8000, weekly: 30000 }
+    };
+
+    let usageLimitsState = {
+      tier: 'Free',
+      sessionSpent: 0,
+      weeklySpent: 0,
+      lastUpdated: Date.now()
+    };
+
+    function loadLocalUsageLimits() {
+      try {
+        const saved = localStorage.getItem('zyko_usage_limits');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === 'object') {
+            usageLimitsState = { ...usageLimitsState, ...parsed };
+          }
+        }
+      } catch (e) {}
     }
+
+    function saveLocalUsageLimits() {
+      try {
+        localStorage.setItem('zyko_usage_limits', JSON.stringify(usageLimitsState));
+      } catch (e) {}
+    }
+
+    function recordUsageLimitExpenditure(amount) {
+      if (!amount || isNaN(amount)) return;
+      loadLocalUsageLimits();
+      usageLimitsState.sessionSpent = (usageLimitsState.sessionSpent || 0) + Number(amount);
+      usageLimitsState.weeklySpent = (usageLimitsState.weeklySpent || 0) + Number(amount);
+      usageLimitsState.lastUpdated = Date.now();
+      saveLocalUsageLimits();
+      renderUsageLimitsUI();
+    }
+
+    function updateUsageLastUpdatedText() {
+      const el = document.getElementById('usage-last-updated');
+      if (!el) return;
+      const last = usageLimitsState.lastUpdated || Date.now();
+      const sec = Math.max(0, Math.floor((Date.now() - last) / 1000));
+      if (sec <= 4) {
+        el.textContent = 'Last updated: Just now';
+      } else if (sec < 60) {
+        el.textContent = `Last updated: ${sec}s ago`;
+      } else {
+        const mins = Math.floor(sec / 60);
+        el.textContent = `Last updated: ${mins}m ago`;
+      }
+    }
+
+    function renderUsageLimitsUI() {
+      loadLocalUsageLimits();
+      
+      const pTierEl = document.getElementById('profile-card-tier');
+      let currentTier = (pTierEl && pTierEl.textContent.trim()) || usageLimitsState.tier || 'Free';
+      if (!USAGE_TIER_LIMITS[currentTier]) {
+        currentTier = 'Free';
+      }
+      usageLimitsState.tier = currentTier;
+
+      const limits = USAGE_TIER_LIMITS[currentTier] || USAGE_TIER_LIMITS['Free'];
+      const sessionLimit = limits.session;
+      const weeklyLimit = limits.weekly;
+      const sessionSpent = Math.max(0, usageLimitsState.sessionSpent || 0);
+      const weeklySpent = Math.max(0, usageLimitsState.weeklySpent || 0);
+
+      const sessionPct = Math.min(100, Math.round((sessionSpent / sessionLimit) * 100));
+      const weeklyPct = Math.min(100, Math.round((weeklySpent / weeklyLimit) * 100));
+
+      const tierBadge = document.getElementById('usage-limits-tier-badge');
+      if (tierBadge) {
+        tierBadge.textContent = `${currentTier} Plan`;
+      }
+
+      const sPctEl = document.getElementById('usage-session-pct');
+      if (sPctEl) sPctEl.textContent = `${sessionPct}% used`;
+
+      const sStatusEl = document.getElementById('usage-session-status');
+      if (sStatusEl) {
+        if (sessionSpent === 0) {
+          sStatusEl.textContent = 'Not started';
+        } else {
+          sStatusEl.textContent = `${sessionSpent} / ${sessionLimit.toLocaleString()} ⚡ used`;
+        }
+      }
+
+      const sBarEl = document.getElementById('usage-session-bar');
+      if (sBarEl) {
+        sBarEl.style.width = `${sessionPct}%`;
+      }
+
+      const wPctEl = document.getElementById('usage-weekly-pct');
+      if (wPctEl) wPctEl.textContent = `${weeklyPct}% used`;
+
+      const wStatusEl = document.getElementById('usage-weekly-status');
+      if (wStatusEl) {
+        if (weeklySpent === 0) {
+          wStatusEl.textContent = 'Not started';
+        } else {
+          wStatusEl.textContent = `${weeklySpent} / ${weeklyLimit.toLocaleString()} ⚡ used`;
+        }
+      }
+
+      const wBarEl = document.getElementById('usage-weekly-bar');
+      if (wBarEl) {
+        wBarEl.style.width = `${weeklyPct}%`;
+      }
+
+      updateUsageLastUpdatedText();
+    }
+
+    async function refreshUsageLimits(isManual = false) {
+      const btn = document.getElementById('usage-refresh-btn');
+      if (btn) btn.classList.add('animate-spin');
+
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/user/usage-limits', { headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.stats) {
+            usageLimitsState.tier = data.stats.tier || usageLimitsState.tier || 'Free';
+            usageLimitsState.sessionSpent = Math.max(usageLimitsState.sessionSpent || 0, data.stats.session_spent || 0);
+            usageLimitsState.weeklySpent = Math.max(usageLimitsState.weeklySpent || 0, data.stats.weekly_spent || 0);
+            usageLimitsState.lastUpdated = Date.now();
+            saveLocalUsageLimits();
+          }
+        }
+      } catch (err) {
+        console.warn('Could not sync usage limits from server:', err);
+      } finally {
+        if (btn) {
+          setTimeout(() => btn.classList.remove('animate-spin'), 400);
+        }
+        usageLimitsState.lastUpdated = Date.now();
+        saveLocalUsageLimits();
+        renderUsageLimitsUI();
+      }
+    }
+
+    setInterval(updateUsageLastUpdatedText, 3000);
 
     // =========================================================================
     // 1. BURGER DROPDOWN & LANGUAGE FLYOUT (SCREENSHOT 5)

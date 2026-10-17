@@ -487,3 +487,54 @@ async def update_system_setting(key: str, value: str):
         await db.execute("INSERT OR REPLACE INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)", (key, value))
         await db.commit()
 
+TIER_LIMITS = {
+    "Free": {"session": 150, "weekly": 600},
+    "Basic": {"session": 500, "weekly": 2000},
+    "Pro": {"session": 1200, "weekly": 5000},
+    "VIP": {"session": 3000, "weekly": 12000},
+    "Elite": {"session": 5000, "weekly": 20000},
+    "Ultra Elite": {"session": 8000, "weekly": 30000},
+}
+
+async def get_user_usage_stats(user_id: int) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        tier = "Free"
+        async with db.execute("SELECT tier FROM users WHERE id = ?", (user_id,)) as cursor:
+            user_row = await cursor.fetchone()
+            if user_row and user_row["tier"]:
+                tier = user_row["tier"]
+        
+        limits = TIER_LIMITS.get(tier, TIER_LIMITS["Free"])
+        session_limit = limits["session"]
+        weekly_limit = limits["weekly"]
+
+        # 24h usage for current session
+        async with db.execute(
+            "SELECT COALESCE(SUM(tokens_cost), 0) as session_spent FROM generations WHERE user_id = ? AND created_at >= datetime('now', '-24 hours')",
+            (user_id,)
+        ) as cursor:
+            row_session = await cursor.fetchone()
+            session_spent = int(row_session["session_spent"]) if row_session else 0
+
+        # Weekly usage (last 7 days)
+        async with db.execute(
+            "SELECT COALESCE(SUM(tokens_cost), 0) as weekly_spent FROM generations WHERE user_id = ? AND created_at >= datetime('now', '-7 days')",
+            (user_id,)
+        ) as cursor:
+            row_weekly = await cursor.fetchone()
+            weekly_spent = int(row_weekly["weekly_spent"]) if row_weekly else 0
+
+        session_pct = min(100, round((session_spent / session_limit) * 100)) if session_limit > 0 else 0
+        weekly_pct = min(100, round((weekly_spent / weekly_limit) * 100)) if weekly_limit > 0 else 0
+
+        return {
+            "tier": tier,
+            "session_spent": session_spent,
+            "session_limit": session_limit,
+            "session_pct": session_pct,
+            "weekly_spent": weekly_spent,
+            "weekly_limit": weekly_limit,
+            "weekly_pct": weekly_pct
+        }
+
