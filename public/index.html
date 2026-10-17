@@ -1490,11 +1490,11 @@
               <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">Elevenlabs</h2>
             </div>
             <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
-              Eleven v4 creates natural, emotionally expressive speech with precise control through tags. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
+              Eleven v4 creates natural, emotionally expressive speech with authentic human cadence and realistic tones. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
             <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-3 sm:mb-4">
               <span class="text-stone-300">Key capabilities:</span>
-              <span class="text-stone-400">emotion tags</span> •
+              <span class="text-stone-400">ultra-realistic speech</span> •
               <span class="text-stone-400">accent-free voice</span> •
               <span class="text-stone-400">long-form content</span>
             </div>
@@ -1520,7 +1520,7 @@
             <div class="bg-[#141719] border border-white/10 focus-within:border-amber-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1.5 text-stone-400">
-                  <span>🔒</span> <span id="audio-input-hint-text" class="truncate">Type text with tags like [laughing] for more expressive speech...</span>
+                  <span>🔒</span> <span id="audio-input-hint-text" class="truncate">Type text to synthesize speech with the selected voice...</span>
                 </span>
                 <span id="audio-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 10000</span>
               </div>
@@ -1533,7 +1533,7 @@
               </div>
 
               <!-- Textarea for script / prompt -->
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text to synthesize speech with the selected voice..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
 
               <!-- Hidden file input for paperclip -->
               <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
@@ -1545,11 +1545,16 @@
                   <button type="button" onclick="triggerStudioAttachment('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach Audio Sample">
                     📎
                   </button>
-                  <button type="button" onclick="insertAudioTag('[laughing]')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">😂 [laughing]</button>
-                  <button type="button" onclick="insertAudioTag('[whispering]')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">🤫 [whispering]</button>
-                  <button type="button" onclick="insertAudioTag('[excited]')" class="hidden sm:inline-block bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">🔥 [excited]</button>
+                  <button type="button" onclick="openVoiceCatalogModal()" class="bg-white/5 hover:bg-white/10 border border-white/15 hover:border-amber-400/50 rounded-lg px-2.5 py-1 text-[11px] text-stone-300 font-semibold flex items-center gap-1.5 transition shrink-0" title="Choose Voice">
+                    <span id="audio-bar-voice-avatar">🎙️</span>
+                    <span id="audio-bar-voice-name">Rachel</span>
+                    <span class="text-[9px] text-stone-500">▾</span>
+                  </button>
                   <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Voice Settings & Models">
                     ⬡
+                  </button>
+                  <button type="button" onclick="document.getElementById('audio-text-input').value = ''; document.getElementById('audio-char-count').textContent = '0 / 10000';" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-400 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Clear text">
+                    ✕
                   </button>
                 </div>
 
@@ -6860,11 +6865,11 @@
       const tagsHelp = document.getElementById('audio-tags-help');
 
       if (mode === 'tts') {
-        if (input) input.placeholder = 'Type text with tags like [laughing] for more expressive speech...';
-        if (hint) hint.textContent = 'Type text with tags like [laughing] for more expressive speech...';
+        if (input) input.placeholder = 'Type text to synthesize speech with the selected voice...';
+        if (hint) hint.textContent = 'Type text to synthesize speech with the selected voice...';
         if (costBadge) costBadge.textContent = '10';
         if (sendBtn) { sendBtn.title = 'Generate Speech'; sendBtn.innerHTML = '➤'; }
-        if (tagsHelp) tagsHelp.classList.remove('hidden');
+        if (tagsHelp) tagsHelp.classList.add('hidden');
       } else if (mode === 'clone') {
         if (input) input.placeholder = 'Enter voice clone name and upload clean audio sample (30s - 2min)...';
         if (hint) hint.textContent = 'Instant voice cloning from clean speech audio...';
@@ -7144,6 +7149,14 @@
       }
       if (btnLabel) {
         btnLabel.textContent = selectedAudioVoice.name;
+      }
+      const barName = document.getElementById('audio-bar-voice-name');
+      const barAvatar = document.getElementById('audio-bar-voice-avatar');
+      if (barName) {
+        barName.textContent = selectedAudioVoice.name;
+      }
+      if (barAvatar) {
+        barAvatar.textContent = selectedAudioVoice.avatar || '🎙️';
       }
     }
 
