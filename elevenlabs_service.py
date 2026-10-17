@@ -348,33 +348,50 @@ async def fetch_prompt_matched_image(query: str) -> bytes:
     if neural generation APIs are temporarily rate-limited or busy.
     Uses Wikimedia Commons high-resolution image search.
     """
+    # 1. Clean query and extract core subject words
     first_part = query.split(',')[0].strip()
     clean_q = first_part.replace("photorealistic", "").replace("8k resolution", "").replace("35mm photograph", "").replace("award winning composition", "").strip(" ,")
     
+    stop_words = {
+        "luxury", "super", "suv", "photo", "of", "the", "last", "airbender",
+        "cinematic", "4k", "8k", "award", "winning", "composition", "car", "modern",
+        "parked", "in", "city", "neon", "render", "style", "wallpaper", "portrait"
+    }
+    core_words = [w for w in clean_q.replace(",", " ").split() if w.lower() not in stop_words]
+    core_q = " ".join(core_words[:3]).strip()
+
+    search_attempts = []
+    if core_q and core_q != clean_q:
+        search_attempts.append(core_q)
+    if clean_q:
+        search_attempts.append(clean_q)
+
     headers = {
         "User-Agent": "ZykoAiBot/2.0 (contact@zyko.ai; high-resolution image retriever)"
     }
-    try:
-        url = f"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch={urllib.parse.quote(clean_q)}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1024&format=json"
-        async with aiohttp.ClientSession(headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as session:
-            async with session.get(url) as r:
-                if r.status == 200:
-                    data = await r.json(content_type=None)
-                    pages = data.get("query", {}).get("pages", {})
-                    for page in pages.values():
-                        for info in page.get("imageinfo", []):
-                            img_target = info.get("thumburl") or info.get("url")
-                            if img_target and img_target.startswith("http"):
-                                try:
-                                    async with session.get(img_target, timeout=aiohttp.ClientTimeout(total=8)) as img_r:
-                                        if img_r.status == 200:
-                                            b = await img_r.read()
-                                            if len(b) > 5000:
-                                                return b
-                                except Exception:
-                                    continue
-    except Exception as e:
-        logger.warning("Wikimedia exact match search error: %s", e)
+    
+    for search_term in search_attempts:
+        try:
+            url = f"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch={urllib.parse.quote(search_term)}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1024&format=json"
+            async with aiohttp.ClientSession(headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as session:
+                async with session.get(url) as r:
+                    if r.status == 200:
+                        data = await r.json(content_type=None)
+                        pages = data.get("query", {}).get("pages", {})
+                        for page in pages.values():
+                            for info in page.get("imageinfo", []):
+                                img_target = info.get("thumburl") or info.get("url")
+                                if img_target and img_target.startswith("http"):
+                                    try:
+                                        async with session.get(img_target, timeout=aiohttp.ClientTimeout(total=8)) as img_r:
+                                            if img_r.status == 200:
+                                                b = await img_r.read()
+                                                if len(b) > 5000:
+                                                    return b
+                                    except Exception:
+                                        continue
+        except Exception as e:
+            logger.warning("Wikimedia exact match search error for '%s': %s", search_term, e)
     return b""
 
 # --- 5. AI Image Generation (FLUX.1 Ultra, Midjourney styles) ---
