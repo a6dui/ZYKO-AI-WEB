@@ -433,13 +433,28 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
     logger.info("Image generation: '%s' -> '%s' (model: %s)", prompt, en_prompt, model)
 
     art_modifier = ""
-    if "seedream" in model or "banana" in model:
+    m_low = model.lower()
+    if "banana" in m_low:
+        art_modifier = ", photorealistic 8k, award winning composition, 35mm lens, studio lighting, incredible consistency, masterpiece"
+    elif "seedream" in m_low:
         art_modifier = ", photorealistic 8k, award winning composition, 35mm lens, cinematic studio lighting, highly detailed textures"
-    elif model == "midjourney":
+    elif "recraft" in m_low:
+        art_modifier = ", clean graphic design, vector aesthetic, award-winning illustration composition, 8k crisp details"
+    elif "krea" in m_low:
+        art_modifier = ", highly aesthetic, atmospheric creative lighting, art station trending, 8k"
+    elif "flux" in m_low:
+        art_modifier = ", cinematic film still, photorealistic 8k, spatial accuracy, natural lighting"
+    elif "gpt" in m_low:
+        art_modifier = ", high prompt adherence, clear composition, highly detailed render"
+    elif "runway" in m_low or "gen_4" in m_low:
+        art_modifier = ", cinematic film lighting, 35mm camera, high visual fidelity, photorealistic"
+    elif "kling" in m_low:
+        art_modifier = ", cinematic visual consistency, realistic lighting, fine textures, 4k"
+    elif m_low == "midjourney":
         art_modifier = ", cinematic film still, 35mm photograph, deep shadows, atmospheric, 8k, photorealistic"
-    elif model == "anime":
+    elif m_low == "anime":
         art_modifier = ", makoto shinkai anime style, beautiful vibrant colors, masterwork, 4k"
-    elif model == "3d_pixar":
+    elif m_low == "3d_pixar":
         art_modifier = ", cute 3D character design, disney pixar render, soft volumetric lighting, octane 8k"
     else:
         art_modifier = ", ultra sharp focus, 8k resolution, masterwork photograph, high dynamic range"
@@ -530,6 +545,15 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
         "flux_3": "https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4",
         "flux_3_edit": "/static/media/elevenlabs/el_cinematic_1080.mp4",
         "aleph_2": "/static/media/elevenlabs/el_spaceship.mp4",
+        "wan_2_6": "https://cdn.openai.com/sora/videos/ships-in-coffee.mp4",
+        "wan_2_5": "https://cdn.openai.com/sora/videos/tokyo-walk.mp4",
+        "kling_2_6_pro": "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
+        "kling_o1": "https://cdn.openai.com/sora/videos/big-sur.mp4",
+        "kling_o1_edit": "https://cdn.openai.com/sora/videos/train-window.mp4",
+        "veo_3_1": "/static/media/elevenlabs/el_cinematic_1080.mp4",
+        "topaz_video_upscale": "/static/media/elevenlabs/el_cinematic_1080.mp4",
+        "ruby": "/static/media/elevenlabs/el_spaceship.mp4",
+        "video_background_removal": "/static/media/elevenlabs/el_explosion.mp4",
         # Provider-based fallbacks
         "seedance": "/static/media/elevenlabs/el_cinematic_1080.mp4",
         "kling": "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
@@ -538,7 +562,7 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
         "gemini": "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
         "flux": "https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4",
         "ltx": "https://cdn.openai.com/sora/videos/robot-video-game.mp4",
-        "veo": "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
+        "veo": "/static/media/elevenlabs/el_cinematic_1080.mp4",
         "wan": "https://cdn.openai.com/sora/videos/ships-in-coffee.mp4"
     }
     

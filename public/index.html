@@ -1142,14 +1142,22 @@
         <!-- ================= VIEW 4: IMAGE STUDIO (SCREENSHOT 3 & 4) ================= -->
         <div id="view-image" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
-            <!-- Banana / Flux Icon -->
-            <div id="image-model-icon" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
-              🍌
+            <!-- Model Icon (Opens ElevenLabs Image Model Modal) -->
+            <div id="image-model-icon" onclick="openImageModelsModal()" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 hover:border-amber-400 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition" title="Change Image Model">
+              <svg class="w-7 h-7 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
             </div>
-            <h2 id="image-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Nano Banana</h2>
+            <div class="flex items-center justify-center gap-2 mb-2">
+              <h2 id="image-model-title" class="text-xl sm:text-2xl font-bold text-white">Nano Banana Pro</h2>
+              <span id="image-model-badge" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🔥 Top Studio</span>
+            </div>
             <p id="image-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
-              Nano Banana 2 is suited for tasks with the highest quality requirements. It works precisely with references, preserves style, characters, and details more accurately.
+              Studio quality control, legible text, incredible consistency.
             </p>
+            <div class="mb-5 flex items-center justify-center gap-2">
+              <button type="button" onclick="openImageModelsModal()" class="inline-flex items-center gap-2 text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-4 py-1.5 rounded-full text-xs font-bold transition shadow active:scale-95">
+                <span>⚡ Модели ElevenLabs Image (25 моделей)</span> <span class="text-[10px]">▾</span>
+              </button>
+            </div>
             <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
               <span class="text-emerald-400">Key capabilities:</span>
               <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">maximum quality</span> •
@@ -1241,7 +1249,7 @@
             </p>
             <div class="mb-5 flex items-center justify-center gap-2">
               <button type="button" onclick="openVideoModelsModal()" class="inline-flex items-center gap-2 text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-4 py-1.5 rounded-full text-xs font-bold transition shadow active:scale-95">
-                <span>⚡ Модели ElevenLabs Video (19 моделей)</span> <span class="text-[10px]">▾</span>
+                <span>⚡ Модели ElevenLabs Video (28 моделей)</span> <span class="text-[10px]">▾</span>
               </button>
             </div>
 
@@ -1600,38 +1608,74 @@
                 <span class="text-stone-400 text-xs">▾</span>
               </button>
 
-                            <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-72 overflow-y-auto">
-                <button onclick="selectImageModel('seedream', 'seedream', 'Seedream', 'ByteDance Multimodal')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400">
-                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
-                  <span>Seedream</span>
+              <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
+                <button onclick="openImageModelsModal(); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 text-xs transition mb-1">
+                  <span class="flex items-center gap-1.5">⚡ Все 25 моделей ElevenLabs...</span>
+                  <span class="text-[10px]">Каталог ↗</span>
                 </button>
-                <button onclick="selectImageModel('banana', 'banana', 'Nano Banana', 'Banana 2.1')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <span class="text-base">🍌</span>
-                  <span>Nano Banana</span>
+                <div class="px-2 py-1 text-[10px] font-bold text-stone-500 uppercase tracking-wider">ElevenLabs Image Models</div>
+                <button onclick="selectElevenLabsImageModel('nano_banana_pro'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
+                    <span>Nano Banana Pro</span>
+                  </span>
+                  <span class="text-[10px] text-amber-400 font-mono">24⚡</span>
                 </button>
-                <button onclick="selectImageModel('flux', 'flux', 'Flux', 'FLUX.1 Pro Ultra')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>
-                  <span>Flux</span>
+                <button onclick="selectElevenLabsImageModel('seedream_5_pro'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
+                    <span>Seedream 5 Pro</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">20⚡</span>
                 </button>
-                <button onclick="selectImageModel('chatgpt', 'chatgpt', 'GPT Image', 'DALL-E 3.5')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08z"/></svg>
-                  <span>GPT Image</span>
+                <button onclick="selectElevenLabsImageModel('flux_3_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>
+                    <span>FLUX 3 Image</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">14⚡</span>
                 </button>
-                <button onclick="selectImageModel('midjourney', 'midjourney', 'Midjourney', 'v6.1 Artistic')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M11 3v13.5l-6-3.5L11 3zm2 0l6 10-6 3.5V3zm-9 15h16l-3 3H7l-3-3z"/></svg>
-                  <span>Midjourney</span>
+                <button onclick="selectElevenLabsImageModel('gpt_image_2_5_sunburst'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08z"/></svg>
+                    <span>GPT Image 2.5 Sunburst</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">11⚡</span>
                 </button>
-                <button onclick="selectImageModel('runway', 'runway', 'Runway Frames', 'Runway Gen-3 Alpha')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
-                  <span>Runway Frames</span>
+                <button onclick="selectElevenLabsImageModel('recraft_v4'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
+                    <span>Recraft V4</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">12⚡</span>
                 </button>
-                <button onclick="selectImageModel('grok', 'grok', 'Grok Imagine', 'Grok 2.0 Vision')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm3.7 13.3-7.4-7.4a7.94 7.94 0 0 1 7.4 7.4zm-7.4-2.6 7.4 7.4a7.94 7.94 0 0 1-7.4-7.4z"/></svg>
-                  <span>Grok Imagine</span>
+                <button onclick="selectElevenLabsImageModel('krea_2_large'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4v16M6 14c2-2 5-2 6 0s-1 4-3 4M6 10c2-2 5-2 6 0s-1 4-3 4"/></svg>
+                    <span>Krea 2 Large</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">15⚡</span>
                 </button>
-                <button onclick="selectImageModel('luma', 'luma', 'Luma', 'Luma Photon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
-                  <svg class="w-4 h-4 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>
-                  <span>Luma</span>
+                <button onclick="selectElevenLabsImageModel('gen_4_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
+                    <span>Gen-4 Image</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">12⚡</span>
+                </button>
+                <button onclick="selectElevenLabsImageModel('kling_o1_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>
+                    <span>Kling O1 Image</span>
+                  </span>
+                  <span class="text-[10px] text-emerald-400 font-mono">10⚡</span>
+                </button>
+                <button onclick="selectElevenLabsImageModel('recraft_4_1_flash'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
+                    <span>Recraft 4.1 Flash</span>
+                  </span>
+                  <span class="text-[10px] text-amber-400 font-mono">5⚡</span>
                 </button>
               </div>
             </div>
@@ -1722,7 +1766,7 @@
 
               <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
                 <button onclick="openVideoModelsModal(); toggleModelDropdown('video');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-left text-xs font-bold text-emerald-300 transition mb-1 shadow">
-                  <span class="flex items-center gap-1.5"><span>⚡</span> <span>Все 19 моделей ElevenLabs</span></span>
+                  <span class="flex items-center gap-1.5"><span>⚡</span> <span>Все 28 моделей ElevenLabs</span></span>
                   <span class="text-[10px]">➔</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-300">
@@ -1753,6 +1797,10 @@
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 3.0 Pro</span></span>
                   <span class="text-[10px] text-stone-400">22 ⚡</span>
                 </button>
+                <button onclick="selectElevenLabsVideoModel('kling_2_6_pro')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 2.6 Pro</span></span>
+                  <span class="text-[10px] text-stone-400">20 ⚡</span>
+                </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O3</span></span>
                   <span class="text-[10px] text-stone-400">22 ⚡</span>
@@ -1761,9 +1809,29 @@
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O3 Edit</span></span>
                   <span class="text-[10px] text-stone-400">18 ⚡</span>
                 </button>
+                <button onclick="selectElevenLabsVideoModel('kling_o1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O1</span></span>
+                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('kling_o1_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O1 Edit</span></span>
+                  <span class="text-[10px] text-stone-400">18 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('veo_3_1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><span class="font-black text-white text-xs w-4 text-center leading-none">G</span> <span>Veo 3.1</span></span>
+                  <span class="text-[10px] text-stone-400">26 ⚡</span>
+                </button>
                 <button onclick="selectElevenLabsVideoModel('gen_4_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg> <span>Gen-4.5</span></span>
                   <span class="text-[10px] text-stone-400">24 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('wan_2_6')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.6</span></span>
+                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('wan_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.5 Video</span></span>
+                  <span class="text-[10px] text-stone-400">16 ⚡</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('ltx_video')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-teal-400 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg> <span>LTX Audio-to-Video</span></span>
@@ -1801,6 +1869,19 @@
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5h-2v-5h2zm0-7h-2V7h2z"/></svg> <span>Aleph 2.0</span></span>
                   <span class="text-[10px] text-stone-400">18 ⚡</span>
                 </button>
+                <button onclick="selectElevenLabsVideoModel('topaz_video_upscale')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="4" y="14" width="4" height="4" rx="1"/><rect x="10" y="9" width="4" height="4" rx="1"/><rect x="16" y="4" width="4" height="4" rx="1"/></svg> <span>Topaz Video Upscale</span></span>
+                  <span class="text-[10px] text-stone-400">15 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('ruby')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 20V4h6a5 5 0 0 1 5 5c0 3-2 5-5 5H7m6 0l5 6"/></svg> <span>Ruby HDR</span></span>
+                  <span class="text-[10px] text-stone-400">16 ⚡</span>
+                </button>
+                <button onclick="selectElevenLabsVideoModel('video_background_removal')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
+                  <span class="flex items-center gap-2"><span class="font-black tracking-tighter text-white text-[10px] uppercase leading-none">VEED</span> <span>BG Removal</span></span>
+                  <span class="text-[10px] text-stone-400">10 ⚡</span>
+                </button>
+              </div>
               </div>
             </div>
 
@@ -3497,7 +3578,7 @@
           <h3 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
             <span>🎬</span> <span>ElevenLabs Video Models</span>
           </h3>
-          <p class="text-[11px] text-stone-400">Официальный каталог нейросетей генерации видео ElevenLabs</p>
+          <p class="text-[11px] text-stone-400">Официальный каталог нейросетей генерации видео ElevenLabs (28 моделей)</p>
         </div>
         <button onclick="closeVideoModelsModal()" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white flex items-center justify-center text-sm transition">✕</button>
       </div>
@@ -3511,7 +3592,7 @@
       <!-- Studio Mode Switcher Tabs (Image | Video | Lip sync) -->
       <div class="flex items-center gap-1.5 mt-3 p-1 bg-black/40 border border-white/10 rounded-xl text-xs">
         <button type="button" id="vmodal-tab-video" class="flex-1 py-1.5 rounded-lg bg-white text-black font-extrabold text-xs shadow text-center transition">Video</button>
-        <button type="button" onclick="switchTab('image'); closeVideoModelsModal();" class="flex-1 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold text-xs text-center transition">Image</button>
+        <button type="button" onclick="switchTab('image'); closeVideoModelsModal(); openImageModelsModal();" class="flex-1 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold text-xs text-center transition">Image</button>
         <button type="button" onclick="switchTab('audio'); closeVideoModelsModal();" class="flex-1 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold text-xs text-center transition">Lip sync</button>
       </div>
 
@@ -3529,6 +3610,53 @@
       <!-- Models List Container -->
       <div id="video-models-modal-list" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar max-h-[50vh] divide-y divide-white/5">
         <!-- Rendered dynamically by renderVideoModelsList() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ELEVENLABS IMAGE MODEL SELECTOR MODAL (2026 ELEVENLABS REPLICA) -->
+  <div id="image-models-modal" class="fixed inset-0 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop backdrop-blur-md" onclick="if(event.target === this) closeImageModelsModal()">
+    <div class="bg-[#121615] border border-white/15 sm:rounded-3xl rounded-t-3xl p-4 sm:p-6 max-w-xl w-full max-h-[88vh] flex flex-col shadow-2xl relative overflow-hidden" onclick="event.stopPropagation()">
+      <!-- iOS Drag handle for mobile -->
+      <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-3 sm:hidden"></div>
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div>
+          <h3 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span>🎨</span> <span>ElevenLabs Image Models</span>
+          </h3>
+          <p class="text-[11px] text-stone-400">Официальный каталог нейросетей генерации изображений ElevenLabs (25 моделей)</p>
+        </div>
+        <button onclick="closeImageModelsModal()" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white flex items-center justify-center text-sm transition">✕</button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="mt-3 relative">
+        <span class="absolute left-3.5 top-2.5 text-stone-500 text-xs">🔍</span>
+        <input type="text" id="image-model-search-input" oninput="filterImageModelsList()" placeholder="Search all models..." class="w-full bg-[#18201d] border border-white/10 focus:border-amber-500/60 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-stone-500 focus:outline-none transition">
+      </div>
+
+      <!-- Studio Mode Switcher Tabs (Image | Video | Lip sync) -->
+      <div class="flex items-center gap-1.5 mt-3 p-1 bg-black/40 border border-white/10 rounded-xl text-xs">
+        <button type="button" class="flex-1 py-1.5 rounded-lg bg-white text-black font-extrabold text-xs shadow text-center transition">Image</button>
+        <button type="button" onclick="switchTab('video'); closeImageModelsModal(); openVideoModelsModal();" class="flex-1 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold text-xs text-center transition">Video</button>
+        <button type="button" onclick="switchTab('audio'); closeImageModelsModal();" class="flex-1 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold text-xs text-center transition">Lip sync</button>
+      </div>
+
+      <!-- Filter Tags Ribbon (Realistic, Upscaling, Editing, Fast, Low Cost) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2.5 text-[11px]">
+        <button type="button" onclick="filterImageModelsByTag('all', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 shrink-0 transition">All</button>
+        <button type="button" onclick="filterImageModelsByTag('Realistic', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition">Realistic</button>
+        <button type="button" onclick="filterImageModelsByTag('Upscaling', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition">Upscaling</button>
+        <button type="button" onclick="filterImageModelsByTag('Editing', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition">Editing</button>
+        <button type="button" onclick="filterImageModelsByTag('Fast', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition">Fast</button>
+        <button type="button" onclick="filterImageModelsByTag('Low Cost', this)" class="imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition">Low Cost</button>
+      </div>
+
+      <!-- Models List Container -->
+      <div id="image-models-modal-list" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar max-h-[50vh] divide-y divide-white/5">
+        <!-- Rendered dynamically by renderImageModelsList() -->
       </div>
     </div>
   </div>
@@ -4412,8 +4540,10 @@
       try {
         renderVideoModelsList('all', '');
         selectElevenLabsVideoModel('seedance_2_5');
+        renderImageModelsList('all', '');
+        selectElevenLabsImageModel('nano_banana_pro');
       } catch (e) {
-        console.warn('Video models init error:', e);
+        console.warn('Models init error:', e);
       }
 
       // Apply saved language universally across all freshly rendered components
@@ -4449,12 +4579,19 @@
       luma_vid: '<svg class="w-5 h-5 text-stone-300 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a7 7 0 1 1-7.54-7.54c-.44-.06-.9-.1-1.36-.1z"/></svg>',
       kling: '<svg class="w-5 h-5 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>',
       veo: '<svg class="w-5 h-5 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>',
-      wan: '<svg class="w-5 h-5 text-[#06b6d4] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15c3-3 6-3 9 0s6 3 9 0M3 9c3-3 6-3 9 0s6 3 9 0"/></svg>',
+      veo_g: '<span class="font-black text-white text-base leading-none">G</span>',
+      wan: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg>',
+      topaz: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><rect x="4" y="14" width="4" height="4" rx="1"/><rect x="10" y="9" width="4" height="4" rx="1"/><rect x="16" y="4" width="4" height="4" rx="1"/></svg>',
+      ruby: '<svg class="w-5 h-5 text-white fill-none stroke-current" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 20V4h6a5 5 0 0 1 5 5c0 3-2 5-5 5H7m6 0l5 6"/></svg>',
+      veed: '<span class="font-black tracking-tighter text-white text-[10px] uppercase leading-none">VEED</span>',
       minimax: '<svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
       ltx: '<svg class="w-5 h-5 text-teal-400 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>',
       gemini: '<svg class="w-5 h-5 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>',
       aleph: '<svg class="w-5 h-5 text-indigo-400 fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5h-2v-5h2zm0-7h-2V7h2z"/></svg>',
-      heygen: '<svg class="w-5 h-5 text-[#ec4899] fill-current" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2z"/></svg>'
+      heygen: '<svg class="w-5 h-5 text-[#ec4899] fill-current" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2z"/></svg>',
+      recraft: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>',
+      krea: '<svg class="w-5 h-5 text-white fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4v16M6 14c2-2 5-2 6 0s-1 4-3 4M6 10c2-2 5-2 6 0s-1 4-3 4"/></svg>',
+      google_g: '<svg class="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>'
     };
 
     function renderIcon(key) {
@@ -4689,18 +4826,455 @@
         desc: 'Precisely edit videos with consistency and style transfer.',
         iconKey: 'aleph',
         versions: ['Aleph 2.0 Style Transfer']
+      },
+      {
+        id: 'wan_2_6',
+        name: 'Wan 2.6',
+        sub: 'Alibaba',
+        badge: '',
+        costCredits: '3,635',
+        costTokens: 22,
+        tag: 'Realistic',
+        desc: 'Cinematic, multi-shot, audio-visual sync, up to 15s.',
+        iconKey: 'wan',
+        versions: ['2.6 Cinematic', '2.6 Standard']
+      },
+      {
+        id: 'kling_2_6_pro',
+        name: 'Kling 2.6 Pro',
+        sub: 'Kuaishou',
+        badge: '',
+        costCredits: '2,545',
+        costTokens: 20,
+        tag: 'Realistic',
+        desc: 'Cinematic, fluid motion, audio-backed.',
+        iconKey: 'kling',
+        versions: ['2.6 Pro', '2.6 Motion']
+      },
+      {
+        id: 'kling_o1',
+        name: 'Kling O1',
+        sub: 'Kuaishou',
+        badge: '',
+        costCredits: '4,071',
+        costTokens: 22,
+        tag: 'Realistic',
+        desc: 'High quality motion, reference-driven.',
+        iconKey: 'kling',
+        versions: ['O1 Reference', 'O1 High']
+      },
+      {
+        id: 'kling_o1_edit',
+        name: 'Kling O1 Edit',
+        sub: 'Kuaishou',
+        badge: '',
+        costCredits: '1,236 / s',
+        costTokens: 18,
+        tag: 'Editing',
+        desc: 'Edit existing videos with image refs.',
+        iconKey: 'kling',
+        versions: ['O1 Edit']
+      },
+      {
+        id: 'veo_3_1',
+        name: 'Veo 3.1',
+        sub: 'Google DeepMind',
+        badge: '',
+        costCredits: '5,816',
+        costTokens: 26,
+        tag: 'Realistic',
+        desc: 'Realistic, prompt adherence, audio-backed, up to 4K.',
+        iconKey: 'veo_g',
+        versions: ['3.1 4K Cinema', '3.1 HD']
+      },
+      {
+        id: 'wan_2_5',
+        name: 'Wan 2.5 Video',
+        sub: 'Alibaba',
+        badge: 'Beta',
+        costCredits: '1,818',
+        costTokens: 16,
+        tag: 'Realistic',
+        desc: 'Cinematic motion, high prompt fidelity.',
+        iconKey: 'wan',
+        versions: ['2.5 High', '2.5 Fast']
+      },
+      {
+        id: 'topaz_video_upscale',
+        name: 'Topaz Video Upscale',
+        sub: 'Topaz Labs',
+        badge: '',
+        costCredits: '845 / s',
+        costTokens: 15,
+        tag: 'Upscaling',
+        desc: 'Enhances resolution up to 4K while preserving details.',
+        iconKey: 'topaz',
+        versions: ['Topaz 4K AI Upscale']
+      },
+      {
+        id: 'ruby',
+        name: 'Ruby',
+        sub: 'Runway',
+        badge: 'New',
+        costCredits: '1,454 / s',
+        costTokens: 16,
+        tag: 'Editing',
+        desc: 'Converts SDR video into true HDR.',
+        iconKey: 'ruby',
+        versions: ['Ruby HDR Pro']
+      },
+      {
+        id: 'video_background_removal',
+        name: 'Video Background Removal',
+        sub: 'VEED',
+        badge: '',
+        costCredits: '87 / s',
+        costTokens: 10,
+        tag: 'Editing',
+        desc: 'Separates the subject of a video from its background.',
+        iconKey: 'veed',
+        versions: ['Green Screen AI', 'Alpha Cutout']
+      }
+    ];
+
+    const ELEVENLABS_IMAGE_MODELS = [
+      {
+        id: 'nano_banana_pro',
+        name: 'Nano Banana Pro',
+        sub: 'Google',
+        badge: '🔥 Top Studio',
+        costCredits: '1,461',
+        costTokens: 24,
+        tag: 'Realistic',
+        desc: 'Studio quality control, legible text, incredible consistency.',
+        iconKey: 'google_g',
+        versions: ['Banana Pro 4K', 'Banana Pro Studio']
+      },
+      {
+        id: 'nano_banana',
+        name: 'Nano Banana',
+        sub: 'Google',
+        badge: '',
+        costCredits: '302',
+        costTokens: 12,
+        tag: 'Realistic',
+        desc: 'Quick, high-quality generation and editing.',
+        iconKey: 'google_g',
+        versions: ['Banana 1.0']
+      },
+      {
+        id: 'nano_banana_2',
+        name: 'Nano Banana 2',
+        sub: 'Google',
+        badge: '',
+        costCredits: '400',
+        costTokens: 14,
+        tag: 'Fast',
+        desc: 'World knowledge, precise text, consistent characters, fast.',
+        iconKey: 'google_g',
+        versions: ['Banana 2.0 High', 'Banana 2.0 Standard']
+      },
+      {
+        id: 'nano_banana_2_lite',
+        name: 'Nano Banana 2 Lite',
+        sub: 'Google',
+        badge: '',
+        costCredits: '200',
+        costTokens: 10,
+        tag: 'Fast',
+        desc: 'Fast generation and editing, great for rapid iteration.',
+        iconKey: 'google_g',
+        versions: ['2 Lite Fast']
+      },
+      {
+        id: 'nano_banana_2_1',
+        name: 'Nano Banana 2.1',
+        sub: 'Google',
+        badge: 'Beta',
+        costCredits: '200',
+        costTokens: 10,
+        tag: 'Realistic',
+        desc: 'Sharper composition, consistent subjects, precise instruction following.',
+        iconKey: 'google_g',
+        versions: ['2.1 Beta', '2.1 Refined']
+      },
+      {
+        id: 'seedream_5_pro',
+        name: 'Seedream 5 Pro',
+        sub: 'ByteDance',
+        badge: 'Beta • 🔥 Hot',
+        costCredits: '981',
+        costTokens: 20,
+        tag: 'Realistic',
+        desc: 'Precise editing, multilingual text, dense infographics.',
+        iconKey: 'seedream',
+        versions: ['5.0 Pro 4K', '5.0 Pro Ultra']
+      },
+      {
+        id: 'seedream_5_lite',
+        name: 'Seedream 5 Lite',
+        sub: 'ByteDance',
+        badge: '',
+        costCredits: '254',
+        costTokens: 11,
+        tag: 'Fast',
+        desc: 'Up to 3K, multi-image editing, good for product images.',
+        iconKey: 'seedream',
+        versions: ['5.0 Lite 3K']
+      },
+      {
+        id: 'seedream_4_5',
+        name: 'Seedream 4.5',
+        sub: 'ByteDance',
+        badge: '',
+        costCredits: '291',
+        costTokens: 12,
+        tag: 'Realistic',
+        desc: 'Up to 4K, multi-image edits, preserves details, dense text.',
+        iconKey: 'seedream',
+        versions: ['4.5 Pro', '4.5 Standard']
+      },
+      {
+        id: 'seedream_4',
+        name: 'Seedream 4',
+        sub: 'ByteDance',
+        badge: '',
+        costCredits: '182',
+        costTokens: 9,
+        tag: 'Realistic',
+        desc: 'Up to 4K, strong aesthetics, reference-driven editing.',
+        iconKey: 'seedream',
+        versions: ['4.0 Ultra', '4.0 Standard']
+      },
+      {
+        id: 'gpt_image_2_5_sunburst',
+        name: 'GPT Image 2.5 Sunburst',
+        sub: 'OpenAI',
+        badge: 'New • 🔥 Hot',
+        costCredits: '229',
+        costTokens: 11,
+        tag: 'Realistic',
+        desc: 'Production-ready, highly detailed images, precise editing.',
+        iconKey: 'chatgpt',
+        versions: ['2.5 Sunburst Production', '2.5 Standard']
+      },
+      {
+        id: 'gpt_image_2_5_flare',
+        name: 'GPT Image 2.5 Flare',
+        sub: 'OpenAI',
+        badge: 'New • 🔥 Hot',
+        costCredits: '229',
+        costTokens: 11,
+        tag: 'Fast',
+        desc: 'Fast, high-quality, best for everyday, high-volume generations.',
+        iconKey: 'chatgpt',
+        versions: ['2.5 Flare High-Volume', '2.5 Flare Fast']
+      },
+      {
+        id: 'gpt_image_2',
+        name: 'GPT Image 2',
+        sub: 'OpenAI',
+        badge: '',
+        costCredits: '222',
+        costTokens: 10,
+        tag: 'Realistic',
+        desc: 'Precise text rendering, multilingual, high prompt control, 4K.',
+        iconKey: 'chatgpt',
+        versions: ['2.0 4K', '2.0 Multilingual']
+      },
+      {
+        id: 'gpt_image_1_5',
+        name: 'GPT Image 1.5',
+        sub: 'OpenAI',
+        badge: '',
+        costCredits: '174',
+        costTokens: 9,
+        tag: 'Fast',
+        desc: 'Strong prompt adherence, detail preservation, fast.',
+        iconKey: 'chatgpt',
+        versions: ['1.5 Turbo', '1.5']
+      },
+      {
+        id: 'gpt_image_1',
+        name: 'GPT Image 1',
+        sub: 'OpenAI',
+        badge: '',
+        costCredits: '189',
+        costTokens: 9,
+        tag: 'Realistic',
+        desc: 'Good prompt adherence, legible text, detailed editing.',
+        iconKey: 'chatgpt',
+        versions: ['DALL-E 3', 'Standard']
+      },
+      {
+        id: 'flux_3_image',
+        name: 'FLUX 3 Image',
+        sub: 'Black Forest Labs',
+        badge: '',
+        costCredits: '349',
+        costTokens: 14,
+        tag: 'Realistic',
+        desc: 'Native 4K, precise text rendering, edits with up to 10 references.',
+        iconKey: 'flux',
+        versions: ['FLUX 3 Native 4K', 'FLUX 3 Multi-Ref']
+      },
+      {
+        id: 'flux_2_pro',
+        name: 'FLUX.2 [Pro]',
+        sub: 'Black Forest Labs',
+        badge: 'Pro',
+        costCredits: '218',
+        costTokens: 10,
+        tag: 'Realistic',
+        desc: 'Real-world lighting, spatial accuracy, character consistency.',
+        iconKey: 'flux',
+        versions: ['FLUX.2 Pro', 'FLUX.2 Max']
+      },
+      {
+        id: 'flux_1_kontext_pro',
+        name: 'FLUX.1 Kontext [Pro]',
+        sub: 'Black Forest Labs',
+        badge: 'Pro',
+        costCredits: '291',
+        costTokens: 12,
+        tag: 'Editing',
+        desc: 'Image generation and editing, scene coherence, style control.',
+        iconKey: 'flux',
+        versions: ['Kontext Pro', 'Kontext Dev']
+      },
+      {
+        id: 'recraft_v4',
+        name: 'Recraft V4',
+        sub: 'Recraft',
+        badge: 'New',
+        costCredits: '291',
+        costTokens: 12,
+        tag: 'Editing',
+        desc: 'Design-focused, optional style from your references.',
+        iconKey: 'recraft',
+        versions: ['V4 Vector & Raster', 'V4 Graphic']
+      },
+      {
+        id: 'recraft_4_1',
+        name: 'Recraft 4.1',
+        sub: 'Recraft',
+        badge: '',
+        costCredits: '291',
+        costTokens: 12,
+        tag: 'Realistic',
+        desc: 'Design-focused, strong prompt control, clean composition.',
+        iconKey: 'recraft',
+        versions: ['4.1 Studio', '4.1 Clean']
+      },
+      {
+        id: 'recraft_4_1_flash',
+        name: 'Recraft 4.1 Flash',
+        sub: 'Recraft',
+        badge: 'Beta • Low Cost',
+        costCredits: '58',
+        costTokens: 5,
+        tag: 'Low Cost',
+        desc: 'Fastest and low-cost Recraft, strong aesthetic styles.',
+        iconKey: 'recraft',
+        versions: ['4.1 Flash Ultra']
+      },
+      {
+        id: 'krea_2_large',
+        name: 'Krea 2 Large',
+        sub: 'Krea AI',
+        badge: '',
+        costCredits: '436',
+        costTokens: 15,
+        tag: 'Realistic',
+        desc: 'Aesthetic, creative control using style refs.',
+        iconKey: 'krea',
+        versions: ['2 Large 4K', '2 Large']
+      },
+      {
+        id: 'krea_2_medium',
+        name: 'Krea 2 Medium',
+        sub: 'Krea AI',
+        badge: '',
+        costCredits: '218',
+        costTokens: 10,
+        tag: 'Fast',
+        desc: 'Fast, aesthetic, supports style refs.',
+        iconKey: 'krea',
+        versions: ['2 Medium']
+      },
+      {
+        id: 'kling_o1_image',
+        name: 'Kling O1 Image',
+        sub: 'Kuaishou',
+        badge: '',
+        costCredits: '204',
+        costTokens: 10,
+        tag: 'Editing',
+        desc: 'Precise editing, strong ref control, visual consistency.',
+        iconKey: 'kling',
+        versions: ['O1 Image Ref', 'O1 High']
+      },
+      {
+        id: 'gen_4_image',
+        name: 'Gen-4 Image',
+        sub: 'Runway',
+        badge: '',
+        costCredits: '298',
+        costTokens: 12,
+        tag: 'Realistic',
+        desc: 'Stylistic visual and camera control, text rendering.',
+        iconKey: 'runway',
+        versions: ['Gen-4 High', 'Gen-4 Standard']
+      },
+      {
+        id: 'gen_4_image_turbo',
+        name: 'Gen-4 Image Turbo',
+        sub: 'Runway',
+        badge: 'Fast',
+        costCredits: '145',
+        costTokens: 8,
+        tag: 'Fast',
+        desc: 'Like Gen4-Image, fast, cost-efficient.',
+        iconKey: 'runway',
+        versions: ['Turbo']
       }
     ];
 
     const MODEL_VERSIONS = {
       image: {
-        seedream: ['5.0', '4.5', '4.0'],
+        nano_banana_pro: ['Banana Pro 4K', 'Banana Pro Studio'],
+        nano_banana: ['Banana 1.0'],
+        nano_banana_2: ['Banana 2.0 High', 'Banana 2.0 Standard'],
+        nano_banana_2_lite: ['2 Lite Fast'],
+        nano_banana_2_1: ['2.1 Beta', '2.1 Refined'],
+        seedream_5_pro: ['5.0 Pro 4K', '5.0 Pro Ultra'],
+        seedream_5_lite: ['5.0 Lite 3K'],
+        seedream_4_5: ['4.5 Pro', '4.5 Standard'],
+        seedream_4: ['4.0 Ultra', '4.0 Standard'],
+        gpt_image_2_5_sunburst: ['2.5 Sunburst Production', '2.5 Standard'],
+        gpt_image_2_5_flare: ['2.5 Flare High-Volume', '2.5 Flare Fast'],
+        gpt_image_2: ['2.0 4K', '2.0 Multilingual'],
+        gpt_image_1_5: ['1.5 Turbo', '1.5'],
+        gpt_image_1: ['DALL-E 3', 'Standard'],
+        flux_3_image: ['FLUX 3 Native 4K', 'FLUX 3 Multi-Ref'],
+        flux_2_pro: ['FLUX.2 Pro', 'FLUX.2 Max'],
+        flux_1_kontext_pro: ['Kontext Pro', 'Kontext Dev'],
+        recraft_v4: ['V4 Vector & Raster', 'V4 Graphic'],
+        recraft_4_1: ['4.1 Studio', '4.1 Clean'],
+        recraft_4_1_flash: ['4.1 Flash Ultra'],
+        krea_2_large: ['2 Large 4K', '2 Large'],
+        krea_2_medium: ['2 Medium'],
+        kling_o1_image: ['O1 Image Ref', 'O1 High'],
+        gen_4_image: ['Gen-4 High', 'Gen-4 Standard'],
+        gen_4_image_turbo: ['Turbo'],
+        // Legacy aliases
+        seedream: ['5.0 Pro', '4.5', '4.0'],
         banana: ['2.1', '2.0', '1.5'],
-        flux: ['FLUX.1 Pro Ultra', 'FLUX.1 Dev', 'FLUX.1 Schnell'],
+        flux: ['FLUX 3 Image', 'FLUX.2 Pro', 'FLUX.1 Pro Ultra'],
         chatgpt: ['DALL-E 3.5', 'DALL-E 3'],
         midjourney: ['v6.1', 'v6.0', 'v5.2'],
         grok: ['2.0 Vision', '1.5'],
-        runway: ['Gen-3 Alpha', 'Gen-2'],
+        runway: ['Gen-4 Image', 'Gen-3 Alpha'],
         luma: ['Photon 1.0', 'Flash']
       },
       video: {
@@ -4711,9 +5285,15 @@
         seedance_2_0_fast: ['2.0 Turbo'],
         seedance_2_0_mini: ['2.0 Mini'],
         kling_3_pro: ['3.0 Pro', '3.0 Master'],
+        kling_2_6_pro: ['2.6 Pro', '2.6 Motion'],
         kling_o3: ['O3 Omni', 'O3 Fast'],
         kling_o3_edit: ['O3 Edit'],
+        kling_o1: ['O1 Reference', 'O1 High'],
+        kling_o1_edit: ['O1 Edit'],
+        veo_3_1: ['3.1 4K Cinema', '3.1 HD'],
         gen_4_5: ['Gen-4.5 Ultra', 'Gen-4.5 High'],
+        wan_2_6: ['2.6 Cinematic', '2.6 Standard'],
+        wan_2_5: ['2.5 High', '2.5 Fast'],
         ltx_video: ['LTX 2.0 Audio', 'LTX 1.0'],
         minimax_h3_max: ['H3 Max 768p'],
         minimax_h3: ['H3 2K Master', 'H3 Standard'],
@@ -4723,6 +5303,9 @@
         flux_3: ['FLUX 3 Cinematic', 'FLUX 3 Pro'],
         flux_3_edit: ['FLUX 3 Inpaint & Edit'],
         aleph_2: ['Aleph 2.0 Style Transfer'],
+        topaz_video_upscale: ['Topaz 4K AI Upscale'],
+        ruby: ['Ruby HDR Pro'],
+        video_background_removal: ['Green Screen AI', 'Alpha Cutout'],
         // Backwards-compatible legacy keys
         seedance: ['2.5 Pro', '2.0 High', '1.0 Pro'],
         kling: ['3.0 Pro', 'O3 Omni', '4.0 Omni'],
@@ -4736,7 +5319,7 @@
       }
     };
 
-    let activeImageModelKey = 'seedream';
+    let activeImageModelKey = 'nano_banana_pro';
     let activeVideoModelKey = 'seedance_2_5';
 
     function toggleVersionDropdown(type) {
@@ -8620,14 +9203,24 @@
     }
 
     function selectImageModel(key, iconKey, name, sub) {
-      activeImageModelKey = key;
-      document.getElementById('active-image-icon').innerHTML = renderIcon(iconKey);
-      document.getElementById('active-image-name').textContent = name;
-      document.getElementById('active-image-sub').textContent = sub;
-      document.getElementById('dropdown-menu-image').classList.add('hidden');
-      document.getElementById('image-model-icon').innerHTML = renderIcon(iconKey);
-      document.getElementById('image-model-title').textContent = name;
-      updateVersionList('image', key);
+      const matched = ELEVENLABS_IMAGE_MODELS.find(m => m.id === key || m.id.startsWith(key) || (name && m.name.toLowerCase().includes(name.toLowerCase())));
+      if (matched) {
+        selectElevenLabsImageModel(matched.id);
+      } else {
+        activeImageModelKey = key;
+        const activeIcon = document.getElementById('active-image-icon');
+        if (activeIcon) activeIcon.innerHTML = renderIcon(iconKey);
+        const activeName = document.getElementById('active-image-name');
+        if (activeName) activeName.textContent = name;
+        const activeSub = document.getElementById('active-image-sub');
+        if (activeSub) activeSub.textContent = sub;
+        document.getElementById('dropdown-menu-image')?.classList.add('hidden');
+        const iconEl = document.getElementById('image-model-icon');
+        if (iconEl) iconEl.innerHTML = renderIcon(iconKey);
+        const titleEl = document.getElementById('image-model-title');
+        if (titleEl) titleEl.textContent = name;
+        updateVersionList('image', key);
+      }
     }
 
     let currentVideoModelTagFilter = 'all';
@@ -8787,6 +9380,147 @@
         if (vTitle) vTitle.textContent = name || key;
         updateVersionList('video', key);
       }
+    }
+
+    let currentImageModelTagFilter = 'all';
+
+    function openImageModelsModal() {
+      const modal = document.getElementById('image-models-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        renderImageModelsList(currentImageModelTagFilter, document.getElementById('image-model-search-input')?.value || '');
+      }
+    }
+
+    function closeImageModelsModal() {
+      const modal = document.getElementById('image-models-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function filterImageModelsByTag(tag, btn) {
+      currentImageModelTagFilter = tag;
+      document.querySelectorAll('.imodal-filter-btn').forEach(b => {
+        b.className = 'imodal-filter-btn px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 font-medium shrink-0 transition';
+      });
+      if (btn) {
+        btn.className = 'imodal-filter-btn px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 shrink-0 transition';
+      }
+      filterImageModelsList();
+    }
+
+    function filterImageModelsList() {
+      const query = (document.getElementById('image-model-search-input')?.value || '').toLowerCase().trim();
+      renderImageModelsList(currentImageModelTagFilter, query);
+    }
+
+    function renderImageModelsList(filterTag, searchKeyword) {
+      const container = document.getElementById('image-models-modal-list');
+      if (!container) return;
+
+      const filtered = ELEVENLABS_IMAGE_MODELS.filter(m => {
+        const matchesTag = (filterTag === 'all') || 
+          (m.tag && m.tag.toLowerCase() === filterTag.toLowerCase()) ||
+          (filterTag.toLowerCase() === 'low cost' && (m.costTokens <= 10 || (m.badge && m.badge.toLowerCase().includes('low cost')))) ||
+          (filterTag.toLowerCase() === 'upscaling' && (m.desc && m.desc.toLowerCase().includes('4k')));
+        const matchesSearch = !searchKeyword || 
+          m.name.toLowerCase().includes(searchKeyword) ||
+          (m.sub && m.sub.toLowerCase().includes(searchKeyword)) ||
+          (m.desc && m.desc.toLowerCase().includes(searchKeyword)) ||
+          (m.tag && m.tag.toLowerCase().includes(searchKeyword));
+        return matchesTag && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-stone-500 text-xs">
+            <p class="text-2xl mb-2">🔍</p>
+            <p>Модели не найдены</p>
+            <button onclick="filterImageModelsByTag('all'); const inp = document.getElementById('image-model-search-input'); if(inp) inp.value=''; filterImageModelsList();" class="mt-2 text-amber-400 underline">Показать все модели</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(m => {
+        const isSelected = activeImageModelKey === m.id;
+        const iconSvg = renderIcon(m.iconKey);
+        return `
+          <div onclick="selectElevenLabsImageModel('${m.id}')" class="flex items-start gap-3 p-3 rounded-2xl cursor-pointer transition ${isSelected ? 'bg-amber-500/10 border border-amber-500/40' : 'hover:bg-white/5 border border-transparent'}">
+            <div class="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0 mt-0.5">
+              ${iconSvg}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
+                ${m.badge ? `<span class="bg-black/60 text-amber-400 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
+                <span class="text-[10px] font-mono font-semibold text-amber-400/90 ml-auto flex items-center gap-1">
+                  ⚡ ${m.costTokens} <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                </span>
+              </div>
+              <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
+                <span class="bg-white/5 px-1.5 py-0.5 rounded text-stone-300 font-medium">${m.tag}</span>
+                <span>•</span>
+                <span class="truncate">${m.sub || 'ElevenLabs Studio'}</span>
+              </div>
+              <p class="text-[11px] text-stone-400 mt-1 line-clamp-2 leading-relaxed">${m.desc}</p>
+            </div>
+            <div class="shrink-0 self-center pl-1">
+              <div class="w-5 h-5 rounded-full border ${isSelected ? 'border-amber-400 bg-amber-500 flex items-center justify-center text-black font-bold text-[10px]' : 'border-white/20'} transition">
+                ${isSelected ? '✓' : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectElevenLabsImageModel(id) {
+      const model = ELEVENLABS_IMAGE_MODELS.find(m => m.id === id);
+      if (!model) return;
+      activeImageModelKey = model.id;
+
+      // Update Center Image Studio Header
+      const titleEl = document.getElementById('image-model-title');
+      if (titleEl) titleEl.textContent = model.name;
+
+      const descEl = document.getElementById('image-model-desc');
+      if (descEl) descEl.textContent = model.desc;
+
+      const badgeEl = document.getElementById('image-model-badge');
+      if (badgeEl) {
+        if (model.badge) {
+          badgeEl.textContent = model.badge;
+          badgeEl.classList.remove('hidden');
+        } else {
+          badgeEl.classList.add('hidden');
+        }
+      }
+
+      const iconEl = document.getElementById('image-model-icon');
+      if (iconEl) iconEl.innerHTML = renderIcon(model.iconKey);
+
+      // Update Right Sidebar Control Panel
+      const activeIcon = document.getElementById('active-image-icon');
+      if (activeIcon) activeIcon.innerHTML = renderIcon(model.iconKey);
+
+      const activeName = document.getElementById('active-image-name');
+      if (activeName) activeName.textContent = model.name;
+
+      const activeSub = document.getElementById('active-image-sub');
+      if (activeSub) activeSub.textContent = model.sub || model.tag;
+
+      // Update Token Cost Pill
+      const tokenCostEl = document.getElementById('image-token-cost');
+      if (tokenCostEl) tokenCostEl.textContent = model.costTokens;
+
+      // Update Version List
+      if (model.versions && model.versions.length > 0) {
+        MODEL_VERSIONS.image[model.id] = model.versions;
+      }
+      updateVersionList('image', model.id);
+
+      closeImageModelsModal();
+      document.getElementById('dropdown-menu-image')?.classList.add('hidden');
     }
 
     function selectToolkitModel(key, icon, name) {
