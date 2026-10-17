@@ -362,6 +362,39 @@
       opacity: 0 !important;
       pointer-events: none !important;
     }
+
+    /* Responsive Notification Drawer Positioning & Luxury Styling */
+    #notification-drawer {
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 25px -5px rgba(16, 185, 129, 0.12);
+    }
+    @media (max-width: 639px) {
+      #notification-bell-container {
+        position: static !important;
+      }
+      #notification-drawer {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-width: none !important;
+        margin-top: 0 !important;
+      }
+    }
+    @media (min-width: 640px) {
+      #notification-bell-container {
+        position: relative !important;
+      }
+      #notification-drawer {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 24rem !important; /* 384px */
+        max-width: calc(100vw - 32px) !important;
+        margin-top: 0 !important;
+      }
+    }
   </style>
 </head>
 <body class="selection:bg-emerald-400 selection:text-black">
@@ -571,58 +604,80 @@
       <div class="flex items-center gap-2.5" id="header-actions">
 
         <!-- Notifications Bell & Popover -->
-        <div class="relative" id="notification-bell-container">
-          <button onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative" title="Notifications">
+        <div class="static sm:relative" id="notification-bell-container">
+          <button onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative flex items-center justify-center" title="Notifications" aria-label="Notifications">
             <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-            <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0c1110] animate-pulse"></span>
           </button>
 
           <!-- Notification Popover -->
-          <div id="notification-drawer" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#121615] border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50 backdrop-blur-xl">
+          <div id="notification-drawer" class="hidden absolute left-3 right-3 sm:left-auto sm:right-0 top-[calc(100%+8px)] w-auto sm:w-96 max-w-none sm:max-w-[calc(100vw-32px)] bg-[#121615]/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50">
             <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="text-emerald-400 text-sm">🔔</span>
                 <span class="text-xs font-bold text-white" data-i18n="notif_title">Notifications</span>
                 <span id="notification-count-badge" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full">3</span>
               </div>
-              <button onclick="markAllNotificationsRead()" class="text-[10px] text-stone-400 hover:text-emerald-400 transition" data-i18n="notif_mark_read">Mark all read</button>
+              <button onclick="markAllNotificationsRead(true)" class="text-[10px] text-stone-400 hover:text-emerald-400 transition" data-i18n="notif_mark_read">Mark all read</button>
             </div>
 
-            <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs">
-              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('profile'); closeNotificationDrawer();">
+            <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs" id="notification-items-list">
+              <div class="notification-item p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer group" onclick="handleNotificationClick('profile')">
                 <span class="text-lg shrink-0">⚡</span>
                 <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_1_title">+5.5 ZK tokens credited</span>
-                    <span class="text-[9px] text-stone-500" data-i18n="notif_1_time">Just now</span>
+                  <div class="flex items-center justify-between gap-1">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <span class="notif-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_1_title">+5.5 ZK tokens credited</span>
+                    </div>
+                    <span class="text-[9px] text-stone-500 shrink-0" data-i18n="notif_1_time">Just now</span>
                   </div>
                   <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_1_text">Starter token balance granted for trial generations across all models.</p>
                 </div>
               </div>
 
-              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('video'); closeNotificationDrawer();">
+              <div class="notification-item p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer group" onclick="handleNotificationClick('video')">
                 <span class="text-lg shrink-0">🎬</span>
                 <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_2_title">Wan 3.0 & Veo 3.1 available</span>
-                    <span class="text-[9px] text-stone-500" data-i18n="notif_2_time">1 hour ago</span>
+                  <div class="flex items-center justify-between gap-1">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <span class="notif-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_2_title">Wan 3.0 & Veo 3.1 available</span>
+                    </div>
+                    <span class="text-[9px] text-stone-500 shrink-0" data-i18n="notif_2_time">1 hour ago</span>
                   </div>
                   <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_2_text">Cinematic video generation AI models updated to the latest 2026 builds.</p>
                 </div>
               </div>
 
-              <div class="p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer" onclick="switchTab('agents'); closeNotificationDrawer();">
+              <div class="notification-item p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer group" onclick="handleNotificationClick('agents')">
                 <span class="text-lg shrink-0">🤖</span>
                 <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_3_title">Autonomous AI Agents</span>
-                    <span class="text-[9px] text-stone-500" data-i18n="notif_3_time">Yesterday</span>
+                  <div class="flex items-center justify-between gap-1">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <span class="notif-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_3_title">Autonomous AI Agents</span>
+                    </div>
+                    <span class="text-[9px] text-stone-500 shrink-0" data-i18n="notif_3_time">Yesterday</span>
                   </div>
                   <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_3_text">Create custom agents with deep context and tool integration.</p>
                 </div>
               </div>
             </div>
           </div>
+          <!-- Synchronous inline check to prevent any flash of unread dot on page reload -->
+          <script>
+            (function() {
+              try {
+                if (localStorage.getItem('zyko_notifications_read') === 'true') {
+                  var d = document.getElementById('notification-unread-dot');
+                  var b = document.getElementById('notification-count-badge');
+                  if (d) { d.classList.add('hidden'); d.style.display = 'none'; }
+                  if (b) { b.textContent = '0'; b.className = 'bg-white/10 text-stone-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full'; }
+                }
+              } catch(e) {}
+            })();
+          </script>
         </div>
 
         <!-- Logged Out State -->
@@ -4650,6 +4705,7 @@
         if (typeof renderUsageLimitsUI === 'function') renderUsageLimitsUI();
         if (typeof renderFeedUI === 'function') renderFeedUI();
         if (typeof renderTokenHistoryUI === 'function') renderTokenHistoryUI();
+        if (typeof initNotifications === 'function') initNotifications();
       } catch (e) {}
 
       // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
@@ -7773,26 +7829,80 @@
       }
     }
 
-    // Notifications Drawer Controller with Smart Screen Clamping (Screenshot 1 fix)
-    function positionNotificationDrawer() {
-      const drawer = document.getElementById('notification-drawer');
-      const btn = document.getElementById('notification-bell-btn');
-      if (!drawer || !btn || drawer.classList.contains('hidden')) return;
+    // =========================================================================
+    // NOTIFICATIONS CONTROLLER (Persistent read state & smooth positioning)
+    // =========================================================================
+    const NOTIFS_STORAGE_KEY = 'zyko_notifications_read';
 
-      const rect = btn.getBoundingClientRect();
-      const screenW = window.innerWidth;
-      const drawerWidth = Math.min(340, screenW - 16);
+    function isNotificationsRead() {
+      try {
+        return localStorage.getItem(NOTIFS_STORAGE_KEY) === 'true';
+      } catch (e) {
+        return false;
+      }
+    }
 
-      // Align right edge of drawer with button right edge, clamped with 8px screen margins
-      let left = rect.right - drawerWidth;
-      left = Math.min(Math.max(left, 8), screenW - drawerWidth - 8);
-      const top = rect.bottom > 0 ? (rect.bottom + 6) : 56;
+    function initNotifications() {
+      const isRead = isNotificationsRead();
+      const dot = document.getElementById('notification-unread-dot');
+      const badge = document.getElementById('notification-count-badge');
+      const items = document.querySelectorAll('.notification-item');
 
-      drawer.style.position = 'fixed';
-      drawer.style.top = `${top}px`;
-      drawer.style.left = `${left}px`;
-      drawer.style.width = `${drawerWidth}px`;
-      drawer.style.zIndex = '60';
+      if (isRead) {
+        if (dot) {
+          dot.classList.add('hidden');
+          dot.style.display = 'none';
+        }
+        if (badge) {
+          badge.textContent = '0';
+          badge.className = 'bg-white/10 text-stone-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full';
+        }
+        items.forEach(el => {
+          el.classList.add('opacity-75');
+          const itemDot = el.querySelector('.notif-dot');
+          if (itemDot) itemDot.classList.add('hidden');
+        });
+      } else {
+        if (dot) {
+          dot.classList.remove('hidden');
+          dot.style.display = '';
+        }
+        if (badge) {
+          badge.textContent = '3';
+          badge.className = 'bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full';
+        }
+      }
+    }
+
+    function markAllNotificationsRead(saveStorage = true) {
+      if (saveStorage) {
+        try {
+          localStorage.setItem(NOTIFS_STORAGE_KEY, 'true');
+        } catch (e) {}
+      }
+      const dot = document.getElementById('notification-unread-dot');
+      const badge = document.getElementById('notification-count-badge');
+      if (dot) {
+        dot.classList.add('hidden');
+        dot.style.display = 'none';
+      }
+      if (badge) {
+        badge.textContent = '0';
+        badge.className = 'bg-white/10 text-stone-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full';
+      }
+      document.querySelectorAll('.notification-item').forEach(el => {
+        el.classList.add('opacity-75');
+        const itemDot = el.querySelector('.notif-dot');
+        if (itemDot) itemDot.classList.add('hidden');
+      });
+    }
+
+    function handleNotificationClick(tab) {
+      markAllNotificationsRead(true);
+      closeNotificationDrawer();
+      if (tab && typeof switchTab === 'function') {
+        switchTab(tab);
+      }
     }
 
     function toggleNotificationDrawer(e) {
@@ -7804,8 +7914,14 @@
       if (!drawer) return;
       const isOpening = drawer.classList.contains('hidden');
       if (isOpening) {
+        // Clear any old inline position styles if they existed
+        drawer.style.top = '';
+        drawer.style.left = '';
+        drawer.style.width = '';
+        drawer.style.position = '';
         drawer.classList.remove('hidden');
-        positionNotificationDrawer();
+        // Dismiss unread dot and persist seen state
+        markAllNotificationsRead(true);
       } else {
         drawer.classList.add('hidden');
       }
@@ -7816,15 +7932,8 @@
       if (drawer) drawer.classList.add('hidden');
     }
 
-    function markAllNotificationsRead() {
-      const dot = document.getElementById('notification-unread-dot');
-      const badge = document.getElementById('notification-count-badge');
-      if (dot) dot.classList.add('hidden');
-      if (badge) {
-        badge.textContent = '0 новых';
-        badge.className = 'bg-white/10 text-stone-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full';
-      }
-    }
+    // Keep safe dummy function so any legacy caller won't throw
+    function positionNotificationDrawer() {}
 
     window.addEventListener('resize', () => {
       const panel = document.getElementById('workspace-control-panel');
@@ -11205,11 +11314,9 @@
     // Auto-reposition popovers on viewport resize or scroll
     window.addEventListener('resize', () => {
       positionStudioSwitcherDropdown();
-      positionNotificationDrawer();
     });
     window.addEventListener('scroll', () => {
       positionStudioSwitcherDropdown();
-      positionNotificationDrawer();
     }, { passive: true });
 
     // =========================================================================
