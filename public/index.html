@@ -583,7 +583,7 @@
               Featured AI Showcase
             </h2>
             <p class="text-stone-300 text-xs sm:text-sm font-medium max-w-xl mx-auto leading-relaxed" data-i18n="showcase_desc">
-              Selected creations from Sora 2.0, Seedance 2.5, FLUX and Nano Banana. Hover to preview videos or copy prompts in 1 click.
+              Selected creations from FLUX, Midjourney and ElevenLabs. Browse artwork, copy prompts and create in 1 click.
             </p>
           </div>
 
@@ -601,19 +601,19 @@
         </div>
       </section>
 
-      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI CREATIONS GALLERY (100% GENUINE OPENAI SORA, KLING, SEEDANCE, FLUX) -->
+      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI CREATIONS GALLERY (FLUX, MIDJOURNEY, ELEVENLABS) -->
       <section id="ai-video-trends" class="glow-section py-16 px-4 sm:px-6 relative border-t border-white/5 scroll-mt-14">
         <div class="max-w-7xl mx-auto">
           <!-- Trends Headline -->
           <div class="text-center max-w-4xl mx-auto mb-8">
             <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
-              <span>✦</span> <span data-i18n="video_trends_badge">AI Video & Art Showcase • 2026</span>
+              <span>✦</span> <span data-i18n="video_trends_badge">AI Photo & Audio Showcase • 2026</span>
             </div>
             <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="video_trends_title">
               Global AI Trends 2026
             </h2>
             <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto" data-i18n="video_trends_desc">
-              100% genuine creations from OpenAI Sora 2.0, Seedance 2.5, Kling 4.0, and FLUX.1 Pro. Browse, copy prompts, and generate in 1 click.
+              100% genuine creations from FLUX.1 Ultra, Midjourney, and ElevenLabs. Browse, copy prompts, and generate in 1 click.
             </p>
           </div>
 
@@ -624,7 +624,6 @@
               <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
               <button onclick="switchTrendCategory('flux', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_flux">🎨 FLUX & Midjourney</button>
               <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
-              <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cinema">🎥 Cinematic 4K</button>
               <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cars">🚗 Cars & Tech</button>
               <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals & Pets</button>
               <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
@@ -3388,7 +3387,7 @@
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <span id="trend-modal-model" class="inline-flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full font-mono uppercase">
-              <span>📹</span> <span id="trend-modal-model-name">Sora 2.0 HD</span>
+              <span>🎨</span> <span id="trend-modal-model-name">FLUX.1 Pro</span>
             </span>
             <div class="flex items-center gap-2 text-xs text-stone-400">
               <span id="trend-modal-views" class="flex items-center gap-1">👁️ 1.4M</span>
@@ -3415,11 +3414,11 @@
             </div>
           </div>
 
-          <!-- Video Specs Grid -->
+          <!-- Specs Grid -->
           <div class="grid grid-cols-2 gap-2 text-[10px] text-stone-400">
             <div class="bg-white/5 p-2 rounded-xl border border-white/5">
               <span class="block text-stone-500" data-i18n="tmodal_resolution">Resolution:</span>
-              <span class="font-bold text-white">4K UHD (60fps)</span>
+              <span class="font-bold text-white">4K UHD</span>
             </div>
             <div class="bg-white/5 p-2 rounded-xl border border-white/5">
               <span class="block text-stone-500" data-i18n="tmodal_aspect">Format:</span>
@@ -3429,11 +3428,8 @@
         </div>
 
         <div class="pt-5 space-y-2 border-t border-white/10 mt-4">
-          <button type="button" onclick="recreateTrendInStudio('video')" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-black text-xs py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-            <span>⚡</span> <span data-i18n="tmodal_create_video">Create in Video Studio</span>
-          </button>
-          <button type="button" onclick="recreateTrendInStudio('image')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white font-bold text-xs py-2 rounded-xl transition flex items-center justify-center gap-2">
-            <span>🎨</span> <span data-i18n="tmodal_create_image">Open in Image Studio</span>
+          <button type="button" onclick="recreateTrendInStudio(activeModalTrend ? (activeModalTrend.type === 'audio' ? 'audio' : 'image') : 'image')" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-black text-xs py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
+            <span>⚡</span> <span data-i18n="tmodal_create_studio">Create in Studio</span>
           </button>
         </div>
       </div>
@@ -3675,17 +3671,16 @@
 
         showcase_badge: "✦ Curated Highlights",
         showcase_title: "Featured AI Showcase",
-        showcase_desc: "Selected creations from FLUX, Midjourney and Nano Banana. Browse artwork, copy prompts and create in 1 click.",
+        showcase_desc: "Selected creations from FLUX, Midjourney and ElevenLabs. Browse artwork, copy prompts and create in 1 click.",
         showcase_explore_btn: "Explore Full Trends Gallery (50+ Real AI Prompts & Models) →",
 
-        video_trends_badge: "✦ Genuine AI Video & Art Showcase • 2026",
+        video_trends_badge: "✦ AI Photo & Audio Showcase • 2026",
         video_trends_title: "Global AI Trends 2026",
-        video_trends_desc: "100% genuine creations from OpenAI Sora 2.0, Seedance 2.5, Kling 4.0, and FLUX.1 Pro. Browse, copy prompts, and generate in 1 click.",
+        video_trends_desc: "100% genuine creations from FLUX.1 Ultra, Midjourney, and ElevenLabs. Browse, copy prompts, and generate in 1 click.",
 
         vfilter_all: "🔥 All Trends",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
-        vfilter_cinema: "🎥 Cinematic 4K",
         vfilter_cars: "🚗 Cars & Tech",
         vfilter_animals: "🐱 Animals & Pets",
         vfilter_fashion: "👗 Fashion & People",
@@ -3708,8 +3703,7 @@
         tmodal_copied: "Copied!",
         tmodal_resolution: "Resolution:",
         tmodal_aspect: "Format:",
-        tmodal_create_video: "⚡ Create in Video Studio",
-        tmodal_create_image: "🎨 Open in Image Studio",
+        tmodal_create_studio: "⚡ Create in Studio",
 
         enhancer_badge: "Topaz 4K Neural Enhancer",
         enhancer_title: "Enhance details, sharpen faces, upscale to 4K",
@@ -3831,18 +3825,17 @@
 
         showcase_badge: "✦ Избранные работы",
         showcase_title: "Тренды в несколько кликов",
-        showcase_desc: "Лучшие работы FLUX, Midjourney и Nano Banana. Смотрите работы, копируйте промпты и создавайте свои шедевры в 1 клик.",
+        showcase_desc: "Лучшие работы FLUX, Midjourney и ElevenLabs. Смотрите работы, копируйте промпты и создавайте свои шедевры в 1 клик.",
         showcase_explore_btn: "Смотреть все тренды и категории (50+ промптов) →",
 
-        video_trends_badge: "✦ 100% Настоящие ИИ-Видео и Арт • 2026",
+        video_trends_badge: "✦ ИИ-Фото и Аудио Тренды • 2026",
         video_trends_title: "Мировые ИИ-Тренды 2026",
-        video_trends_desc: "100% настоящие генерации Sora 2.0, Kling 4.0, Seedance 2.5 и FLUX. Смотрите, копируйте промпты и создавайте свои работы в 1 клик.",
+        video_trends_desc: "100% настоящие генерации FLUX.1 Ultra, Midjourney и ElevenLabs. Смотрите, копируйте промпты и создавайте свои работы в 1 клик.",
 
         vfilter_all: "🔥 Все тренды",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Аниме",
-        vfilter_cinema: "🎥 Кинематограф 4K",
-        vfilter_cars: "🚗 Летающие авто & Tech",
+        vfilter_cars: "🚗 Авто & Tech",
         vfilter_animals: "🐱 Животные",
         vfilter_fashion: "👗 Мода & Люди",
         vfilter_space: "🌌 Космос & Sci-Fi",
@@ -3864,8 +3857,7 @@
         tmodal_copied: "Скопировано!",
         tmodal_resolution: "Разрешение:",
         tmodal_aspect: "Формат:",
-        tmodal_create_video: "⚡ Создать в Video Studio",
-        tmodal_create_image: "🎨 Открыть в Image Studio",
+        tmodal_create_studio: "⚡ Создать в Studio",
 
         enhancer_badge: "Нейронный апскейлер Topaz 4K",
         enhancer_title: "Улучшайте детали, повышайте резкость лиц, масштабируйте до 4K",
@@ -3960,15 +3952,14 @@
         hero_cta: "Comenzar a crear",
         showcase_badge: "✦ Destacados",
         showcase_title: "Tendencias con pocos clics",
-        showcase_desc: "Creaciones de Sora 2.0, Seedance 2.5, FLUX y Nano Banana.",
+        showcase_desc: "Creaciones de FLUX, Midjourney y ElevenLabs.",
         showcase_explore_btn: "Explorar galería completa de tendencias →",
-        video_trends_badge: "✦ Muestra de IA Real • 2026",
+        video_trends_badge: "✦ Muestra de Fotos y Audio de IA • 2026",
         video_trends_title: "Tendencias Globales de IA",
-        video_trends_desc: "Creaciones 100% reales de Sora 2.0, Kling 4.0, Seedance 2.5 y FLUX.",
+        video_trends_desc: "Creaciones 100% reales de FLUX.1 Ultra, Midjourney y ElevenLabs.",
         vfilter_all: "🔥 Todas",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
-        vfilter_cinema: "🎥 Cinemático 4K",
         vfilter_cars: "🚗 Autos & Tech",
         vfilter_animals: "🐱 Animales",
         vfilter_fashion: "👗 Moda & Personas",
@@ -3989,8 +3980,7 @@
         tmodal_copied: "¡Copiado!",
         tmodal_resolution: "Resolución:",
         tmodal_aspect: "Formato:",
-        tmodal_create_video: "⚡ Crear en Video Studio",
-        tmodal_create_image: "🎨 Abrir en Image Studio",
+        tmodal_create_studio: "⚡ Crear en Studio",
         enhancer_badge: "Optimizador Neuronal Topaz 4K",
         enhancer_title: "Mejore detalles y escale a 4K",
         enhancer_before: "ORIGINAL",
@@ -4045,15 +4035,14 @@
         hero_cta: "Começar a criar",
         showcase_badge: "✦ Destaques",
         showcase_title: "Tendências em poucos cliques",
-        showcase_desc: "Criações de Sora 2.0, Seedance 2.5, FLUX e Nano Banana.",
+        showcase_desc: "Criações de FLUX, Midjourney e ElevenLabs.",
         showcase_explore_btn: "Explorar galeria completa de tendências →",
-        video_trends_badge: "✦ Mostra de IA Real • 2026",
+        video_trends_badge: "✦ Mostra de Fotos e Áudio de IA • 2026",
         video_trends_title: "Tendências Globais de IA",
-        video_trends_desc: "Criações 100% reais de Sora 2.0, Kling 4.0, Seedance 2.5 e FLUX.",
+        video_trends_desc: "Criações 100% reais de FLUX.1 Ultra, Midjourney e ElevenLabs.",
         vfilter_all: "🔥 Todas",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
-        vfilter_cinema: "🎥 Cinemático 4K",
         vfilter_cars: "🚗 Carros & Tech",
         vfilter_animals: "🐱 Animais",
         vfilter_fashion: "👗 Moda & Pessoas",
@@ -4074,8 +4063,7 @@
         tmodal_copied: "Copiado!",
         tmodal_resolution: "Resolução:",
         tmodal_aspect: "Formato:",
-        tmodal_create_video: "⚡ Criar no Video Studio",
-        tmodal_create_image: "🎨 Abrir no Image Studio",
+        tmodal_create_studio: "⚡ Criar no Studio",
         enhancer_badge: "Aprimorador Neural Topaz 4K",
         enhancer_title: "Aprimore detalhes e escale para 4K",
         enhancer_before: "ORIGINAL",
@@ -4130,15 +4118,14 @@
         hero_cta: "Jetzt erstellen",
         showcase_badge: "✦ Highlights",
         showcase_title: "Trends mit wenigen Klicks",
-        showcase_desc: "Ausgewählte Werke von Sora 2.0, Seedance 2.5, FLUX und Nano Banana.",
+        showcase_desc: "Ausgewählte Werke von FLUX, Midjourney und ElevenLabs.",
         showcase_explore_btn: "Gesamte Trend-Galerie ansehen →",
-        video_trends_badge: "✦ Echte KI-Videos • 2026",
+        video_trends_badge: "✦ Echte KI-Foto & Audio • 2026",
         video_trends_title: "Globale KI-Trends 2026",
-        video_trends_desc: "100% echte Kreationen von Sora 2.0, Kling 4.0, Seedance 2.5 und FLUX.",
+        video_trends_desc: "100% echte Kreationen von FLUX.1 Ultra, Midjourney und ElevenLabs.",
         vfilter_all: "🔥 Alle",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
-        vfilter_cinema: "🎥 Filmisch 4K",
         vfilter_cars: "🚗 Autos & Tech",
         vfilter_animals: "🐱 Tiere",
         vfilter_fashion: "👗 Mode & Menschen",
@@ -4159,8 +4146,7 @@
         tmodal_copied: "Kopiert!",
         tmodal_resolution: "Auflösung:",
         tmodal_aspect: "Format:",
-        tmodal_create_video: "⚡ In Video Studio erstellen",
-        tmodal_create_image: "🎨 In Image Studio öffnen",
+        tmodal_create_studio: "⚡ Im Studio erstellen",
         enhancer_badge: "Topaz 4K Neural Enhancer",
         enhancer_title: "Details verbessern und auf 4K hochskalieren",
         enhancer_before: "ORIGINAL",
@@ -7490,10 +7476,10 @@
         title_ru: 'Прогулка по неоновому Токио в красном платье',
         prompt_en: 'A stylish woman in red dress and black leather jacket walks down glowing neon Tokyo street with wet pavement reflections, 8K cinematic',
         prompt_ru: 'Стильная девушка в красном платье и черной кожаной куртке идет по залитой неоном улице ночного Токио с отражениями в мокром асфальте, 8K',
-        model: 'Sora 2.0 Cinema',
-        modelKey: 'sora',
+        model: 'FLUX.1 Cinema 4K',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'cinema', 'fashion'],
+        categories: ['all', 'fashion', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
         likes: 382400,
@@ -7506,10 +7492,10 @@
         title_ru: 'Морская выдра на неоновом серфборде',
         prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
         prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
-        model: 'Seedance 2.5 Fun',
-        modelKey: 'seedance',
+        model: 'FLUX.1 Photoreal',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'animals', 'surreal'],
+        categories: ['all', 'animals', 'surreal', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
         likes: 542000,
@@ -7522,10 +7508,10 @@
         title_ru: 'Парусные корабли в чашке кофе',
         prompt_en: 'Hyperrealistic macro image of two miniature pirate galleons battling through foaming coffee waves inside a porcelain cup, 8K',
         prompt_ru: 'Макро-съемка двух миниатюрных пиратских парусников, сражающихся среди волн кофейной пенки внутри фарфоровой чашки, 8K',
-        model: 'Sora 2.0 Surreal',
-        modelKey: 'sora',
+        model: 'Midjourney Surreal',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'surreal', 'fantasy'],
+        categories: ['all', 'surreal', 'fantasy', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800',
         likes: 512000,
@@ -7538,10 +7524,10 @@
         title_ru: '3D пушистый монстрик задувает свечу',
         prompt_en: 'Charming 3D Pixar animated fluffy monster kneeling next to a melting candle on wooden table, warm cozy lighting, 4K 60fps',
         prompt_ru: 'Очаровательный 3D пушистый монстрик задувает тающую свечу на деревянном столе, теплое уютное объемное освещение, 4K',
-        model: 'Seedance 2.5 3D',
-        modelKey: 'seedance',
+        model: 'Nano Banana 3D',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'anime', 'surreal'],
+        categories: ['all', 'anime', 'surreal', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 425300,
@@ -7554,10 +7540,10 @@
         title_ru: 'Отражения в окне вечернего поезда',
         prompt_en: 'Cinematic reflection of commuter train passenger window speeding through Tokyo suburbs at dusk, passing cityscape bokeh, 4K',
         prompt_ru: 'Кинематографичное отражение в окне пассажирского поезда, мчащегося через вечерний пригород Токио, огни ночного города, 4K',
-        model: 'Kling 4.0 Cinema',
-        modelKey: 'kling',
+        model: 'FLUX.1 Studio',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'cinema', 'anime', 'cars'],
+        categories: ['all', 'anime', 'cars', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 319200,
@@ -7570,10 +7556,10 @@
         title_ru: 'Бумажные самолетики в коралловом рифе',
         prompt_en: 'Underwater camera tracking colourful origami paper airplanes gliding smoothly across vibrant coral reef with tropical clownfish, 4K',
         prompt_ru: 'Подводная камера плывет за стаей бумажных самолетиков оригами, плавно парящих над коралловым рифом среди экзотических рыб, 4K',
-        model: 'Sora 2.0 Nature',
-        modelKey: 'sora',
+        model: 'FLUX.1 Nature',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'surreal', 'space'],
+        categories: ['all', 'surreal', 'space', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
         likes: 278500,
@@ -7586,10 +7572,10 @@
         title_ru: 'Пушистый кот будит хозяина утром',
         prompt_en: 'Close-up cinematic macro of cute fluffy ginger cat enthusiastically waking up sleeping human in bed, soft morning window light, 4K',
         prompt_ru: 'Макро-съемка пушистого рыжего кота, который нежно будит спящего хозяина в теплой постели в лучах утреннего солнца, 4K',
-        model: 'Seedance 2.5 Animal',
-        modelKey: 'seedance',
+        model: 'FLUX.1 Macro',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'animals', 'cinema'],
+        categories: ['all', 'animals', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 491000,
@@ -7602,10 +7588,10 @@
         title_ru: 'Радужный хамелеон меняет окрас',
         prompt_en: 'Ultra-detailed macro 4K photo of iridescent chameleon slowly walking on rainforest branch, scales dynamically morphing neon colors',
         prompt_ru: 'Сверхдетальная макро-съемка хамелеона на ветке тропического леса, чешуя динамически переливается всеми неоновыми цветами, 4K',
-        model: 'Kling 4.0 Macro',
-        modelKey: 'kling',
+        model: 'FLUX.1 Macro',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'animals', 'cinema'],
+        categories: ['all', 'animals', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800',
         likes: 334000,
@@ -7618,10 +7604,10 @@
         title_ru: 'Светящийся дракон на празднике в ночном городе',
         prompt_en: 'Spectacular night celebration with giant illuminated festival dragon weaving through historic street crowd with floating lanterns, 4K',
         prompt_ru: 'Грандиозный ночной фестиваль с гигантским светящимся драконом, извивающимся над праздничной толпой под сиянием тысяч фонариков, 4K',
-        model: 'Sora 2.0 Cinematic',
-        modelKey: 'sora',
+        model: 'Midjourney 6.1',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'cinema', 'fantasy'],
+        categories: ['all', 'fantasy', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 468000,
@@ -7634,10 +7620,10 @@
         title_ru: 'Киберпанк-робот играет в ретро-аркаду',
         prompt_en: 'Cybernetic humanoid robot wearing studio headphones passionately playing vintage 1980s neon arcade cabinet in Tokyo underground den, 4K',
         prompt_ru: 'Кибернетический робот в наушниках увлеченно рубится в ретро-игровой автомат в неоновом токийском игровом зале 80-х, 4K',
-        model: 'Runway Gen-3 Pro',
-        modelKey: 'runway',
+        model: 'FLUX.1 Cyber',
+        modelKey: 'flux',
         type: 'image',
-        categories: ['all', 'anime', 'cars', 'space'],
+        categories: ['all', 'anime', 'cars', 'space', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
         likes: 387600,
