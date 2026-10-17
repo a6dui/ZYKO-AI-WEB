@@ -397,7 +397,7 @@
 
       <!-- Center Nav Tabs (Matching Screenshots: Trends, Agents, LLM Studio, Image, Video, Audio, Toolkit) -->
       <nav class="hidden lg:flex items-center gap-7 text-xs font-semibold text-stone-300">
-        <button onclick="switchTab('trends'); scrollToVideoTrends();" id="tab-btn-trends" class="nav-tab active hover:text-white flex items-center gap-1.5 transition">
+        <button onclick="switchTab('trends')" id="tab-btn-trends" class="nav-tab active hover:text-white flex items-center gap-1.5 transition">
           <span data-i18n="nav_trends">Trends</span> <span class="bg-gradient-to-r from-emerald-400 to-teal-400 text-black font-extrabold text-[9px] px-1.5 py-0.2 rounded shadow-sm">New</span>
         </button>
         <button onclick="switchTab('agents')" id="tab-btn-agents" class="nav-tab hover:text-white transition" data-i18n="nav_agents">Agents</button>
@@ -592,70 +592,6 @@
             <!-- Populated by renderFeaturedShowcase() -->
           </div>
 
-          <!-- Prominent CTA Button to Jump / Explore Full Trends -->
-          <div class="mt-8 text-center">
-            <button onclick="scrollToVideoTrends()" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-emerald-500/10 to-teal-500/20 hover:from-emerald-500/30 hover:to-teal-500/30 border border-emerald-500/40 text-emerald-300 hover:text-white font-extrabold text-xs sm:text-sm transition active:scale-98 shadow-xl">
-              <span class="text-base animate-pulse">🔥</span> <span data-i18n="showcase_explore_btn">Explore Full Trends Gallery (50+ Real AI Prompts & Models) →</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI CREATIONS GALLERY (FLUX, MIDJOURNEY, ELEVENLABS) -->
-      <section id="ai-video-trends" class="glow-section py-16 px-4 sm:px-6 relative border-t border-white/5 scroll-mt-14">
-        <div class="max-w-7xl mx-auto">
-          <!-- Trends Headline -->
-          <div class="text-center max-w-4xl mx-auto mb-8">
-            <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
-              <span>✦</span> <span data-i18n="video_trends_badge">AI Photo & Audio Showcase • 2026</span>
-            </div>
-            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="video_trends_title">
-              Global AI Trends 2026
-            </h2>
-            <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto" data-i18n="video_trends_desc">
-              100% genuine creations from FLUX.1 Ultra, Midjourney, and ElevenLabs. Browse, copy prompts, and generate in 1 click.
-            </p>
-          </div>
-
-          <!-- Category Pills Nav (Horizontal Swipeable Ribbon in a SINGLE LINE with Left/Right Scroll Arrows) -->
-          <div class="relative flex items-center mb-6">
-            <button type="button" onclick="scrollCategoryRibbon(-260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 mr-2 z-10 transition shadow-lg active:scale-90" title="Scroll left">‹</button>
-            <div id="trends-category-nav" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 text-xs scroll-smooth flex-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-              <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
-              <button onclick="switchTrendCategory('flux', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_flux">🎨 FLUX & Midjourney</button>
-              <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
-              <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cars">🚗 Cars & Tech</button>
-              <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals & Pets</button>
-              <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
-              <button onclick="switchTrendCategory('space', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_space">🌌 Sci-Fi & Space</button>
-              <button onclick="switchTrendCategory('fantasy', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fantasy">🏰 Fantasy & Myth</button>
-              <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism & Memes</button>
-              <button onclick="switchTrendCategory('audio', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_audio">🎙️ Voice & Audio</button>
-            </div>
-            <button type="button" onclick="scrollCategoryRibbon(260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 ml-2 z-10 transition shadow-lg active:scale-90" title="Scroll right">›</button>
-          </div>
-
-          <!-- Controls: Media Type Tabs + Sort Bar -->
-          <div class="flex items-center justify-between flex-wrap gap-3 mb-8 px-1 max-w-7xl mx-auto text-xs text-stone-400">
-            <!-- Media Type Switcher: All / Photos / Audio -->
-            <div class="flex items-center gap-1.5 p-1 bg-black/50 border border-white/10 rounded-xl">
-              <button type="button" id="media-filter-all" onclick="filterTrendsMediaType('all', this)" class="media-type-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="mfilter_all">All</button>
-              <button type="button" id="media-filter-image" onclick="filterTrendsMediaType('image', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_photos">🖼️ Photos</button>
-              <button type="button" id="media-filter-audio" onclick="filterTrendsMediaType('audio', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_audio">🎙️ Audio</button>
-            </div>
-
-            <!-- Sort Bar -->
-            <div class="flex items-center gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl">
-              <button type="button" id="sort-trend-trending" onclick="sortTrends('trending')" class="trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="trends_sort_trending">🔥 Trending</button>
-              <button type="button" id="sort-trend-new" onclick="sortTrends('new')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="trends_sort_new">✨ New 2026</button>
-              <button type="button" id="sort-trend-top" onclick="sortTrends('top')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="trends_sort_top">❤️ Top Likes</button>
-            </div>
-          </div>
-
-          <!-- Dynamic 3D Card Grid with Video & Art Previews -->
-          <div id="video-trends-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            <!-- Rendered by renderTrendsGrid() -->
-          </div>
         </div>
       </section>
 
@@ -833,7 +769,7 @@
                 <li><a href="javascript:void(0)" onclick="openAcademyModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_academy">Academy</a></li>
                 <li><a href="javascript:void(0)" onclick="openContestModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_contest">Contest</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200);" class="hover:text-emerald-400 transition" data-i18n="drawer_faq">FAQ</a></li>
-                <li><a href="javascript:void(0)" onclick="switchTab('trends'); scrollToVideoTrends();" class="hover:text-emerald-400 transition" data-i18n="nav_trends">Trends</a></li>
+                <li><a href="javascript:void(0)" onclick="switchTab('trends')" class="hover:text-emerald-400 transition" data-i18n="nav_trends">Trends</a></li>
               </ul>
             </div>
 
