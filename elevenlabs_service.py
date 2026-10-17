@@ -93,9 +93,19 @@ async def text_to_speech(text: str, voice_id: str = "21m0aC4C9KstEPqMsrxW", mode
     if voice_settings and isinstance(voice_settings, dict):
         vs.update(voice_settings)
 
+    model_aliases = {
+        "eleven_v4": "eleven_multilingual_v2",
+        "eleven_v3_5": "eleven_multilingual_v2",
+        "music_2_5": "eleven_multilingual_v2",
+        "eleven_turbo_v2_5": "eleven_turbo_v2_5",
+        "eleven_flash_v2_5": "eleven_flash_v2_5",
+        "eleven_multilingual_v2": "eleven_multilingual_v2"
+    }
+    actual_model_id = model_aliases.get(model_id, "eleven_multilingual_v2")
+
     payload = {
         "text": text,
-        "model_id": model_id,
+        "model_id": actual_model_id,
         "voice_settings": vs
     }
     

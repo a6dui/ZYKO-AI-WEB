@@ -16,6 +16,7 @@
   <!-- Google Identity Services & Telegram WebApp -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="/icons/plan_b_svgs.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -299,8 +300,8 @@
           <span class="text-stone-100 font-extrabold tracking-tight text-base md:text-lg">ZYKO<span class="text-emerald-400">.AI</span></span>
         </a>
 
-        <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, ONLY for mobile users: block lg:hidden) -->
-        <div class="relative block lg:hidden" id="studio-switcher-container">
+        <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, ONLY for mobile users when inside a studio: hidden lg:hidden) -->
+        <div class="relative hidden lg:hidden" id="studio-switcher-container">
           <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="p-1.5 rounded-xl bg-[#141719] hover:bg-white/10 border border-white/15 active:scale-95 transition flex items-center justify-center relative shadow-sm" title="Studio Switcher">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
               <rect x="4.5" y="4.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
@@ -310,44 +311,83 @@
             </svg>
           </button>
 
-          <!-- Studio Switcher Dropdown Menu (Screenshot 2) -->
+          <!-- Studio Switcher Dropdown Menu (Screenshot 2: Plan B Vector SVGs) -->
           <div id="studio-switcher-dropdown" class="hidden z-50 bg-[#131618]/98 border border-white/15 rounded-2xl shadow-2xl p-1.5 backdrop-blur-2xl">
             <div class="space-y-0.5 text-xs font-semibold">
               <button onclick="switchTab('trends'); closeStudioSwitcher();" id="switcher-item-trends" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
                 <div class="flex items-center gap-3">
-                  <span class="text-base">🔥</span>
+                  <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2c1.5 3.5 4 5.5 4 9 0 3.3-2.7 6-6 6s-6-2.7-6-6c0-3.5 2.5-5.5 4-9z" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12 11c.8 1.5 2 2.5 2 4a2 2 0 1 1-4 0c0-1.5 1.2-2.5 2-4z" fill="#ef4444"/>
+                    </svg>
+                  </span>
                   <span>Trends</span>
                 </div>
                 <span class="bg-[#f97316] text-black text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">NEW</span>
               </button>
 
               <button onclick="switchTab('agents'); closeStudioSwitcher();" id="switcher-item-agents" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">🤖</span>
+                <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="8" stroke="#10b981" stroke-width="1.8" stroke-dasharray="2 3"/>
+                    <circle cx="12" cy="12" r="4" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1.8"/>
+                    <circle cx="12" cy="12" r="1.5" fill="#06b6d4"/>
+                  </svg>
+                </span>
                 <span>Agents</span>
               </button>
 
               <button onclick="switchTab('text'); closeStudioSwitcher();" id="switcher-item-text" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">💭</span>
+                <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <rect x="4" y="4" width="16" height="16" rx="4" stroke="#8b5cf6" stroke-width="1.8" fill="#8b5cf6" fill-opacity="0.2"/>
+                    <path d="M9 9h6M9 12h6M9 15h3" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="17" cy="15" r="1" fill="#60a5fa"/>
+                  </svg>
+                </span>
                 <span>LLM Studio</span>
               </button>
 
               <button onclick="switchTab('image'); closeStudioSwitcher();" id="switcher-item-image" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">🖼️</span>
+                <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="18" height="18" rx="4" stroke="#06b6d4" stroke-width="1.8" fill="#06b6d4" fill-opacity="0.15"/>
+                    <circle cx="8.5" cy="8.5" r="2" fill="#06b6d4"/>
+                    <path d="M21 16l-5.5-5.5-8.5 8.5" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
                 <span>Image</span>
               </button>
 
               <button onclick="switchTab('video'); closeStudioSwitcher();" id="switcher-item-video" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">🎬</span>
+                <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="4" width="18" height="16" rx="3" stroke="#ec4899" stroke-width="1.8" fill="#ec4899" fill-opacity="0.2"/>
+                    <path d="M10 9l5 3-5 3V9z" fill="#f43f5e"/>
+                  </svg>
+                </span>
                 <span>Video</span>
               </button>
 
-              <button onclick="switchTab('audio'); closeStudioSwitcher();" id="switcher-item-audio" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">🎵</span>
-                <span>Audio</span>
+              <button onclick="switchTab('audio'); closeStudioSwitcher();" id="switcher-item-audio" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <div class="flex items-center gap-3">
+                  <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 11v2" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span>Audio</span>
+                </div>
+                <span class="text-amber-400 text-xs">⭐</span>
               </button>
 
               <button onclick="switchTab('toolkit'); closeStudioSwitcher();" id="switcher-item-toolkit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
-                <span class="text-base">🛠️</span>
+                <span class="w-5 h-5 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#f59e0b" fill-opacity="0.15"/>
+                  </svg>
+                </span>
                 <span>Toolkit</span>
               </button>
             </div>
@@ -486,30 +526,8 @@
     </div>
   </header>
 
-  <!-- MOBILE SUB-NAVIGATION BAR (Visible on screens < lg) -->
-  <div id="mobile-studio-nav" class="lg:hidden sticky top-[53px] z-40 bg-[#0c1110]/95 backdrop-blur-xl border-b border-white/10 px-3 py-2 overflow-x-auto no-scrollbar flex items-center gap-2">
-    <button onclick="switchTab('trends'); scrollToVideoTrends();" id="mob-tab-btn-trends" class="mob-nav-tab active shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition bg-emerald-500 text-black shadow-md shadow-emerald-500/20">
-      <span>🔥</span> <span data-i18n="nav_trends">Trends</span>
-    </button>
-    <button onclick="switchTab('agents')" id="mob-tab-btn-agents" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>🤖</span> <span data-i18n="nav_agents">Agents</span>
-    </button>
-    <button onclick="switchTab('text')" id="mob-tab-btn-text" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>💬</span> <span data-i18n="nav_llm">LLM Studio</span>
-    </button>
-    <button onclick="switchTab('image')" id="mob-tab-btn-image" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>🖼️</span> <span data-i18n="nav_image">Image</span>
-    </button>
-    <button onclick="switchTab('video')" id="mob-tab-btn-video" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>🎬</span> <span data-i18n="nav_video">Video</span>
-    </button>
-    <button onclick="switchTab('audio')" id="mob-tab-btn-audio" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>🎙️</span> <span data-i18n="nav_audio">Audio</span>
-    </button>
-    <button onclick="switchTab('toolkit')" id="mob-tab-btn-toolkit" class="mob-nav-tab shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-stone-300 bg-white/5 hover:bg-white/10 border border-white/10 transition">
-      <span>🧰</span> <span data-i18n="nav_toolkit">Toolkit</span>
-    </button>
-  </div>
+  <!-- MOBILE SUB-NAVIGATION BAR (Hidden to eliminate clutter as requested) -->
+  <div id="mobile-studio-nav" class="hidden"></div>
 
 
 
@@ -517,7 +535,7 @@
   <main id="app-container" class="min-h-screen">
 
     <!-- ================= VIEW 1: TRENDS (SHOWCASE & LANDING PAGE) ================= -->
-    <section id="view-trends" class="block">
+    <section id="view-trends">
       
       <!-- HERO SECTION WITH VIDEO BACKGROUND (Screenshot 1 & 5) -->
       <section class="relative w-full h-[84vh] min-h-[540px] flex items-end overflow-hidden">
@@ -540,7 +558,7 @@
               <span data-i18n="hero_sub2">Unlimited access to top AI tools.</span>
             </p>
             <div class="flex flex-wrap gap-3">
-              <button onclick="switchTab('image')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-xl shadow-emerald-500/25 transition active:scale-95">
+              <button onclick="switchTab('agents')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-xl shadow-emerald-500/25 transition active:scale-95">
                 <span data-i18n="hero_cta">Start creating</span> <span>✦</span>
               </button>
             </div>
@@ -1803,7 +1821,7 @@
               <span class="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-xs font-black tracking-tighter text-white">||</span>
               <span class="text-xs uppercase tracking-wider text-emerald-400 font-extrabold">ElevenLabs Audio</span>
             </div>
-            <span id="active-audio-model-badge" class="text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-mono font-bold">Eleven v3.5 Neural</span>
+            <span id="active-audio-model-badge" class="text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-mono font-bold">Eleven v4 Neural</span>
           </div>
 
           <!-- Mode Switcher Tabs (4 Authentic ElevenLabs Modes) -->
@@ -1888,7 +1906,9 @@
               <label class="block text-xs font-bold text-stone-200">Нейросетевая модель</label>
               <div class="bg-[#141b18] border border-white/15 rounded-xl p-2.5">
                 <select id="audio-model-select" onchange="onAudioModelChange(this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
-                  <option value="eleven_v3_5" selected>Eleven v3.5 Neural — NEW (Максимум эмоций, шепот и дыхание • 1 ZK)</option>
+                  <option value="eleven_v4" selected>Eleven v4 Neural — NEW (Революционная эмоциональная модуляция, шепот и дыхание • 1 ZK)</option>
+                  <option value="music_2_5">ElevenLabs Music 2.5 — NEW (Синтез песен, битов и вокала студийного качества • 2 ZK)</option>
+                  <option value="eleven_v3_5">Eleven v3.5 Neural (Сверхреалистичная эмоциональная озвучка • 1 ZK)</option>
                   <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик 150мс • 0.5 ZK)</option>
                   <option value="eleven_multilingual_v2">Eleven Multilingual v2 (29 языков — Студийный стандарт • 1 ZK)</option>
                   <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Сверхнизкая задержка 75мс • 0.5 ZK)</option>
@@ -3192,7 +3212,7 @@
   </div>
 
   <!-- 1. AUTH / SIGN IN MODAL (GOOGLE + TELEGRAM) -->
-  <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAuthModal()">
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeAuthModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-8 max-w-md w-full relative shadow-2xl" onclick="event.stopPropagation()">
       <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center text-xl font-black mb-5 shadow-lg shadow-emerald-500/30">
@@ -4635,30 +4655,74 @@
       }
 
       if (tabId === 'trends') {
-        if (mobStudioNav) mobStudioNav.classList.remove('hidden');
+        if (mobStudioNav) {
+          mobStudioNav.classList.add('hidden');
+          mobStudioNav.style.display = 'none';
+        }
+        if (switcherContainer) {
+          switcherContainer.classList.add('hidden');
+          switcherContainer.style.display = 'none';
+        }
         viewTrends.classList.remove('hidden');
+        viewTrends.style.display = 'block';
         workspaceShell.classList.add('hidden');
-        if (userDash) userDash.classList.add('hidden');
+        workspaceShell.style.display = 'none';
+        if (userDash) {
+          userDash.classList.add('hidden');
+          userDash.style.display = 'none';
+        }
+        window.scrollTo({ top: 0, behavior: 'instant' });
       } else if (tabId === 'profile') {
-        if (mobStudioNav) mobStudioNav.classList.remove('hidden');
+        if (mobStudioNav) {
+          mobStudioNav.classList.add('hidden');
+          mobStudioNav.style.display = 'none';
+        }
+        if (switcherContainer) {
+          switcherContainer.classList.add('hidden');
+          switcherContainer.style.display = 'none';
+        }
         viewTrends.classList.add('hidden');
+        viewTrends.style.display = 'none';
         workspaceShell.classList.add('hidden');
-        if (userDash) userDash.classList.remove('hidden');
+        workspaceShell.style.display = 'none';
+        if (userDash) {
+          userDash.classList.remove('hidden');
+          userDash.style.display = 'block';
+        }
         switchUserSubtab('profile');
+        window.scrollTo({ top: 0, behavior: 'instant' });
       } else {
-        // In studios: mobile sub-nav is hidden for maximum workspace space
-        if (mobStudioNav) mobStudioNav.classList.add('hidden');
+        // In studios: mobile sub-nav is permanently hidden, studio switcher [::] button is shown on mobile
+        if (mobStudioNav) {
+          mobStudioNav.classList.add('hidden');
+          mobStudioNav.style.display = 'none';
+        }
+        if (switcherContainer) {
+          switcherContainer.classList.remove('hidden');
+          switcherContainer.style.display = '';
+        }
         viewTrends.classList.add('hidden');
-        if (userDash) userDash.classList.add('hidden');
+        viewTrends.style.display = 'none';
+        if (userDash) {
+          userDash.classList.add('hidden');
+          userDash.style.display = 'none';
+        }
         workspaceShell.classList.remove('hidden');
+        workspaceShell.style.display = 'flex';
         
         studioViews.forEach(v => {
           const el = document.getElementById(`view-${v}`);
           if (el) {
-            if (v === tabId) el.classList.remove('hidden');
-            else el.classList.add('hidden');
+            if (v === tabId) {
+              el.classList.remove('hidden');
+              el.style.display = 'flex';
+            } else {
+              el.classList.add('hidden');
+              el.style.display = 'none';
+            }
           }
         });
+        window.scrollTo({ top: 0, behavior: 'instant' });
 
         // Update mobile top bar model info
         const mobModelIcon = document.getElementById('mobile-bar-model-icon');
@@ -4680,7 +4744,7 @@
           } else if (tabId === 'audio') {
             if (mobModelIcon) mobModelIcon.innerHTML = '<span class="font-bold text-xs">||</span>';
             mobModelName.textContent = 'ElevenLabs';
-            mobModelSub.textContent = document.getElementById('active-audio-model-badge')?.textContent || 'Eleven v3.5 Neural';
+            mobModelSub.textContent = document.getElementById('active-audio-model-badge')?.textContent || 'Eleven v4 Neural';
           } else if (tabId === 'agents') {
             if (mobModelIcon) mobModelIcon.innerHTML = '🤖';
             mobModelName.textContent = 'AI Agent';
@@ -5131,12 +5195,14 @@
       const badge = document.getElementById('active-audio-model-badge');
       const mobModelSub = document.getElementById('mobile-bar-model-sub');
       const names = {
+        eleven_v4: 'Eleven v4 Neural',
+        music_2_5: 'ElevenLabs Music 2.5',
         eleven_v3_5: 'Eleven v3.5 Neural',
         eleven_turbo_v2_5: 'Eleven Turbo v2.5',
         eleven_multilingual_v2: 'Eleven Multilingual v2',
         eleven_flash_v2_5: 'Eleven Flash v2.5'
       };
-      const label = names[val] || 'Eleven v3.5 Neural';
+      const label = names[val] || 'Eleven v4 Neural';
       if (badge) badge.textContent = label;
       if (mobModelSub && currentTab === 'audio') mobModelSub.textContent = label;
     }
@@ -6820,6 +6886,32 @@
       document.getElementById('info-modal').classList.add('hidden');
     }
 
+    function openAuthModal() {
+      const modal = document.getElementById('auth-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
+      startTelegramAuthSession();
+      if (typeof initGoogleSignIn === 'function' && typeof CONFIG !== 'undefined' && CONFIG && CONFIG.google_client_id) {
+        initGoogleSignIn(CONFIG.google_client_id);
+      }
+    }
+
+    function closeAuthModal() {
+      const modal = document.getElementById('auth-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+      if (typeof tgAuthPollTimer !== 'undefined' && tgAuthPollTimer) {
+        clearInterval(tgAuthPollTimer);
+        tgAuthPollTimer = null;
+      }
+    }
+    window.openAuthModal = openAuthModal;
+    window.closeAuthModal = closeAuthModal;
+
     // 14. Telegram & Google Auth (Preserved 100%)
     async function startTelegramAuthSession() {
       const statusBox = document.getElementById('tg-auth-status');
@@ -7299,20 +7391,36 @@
 
     const TRENDS_DATA = [
       {
-        id: 'tokyo_walk',
-        title_en: 'Tokyo Neon Walk in Red Dress',
-        title_ru: 'Прогулка по неоновому Токио в красном платье',
-        prompt_en: 'A stylish woman in red dress and black leather jacket walks down glowing neon Tokyo street with wet pavement reflections, 4K cinematic',
-        prompt_ru: 'Стильная девушка в красном платье и черной кожаной куртке идет по залитой неоном улице ночного Токио с отражениями в мокром асфальте, 4K',
-        model: 'Sora 2.0 Cinema',
-        modelKey: 'sora',
-        type: 'video',
-        categories: ['all', 'sora', 'cinema', 'fashion'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/tokyo-walk.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
-        likes: 382400,
-        views: '4.6M',
-        aspect: '16:9 Cinema'
+        id: 'seedance_morph',
+        title_en: 'Character Morph',
+        title_ru: 'Трансформация персонажа',
+        prompt_en: 'Anime character morphing into photorealistic cyberpunk heroine, dramatic studio red velvet lighting, 8K',
+        prompt_ru: 'Аниме-персонаж трансформируется в фотореалистичную героиню, кинематографичный студийный свет, красный бархат, 8K',
+        model: 'Seedance 2.5 HD',
+        modelKey: 'seedance',
+        type: 'image',
+        categories: ['all', 'seedance', 'anime', 'cinema'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
+        likes: 542000,
+        views: '6.8M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'kling_drift',
+        title_en: 'Hypercar Drift 4K',
+        title_ru: 'Дрифт гиперкара в Монако 4K',
+        prompt_en: 'Sleek matte black AMG hypercar drifting through coastal harbor boulevard next to luxury superyachts, dramatic cinematic mist, 8K',
+        prompt_ru: 'Матовый черный AMG суперкар в управляемом заносе по набережной Монако мимо суперъяхт, 8K кинематография',
+        model: 'Kling 4.0 Pro',
+        modelKey: 'kling',
+        type: 'image',
+        categories: ['all', 'kling', 'cars', 'cinema'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800',
+        likes: 489000,
+        views: '5.9M',
+        aspect: '9:16 Portrait'
       },
       {
         id: 'flux_couture',
@@ -7331,22 +7439,6 @@
         aspect: '9:16 Portrait'
       },
       {
-        id: 'surfing_otter',
-        title_en: 'Sea Otter Riding Neon Surfboard',
-        title_ru: 'Морская выдра на неоновом серфборде',
-        prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
-        prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
-        model: 'Seedance 2.5 Fun',
-        modelKey: 'seedance',
-        type: 'video',
-        categories: ['all', 'seedance', 'animals', 'viral'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
-        likes: 542000,
-        views: '6.8M',
-        aspect: '16:9 Cinema'
-      },
-      {
         id: 'nano_geisha',
         title_en: 'Cyberpunk Chrome Geisha in Neo-Kyoto',
         title_ru: 'Киберпанк-гейша с хромом в Нео-Киото',
@@ -7363,20 +7455,20 @@
         aspect: '9:16 Portrait'
       },
       {
-        id: 'amalfi_coast',
-        title_en: 'Amalfi Coast Drone Sweep Over Cliffs',
-        title_ru: 'Полет дрона над побережьем Амальфи',
-        prompt_en: 'Breathtaking cinematic drone flight diving over pastel cliffside villas and turquoise Mediterranean sea of Amalfi coast in golden light, 4K',
-        prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами Амальфитанского побережья в золотом свете, 4K',
+        id: 'veo_fjord',
+        title_en: 'Nordic Fjord Aerial Panorama',
+        title_ru: 'Полет дрона над побережьем фьордов',
+        prompt_en: 'Breathtaking cinematic aerial panorama of deep Norwegian fjord in mist, emerald mirror water, snowcapped peaks, atmospheric golden hour, 8K',
+        prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами норвежского фьорда в золотом свете, 8K',
         model: 'Google Veo 3.1',
         modelKey: 'veo',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'sora', 'cinema', 'fashion'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/amalfi-coast.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
         likes: 359000,
         views: '4.0M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'midjourney_dragon',
@@ -7392,39 +7484,55 @@
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 498000,
         views: '6.1M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
-        id: 'big_sur',
-        title_en: 'Vintage SUV on Big Sur Highway',
-        title_ru: 'Винтажный внедорожник на обрывах Биг-Сур',
-        prompt_en: 'Drone view of vintage SUV driving along winding mountain highway along dramatic cliffs of Big Sur during golden sunset, 4K 60fps',
-        prompt_ru: 'Дрон летит за винтажным внедорожником по извилистому шоссе вдоль скалистых обрывов Биг-Сур в золотой закат, 4K 60fps',
-        model: 'Sora 2.0 HD',
+        id: 'tokyo_walk',
+        title_en: 'Tokyo Neon Walk in Red Dress',
+        title_ru: 'Прогулка по неоновому Токио в красном платье',
+        prompt_en: 'A stylish woman in red dress and black leather jacket walks down glowing neon Tokyo street with wet pavement reflections, 8K cinematic',
+        prompt_ru: 'Стильная девушка в красном платье и черной кожаной куртке идет по залитой неоном улице ночного Токио с отражениями в мокром асфальте, 8K',
+        model: 'Sora 2.0 Cinema',
         modelKey: 'sora',
-        type: 'video',
-        categories: ['all', 'sora', 'cars', 'cinema'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/big-sur.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1508974239320-0a029497e820?w=800',
-        likes: 294100,
-        views: '3.2M',
-        aspect: '16:9 Cinema'
+        type: 'image',
+        categories: ['all', 'sora', 'cinema', 'fashion'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
+        likes: 382400,
+        views: '4.6M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'surfing_otter',
+        title_en: 'Sea Otter Riding Neon Surfboard',
+        title_ru: 'Морская выдра на неоновом серфборде',
+        prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
+        prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
+        model: 'Seedance 2.5 Fun',
+        modelKey: 'seedance',
+        type: 'image',
+        categories: ['all', 'seedance', 'animals', 'viral'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
+        likes: 542000,
+        views: '6.8M',
+        aspect: '9:16 Portrait'
       },
       {
         id: 'ships_coffee',
         title_en: 'Pirate Ships Battling in Coffee Cup',
         title_ru: 'Парусные корабли в чашке кофе',
-        prompt_en: 'Hyperrealistic macro video of two miniature pirate galleons battling through foaming coffee waves inside a porcelain cup, 4K',
-        prompt_ru: 'Макро-видео двух миниатюрных пиратских парусников, сражающихся среди волн кофейной пенки внутри фарфоровой чашки, 4K',
+        prompt_en: 'Hyperrealistic macro image of two miniature pirate galleons battling through foaming coffee waves inside a porcelain cup, 8K',
+        prompt_ru: 'Макро-съемка двух миниатюрных пиратских парусников, сражающихся среди волн кофейной пенки внутри фарфоровой чашки, 8K',
         model: 'Sora 2.0 Surreal',
         modelKey: 'sora',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'sora', 'viral', 'surreal'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/ships-in-coffee.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800',
         likes: 512000,
         views: '6.4M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'monster_candle',
@@ -7434,13 +7542,13 @@
         prompt_ru: 'Очаровательный 3D пушистый монстрик задувает тающую свечу на деревянном столе, теплое уютное объемное освещение, 4K',
         model: 'Seedance 2.5 3D',
         modelKey: 'seedance',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'seedance', 'anime', 'viral'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 425300,
         views: '5.1M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'train_window',
@@ -7450,13 +7558,13 @@
         prompt_ru: 'Кинематографичное отражение в окне пассажирского поезда, мчащегося через вечерний пригород Токио, огни ночного города, 4K',
         model: 'Kling 4.0 Cinema',
         modelKey: 'kling',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'kling', 'cinema', 'anime'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/train-window.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 319200,
         views: '3.9M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'paper_airplanes',
@@ -7466,13 +7574,13 @@
         prompt_ru: 'Подводная камера плывет за стаей бумажных самолетиков оригами, плавно парящих над коралловым рифом среди экзотических рыб, 4K',
         model: 'Sora 2.0 Nature',
         modelKey: 'sora',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'sora', 'surreal', 'space'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/paper-airplanes.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
         likes: 278500,
         views: '3.1M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'cat_on_bed',
@@ -7482,29 +7590,29 @@
         prompt_ru: 'Макро-съемка пушистого рыжего кота, который нежно будит спящего хозяина в теплой постели в лучах утреннего солнца, 4K',
         model: 'Seedance 2.5 Animal',
         modelKey: 'seedance',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'seedance', 'animals', 'viral'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/cat-on-bed.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 491000,
         views: '6.0M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'chameleon',
         title_en: 'Iridescent Chameleon Shifting Colors',
         title_ru: 'Радужный хамелеон меняет окрас',
-        prompt_en: 'Ultra-detailed macro 4K video of iridescent chameleon slowly walking on rainforest branch, scales dynamically morphing neon colors',
+        prompt_en: 'Ultra-detailed macro 4K photo of iridescent chameleon slowly walking on rainforest branch, scales dynamically morphing neon colors',
         prompt_ru: 'Сверхдетальная макро-съемка хамелеона на ветке тропического леса, чешуя динамически переливается всеми неоновыми цветами, 4K',
         model: 'Kling 4.0 Macro',
         modelKey: 'kling',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'kling', 'animals', 'cinema'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/chameleon.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800',
         likes: 334000,
         views: '4.1M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'dragon_festival',
@@ -7514,13 +7622,13 @@
         prompt_ru: 'Грандиозный ночной фестиваль с гигантским светящимся драконом, извивающимся над праздничной толпой под сиянием тысяч фонариков, 4K',
         model: 'Sora 2.0 Cinematic',
         modelKey: 'sora',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'sora', 'cinema', 'viral'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/chinese-new-year-dragon.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 468000,
         views: '5.7M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'robot_gamer',
@@ -7530,13 +7638,13 @@
         prompt_ru: 'Кибернетический робот в наушниках увлеченно рубится в ретро-игровой автомат в неоновом токийском игровом зале 80-х, 4K',
         model: 'Runway Gen-3 Pro',
         modelKey: 'runway',
-        type: 'video',
+        type: 'image',
         categories: ['all', 'sora', 'anime', 'cars'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/robot-video-game.mp4',
+        videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
         likes: 387600,
         views: '4.5M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'seedream_panda',
@@ -7552,7 +7660,7 @@
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 326000,
         views: '3.8M',
-        aspect: '1:1 Square'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'shinkai_city',
@@ -7568,7 +7676,7 @@
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 419000,
         views: '5.3M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'cyber_hypercar',
@@ -7584,7 +7692,7 @@
         posterUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800',
         likes: 362000,
         views: '4.4M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'dalle_biodome',
@@ -7600,7 +7708,7 @@
         posterUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
         likes: 289000,
         views: '3.6M',
-        aspect: '16:9 Cinema'
+        aspect: '9:16 Portrait'
       },
       {
         id: 'elevenlabs_narration',
@@ -7616,11 +7724,11 @@
         posterUrl: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
         likes: 312000,
         views: '3.9M',
-        aspect: '1:1 Square'
+        aspect: '9:16 Portrait'
       }
     ];
 
-    const FEATURED_SHOWCASE_IDS = ['tokyo_walk', 'flux_couture', 'surfing_otter', 'nano_geisha', 'amalfi_coast', 'midjourney_dragon'];
+    const FEATURED_SHOWCASE_IDS = ['seedance_morph', 'kling_drift', 'flux_couture', 'nano_geisha', 'veo_fjord', 'midjourney_dragon'];
 
     function formatTrendLikes(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -7717,19 +7825,12 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const isVideo = (t.type === 'video');
-        const mediaTag = isVideo ? '📹' : (t.type === 'audio' ? '🎵' : '🖼️');
+        const mediaTag = (t.type === 'audio' ? '🎵' : '🖼️');
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3 transition duration-300 shadow-xl select-none"
-               onmouseenter="const v=this.querySelector('video'); if(v) v.play().catch(()=>{})"
-               onmouseleave="const v=this.querySelector('video'); if(v) v.pause()"
                onclick="openTrendModalById('${t.id}')">
-            ${isVideo ? `
-              <video src="${t.videoUrl}" poster="${t.posterUrl}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
-            ` : `
-              <img src="${t.posterUrl}" alt="${escapeHtml(title)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            `}
+            <img src="${t.posterUrl}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/60 pointer-events-none"></div>
 
             <!-- Top Badge & Like -->
@@ -7741,14 +7842,6 @@
                 <span>${liked ? '❤️' : '🤍'}</span> <span class="like-count font-mono">${formatTrendLikes(t.likes)}</span>
               </button>
             </div>
-
-            ${isVideo ? `
-              <div class="relative z-10 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300 my-auto">
-                <div class="w-10 h-10 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white text-sm shadow-xl">
-                  ▶
-                </div>
-              </div>
-            ` : ''}
 
             <!-- Bottom Information -->
             <div class="relative z-10 space-y-1 bg-gradient-to-t from-black/95 via-black/80 to-transparent -mx-3 -mb-3 p-3 pt-5 rounded-b-2xl">
@@ -7790,20 +7883,13 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const isVideo = (t.type === 'video');
-        const mediaTag = isVideo ? '📹' : (t.type === 'audio' ? '🎵' : '🖼️');
+        const mediaTag = (t.type === 'audio' ? '🎵' : '🖼️');
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
-               onmouseenter="const v=this.querySelector('video'); if(v) v.play().catch(()=>{})"
-               onmouseleave="const v=this.querySelector('video'); if(v) v.pause()"
                onclick="openTrendModalById('${t.id}')">
             
-            ${isVideo ? `
-              <video src="${t.videoUrl}" poster="${t.posterUrl}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
-            ` : `
-              <img src="${t.posterUrl}" alt="${escapeHtml(title)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
-            `}
+            <img src="${t.posterUrl}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/60 pointer-events-none"></div>
 
             <!-- Top Floating Bar: Model Badge + Like Counter -->
@@ -7816,20 +7902,11 @@
               </button>
             </div>
 
-            <!-- Center Hover Play Button (For Videos) -->
-            ${isVideo ? `
-              <div class="relative z-10 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300 my-auto">
-                <div class="w-12 h-12 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg shadow-2xl">
-                  ▶
-                </div>
-              </div>
-            ` : ''}
-
             <!-- Bottom Information Panel (NO USERNAMES) -->
             <div class="relative z-10 space-y-2">
               <div class="flex items-center justify-between text-[10px] text-stone-400">
                 <span class="inline-flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <span>✦</span> <span>${isVideo ? 'AI Video' : (t.type === 'audio' ? 'AI Audio' : 'AI 4K Photo')}</span>
+                  <span>✦</span> <span>${t.type === 'audio' ? 'AI Audio' : 'AI 4K Photo'}</span>
                 </span>
                 <span class="text-stone-300 font-mono">👁️ ${t.views}</span>
               </div>
