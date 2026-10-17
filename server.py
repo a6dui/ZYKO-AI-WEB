@@ -1091,6 +1091,9 @@ def create_app():
     public_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
     if os.path.exists(public_dir):
         app.router.add_static("/static", public_dir)
+        media_dir = os.path.join(public_dir, "media")
+        if os.path.exists(media_dir):
+            app.router.add_static("/media", media_dir)
         
     return app
 
