@@ -236,7 +236,7 @@ async def get_or_create_demo_user() -> dict:
             if row:
                 return dict(row)
         cursor_ins = await db.execute(
-            "INSERT INTO users (email, name, tokens, tier) VALUES ('foryafrom@gmail.com', 'Дима', 5.5, 'Free')"
+            "INSERT INTO users (email, name, tokens, tier) VALUES ('foryafrom@gmail.com', 'Дима', 1000, 'Free')"
         )
         await db.commit()
         user_id = cursor_ins.lastrowid
