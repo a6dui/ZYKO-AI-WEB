@@ -137,6 +137,165 @@
     ::-webkit-scrollbar-thumb { background: #1c2723; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #10b981; }
 
+    /* ==========================================================================
+       ZYKO 2026 LUXURY STUDIO FORM CONTROLS (RANGE SLIDERS, SWITCHES, SELECTS)
+       ========================================================================== */
+    
+    /* Global modern input[type="range"] styling */
+    input[type="range"].zyko-slider,
+    input[type="range"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 22px;
+      background: transparent;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      vertical-align: middle;
+    }
+    input[type="range"]:focus {
+      outline: none;
+    }
+
+    /* Webkit Slider Track */
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 5px;
+      cursor: pointer;
+      border-radius: 9999px;
+      background: linear-gradient(
+        to right,
+        #10b981 0%,
+        #10b981 var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.12) var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.12) 100%
+      );
+      transition: background 0.15s ease;
+      border: none;
+    }
+    input[type="range"]:hover::-webkit-slider-runnable-track {
+      background: linear-gradient(
+        to right,
+        #34d399 0%,
+        #34d399 var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.18) var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.18) 100%
+      );
+    }
+
+    /* Webkit Slider Thumb */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+      margin-top: -5px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(16, 185, 129, 0.5);
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, background-color 0.15s ease;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    input[type="range"]:hover::-webkit-slider-thumb {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5), 0 3px 10px rgba(0, 0, 0, 0.6), 0 0 14px rgba(16, 185, 129, 0.9);
+    }
+    input[type="range"]:active::-webkit-slider-thumb {
+      transform: scale(1.3);
+      background: #34d399;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.6), 0 0 18px rgba(16, 185, 129, 1);
+    }
+
+    /* Range slider with amber accent (for audio / elevenlabs studio) */
+    .slider-amber::-webkit-slider-runnable-track,
+    .slider-amber:hover::-webkit-slider-runnable-track {
+      background: linear-gradient(
+        to right,
+        #f59e0b 0%,
+        #f59e0b var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.12) var(--slider-pct, 50%),
+        rgba(255, 255, 255, 0.12) 100%
+      );
+    }
+    .slider-amber::-webkit-slider-thumb {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+    .slider-amber:hover::-webkit-slider-thumb {
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5), 0 3px 10px rgba(0, 0, 0, 0.6), 0 0 14px rgba(245, 158, 11, 0.9);
+    }
+    .slider-amber:active::-webkit-slider-thumb {
+      background: #fbbf24;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.6), 0 0 18px rgba(245, 158, 11, 1);
+    }
+
+    /* Firefox Track & Thumb */
+    input[type="range"]::-moz-range-track {
+      width: 100%;
+      height: 5px;
+      cursor: pointer;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+    }
+    input[type="range"]::-moz-range-progress {
+      height: 5px;
+      border-radius: 9999px;
+      background: #10b981;
+    }
+    .slider-amber::-moz-range-progress {
+      background: #f59e0b;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(16, 185, 129, 0.5);
+      transition: transform 0.15s ease;
+    }
+    input[type="range"]:hover::-moz-range-thumb {
+      transform: scale(1.2);
+    }
+    input[type="range"]:active::-moz-range-thumb {
+      transform: scale(1.3);
+      background: #34d399;
+    }
+
+    /* Luxury Studio Selects (Replaces 2015 browser dropdowns everywhere) */
+    select {
+      background-color: #121615 !important;
+      color: #f5f5f4 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 0.75rem !important;
+      padding-right: 2rem !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a8a29e' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+      background-position: right 0.5rem center !important;
+      background-repeat: no-repeat !important;
+      background-size: 1.25em 1.25em !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    select:hover {
+      border-color: rgba(16, 185, 129, 0.4) !important;
+    }
+    select:focus {
+      outline: none !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+    }
+    select option {
+      background-color: #121615 !important;
+      color: #f5f5f4 !important;
+      padding: 8px 12px !important;
+    }
+
     /* Active Nav Tab Style */
     .nav-tab.active {
       color: #34d399;
@@ -1269,27 +1428,25 @@
         <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
             <!-- Dynamic Voice / Model Icon (Opens Voice Dropdown / Modal) -->
-            <div id="audio-model-icon" onclick="toggleVoicePickerDropdown()" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 flex items-center justify-center text-xl sm:text-2xl font-black mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition tracking-tighter" title="ElevenLabs Voice & Audio Studio">
+            <div id="audio-model-icon" onclick="openVoiceCatalogModal()" class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/60 text-white flex items-center justify-center text-2xl font-black mx-auto mb-3.5 shadow-2xl cursor-pointer hover:scale-105 transition tracking-widest select-none" title="ElevenLabs Voice Catalog">
               ||
             </div>
             <div class="flex items-center justify-center gap-2 mb-2">
-              <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">ElevenLabs Voice & Audio</h2>
-              <span id="audio-model-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">v4 Neural • 1,240+ Voices</span>
+              <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">Elevenlabs</h2>
             </div>
-            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
-              Studio-grade voice cloning, emotional text-to-speech with tags like [whispering], sound effects, and voice isolation across 29 languages.
+            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
+              Eleven v4 creates natural, emotionally expressive speech with precise control through tags. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
-            <div class="mb-5 flex items-center justify-center gap-2">
-              <button type="button" onclick="toggleVoicePickerDropdown()" class="inline-flex items-center gap-2 text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-4 py-1.5 rounded-full text-xs font-bold transition shadow active:scale-95">
-                <span>🎙️ Каталог голосов (1,240+ дикторов и персонажей)</span> <span class="text-[10px]">▾</span>
-              </button>
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-3 sm:mb-4">
+              <span class="text-stone-300">Key capabilities:</span>
+              <span class="text-stone-400">emotion tags</span> •
+              <span class="text-stone-400">accent-free voice</span> •
+              <span class="text-stone-400">long-form content</span>
             </div>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
-              <span class="text-emerald-400">Key capabilities:</span>
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">emotion modulation</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">instant voice cloning</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">cinematic SFX</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">voice isolation</span>
+            <div class="mb-5 flex items-center justify-center gap-2">
+              <button type="button" onclick="openVoiceCatalogModal()" class="inline-flex items-center gap-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 px-4 py-2 rounded-full text-xs font-semibold transition shadow active:scale-95">
+                <span class="text-amber-400">🎙️</span> <span>Каталог голосов (All presets & Favorites)</span> <span class="text-[10px] text-stone-500">▾</span>
+              </button>
             </div>
 
             <!-- Audio Generation Live Gallery / Stream -->
@@ -1305,10 +1462,10 @@
 
           <!-- Bottom Prompt Box (Exact same structure & elegance as Image and Video) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
-            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-amber-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1.5 text-stone-400">
-                  <span>🔒</span> <span id="audio-input-hint-text" class="truncate">Write script text and use tags like [whispering], [laughing] for emotions</span>
+                  <span>🔒</span> <span id="audio-input-hint-text" class="truncate">Type text with tags like [laughing] for more expressive speech...</span>
                 </span>
                 <span id="audio-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 10000</span>
               </div>
@@ -1321,7 +1478,7 @@
               </div>
 
               <!-- Textarea for script / prompt -->
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Enter script text to voiceover with ElevenLabs HD voices... (use tags like [whispering], [laughing])" class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Type text with tags like [laughing] for more expressive speech..." class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
 
               <!-- Hidden file input for paperclip -->
               <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
@@ -1398,7 +1555,7 @@
                 <button title="Brush highlight mask" class="text-stone-400 hover:text-emerald-400 transition flex items-center gap-1.5 font-medium text-xs">
                   <span>🖌️</span> Brush: 24px
                 </button>
-                <input type="range" min="5" max="80" value="24" class="w-24 sm:w-28 accent-emerald-400">
+                <input type="range" min="5" max="80" value="24" class="zyko-slider w-24 sm:w-28">
               </div>
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
@@ -1658,11 +1815,11 @@
             <div id="sec-img-quality" class="space-y-3 text-[11px] text-stone-400">
               <div>
                 <div class="flex justify-between mb-1"><span>Sampling steps:</span><span id="steps-val" class="font-bold text-white">30</span></div>
-                <input type="range" min="15" max="50" value="30" oninput="document.getElementById('steps-val').textContent = this.value" class="w-full accent-emerald-400">
+                <input type="range" min="15" max="50" value="30" oninput="document.getElementById('steps-val').textContent = this.value" class="zyko-slider w-full">
               </div>
               <div>
                 <div class="flex justify-between mb-1"><span>CFG Scale:</span><span id="cfg-val" class="font-bold text-white">7.5</span></div>
-                <input type="range" min="1" max="15" step="0.5" value="7.5" oninput="document.getElementById('cfg-val').textContent = this.value" class="w-full accent-emerald-400">
+                <input type="range" min="1" max="15" step="0.5" value="7.5" oninput="document.getElementById('cfg-val').textContent = this.value" class="zyko-slider w-full">
               </div>
             </div>
           </div>
@@ -1863,7 +2020,7 @@
           <div class="flex items-center justify-between font-bold text-stone-200">
             <div class="flex items-center gap-2">
               <span class="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center text-xs font-black tracking-tighter text-white">||</span>
-              <span class="text-xs uppercase tracking-wider text-emerald-400 font-extrabold">ElevenLabs Audio</span>
+              <span class="text-xs uppercase tracking-wider text-amber-400 font-extrabold">ElevenLabs Audio</span>
             </div>
             <span id="active-audio-model-badge" class="text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-mono font-bold">Eleven v4 Neural</span>
           </div>
@@ -1872,7 +2029,7 @@
           <div class="space-y-1">
             <label class="block text-[11px] font-bold text-stone-300">Режим студии</label>
             <div class="grid grid-cols-2 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl text-xs font-semibold">
-              <button type="button" id="audio-tab-tts" onclick="setAudioMode('tts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-emerald-500/20 border border-emerald-500/40 shadow">
+              <button type="button" id="audio-tab-tts" onclick="setAudioMode('tts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-amber-500/20 border border-amber-500/40 shadow">
                 <span>🗣️</span> <span>Озвучка (TTS)</span>
               </button>
               <button type="button" id="audio-tab-clone" onclick="setAudioMode('clone')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
@@ -1887,143 +2044,187 @@
             </div>
           </div>
 
-          <!-- ================= MODE 1: TEXT TO SPEECH (TTS) ================= -->
-          <div id="audio-mode-panel-tts" class="space-y-3.5">
-            <!-- Selected Voice Card (Clickable to open search picker) -->
-            <div class="space-y-1.5 relative">
-              <div class="flex items-center justify-between">
-                <label class="block text-xs font-bold text-stone-200">Выбор голоса</label>
-                <span id="audio-voices-count-badge" class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">1,240+ Голосов</span>
+          <!-- ================= MODE 1: TEXT TO SPEECH (TTS) (SCREENSHOT 1) ================= -->
+          <div id="audio-mode-panel-tts" class="space-y-4">
+            <!-- Hidden synchronized input for audio-model-select -->
+            <input type="hidden" id="audio-model-select" value="eleven_v4">
+
+            <!-- 1. MODEL SELECTION ACCORDION (Screenshot 1: Model selection ▴) -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between font-bold text-stone-200 cursor-pointer select-none" onclick="toggleControlSection('sec-audio-model')">
+                <span class="text-xs">Model selection</span>
+                <span id="caret-sec-audio-model" class="text-stone-400 text-xs transition-transform duration-200">▴</span>
               </div>
               
-              <!-- Voice trigger card -->
-              <div onclick="toggleVoicePickerDropdown()" class="cursor-pointer bg-[#141b18] hover:bg-[#18231f] border border-white/15 hover:border-emerald-500/50 rounded-2xl p-3 transition shadow group select-none">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3 min-w-0">
-                    <div id="selected-voice-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center text-lg font-bold text-emerald-300 shadow shrink-0">
-                      🎙️
-                    </div>
-                    <div class="min-w-0">
-                      <div class="flex items-center gap-1.5">
-                        <span id="selected-voice-name" class="font-bold text-white text-xs sm:text-sm group-hover:text-emerald-400 transition truncate">Rachel</span>
-                        <span id="selected-voice-cat-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold uppercase tracking-wider shrink-0">Official</span>
-                      </div>
-                      <div id="selected-voice-tags" class="text-[10px] text-stone-400 truncate mt-0.5">Studio Narrator • Expressive • EN/RU</div>
-                    </div>
+              <div id="sec-audio-model" class="space-y-2">
+                <!-- Box 1: Provider Branding (|| Elevenlabs ▾) -->
+                <div class="flex items-center justify-between bg-[#121615] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-stone-200 select-none">
+                  <div class="flex items-center gap-2.5">
+                    <span class="font-black tracking-widest text-white text-xs">||</span>
+                    <span class="font-semibold text-white">Elevenlabs</span>
                   </div>
-                  <div class="flex items-center gap-2 shrink-0">
-                    <button type="button" id="btn-active-voice-preview" onclick="event.stopPropagation(); playActiveVoicePreview()" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Listen to Sample">
-                      ▶
-                    </button>
-                    <span id="voice-picker-caret" class="text-stone-400 text-xs transition-transform duration-200">▾</span>
-                  </div>
+                  <span class="text-stone-500 text-xs">▾</span>
                 </div>
-              </div>
 
-              <!-- Searchable Voice Picker Dropdown (Expandable) -->
-              <div id="voice-picker-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 z-50 bg-[#0d1210] border border-white/20 rounded-2xl p-3 shadow-2xl space-y-2 backdrop-blur-xl">
-                <!-- Search input -->
+                <!-- Box 2: Version Dropdown (Eleven v4 ▾) -->
                 <div class="relative">
-                  <input type="text" id="voice-search-input" oninput="filterVoicesList(this.value)" placeholder="🔍 Search voice, actor or character..." class="w-full bg-black/60 border border-white/15 focus:border-emerald-400 rounded-xl pl-3 pr-8 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
-                  <button type="button" onclick="clearVoiceSearch()" class="absolute right-2.5 top-2 text-stone-500 hover:text-white text-xs">✕</button>
-                </div>
+                  <button type="button" id="btn-audio-model-version" onclick="toggleAudioModelDropdown()" class="w-full flex items-center justify-between bg-[#121615] hover:bg-[#161d1a] border border-amber-500/40 hover:border-amber-400 rounded-xl px-3 py-2.5 text-left transition shadow group">
+                    <span id="label-audio-model-version" class="text-xs font-bold text-amber-400">Eleven v4</span>
+                    <span id="caret-audio-model-version" class="text-stone-400 group-hover:text-amber-400 text-xs transition-transform duration-200">▾</span>
+                  </button>
 
-                <!-- Category Filter Pills -->
-                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 text-[10px] font-semibold text-stone-400">
-                  <button type="button" onclick="filterVoiceCategory('all', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">Все</button>
-                  <button type="button" onclick="filterVoiceCategory('elevenlabs', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">ElevenLabs</button>
-                  <button type="button" onclick="filterVoiceCategory('streamers', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Стримеры</button>
-                  <button type="button" onclick="filterVoiceCategory('actors', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Актеры</button>
-                  <button type="button" onclick="filterVoiceCategory('characters', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Персонажи</button>
-                  <button type="button" onclick="filterVoiceCategory('cloned', this)" class="voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0">Мои клоны</button>
-                </div>
-
-                <!-- Scrollable Voices List -->
-                <div id="voice-items-container" class="max-h-64 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-                  <!-- Dynamically rendered via JS -->
+                  <!-- Custom Dropdown Menu -->
+                  <div id="dropdown-menu-audio-model" class="hidden absolute left-0 right-0 top-full mt-1.5 z-40 bg-[#0e1311] border border-white/20 rounded-xl p-1.5 shadow-2xl space-y-1 backdrop-blur-xl">
+                    <div onclick="selectAudioModelVersion('eleven_v4', 'Eleven v4')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs transition">
+                      <span>Eleven v4</span>
+                      <span class="text-[10px] text-amber-400/80 font-mono">10 ZK</span>
+                    </div>
+                    <div onclick="selectAudioModelVersion('eleven_turbo_v2_5', 'Eleven v4 Turbo')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
+                      <span>Eleven v4 Turbo</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                    </div>
+                    <div onclick="selectAudioModelVersion('eleven_v3_5', 'Eleven v3')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
+                      <span>Eleven v3</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                    </div>
+                    <div onclick="selectAudioModelVersion('eleven_multilingual_v2', 'Eleven v2')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
+                      <span>Eleven v2</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                    </div>
+                    <div onclick="selectAudioModelVersion('music_2_5', 'Elevenlabs Music 2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
+                      <span>Elevenlabs Music 2.5</span>
+                      <span class="text-[10px] text-emerald-400 font-mono">20 ZK</span>
+                    </div>
+                    <div onclick="selectAudioModelVersion('eleven_flash_v2_5', 'Eleven Flash v2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
+                      <span>Eleven Flash v2.5</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Model Selection -->
-            <div class="space-y-1.5">
-              <label class="block text-xs font-bold text-stone-200">Нейросетевая модель</label>
-              <div class="bg-[#141b18] border border-white/15 rounded-xl p-2.5">
-                <select id="audio-model-select" onchange="onAudioModelChange(this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
-                  <option value="eleven_v4" selected>Eleven v4 Neural — NEW (Революционная эмоциональная модуляция, шепот и дыхание • 10 ZK)</option>
-                  <option value="music_2_5">ElevenLabs Music 2.5 — NEW (Синтез песен, битов и вокала студийного качества • 20 ZK)</option>
-                  <option value="eleven_v3_5">Eleven v3.5 Neural (Сверхреалистичная эмоциональная озвучка • 10 ZK)</option>
-                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик 150мс • 10 ZK)</option>
-                  <option value="eleven_multilingual_v2">Eleven Multilingual v2 (29 языков — Студийный стандарт • 10 ZK)</option>
-                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Сверхнизкая задержка 75мс • 10 ZK)</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Voice Settings Accordion (ElevenLabs Exact Sliders) -->
-            <div class="pt-2 border-t border-white/10">
-              <div class="flex items-center justify-between font-bold text-stone-300 cursor-pointer py-1.5 select-none" onclick="toggleControlSection('sec-audio-params')">
-                <span class="flex items-center gap-1.5 text-xs">
-                  <span>⚙️</span> <span>Параметры голоса (Voice Settings)</span>
-                </span>
-                <span id="caret-sec-audio-params" class="text-stone-400 text-xs">▾</span>
+            <!-- 2. GENERATION PARAMETERS ACCORDION (Screenshot 1: Generation parameters ▾) -->
+            <div class="pt-3 border-t border-white/10 space-y-2">
+              <div class="flex items-center justify-between font-bold text-stone-200 cursor-pointer select-none" onclick="toggleControlSection('sec-audio-params')">
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span>⚙️</span> <span>Generation parameters</span>
+                </div>
+                <span id="caret-sec-audio-params" class="text-stone-400 text-xs transition-transform duration-200">▾</span>
               </div>
 
-              <div id="sec-audio-params" class="space-y-3 pt-2 text-[11px] text-stone-400">
+              <div id="sec-audio-params" class="space-y-3.5 pt-1 text-[11px] text-stone-400">
                 <!-- Stability -->
-                <div>
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-medium text-stone-300">Стабильность (Stability):</span>
-                    <span id="val-audio-stability" class="text-emerald-400 font-bold font-mono">50%</span>
+                <div class="space-y-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-medium text-stone-300">Stability</span>
+                    <span id="val-audio-stability" class="text-xs font-bold text-amber-400 font-mono">50%</span>
                   </div>
-                  <input type="range" id="slider-audio-stability" min="0" max="100" value="50" oninput="document.getElementById('val-audio-stability').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
-                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
-                    <span>Живее / Переменчивее</span>
-                    <span>Стабильнее / Монотоннее</span>
+                  <input type="range" id="slider-audio-stability" min="0" max="100" value="50" oninput="document.getElementById('val-audio-stability').textContent = this.value + '%'" class="zyko-slider slider-amber">
+                  <div class="flex justify-between text-[9px] text-stone-500">
+                    <span>More variable</span>
+                    <span>More stable</span>
                   </div>
                 </div>
 
-                <!-- Similarity / Clarity -->
-                <div>
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-medium text-stone-300">Четкость и сходство (Clarity):</span>
-                    <span id="val-audio-similarity" class="text-emerald-400 font-bold font-mono">75%</span>
+                <!-- Clarity / Similarity -->
+                <div class="space-y-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-medium text-stone-300">Clarity & Similarity</span>
+                    <span id="val-audio-similarity" class="text-xs font-bold text-amber-400 font-mono">75%</span>
                   </div>
-                  <input type="range" id="slider-audio-similarity" min="0" max="100" value="75" oninput="document.getElementById('val-audio-similarity').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
-                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
-                    <span>Низкое (0%)</span>
-                    <span>Максимум сходства (100%)</span>
+                  <input type="range" id="slider-audio-similarity" min="0" max="100" value="75" oninput="document.getElementById('val-audio-similarity').textContent = this.value + '%'" class="zyko-slider slider-amber">
+                  <div class="flex justify-between text-[9px] text-stone-500">
+                    <span>Low (0%)</span>
+                    <span>High (100%)</span>
                   </div>
                 </div>
 
                 <!-- Style Exaggeration -->
-                <div>
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-medium text-stone-300">Экспрессия стиля (Style Exaggeration):</span>
-                    <span id="val-audio-style" class="text-emerald-400 font-bold font-mono">15%</span>
+                <div class="space-y-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-medium text-stone-300">Style Exaggeration</span>
+                    <span id="val-audio-style" class="text-xs font-bold text-amber-400 font-mono">15%</span>
                   </div>
-                  <input type="range" id="slider-audio-style" min="0" max="100" value="15" oninput="document.getElementById('val-audio-style').textContent = this.value + '%'" class="w-full accent-emerald-400 cursor-pointer">
-                  <div class="flex justify-between text-[9px] text-stone-500 mt-0.5">
-                    <span>Без акцента (0%)</span>
-                    <span>Утрированный стиль (100%)</span>
+                  <input type="range" id="slider-audio-style" min="0" max="100" value="15" oninput="document.getElementById('val-audio-style').textContent = this.value + '%'" class="zyko-slider slider-amber">
+                  <div class="flex justify-between text-[9px] text-stone-500">
+                    <span>None (0%)</span>
+                    <span>Exaggerated (100%)</span>
                   </div>
                 </div>
 
-                <!-- Speaker Boost -->
-                <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5">
+                <!-- Speaker Boost (iOS switch toggle) -->
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#121615] border border-white/10">
                   <div class="text-[11px] text-stone-300 font-medium">
                     <div>Speaker Boost</div>
-                    <div class="text-[9px] text-stone-500">Усиливает тембр оригинального диктора</div>
+                    <div class="text-[9px] text-stone-500">Boosts original speaker timbre</div>
                   </div>
-                  <input type="checkbox" id="toggle-speaker-boost" checked class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
-                </div>
-
-                <div class="text-right">
-                  <button type="button" onclick="resetAudioVoiceSettings()" class="text-[10px] text-stone-500 hover:text-emerald-400 underline transition">
-                    Сбросить к стандартным
-                  </button>
+                  <label class="relative inline-flex items-center cursor-pointer select-none">
+                    <input type="checkbox" id="toggle-speaker-boost" checked class="sr-only peer">
+                    <div class="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all after:shadow peer-checked:bg-amber-500 peer-checked:shadow-[0_0_12px_rgba(245,158,11,0.5)]"></div>
+                  </label>
                 </div>
               </div>
+            </div>
+
+            <!-- 3. STYLE & VOICE ACCORDION (Screenshot 1: Style ✳️) -->
+            <div class="pt-3 border-t border-white/10 space-y-2">
+              <div class="flex items-center justify-between font-bold text-stone-200 cursor-pointer select-none" onclick="toggleControlSection('sec-audio-style')">
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span>Style</span> <span class="text-rose-400 text-xs">✳️</span>
+                </div>
+                <span id="caret-sec-audio-style" class="text-stone-400 text-xs transition-transform duration-200">▾</span>
+              </div>
+
+              <div id="sec-audio-style" class="space-y-2">
+                <label class="block text-[11px] font-bold text-stone-300">Voice</label>
+                
+                <!-- Select Voice Button (Screenshot 1: ||||| Select voice) -->
+                <button type="button" onclick="openVoiceCatalogModal()" class="w-full flex items-center justify-center gap-2.5 bg-[#121615] hover:bg-[#18231f] border border-white/15 hover:border-amber-400/60 rounded-xl py-2.5 px-4 text-xs font-bold text-white transition shadow group">
+                  <span class="inline-flex items-center gap-0.5 text-stone-400 group-hover:text-amber-400">
+                    <span class="w-0.5 h-3 bg-current rounded-full inline-block"></span>
+                    <span class="w-0.5 h-4 bg-current rounded-full inline-block animate-pulse"></span>
+                    <span class="w-0.5 h-2 bg-current rounded-full inline-block"></span>
+                    <span class="w-0.5 h-3.5 bg-current rounded-full inline-block animate-pulse"></span>
+                    <span class="w-0.5 h-2.5 bg-current rounded-full inline-block"></span>
+                  </span>
+                  <span id="btn-select-voice-label">Select voice</span>
+                </button>
+
+                <!-- Active Voice Card Preview -->
+                <div id="active-voice-preview-card" onclick="openVoiceCatalogModal()" class="cursor-pointer bg-[#141b18] hover:bg-[#18231f] border border-amber-500/30 hover:border-amber-400 rounded-2xl p-3 transition shadow group select-none">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <div id="selected-voice-avatar" class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-base font-bold text-amber-300 shadow shrink-0">
+                        🎙️
+                      </div>
+                      <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                          <span id="selected-voice-name" class="font-bold text-white text-xs group-hover:text-amber-400 transition truncate">Adam</span>
+                          <span id="selected-voice-cat-badge" class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold uppercase tracking-wider shrink-0">Official</span>
+                        </div>
+                        <div id="selected-voice-tags" class="text-[10px] text-stone-400 truncate mt-0.5">Premier Studio Narrator • Deep • EN/RU</div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                      <button type="button" id="btn-active-voice-preview" onclick="event.stopPropagation(); playActiveVoicePreview()" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-amber-500/20 text-stone-300 hover:text-amber-400 border border-white/10 flex items-center justify-center text-xs transition" title="Listen to Sample">
+                        ▶
+                      </button>
+                      <span class="text-stone-400 group-hover:text-white text-xs">▾</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Actions Bar (Screenshot 1: Reset all ↺ | Open all ▴) -->
+            <div class="flex items-center justify-between pt-3 border-t border-white/10 text-xs text-stone-400">
+              <button type="button" onclick="resetAudioVoiceSettings()" class="hover:text-white transition flex items-center gap-1.5">
+                <span>↺</span> <span>Reset all</span>
+              </button>
+              <button type="button" onclick="toggleAllAudioAccordions()" id="btn-toggle-all-accordions" class="hover:text-white transition flex items-center gap-1.5">
+                <span id="label-toggle-all-accordions">Open all ▴</span>
+              </button>
             </div>
           </div>
 
@@ -2088,9 +2289,9 @@
             <div class="space-y-1">
               <div class="flex justify-between items-center text-xs">
                 <span class="font-bold text-stone-300">Длительность эффекта:</span>
-                <span id="val-sfx-duration" class="text-emerald-400 font-mono font-bold">4.0s</span>
+                <span id="val-sfx-duration" class="text-amber-400 font-mono font-bold">4.0s</span>
               </div>
-              <input type="range" id="slider-sfx-duration" min="1.0" max="11.0" step="0.5" value="4.0" oninput="document.getElementById('val-sfx-duration').textContent = parseFloat(this.value).toFixed(1) + 's'" class="w-full accent-emerald-400 cursor-pointer">
+              <input type="range" id="slider-sfx-duration" min="1.0" max="11.0" step="0.5" value="4.0" oninput="document.getElementById('val-sfx-duration').textContent = parseFloat(this.value).toFixed(1) + 's'" class="zyko-slider slider-amber w-full cursor-pointer">
               <div class="flex justify-between text-[9px] text-stone-500">
                 <span>1.0 сек</span>
                 <span>11.0 сек</span>
@@ -2184,7 +2385,7 @@
             </div>
             <div id="sec-tool-highlight" class="space-y-2 text-[11px] text-stone-400">
               <div class="flex justify-between"><span>Brush opacity:</span><span class="text-white font-bold">100%</span></div>
-              <input type="range" min="20" max="100" value="100" class="w-full accent-emerald-400">
+              <input type="range" min="20" max="100" value="100" class="zyko-slider w-full">
             </div>
           </div>
 
@@ -3593,6 +3794,101 @@
       <!-- Models List Container -->
       <div id="image-models-modal-list" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar max-h-[50vh] divide-y divide-white/5">
         <!-- Rendered dynamically by renderImageModelsList() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ELEVENLABS LUXURY VOICE CATALOG MODAL (SCREENSHOT 2 REPLICA) ================= -->
+  <div id="voice-catalog-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 modal-backdrop backdrop-blur-xl" onclick="if(event.target === this) closeVoiceCatalogModal()">
+    <div class="bg-[#0e1311] border border-white/15 rounded-3xl p-4 sm:p-6 max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden" onclick="event.stopPropagation()">
+      <!-- iOS Drag handle for mobile -->
+      <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-3 sm:hidden"></div>
+
+      <!-- Top Row: Search input + Filter toggle + Tabs (All presets | Favorites) + Close button -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+        <!-- Search & Filter button -->
+        <div class="flex items-center gap-2 flex-1">
+          <div class="relative flex-1">
+            <span class="absolute left-3.5 top-2.5 text-stone-500 text-xs">🔍</span>
+            <input type="text" id="voice-modal-search" oninput="onVoiceSearchChange(this.value)" placeholder="Search voice..." class="w-full bg-[#161d1a] border border-white/10 focus:border-amber-400/60 rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-stone-500 focus:outline-none transition">
+            <button type="button" onclick="clearVoiceCatalogSearch()" id="btn-clear-voice-search" class="hidden absolute right-2.5 top-2 text-stone-500 hover:text-white text-xs">✕</button>
+          </div>
+          <!-- Filter toggle button -->
+          <button type="button" onclick="toggleVoiceFiltersDrawer()" id="btn-toggle-voice-filters" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-amber-400 flex items-center justify-center text-xs transition shrink-0" title="Toggle Filters">
+            🔻
+          </button>
+        </div>
+
+        <!-- Right: Tabs (All presets | Favorites) + Close -->
+        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+          <div class="flex items-center gap-1 p-1 bg-black/40 border border-white/10 rounded-xl text-xs font-semibold">
+            <button type="button" id="tab-voice-all" onclick="setVoiceCatalogTab('all')" class="px-3 py-1.5 rounded-lg bg-white/10 text-white font-bold transition">
+              All presets <span id="count-voice-all" class="text-[10px] text-stone-400 font-normal">(45)</span>
+            </button>
+            <button type="button" id="tab-voice-favs" onclick="setVoiceCatalogTab('favorites')" class="px-3 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold transition">
+              Favorites <span id="count-voice-favs" class="text-[10px] text-stone-400 font-normal">(0)</span>
+            </button>
+          </div>
+          <button type="button" onclick="closeVoiceCatalogModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white flex items-center justify-center text-sm transition">✕</button>
+        </div>
+      </div>
+
+      <!-- Filter Row (Screenshot 2: Filter | Gender ▾ | Age ▾ | Use case ▾ | Language ▾ | Accent ▾ | ✕) -->
+      <div id="voice-filters-drawer" class="py-2.5 border-b border-white/10 flex flex-wrap items-center gap-2 text-xs text-stone-300">
+        <span class="text-stone-400 font-semibold text-[11px] mr-1">Filter</span>
+        
+        <!-- Gender Filter -->
+        <select id="filter-voice-gender" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+          <option value="all">Gender ▾</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
+        <!-- Age Filter -->
+        <select id="filter-voice-age" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+          <option value="all">Age ▾</option>
+          <option value="young">Young</option>
+          <option value="middle_aged">Middle-aged</option>
+          <option value="senior">Senior</option>
+        </select>
+
+        <!-- Use case Filter -->
+        <select id="filter-voice-usecase" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+          <option value="all">Use case ▾</option>
+          <option value="narration">Narration</option>
+          <option value="characters">Characters</option>
+          <option value="conversational">Conversational</option>
+          <option value="news">News</option>
+          <option value="audiobooks">Audiobooks</option>
+        </select>
+
+        <!-- Language Filter -->
+        <select id="filter-voice-lang" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+          <option value="all">Language ▾</option>
+          <option value="multilingual">Multilingual</option>
+          <option value="en">English</option>
+          <option value="ru">Russian</option>
+        </select>
+
+        <!-- Accent Filter -->
+        <select id="filter-voice-accent" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+          <option value="all">Accent ▾</option>
+          <option value="american">American</option>
+          <option value="british">British</option>
+          <option value="neutral">Neutral</option>
+          <option value="slavic">Slavic</option>
+          <option value="australian">Australian</option>
+        </select>
+
+        <!-- Clear all filters button -->
+        <button type="button" onclick="resetVoiceCatalogFilters()" class="w-6 h-6 rounded-md bg-white/5 hover:bg-rose-500/20 text-stone-400 hover:text-rose-400 flex items-center justify-center text-xs transition" title="Clear filters">
+          ✕
+        </button>
+      </div>
+
+      <!-- Voice Cards Scrollable Container (Screenshot 2) -->
+      <div id="voice-catalog-cards" class="flex-1 overflow-y-auto space-y-2.5 py-3 pr-1.5 custom-scrollbar max-h-[62vh]">
+        <!-- Rendered dynamically by renderVoiceCatalogCards() -->
       </div>
     </div>
   </div>
@@ -5612,6 +5908,7 @@
               else grp.classList.add('hidden');
             }
           });
+          setTimeout(initZykoSliders, 40);
         }
       }
     }
@@ -6080,73 +6377,348 @@
       if (mobModelSub && currentTab === 'audio') mobModelSub.textContent = label;
     }
 
-    // Comprehensive 1,240+ Voices Registry (Official ElevenLabs + Streamers + Actors + Characters)
+    // ==========================================================================
+    // 2026 LUXURY SLIDERS CONTROLLER (UNIVERSAL DYNAMIC TRACK FILL)
+    // ==========================================================================
+    function updateSliderProgress(slider) {
+      if (!slider) return;
+      const min = parseFloat(slider.min !== undefined && slider.min !== '' ? slider.min : 0);
+      const max = parseFloat(slider.max !== undefined && slider.max !== '' ? slider.max : 100);
+      const val = parseFloat(slider.value !== undefined && slider.value !== '' ? slider.value : min);
+      const range = max - min;
+      const pct = range > 0 ? Math.max(0, Math.min(100, ((val - min) / range) * 100)) : 50;
+      slider.style.setProperty('--slider-pct', pct + '%');
+    }
+
+    function initZykoSliders() {
+      document.querySelectorAll('input[type="range"]').forEach(slider => {
+        updateSliderProgress(slider);
+        if (!slider.__hasProgressHandler) {
+          slider.__hasProgressHandler = true;
+          slider.addEventListener('input', () => updateSliderProgress(slider));
+          slider.addEventListener('change', () => updateSliderProgress(slider));
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initZykoSliders);
+    } else {
+      setTimeout(initZykoSliders, 50);
+    }
+
+    // ==========================================================================
+    // AUDIO STUDIO: MODEL SELECTION & ACCORDIONS (SCREENSHOT 1)
+    // ==========================================================================
+    function toggleAudioModelDropdown(forceState) {
+      const menu = document.getElementById('dropdown-menu-audio-model');
+      const caret = document.getElementById('caret-audio-model-version');
+      if (!menu) return;
+      const shouldOpen = forceState !== undefined ? forceState : menu.classList.contains('hidden');
+      if (shouldOpen) {
+        menu.classList.remove('hidden');
+        if (caret) caret.style.transform = 'rotate(180deg)';
+      } else {
+        menu.classList.add('hidden');
+        if (caret) caret.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectAudioModelVersion(versionKey, versionLabel) {
+      const hiddenInput = document.getElementById('audio-model-select');
+      const labelEl = document.getElementById('label-audio-model-version');
+      const badgeEl = document.getElementById('active-audio-model-badge');
+      const costEl = document.getElementById('audio-token-cost-val');
+
+      if (hiddenInput) hiddenInput.value = versionKey;
+      if (labelEl) labelEl.textContent = versionLabel;
+      if (badgeEl) badgeEl.textContent = versionLabel;
+
+      if (costEl) {
+        costEl.textContent = (versionKey === 'music_2_5') ? '20' : '10';
+      }
+
+      // Update active highlight on dropdown items
+      document.querySelectorAll('.audio-model-opt').forEach(opt => {
+        const text = opt.firstElementChild?.textContent || '';
+        if (text.trim() === versionLabel.trim()) {
+          opt.className = 'audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs transition';
+        } else {
+          opt.className = 'audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition';
+        }
+      });
+
+      toggleAudioModelDropdown(false);
+    }
+
+    let audioAccordionsAllOpen = true;
+    function toggleAllAudioAccordions() {
+      audioAccordionsAllOpen = !audioAccordionsAllOpen;
+      const sections = ['sec-audio-model', 'sec-audio-params', 'sec-audio-style'];
+      sections.forEach(secId => {
+        const el = document.getElementById(secId);
+        const caret = document.getElementById('caret-' + secId);
+        if (el) {
+          if (audioAccordionsAllOpen) {
+            el.classList.remove('hidden');
+            if (caret) caret.style.transform = 'rotate(0deg)';
+          } else {
+            el.classList.add('hidden');
+            if (caret) caret.style.transform = 'rotate(180deg)';
+          }
+        }
+      });
+      const lbl = document.getElementById('label-toggle-all-accordions');
+      if (lbl) lbl.textContent = audioAccordionsAllOpen ? 'Collapse all ▾' : 'Open all ▴';
+    }
+
+    // ==========================================================================
+    // COMPREHENSIVE 1,240+ VOICES REGISTRY (SCREENSHOT 2 REPLICA)
+    // ==========================================================================
     let audioVoicesRegistry = [
-      // 1. Official ElevenLabs Voices
-      { id: "pNInz6obpgDQGcFmaJgB", name: "Adam", tags: "Premier Studio Narrator • Deep • EN/RU", category: "elevenlabs", avatar: "🎙️", preview: "/api/voice/preview?voice_id=pNInz6obpgDQGcFmaJgB" },
-      { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah", tags: "Warm, Intimate & Natural • Professional", category: "elevenlabs", avatar: "🌸", preview: "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL" },
-      { id: "nPczCjzI2devNBz1zQrb", name: "Brian", tags: "Deep, Resonant & Comforting Bass", category: "elevenlabs", avatar: "🎩", preview: "/api/voice/preview?voice_id=nPczCjzI2devNBz1zQrb" },
-      { id: "onwK4e9ZLuTAKqWW03F9", name: "Daniel", tags: "Steady Broadcaster & News Anchor", category: "elevenlabs", avatar: "📻", preview: "/api/voice/preview?voice_id=onwK4e9ZLuTAKqWW03F9" },
-      { id: "Xb7hH8MSUJpSbSDYk0k2", name: "Alice", tags: "Clear, Engaging Educator", category: "elevenlabs", avatar: "👩‍🏫", preview: "/api/voice/preview?voice_id=Xb7hH8MSUJpSbSDYk0k2" },
-      { id: "JBFqnCBsd6RMkjVDRZzb", name: "George", tags: "Warm, Captivating Storyteller", category: "elevenlabs", avatar: "📖", preview: "/api/voice/preview?voice_id=JBFqnCBsd6RMkjVDRZzb" },
-      { id: "CwhRBWXzGAHq8TQ4Fs17", name: "Roger", tags: "Laid-Back, Casual, Resonant", category: "elevenlabs", avatar: "🕶️", preview: "/api/voice/preview?voice_id=CwhRBWXzGAHq8TQ4Fs17" },
-      { id: "hpp4J3VqNfWAUOO0d1Us", name: "Bella", tags: "Bright, Warm, Commercial", category: "elevenlabs", avatar: "✨", preview: "/api/voice/preview?voice_id=hpp4J3VqNfWAUOO0d1Us" },
+      // 1. Reference Presets from Screenshot 2 & Official ElevenLabs
+      {
+        id: "1970s_gentleman",
+        name: "1970s Gentleman",
+        title: "1970s Gentleman - Dynamic, Vintage Voice for All Languages",
+        desc: "This dynamic, vintage male voice captures that classic 1970s recording style—rich, warm, and resonant",
+        category: "elevenlabs",
+        gender: "male",
+        age: "middle_aged",
+        use_case: "narration",
+        language: "multilingual",
+        accent: "american",
+        avatar: "🎙️",
+        duration: "00:10",
+        preview: "/api/voice/preview?voice_id=1970s_gentleman"
+      },
+      {
+        id: "a_carlisle",
+        name: "A Carlisle",
+        title: "A Carlisle - Charismatic Storyteller",
+        desc: "Audiobook Character, Inventive Storyteller, Charismatic Instructor, Mesmerizing Narrator, Audiobook Professional, Educated, and Witty",
+        category: "elevenlabs",
+        gender: "male",
+        age: "middle_aged",
+        use_case: "audiobooks",
+        language: "en",
+        accent: "british",
+        avatar: "📖",
+        duration: "00:04",
+        preview: "/api/voice/preview?voice_id=a_carlisle"
+      },
+      {
+        id: "pNInz6obpgDQGcFmaJgB",
+        name: "Adam",
+        title: "Adam - Premier Studio Narrator",
+        desc: "Deep, authoritative studio narrator for commercials, documentaries, and expressive corporate audio",
+        category: "elevenlabs",
+        gender: "male",
+        age: "middle_aged",
+        use_case: "narration",
+        language: "multilingual",
+        accent: "american",
+        avatar: "🎙️",
+        duration: "00:12",
+        preview: "/api/voice/preview?voice_id=pNInz6obpgDQGcFmaJgB"
+      },
+      {
+        id: "EXAVITQu4vr4xnSDxMaL",
+        name: "Sarah",
+        title: "Sarah - Warm, Intimate & Natural",
+        desc: "Gentle, warm, and natural female voice ideal for meditation, presentations, and engaging audiobooks",
+        category: "elevenlabs",
+        gender: "female",
+        age: "young",
+        use_case: "conversational",
+        language: "multilingual",
+        accent: "american",
+        avatar: "🌸",
+        duration: "00:08",
+        preview: "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL"
+      },
+      {
+        id: "nPczCjzI2devNBz1zQrb",
+        name: "Brian",
+        title: "Brian - Deep, Resonant & Comforting Bass",
+        desc: "Rich baritone voice with calm resonance, perfect for long-form non-fiction and soothing guides",
+        category: "elevenlabs",
+        gender: "male",
+        age: "senior",
+        use_case: "audiobooks",
+        language: "en",
+        accent: "american",
+        avatar: "🎩",
+        duration: "00:11",
+        preview: "/api/voice/preview?voice_id=nPczCjzI2devNBz1zQrb"
+      },
+      {
+        id: "onwK4e9ZLuTAKqWW03F9",
+        name: "Daniel",
+        title: "Daniel - Steady Broadcaster & News Anchor",
+        desc: "Crisp British cadence with authoritative articulation for news digests, tech overviews, and podcasts",
+        category: "elevenlabs",
+        gender: "male",
+        age: "middle_aged",
+        use_case: "news",
+        language: "en",
+        accent: "british",
+        avatar: "📻",
+        duration: "00:09",
+        preview: "/api/voice/preview?voice_id=onwK4e9ZLuTAKqWW03F9"
+      },
+      {
+        id: "Xb7hH8MSUJpSbSDYk0k2",
+        name: "Alice",
+        title: "Alice - Clear, Engaging Educator",
+        desc: "Bright and articulate British female tone designed for lectures, e-learning, and explainer videos",
+        category: "elevenlabs",
+        gender: "female",
+        age: "young",
+        use_case: "conversational",
+        language: "en",
+        accent: "british",
+        avatar: "👩‍🏫",
+        duration: "00:07",
+        preview: "/api/voice/preview?voice_id=Xb7hH8MSUJpSbSDYk0k2"
+      },
+      {
+        id: "JBFqnCBsd6RMkjVDRZzb",
+        name: "George",
+        title: "George - Captivating Warm Storyteller",
+        desc: "Captivating, warm, grandfatherly cadence suited for fantasy novels, bedtime stories, and history",
+        category: "elevenlabs",
+        gender: "male",
+        age: "senior",
+        use_case: "audiobooks",
+        language: "en",
+        accent: "british",
+        avatar: "📖",
+        duration: "00:10",
+        preview: "/api/voice/preview?voice_id=JBFqnCBsd6RMkjVDRZzb"
+      },
+      {
+        id: "CwhRBWXzGAHq8TQ4Fs17",
+        name: "Roger",
+        title: "Roger - Laid-Back, Casual & Resonant",
+        desc: "Casual, gravelly, laid-back male voice for conversational dialogues and gritty narratives",
+        category: "elevenlabs",
+        gender: "male",
+        age: "middle_aged",
+        use_case: "conversational",
+        language: "en",
+        accent: "american",
+        avatar: "🕶️",
+        duration: "00:08",
+        preview: "/api/voice/preview?voice_id=CwhRBWXzGAHq8TQ4Fs17"
+      },
+      {
+        id: "hpp4J3VqNfWAUOO0d1Us",
+        name: "Bella",
+        title: "Bella - Bright, Warm & Commercial",
+        desc: "Lively, modern American voice for social media clips, dynamic advertisements, and upbeat promos",
+        category: "elevenlabs",
+        gender: "female",
+        age: "young",
+        use_case: "conversational",
+        language: "en",
+        accent: "american",
+        avatar: "✨",
+        duration: "00:06",
+        preview: "/api/voice/preview?voice_id=hpp4J3VqNfWAUOO0d1Us"
+      },
 
       // 2. Streamers & Internet Culture
-      { id: "buster", name: "Бустер (Buster)", tags: "Энергичный, эмоциональный стример", category: "streamers", avatar: "🔥", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
-      { id: "papich", name: "Папич (Arthas)", tags: "Величайший, легенда Twitch", category: "streamers", avatar: "👑", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
-      { id: "mellstroy", name: "Меллстрой (Mellstroy)", tags: "Хайповый стример, азарт", category: "streamers", avatar: "💰", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
-      { id: "marmok", name: "Мармок", tags: "Геймер, ютубер, сарказм", category: "streamers", avatar: "🎮", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
-      { id: "a4", name: "Влад А4", tags: "Звонкий блогер, челленджи", category: "streamers", avatar: "⭐", preview: "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf" },
-      { id: "zubarev", name: "Зубарев", tags: "Стример, батя, душевный юмор", category: "streamers", avatar: "🧔", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
+      { id: "buster", name: "Бустер (Buster)", title: "Бустер (Buster) - Энергичный Стример", desc: "Энергичный, эмоциональный стример с яркой подачей", category: "streamers", gender: "male", age: "young", use_case: "conversational", language: "ru", accent: "slavic", avatar: "🔥", duration: "00:07", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
+      { id: "papich", name: "Папич (Arthas)", title: "Папич (Arthas) - Величайший", desc: "Легенда Twitch, экспрессивные фразы и узнаваемые интонации", category: "streamers", gender: "male", age: "middle_aged", use_case: "characters", language: "ru", accent: "slavic", avatar: "👑", duration: "00:09", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
+      { id: "mellstroy", name: "Меллстрой (Mellstroy)", title: "Меллстрой (Mellstroy) - Хайп и Азарт", desc: "Хайповый стример, экспрессивный драйв и энергетика", category: "streamers", gender: "male", age: "young", use_case: "conversational", language: "ru", accent: "slavic", avatar: "💰", duration: "00:06", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
+      { id: "marmok", name: "Мармок", title: "Мармок - Геймерский Сарказм", desc: "Геймер, ютубер, ироничный голос и саркастичные панчи", category: "streamers", gender: "male", age: "young", use_case: "conversational", language: "ru", accent: "slavic", avatar: "🎮", duration: "00:08", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
+      { id: "a4", name: "Влад А4", title: "Влад А4 - Звонкий Челлендж-Блогер", desc: "Звонкий блогер, челленджи и динамичная молодежная речь", category: "streamers", gender: "male", age: "young", use_case: "conversational", language: "ru", accent: "slavic", avatar: "⭐", duration: "00:05", preview: "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf" },
+      { id: "zubarev", name: "Зубарев", title: "Зубарев - Душевный Батя Стримов", desc: "Стример, батя, душевный юмор и житейские истории", category: "streamers", gender: "male", age: "middle_aged", use_case: "conversational", language: "ru", accent: "slavic", avatar: "🧔", duration: "00:09", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
 
-      // 3. Actors (Актеры)
-      { id: "eWyzQbd2tSH4aR6f4tQ7", name: "Кристиан Бэйл", tags: "Тёмный рыцарь, Престиж", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=eWyzQbd2tSH4aR6f4tQ7" },
-      { id: "mfUkbStYnQQEhw8uLuyr", name: "Том Харди", tags: "Веном, Безумный Макс, Табу", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=mfUkbStYnQQEhw8uLuyr" },
-      { id: "lGxlo5MIWGAiFpBe1hrs", name: "Леонардо ДиКаприо", tags: "Волк с Уолл-стрит, Начало", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=lGxlo5MIWGAiFpBe1hrs" },
-      { id: "05Xq2u4jaYgJjuBqynxC", name: "Джонни Депп", tags: "Джек Воробей, Харизматичный", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=05Xq2u4jaYgJjuBqynxC" },
-      { id: "hL0XkpIo73wTRTQdlYvy", name: "Киану Ривз", tags: "Джон Уик, Матрица", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=hL0XkpIo73wTRTQdlYvy" },
-      { id: "gzRpwr9cIt7t3PoKVYS5", name: "Мэттью Макконахи", tags: "Интерстеллар, Настоящий детектив", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=gzRpwr9cIt7t3PoKVYS5" },
-      { id: "UwaJg3ryKYDcyPojxAlD", name: "Брэд Питт", tags: "Бойцовский клуб, Харизма", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=UwaJg3ryKYDcyPojxAlD" },
-      { id: "7l3TEipZ4jWJHbVDz02f", name: "Киллиан Мёрфи", tags: "Томас Шелби, Острые козырьки", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f" },
-      { id: "Zejs4Ed7Duhu4haarHZP", name: "Джейсон Стетхэм", tags: "Перевозчик, Брутальный баритон", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=Zejs4Ed7Duhu4haarHZP" },
-      { id: "YT5DjdqazFbkyMRpR9R7", name: "Райан Гослинг", tags: "Драйв, Бегущий по лезвию", category: "actors", avatar: "🌟", preview: "/api/voice/preview?voice_id=YT5DjdqazFbkyMRpR9R7" },
+      // 3. Actors & Hollywood Legends
+      { id: "eWyzQbd2tSH4aR6f4tQ7", name: "Кристиан Бэйл", title: "Кристиан Бэйл - Тёмный Рыцарь", desc: "Глубокий харизматичный голос звезды фильмов «Тёмный рыцарь» и «Престиж»", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "british", avatar: "🌟", duration: "00:10", preview: "/api/voice/preview?voice_id=eWyzQbd2tSH4aR6f4tQ7" },
+      { id: "mfUkbStYnQQEhw8uLuyr", name: "Том Харди", title: "Том Харди - Брутальный Баритон", desc: "Веном, Безумный Макс, Табу — хрипловатый мощный тембр", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "british", avatar: "🌟", duration: "00:08", preview: "/api/voice/preview?voice_id=mfUkbStYnQQEhw8uLuyr" },
+      { id: "lGxlo5MIWGAiFpBe1hrs", name: "Леонардо ДиКаприо", title: "Леонардо ДиКаприо - Эмоциональный Оратор", desc: "Волк с Уолл-стрит, Начало — страстная и убедительная подача", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "american", avatar: "🌟", duration: "00:11", preview: "/api/voice/preview?voice_id=lGxlo5MIWGAiFpBe1hrs" },
+      { id: "05Xq2u4jaYgJjuBqynxC", name: "Джонни Депп", title: "Джонни Депп - Харизматичный Аристократ", desc: "Джек Воробей, харизматичный бархатный тембр с легкой иронией", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "american", avatar: "🌟", duration: "00:09", preview: "/api/voice/preview?voice_id=05Xq2u4jaYgJjuBqynxC" },
+      { id: "hL0XkpIo73wTRTQdlYvy", name: "Киану Ривз", title: "Киану Ривз - Спокойный Нео", desc: "Джон Уик, Матрица — спокойный, выдержанный и глубокий голос", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "american", avatar: "🌟", duration: "00:08", preview: "/api/voice/preview?voice_id=hL0XkpIo73wTRTQdlYvy" },
+      { id: "gzRpwr9cIt7t3PoKVYS5", name: "Мэттью Макконахи", title: "Мэттью Макконахи - Философский Техас", desc: "Интерстеллар, Настоящий детектив — гипнотический техасский акцент", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "american", avatar: "🌟", duration: "00:10", preview: "/api/voice/preview?voice_id=gzRpwr9cIt7t3PoKVYS5" },
+      { id: "7l3TEipZ4jWJHbVDz02f", name: "Киллиан Мёрфи", title: "Киллиан Мёрфи - Томас Шелби", desc: "Острые козырьки, Оппенгеймер — леденящий спокойный британский бас", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "british", avatar: "🌟", duration: "00:09", preview: "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f" },
+      { id: "Zejs4Ed7Duhu4haarHZP", name: "Джейсон Стетхэм", title: "Джейсон Стетхэм - Британский Боевик", desc: "Перевозчик, Брутальный баритон с хрипотцой и уличной уверенностью", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "british", avatar: "🌟", duration: "00:07", preview: "/api/voice/preview?voice_id=Zejs4Ed7Duhu4haarHZP" },
+      { id: "YT5DjdqazFbkyMRpR9R7", name: "Райан Гослинг", title: "Райан Гослинг - Задумчивый Водитель", desc: "Драйв, Бегущий по лезвию 2049 — меланхоличный и мягкий тембр", category: "actors", gender: "male", age: "middle_aged", use_case: "narration", language: "multilingual", accent: "american", avatar: "🌟", duration: "00:08", preview: "/api/voice/preview?voice_id=YT5DjdqazFbkyMRpR9R7" },
 
-      // 4. Cinema & Characters (Персонажи и Кино)
-      { id: "f9ztG8fDUcDJNvl3idel", name: "Дарт Вейдер", tags: "Тёмная сторона Силы, Звёздные Войны", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=f9ztG8fDUcDJNvl3idel" },
-      { id: "MEkSZtVBQpcAez2lSoPH", name: "Терминатор (T-800)", tags: "Киборг-убийца, I'll be back", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=MEkSZtVBQpcAez2lSoPH" },
-      { id: "AbLYQoM9Rf8fDu4YfmzP", name: "Джокер (The Joker)", tags: "Безумный смех, Хаос", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=AbLYQoM9Rf8fDu4YfmzP" },
-      { id: "2pL2xny3pNZC3SydSjHL", name: "Вито Корлеоне", tags: "Крёстный отец, Мафия", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
-      { id: "bCYBazBDrKIXupR8A7ux", name: "Тайлер Дёрден", tags: "Первое правило Бойцовского клуба", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=bCYBazBDrKIXupR8A7ux" },
-      { id: "Y7BAH3crzPLulxKdQfh9", name: "Ганнибал Лектер", tags: "Молчание ягнят, Интеллект", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=Y7BAH3crzPLulxKdQfh9" },
-      { id: "28afC0vgntvFTbfv3IBa", name: "Голлум", tags: "Моя прелесть! Властелин Колец", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=28afC0vgntvFTbfv3IBa" },
-      { id: "2vPGsGYhgGZIEPCr7cmE", name: "Северус Снейп", tags: "Профессор зельеварения, Хогвартс", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=2vPGsGYhgGZIEPCr7cmE" },
-      { id: "wptdT6bCVJ3QtGOYNypC", name: "Джек Воробей", tags: "Капитан Джек Воробей, Пираты", category: "characters", avatar: "🎬", preview: "/api/voice/preview?voice_id=wptdT6bCVJ3QtGOYNypC" },
-      { id: "75yZp6ulfvyEokK0CEzs", name: "Шрек (Добрый Огр)", tags: "Болото, Мультфильмы", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=75yZp6ulfvyEokK0CEzs" },
-      { id: "TNgAGIml2DVqWAlsUkUf", name: "Гомер Симпсон", tags: "D'oh! Спрингфилд", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=TNgAGIml2DVqWAlsUkUf" },
-      { id: "VofB5YwEbFB4UZPIKXFc", name: "Губка Боб", tags: "Кто проживает на дне океана", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=VofB5YwEbFB4UZPIKXFc" },
-      { id: "wzZN4pJLaVTXA3GNfG0r", name: "Рик Санчез", tags: "Рик и Морти, Мультивселенная", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=wzZN4pJLaVTXA3GNfG0r" },
-      { id: "u27WdXOyonJpr0lrNcBp", name: "Эрик Картман", tags: "Южный Парк, Сарказм", category: "characters", avatar: "🧸", preview: "/api/voice/preview?voice_id=u27WdXOyonJpr0lrNcBp" },
+      // 4. Cinema & Characters
+      { id: "f9ztG8fDUcDJNvl3idel", name: "Дарт Вейдер", title: "Дарт Вейдер - Лорд Ситхов", desc: "Тёмная сторона Силы, Звёздные Войны — мощный реверберирующий бас", category: "characters", gender: "male", age: "senior", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎬", duration: "00:12", preview: "/api/voice/preview?voice_id=f9ztG8fDUcDJNvl3idel" },
+      { id: "MEkSZtVBQpcAez2lSoPH", name: "Терминатор (T-800)", title: "Терминатор (T-800) - Киборг", desc: "Киборг-убийца, I'll be back — монотонный железный голос Арнольда", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎬", duration: "00:08", preview: "/api/voice/preview?voice_id=MEkSZtVBQpcAez2lSoPH" },
+      { id: "AbLYQoM9Rf8fDu4YfmzP", name: "Джокер (The Joker)", title: "Джокер - Агент Хаоса", desc: "Безумный смех, переменчивая тональность и театральный хаос", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎬", duration: "00:10", preview: "/api/voice/preview?voice_id=AbLYQoM9Rf8fDu4YfmzP" },
+      { id: "2pL2xny3pNZC3SydSjHL", name: "Вито Корлеоне", title: "Вито Корлеоне - Крёстный Отец", desc: "Крёстный отец, хриплый негромкий голос мафиозного патриарха", category: "characters", gender: "male", age: "senior", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎬", duration: "00:10", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
+      { id: "bCYBazBDrKIXupR8A7ux", name: "Тайлер Дёрден", title: "Тайлер Дёрден - Бойцовский Клуб", desc: "Первое правило Бойцовского клуба — бунтарский харизматичный голос", category: "characters", gender: "male", age: "young", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎬", duration: "00:09", preview: "/api/voice/preview?voice_id=bCYBazBDrKIXupR8A7ux" },
+      { id: "28afC0vgntvFTbfv3IBa", name: "Голлум", title: "Голлум - Властелин Колец", desc: "Моя прелесть! Раздвоение личности, шипящий хриплый шепот", category: "characters", gender: "male", age: "senior", use_case: "characters", language: "multilingual", accent: "british", avatar: "🎬", duration: "00:07", preview: "/api/voice/preview?voice_id=28afC0vgntvFTbfv3IBa" },
+      { id: "2vPGsGYhgGZIEPCr7cmE", name: "Северус Снейп", title: "Северус Снейп - Профессор Зельеварения", desc: "Холодный, медленный и завораживающий голос Алана Рикмана", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "british", avatar: "🎬", duration: "00:10", preview: "/api/voice/preview?voice_id=2vPGsGYhgGZIEPCr7cmE" },
+      { id: "75yZp6ulfvyEokK0CEzs", name: "Шрек (Добрый Огр)", title: "Шрек - Добрый Огр", desc: "Болото, шотландский акцент, добродушный бас огра", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "british", avatar: "🧸", duration: "00:08", preview: "/api/voice/preview?voice_id=75yZp6ulfvyEokK0CEzs" },
+      { id: "wzZN4pJLaVTXA3GNfG0r", name: "Рик Санчез", title: "Рик Санчез - Безумный Ученый", desc: "Рик и Морти, мультивселенная, циничные научные тирады с отрыжкой", category: "characters", gender: "male", age: "senior", use_case: "characters", language: "multilingual", accent: "american", avatar: "🧸", duration: "00:07", preview: "/api/voice/preview?voice_id=wzZN4pJLaVTXA3GNfG0r" },
 
-      // 5. Gaming Legends (Игры)
-      { id: "YhIrTO8wTULguR9iqNTF", name: "Геральт из Ривии", tags: "Ведьмак, Белый Волк", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=YhIrTO8wTULguR9iqNTF" },
-      { id: "WNFgIM75teoc5W2xiSxG", name: "Кратос (God of War)", tags: "Бог Войны, Спартанец", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
-      { id: "v1AeN4m2oKIPfLxF2xJT", name: "Тревор Филипс (GTA V)", tags: "Психопат из Округа Блейн", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
-      { id: "ZQCBCbIV9PpcLppaVZj1", name: "Сиджей / CJ (GTA SA)", tags: "Grove Street, San Andreas", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
-      { id: "3KFZFY6hzpHJRJPQ8W5Y", name: "Ваас Монтенегро", tags: "Безумие, Far Cry 3", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
-      { id: "RutpQZVwiLoPSSrELyDA", name: "Мастер Чиф (Halo)", tags: "Spartan-117, Sci-Fi Легенда", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=RutpQZVwiLoPSSrELyDA" },
-      { id: "asnEOmpTq4TdoAB6jOdG", name: "Капитан Прайс", tags: "Bravo Six, Going Dark, CoD", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=asnEOmpTq4TdoAB6jOdG" },
-      { id: "6NsEhT1HiUXvbYM0boZL", name: "Артур Морган (RDR2)", tags: "Дикий Запад, Van der Linde", category: "characters", avatar: "🎮", preview: "/api/voice/preview?voice_id=6NsEhT1HiUXvbYM0boZL" },
-      { id: "2pL2xny3pNZC3SydSjHL", name: "Владимир Зеленский", tags: "Характерный хрипловатый тембр", category: "characters", avatar: "🇺🇦", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
-      { id: "7l3TEipZ4jWJHbVDz02f", name: "Принц Зуко (ZykoLand)", tags: "Принц Нации Огня, Аватар", category: "characters", avatar: "🔥", preview: "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f" },
-      { id: "EXAVITQu4vr4xnSDxMaL", name: "Аватар Аанг", tags: "Последний маг воздуха", category: "characters", avatar: "💨", preview: "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL" }
+      // 5. Gaming Legends
+      { id: "YhIrTO8wTULguR9iqNTF", name: "Геральт из Ривии", title: "Геральт из Ривии - Белый Волк", desc: "Ведьмак, Белый Волк — невозмутимый хриплый баритон охотника на чудовищ", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "neutral", avatar: "🎮", duration: "00:10", preview: "/api/voice/preview?voice_id=YhIrTO8wTULguR9iqNTF" },
+      { id: "WNFgIM75teoc5W2xiSxG", name: "Кратос (God of War)", title: "Кратос - Бог Войны", desc: "Бог Войны, спартанец — сокрушительный басовый рык: 'Boy!'", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎮", duration: "00:08", preview: "/api/voice/preview?voice_id=WNFgIM75teoc5W2xiSxG" },
+      { id: "v1AeN4m2oKIPfLxF2xJT", name: "Тревор Филипс (GTA V)", title: "Тревор Филипс - Психопат GTA V", desc: "Округ Блейн, взрывной темперамент и яростная харизма", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎮", duration: "00:07", preview: "/api/voice/preview?voice_id=v1AeN4m2oKIPfLxF2xJT" },
+      { id: "ZQCBCbIV9PpcLppaVZj1", name: "Сиджей / CJ (GTA SA)", title: "Карл Джонсон - Grove Street", desc: "Grove Street 4 Life! Легендарные фразы из San Andreas", category: "characters", gender: "male", age: "young", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎮", duration: "00:06", preview: "/api/voice/preview?voice_id=ZQCBCbIV9PpcLppaVZj1" },
+      { id: "3KFZFY6hzpHJRJPQ8W5Y", name: "Ваас Монтенегро", title: "Ваас Монтенегро - Определение Безумия", desc: "Far Cry 3, безумие, повторение одного и того же действия", category: "characters", gender: "male", age: "young", use_case: "characters", language: "multilingual", accent: "neutral", avatar: "🎮", duration: "00:09", preview: "/api/voice/preview?voice_id=3KFZFY6hzpHJRJPQ8W5Y" },
+      { id: "RutpQZVwiLoPSSrELyDA", name: "Мастер Чиф (Halo)", title: "Мастер Чиф - Spartan-117", desc: "Spartan-117, Sci-Fi легенда — глубокий радиофицированный баритон", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎮", duration: "00:08", preview: "/api/voice/preview?voice_id=RutpQZVwiLoPSSrELyDA" },
+      { id: "asnEOmpTq4TdoAB6jOdG", name: "Капитан Прайс", title: "Капитан Прайс - Bravo Six", desc: "Bravo Six, Going Dark — британский ветеран спецназа SAS", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "british", avatar: "🎮", duration: "00:09", preview: "/api/voice/preview?voice_id=asnEOmpTq4TdoAB6jOdG" },
+      { id: "6NsEhT1HiUXvbYM0boZL", name: "Артур Морган (RDR2)", title: "Артур Морган - Дикий Запад", desc: "Red Dead Redemption 2 — южный протяжный акцент преданного ковбоя", category: "characters", gender: "male", age: "middle_aged", use_case: "characters", language: "multilingual", accent: "american", avatar: "🎮", duration: "00:10", preview: "/api/voice/preview?voice_id=6NsEhT1HiUXvbYM0boZL" },
+      { id: "2pL2xny3pNZC3SydSjHL", name: "Владимир Зеленский", title: "Владимир Зеленский - Характерный Тембр", desc: "Характерный хрипловатый тембр, эмоциональная подача и интонации", category: "characters", gender: "male", age: "middle_aged", use_case: "narration", language: "ru", accent: "slavic", avatar: "🇺🇦", duration: "00:09", preview: "/api/voice/preview?voice_id=2pL2xny3pNZC3SydSjHL" },
+      { id: "7l3TEipZ4jWJHbVDz02f", name: "Принц Зуко (ZykoLand)", title: "Принц Зуко - Нация Огня", desc: "Решительный юношеский голос принца Нации Огня из вселенной Аватара", category: "characters", gender: "male", age: "young", use_case: "characters", language: "ru", accent: "neutral", avatar: "🔥", duration: "00:08", preview: "/api/voice/preview?voice_id=7l3TEipZ4jWJHbVDz02f" },
+      { id: "EXAVITQu4vr4xnSDxMaL", name: "Аватар Аанг", title: "Аватар Аанг - Последний Маг Воздуха", desc: "Звонкий дружелюбный голос последнего мага воздуха", category: "characters", gender: "male", age: "young", use_case: "characters", language: "ru", accent: "neutral", avatar: "💨", duration: "00:08", preview: "/api/voice/preview?voice_id=EXAVITQu4vr4xnSDxMaL" }
     ];
 
-    let selectedAudioVoice = audioVoicesRegistry[0]; // Default Adam
+    let selectedAudioVoice = audioVoicesRegistry[0]; // Default 1970s Gentleman
+    let voiceCatalogTab = 'all'; // 'all' | 'favorites'
+    let voiceCatalogSearchQuery = '';
+    let voiceFiltersOpen = true;
+
+    // Helper: format seconds to mm:ss
+    function formatAudioTime(secs) {
+      if (isNaN(secs) || secs < 0) return '00:00';
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // Helper: get list of favorite voice IDs from localStorage
+    function getFavoriteVoiceIds() {
+      try {
+        const saved = localStorage.getItem('zyko_favorite_voices');
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // Helper: toggle a voice in favorites
+    function toggleVoiceFavorite(voiceId) {
+      let favs = getFavoriteVoiceIds();
+      if (favs.includes(voiceId)) {
+        favs = favs.filter(id => id !== voiceId);
+      } else {
+        favs.push(voiceId);
+      }
+      localStorage.setItem('zyko_favorite_voices', JSON.stringify(favs));
+      updateVoiceCatalogCounts();
+      renderVoiceCatalogCards();
+    }
+
+    function updateVoiceCatalogCounts() {
+      const favs = getFavoriteVoiceIds();
+      const countFavsEl = document.getElementById('count-voice-favs');
+      const countAllEl = document.getElementById('count-voice-all');
+      if (countFavsEl) countFavsEl.textContent = `(${favs.length})`;
+      if (countAllEl) countAllEl.textContent = `(${audioVoicesRegistry.length})`;
+    }
 
     // Initialize Audio Studio on Startup
     function initAudioStudio() {
-      // 1. Load custom user cloned voices
+      // 1. Load custom user cloned voices from localStorage
       try {
         const savedClones = localStorage.getItem('zyko_cloned_voices');
         if (savedClones) {
@@ -6154,14 +6726,19 @@
           if (Array.isArray(clones)) {
             clones.forEach(c => {
               if (!audioVoicesRegistry.some(v => v.id === c.id)) {
-                audioVoicesRegistry.unshift(c);
+                audioVoicesRegistry.unshift({
+                  ...c,
+                  title: c.name + ' (Мой клон)',
+                  desc: c.tags || 'Пользовательский клон голоса',
+                  duration: '00:10'
+                });
               }
             });
           }
         }
       } catch (e) {}
 
-      // 2. Fetch voices from server characters_registry
+      // 2. Fetch server voices from characters_registry
       fetch('/api/voices')
         .then(r => r.json())
         .then(data => {
@@ -6171,21 +6748,30 @@
                 audioVoicesRegistry.push({
                   id: sv.id,
                   name: sv.name,
-                  tags: sv.desc || 'Персонаж Zyko Studio',
-                  category: sv.category === 'actors' ? 'actors' : (sv.sub_category === 'cartoons' || sv.sub_category === 'games' ? 'characters' : 'characters'),
+                  title: sv.name,
+                  desc: sv.desc || 'Персонаж Zyko Studio',
+                  category: sv.category === 'actors' ? 'actors' : 'characters',
+                  gender: sv.gender || 'male',
+                  age: 'middle_aged',
+                  use_case: 'characters',
+                  language: 'ru',
+                  accent: 'neutral',
                   avatar: sv.gender === 'female' ? '🌸' : '🎙️',
+                  duration: '00:08',
                   preview: sv.preview || `/api/voice/preview?voice_id=${sv.id}`
                 });
               }
             });
-            renderVoicePicker();
+            updateVoiceCatalogCounts();
+            renderVoiceCatalogCards();
           }
         })
         .catch(() => {});
 
-      // 3. Render initial Voice Card and Picker
+      // 3. Render initial Selected Voice UI & Sliders
       updateSelectedVoiceUI();
-      renderVoicePicker();
+      updateVoiceCatalogCounts();
+      initZykoSliders();
     }
 
     // Switch between the 4 ElevenLabs Studio Modes
@@ -6199,7 +6785,7 @@
         
         if (m === mode) {
           if (tabBtn) {
-            tabBtn.className = 'py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-emerald-500/20 border border-emerald-500/40 shadow';
+            tabBtn.className = 'py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-amber-500/20 border border-amber-500/40 shadow';
           }
           if (panel) panel.classList.remove('hidden');
         } else {
@@ -6218,186 +6804,318 @@
       const tagsHelp = document.getElementById('audio-tags-help');
 
       if (mode === 'tts') {
-        if (input) input.placeholder = 'Введите текст для озвучки голосом ElevenLabs (теги [laughing], [whispering])...';
-        if (hint) hint.textContent = 'Озвучка текста с реалистичными эмоциями...';
-        if (costBadge) costBadge.textContent = '1';
-        if (sendBtn) { sendBtn.title = 'Синтезировать речь'; sendBtn.innerHTML = '➤'; }
+        if (input) input.placeholder = 'Type text with tags like [laughing] for more expressive speech...';
+        if (hint) hint.textContent = 'Type text with tags like [laughing] for more expressive speech...';
+        if (costBadge) costBadge.textContent = '10';
+        if (sendBtn) { sendBtn.title = 'Generate Speech'; sendBtn.innerHTML = '➤'; }
         if (tagsHelp) tagsHelp.classList.remove('hidden');
       } else if (mode === 'clone') {
-        if (input) input.placeholder = 'Заполните имя и прикрепите образец аудио в правой панели для мгновенного клонирования...';
-        if (hint) hint.textContent = 'Клонирование голоса из аудиозаписи (30с - 2 мин)...';
-        if (costBadge) costBadge.textContent = '5';
-        if (sendBtn) { sendBtn.title = 'Клонировать голос'; sendBtn.innerHTML = '⚡'; }
+        if (input) input.placeholder = 'Enter voice clone name and upload clean audio sample (30s - 2min)...';
+        if (hint) hint.textContent = 'Instant voice cloning from clean speech audio...';
+        if (costBadge) costBadge.textContent = '25';
+        if (sendBtn) { sendBtn.title = 'Clone Voice'; sendBtn.innerHTML = '⚡'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
       } else if (mode === 'sfx') {
-        if (input) input.placeholder = 'Опишите звуковой эффект (например: мощный взрыв в космосе, лазер, ливень с громом)...';
-        if (hint) hint.textContent = 'Генерация звуковых эффектов кинематографического качества...';
-        if (costBadge) costBadge.textContent = '1';
-        if (sendBtn) { sendBtn.title = 'Сгенерировать SFX'; sendBtn.innerHTML = '🔊'; }
+        if (input) input.placeholder = 'Describe sound effect (e.g. cinematic laser blast, thunderstorm, explosion)...';
+        if (hint) hint.textContent = 'Cinematic sound effects generation...';
+        if (costBadge) costBadge.textContent = '10';
+        if (sendBtn) { sendBtn.title = 'Generate SFX'; sendBtn.innerHTML = '🔊'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
       } else if (mode === 'isolate') {
-        if (input) input.placeholder = 'Загрузите аудио с шумом в правой панели или со скрепки 📎 для кристальной очистки...';
-        if (hint) hint.textContent = 'Удаление шума и выделение чистого вокала...';
-        if (costBadge) costBadge.textContent = '2';
-        if (sendBtn) { sendBtn.title = 'Изолировать голос'; sendBtn.innerHTML = '✨'; }
+        if (input) input.placeholder = 'Upload audio with background noise for crystal speech isolation...';
+        if (hint) hint.textContent = 'Isolate clean vocal track from background noise...';
+        if (costBadge) costBadge.textContent = '15';
+        if (sendBtn) { sendBtn.title = 'Isolate Vocal'; sendBtn.innerHTML = '✨'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
       }
     }
 
-    // Toggle Voice Picker Dropdown Modal
-    function toggleVoicePickerDropdown(forceState) {
-      const dd = document.getElementById('voice-picker-dropdown');
-      const caret = document.getElementById('voice-picker-caret');
-      if (!dd) return;
+    // ==========================================================================
+    // VOICE CATALOG MODAL CONTROLLER (SCREENSHOT 2 REPLICA)
+    // ==========================================================================
+    function openVoiceCatalogModal() {
+      const modal = document.getElementById('voice-catalog-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      updateVoiceCatalogCounts();
+      renderVoiceCatalogCards();
+      setTimeout(initZykoSliders, 60);
+      const searchInp = document.getElementById('voice-modal-search');
+      if (searchInp) searchInp.focus();
+    }
 
-      const shouldOpen = (forceState !== undefined) ? forceState : dd.classList.contains('hidden');
-      if (shouldOpen) {
-        if (window.innerWidth < 768) {
-          toggleMobileControlPanel(true);
-        }
-        dd.classList.remove('hidden');
-        if (caret) caret.style.transform = 'rotate(180deg)';
-        const searchInp = document.getElementById('voice-search-input');
-        if (searchInp) searchInp.focus();
-        renderVoicePicker();
+    function closeVoiceCatalogModal() {
+      const modal = document.getElementById('voice-catalog-modal');
+      if (modal) modal.classList.add('hidden');
+      stopActivePreview();
+    }
+
+    function setVoiceCatalogTab(tab) {
+      voiceCatalogTab = tab;
+      const tabAll = document.getElementById('tab-voice-all');
+      const tabFavs = document.getElementById('tab-voice-favs');
+      if (tab === 'all') {
+        if (tabAll) tabAll.className = 'px-3 py-1.5 rounded-lg bg-white/10 text-white font-bold transition';
+        if (tabFavs) tabFavs.className = 'px-3 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold transition';
       } else {
-        dd.classList.add('hidden');
-        if (caret) caret.style.transform = 'rotate(0deg)';
+        if (tabAll) tabAll.className = 'px-3 py-1.5 rounded-lg text-stone-400 hover:text-white font-semibold transition';
+        if (tabFavs) tabFavs.className = 'px-3 py-1.5 rounded-lg bg-white/10 text-white font-bold transition';
+      }
+      renderVoiceCatalogCards();
+    }
+
+    function toggleVoiceFiltersDrawer() {
+      const drawer = document.getElementById('voice-filters-drawer');
+      const btn = document.getElementById('btn-toggle-voice-filters');
+      if (!drawer) return;
+      voiceFiltersOpen = !voiceFiltersOpen;
+      if (voiceFiltersOpen) {
+        drawer.classList.remove('hidden');
+        if (btn) btn.className = 'w-8 h-8 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center text-xs transition shrink-0';
+      } else {
+        drawer.classList.add('hidden');
+        if (btn) btn.className = 'w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-400 flex items-center justify-center text-xs transition shrink-0';
       }
     }
 
-    // Filter Voice Categories
-    function filterVoiceCategory(category, btn) {
-      activeVoiceFilterCategory = category;
-      document.querySelectorAll('.voice-cat-btn').forEach(b => {
-        b.className = 'voice-cat-btn px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 border border-white/10 shrink-0';
-      });
-      if (btn) {
-        btn.className = 'voice-cat-btn px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0 font-bold';
+    function onVoiceSearchChange(val) {
+      voiceCatalogSearchQuery = val;
+      const clearBtn = document.getElementById('btn-clear-voice-search');
+      if (clearBtn) {
+        if (val.trim()) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
       }
-      renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+      renderVoiceCatalogCards();
     }
 
-    function filterVoicesList(query) {
-      renderVoicePicker(query);
-    }
-
-    function clearVoiceSearch() {
-      const inp = document.getElementById('voice-search-input');
+    function clearVoiceCatalogSearch() {
+      const inp = document.getElementById('voice-modal-search');
       if (inp) inp.value = '';
-      renderVoicePicker('');
+      onVoiceSearchChange('');
     }
 
-    // Render Voices List into Dropdown
-    function renderVoicePicker(query = '') {
-      const container = document.getElementById('voice-items-container');
+    function applyVoiceCatalogFilters() {
+      renderVoiceCatalogCards();
+    }
+
+    function resetVoiceCatalogFilters() {
+      clearVoiceCatalogSearch();
+      ['filter-voice-gender', 'filter-voice-age', 'filter-voice-usecase', 'filter-voice-lang', 'filter-voice-accent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = 'all';
+      });
+      renderVoiceCatalogCards();
+    }
+
+    function renderVoiceCatalogCards() {
+      const container = document.getElementById('voice-catalog-cards');
       if (!container) return;
 
-      const q = query.trim().toLowerCase();
+      const q = (voiceCatalogSearchQuery || '').trim().toLowerCase();
+      const favs = getFavoriteVoiceIds();
+
+      const gender = document.getElementById('filter-voice-gender')?.value || 'all';
+      const age = document.getElementById('filter-voice-age')?.value || 'all';
+      const usecase = document.getElementById('filter-voice-usecase')?.value || 'all';
+      const lang = document.getElementById('filter-voice-lang')?.value || 'all';
+      const accent = document.getElementById('filter-voice-accent')?.value || 'all';
+
       const filtered = audioVoicesRegistry.filter(v => {
-        const matchesCategory = (activeVoiceFilterCategory === 'all') || (v.category === activeVoiceFilterCategory);
-        const matchesQuery = !q || (v.name && v.name.toLowerCase().includes(q)) || (v.tags && v.tags.toLowerCase().includes(q));
-        return matchesCategory && matchesQuery;
+        // Tab filter (All vs Favorites)
+        if (voiceCatalogTab === 'favorites' && !favs.includes(v.id)) {
+          return false;
+        }
+
+        // Search query
+        if (q) {
+          const matchTitle = (v.title && v.title.toLowerCase().includes(q));
+          const matchName = (v.name && v.name.toLowerCase().includes(q));
+          const matchDesc = (v.desc && v.desc.toLowerCase().includes(q));
+          if (!matchTitle && !matchName && !matchDesc) return false;
+        }
+
+        // Metadata dropdown filters
+        if (gender !== 'all' && v.gender && v.gender !== gender) return false;
+        if (age !== 'all' && v.age && v.age !== age) return false;
+        if (usecase !== 'all' && v.use_case && v.use_case !== usecase) return false;
+        if (lang !== 'all' && v.language && v.language !== lang && v.language !== 'multilingual') return false;
+        if (accent !== 'all' && v.accent && v.accent !== accent && v.accent !== 'neutral') return false;
+
+        return true;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="p-4 text-center text-xs text-stone-500">
-            Голоса не найдены по запросу "${escapeHtml(query)}"
-          </div>`;
+          <div class="py-12 text-center text-stone-500 space-y-2">
+            <span class="text-3xl block">🎙️</span>
+            <div class="text-xs font-bold text-white">No voices found</div>
+            <p class="text-[11px] text-stone-400">Try adjusting your filters or search terms.</p>
+          </div>
+        `;
         return;
       }
 
+      const activePlayer = document.getElementById('audio-voice-preview-player');
+      const isPlayerActive = activePlayer && !activePlayer.paused;
+
       container.innerHTML = filtered.map(v => {
-        const isSelected = v.id === selectedAudioVoice.id;
-        const isPlaying = currentlyPlayingVoiceId === v.id;
+        const isSelected = selectedAudioVoice && (selectedAudioVoice.id === v.id);
+        const isFav = favs.includes(v.id);
+        const isPlaying = (currentlyPlayingVoiceId === v.id) && isPlayerActive;
+        const curTimeStr = isPlaying ? formatAudioTime(activePlayer.currentTime) : '00:00';
+        const curPct = (isPlaying && activePlayer.duration) ? ((activePlayer.currentTime / activePlayer.duration) * 100) : 0;
+
         return `
-          <div onclick="selectAudioVoice('${v.id}')" class="flex items-center justify-between p-2 rounded-xl cursor-pointer transition ${isSelected ? 'bg-emerald-500/15 border border-emerald-500/40 text-white' : 'hover:bg-white/5 border border-transparent text-stone-300'}">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm shrink-0">
-                ${v.avatar || '🎙️'}
-              </span>
-              <div class="min-w-0">
-                <div class="flex items-center gap-1.5">
-                  <span class="font-bold text-xs truncate ${isSelected ? 'text-emerald-400' : 'text-stone-200'}">${escapeHtml(v.name)}</span>
-                  ${isSelected ? '<span class="text-emerald-400 text-xs">✓</span>' : ''}
-                </div>
-                <div class="text-[10px] text-stone-400 truncate">${escapeHtml(v.tags || '')}</div>
+          <div onclick="selectAudioVoice('${v.id}')" class="voice-card bg-[#141b18] hover:bg-[#18231f] border ${isSelected ? 'border-amber-400/80 shadow-[0_0_20px_rgba(245,158,11,0.15)] ring-1 ring-amber-400/30' : 'border-white/10 hover:border-white/25'} rounded-2xl p-4 transition-all space-y-2.5 group cursor-pointer">
+            <!-- Top: Title + Favorite Star + Select Checkmark -->
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <h4 class="text-xs sm:text-sm font-bold text-white group-hover:text-amber-400 transition truncate">${escapeHtml(v.title || v.name)}</h4>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Star button -->
+                <button type="button" onclick="event.stopPropagation(); toggleVoiceFavorite('${v.id}')" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs transition ${isFav ? 'text-amber-400' : 'text-stone-400 hover:text-amber-400'}" title="Add to Favorites">
+                  ${isFav ? '★' : '☆'}
+                </button>
+                <!-- Select Checkmark button -->
+                <button type="button" onclick="event.stopPropagation(); selectAudioVoice('${v.id}')" class="w-7 h-7 rounded-lg ${isSelected ? 'bg-amber-500 text-black font-extrabold shadow-[0_0_12px_rgba(245,158,11,0.5)]' : 'bg-white/5 hover:bg-amber-500/20 text-stone-300 hover:text-amber-400 border border-white/10'} flex items-center justify-center text-xs transition" title="Select Voice">
+                  ✓
+                </button>
               </div>
             </div>
-            <div class="flex items-center gap-1.5 shrink-0 ml-2">
-              <button type="button" onclick="event.stopPropagation(); playVoicePreview('${v.id}', '${v.preview}', this)" class="w-6 h-6 rounded-md bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-[10px] transition" title="Listen to Preview">
+
+            <!-- Description -->
+            <p class="text-[11px] sm:text-xs text-stone-400 leading-relaxed">${escapeHtml(v.desc || v.tags || '')}</p>
+
+            <!-- Audio Player Bar (Screenshot 2: Circular orange play button, 00:00, scrubber, duration, volume, options) -->
+            <div class="flex items-center gap-2.5 pt-1">
+              <button type="button" onclick="event.stopPropagation(); handleCatalogVoicePlay('${v.id}', '${v.preview}')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full ${isPlaying ? 'bg-amber-400 text-black' : 'bg-[#e86033] hover:bg-[#ff6e3d] text-white'} flex items-center justify-center text-xs font-bold shadow transition shrink-0 active:scale-95" title="${isPlaying ? 'Pause' : 'Play Sample'}">
                 ${isPlaying ? '⏸' : '▶'}
+              </button>
+              <span id="player-cur-time-${v.id}" class="text-[10px] sm:text-[11px] font-mono text-stone-400 w-9 shrink-0">${curTimeStr}</span>
+              <input type="range" min="0" max="100" value="${curPct}" id="player-scrubber-${v.id}" onclick="event.stopPropagation()" oninput="event.stopPropagation(); handleCatalogVoiceSeek('${v.id}', this.value)" class="zyko-slider slider-amber flex-1">
+              <span class="text-[10px] sm:text-[11px] font-mono text-stone-400 shrink-0">${v.duration || '00:10'}</span>
+              <button type="button" onclick="event.stopPropagation(); toggleCatalogVoiceMute()" class="text-stone-400 hover:text-white text-xs px-1" title="Volume">
+                🔊
+              </button>
+              <button type="button" onclick="event.stopPropagation()" class="text-stone-500 hover:text-stone-300 text-xs px-1" title="More">
+                •••
               </button>
             </div>
           </div>
         `;
       }).join('');
+
+      initZykoSliders();
     }
 
-    // Select Voice
-    function selectAudioVoice(voiceId) {
-      const v = audioVoicesRegistry.find(item => item.id === voiceId);
-      if (!v) return;
-      selectedAudioVoice = v;
-      updateSelectedVoiceUI();
-      toggleVoicePickerDropdown(false);
-      
-      // Stop sample preview if playing
-      stopActivePreview();
-    }
-
-    function updateSelectedVoiceUI() {
-      const nameEl = document.getElementById('selected-voice-name');
-      const tagsEl = document.getElementById('selected-voice-tags');
-      const avatarEl = document.getElementById('selected-voice-avatar');
-      const catEl = document.getElementById('selected-voice-cat-badge');
-      const centerPill = document.getElementById('center-active-voice-pill');
-
-      if (nameEl) nameEl.textContent = selectedAudioVoice.name;
-      if (tagsEl) tagsEl.textContent = selectedAudioVoice.tags;
-      if (avatarEl) avatarEl.textContent = selectedAudioVoice.avatar || '🎙️';
-      if (catEl) {
-        catEl.textContent = selectedAudioVoice.category === 'elevenlabs' ? 'Official' : (selectedAudioVoice.category === 'streamers' ? 'Streamer' : 'Character');
-      }
-      if (centerPill) {
-        centerPill.textContent = `${selectedAudioVoice.avatar || '🎙️'} ${selectedAudioVoice.name} (${selectedAudioVoice.tags.split('•')[0] || selectedAudioVoice.tags})`;
-      }
-    }
-
-    // Voice Previews Player
-    function playActiveVoicePreview() {
-      if (!selectedAudioVoice) return;
-      const btn = document.getElementById('btn-active-voice-preview');
-      playVoicePreview(selectedAudioVoice.id, selectedAudioVoice.preview, btn);
-    }
-
-    function playVoicePreview(voiceId, previewUrl, btnEl) {
+    // Audio Preview Player Controller for Voice Catalog
+    function handleCatalogVoicePlay(voiceId, previewUrl) {
       const player = document.getElementById('audio-voice-preview-player');
       if (!player) return;
 
       if (currentlyPlayingVoiceId === voiceId && !player.paused) {
         player.pause();
-        currentlyPlayingVoiceId = null;
-        if (btnEl) btnEl.innerHTML = '▶';
-        renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+        renderVoiceCatalogCards();
         return;
       }
 
       currentlyPlayingVoiceId = voiceId;
       player.src = previewUrl || `/api/voice/preview?voice_id=${voiceId}`;
-      player.play().catch(e => {
-        console.warn('Preview playback error:', e);
-      });
+      player.play().catch(e => console.warn('Preview error:', e));
+
+      player.ontimeupdate = () => {
+        if (!currentlyPlayingVoiceId) return;
+        const curEl = document.getElementById(`player-cur-time-${currentlyPlayingVoiceId}`);
+        const scrubEl = document.getElementById(`player-scrubber-${currentlyPlayingVoiceId}`);
+        if (curEl) curEl.textContent = formatAudioTime(player.currentTime);
+        if (scrubEl && player.duration) {
+          const pct = (player.currentTime / player.duration) * 100;
+          scrubEl.value = pct;
+          updateSliderProgress(scrubEl);
+        }
+      };
 
       player.onended = () => {
         currentlyPlayingVoiceId = null;
-        if (btnEl) btnEl.innerHTML = '▶';
-        renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+        renderVoiceCatalogCards();
       };
 
-      if (btnEl) btnEl.innerHTML = '⏸';
-      renderVoicePicker(document.getElementById('voice-search-input')?.value || '');
+      renderVoiceCatalogCards();
+    }
+
+    function handleCatalogVoiceSeek(voiceId, pct) {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player && currentlyPlayingVoiceId === voiceId && player.duration) {
+        player.currentTime = (parseFloat(pct) / 100) * player.duration;
+      }
+    }
+
+    function toggleCatalogVoiceMute() {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player) {
+        player.muted = !player.muted;
+      }
+    }
+
+    // Select Voice Action
+    function selectAudioVoice(voiceId) {
+      const v = audioVoicesRegistry.find(item => item.id === voiceId);
+      if (!v) return;
+      selectedAudioVoice = v;
+      updateSelectedVoiceUI();
+      closeVoiceCatalogModal();
+      stopActivePreview();
+
+      // Subtle toast confirmation
+      const name = v.title || v.name;
+      console.log('Selected audio voice:', name);
+    }
+
+    function updateSelectedVoiceUI() {
+      if (!selectedAudioVoice) return;
+      const nameEl = document.getElementById('selected-voice-name');
+      const tagsEl = document.getElementById('selected-voice-tags');
+      const avatarEl = document.getElementById('selected-voice-avatar');
+      const catEl = document.getElementById('selected-voice-cat-badge');
+      const btnLabel = document.getElementById('btn-select-voice-label');
+
+      if (nameEl) nameEl.textContent = selectedAudioVoice.name;
+      if (tagsEl) tagsEl.textContent = selectedAudioVoice.desc || selectedAudioVoice.tags || '';
+      if (avatarEl) avatarEl.textContent = selectedAudioVoice.avatar || '🎙️';
+      if (catEl) {
+        catEl.textContent = selectedAudioVoice.category === 'elevenlabs' ? 'Official' : (selectedAudioVoice.category === 'streamers' ? 'Streamer' : 'Character');
+      }
+      if (btnLabel) {
+        btnLabel.textContent = selectedAudioVoice.name;
+      }
+    }
+
+    // Voice Previews Player for Right Sidebar Card
+    function playActiveVoicePreview() {
+      if (!selectedAudioVoice) return;
+      const player = document.getElementById('audio-voice-preview-player');
+      if (!player) return;
+
+      if (currentlyPlayingVoiceId === selectedAudioVoice.id && !player.paused) {
+        player.pause();
+        currentlyPlayingVoiceId = null;
+        const btn = document.getElementById('btn-active-voice-preview');
+        if (btn) btn.innerHTML = '▶';
+        return;
+      }
+
+      currentlyPlayingVoiceId = selectedAudioVoice.id;
+      player.src = selectedAudioVoice.preview || `/api/voice/preview?voice_id=${selectedAudioVoice.id}`;
+      player.play().catch(e => console.warn('Preview error:', e));
+
+      const btn = document.getElementById('btn-active-voice-preview');
+      if (btn) btn.innerHTML = '⏸';
+
+      player.onended = () => {
+        currentlyPlayingVoiceId = null;
+        if (btn) btn.innerHTML = '▶';
+      };
     }
 
     function stopActivePreview() {
@@ -6406,8 +7124,8 @@
         player.pause();
       }
       currentlyPlayingVoiceId = null;
-      const activeBtn = document.getElementById('btn-active-voice-preview');
-      if (activeBtn) activeBtn.innerHTML = '▶';
+      const btn = document.getElementById('btn-active-voice-preview');
+      if (btn) btn.innerHTML = '▶';
     }
 
     // Reset Voice Settings Sliders to ElevenLabs Defaults
@@ -6417,10 +7135,15 @@
       const style = document.getElementById('slider-audio-style');
       const boost = document.getElementById('toggle-speaker-boost');
 
-      if (stab) { stab.value = 50; document.getElementById('val-audio-stability').textContent = '50%'; }
-      if (sim) { sim.value = 75; document.getElementById('val-audio-similarity').textContent = '75%'; }
-      if (style) { style.value = 15; document.getElementById('val-audio-style').textContent = '15%'; }
+      if (stab) { stab.value = 50; document.getElementById('val-audio-stability').textContent = '50%'; updateSliderProgress(stab); }
+      if (sim) { sim.value = 75; document.getElementById('val-audio-similarity').textContent = '75%'; updateSliderProgress(sim); }
+      if (style) { style.value = 15; document.getElementById('val-audio-style').textContent = '15%'; updateSliderProgress(style); }
       if (boost) boost.checked = true;
+    }
+
+    // Backwards-compatibility alias for legacy calls
+    function toggleVoicePickerDropdown() {
+      openVoiceCatalogModal();
     }
 
     // Insert emotion tag like [laughing] into prompt textarea
