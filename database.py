@@ -538,3 +538,27 @@ async def get_user_usage_stats(user_id: int) -> dict:
             "weekly_pct": weekly_pct
         }
 
+async def get_user_generations(user_id: int, gen_type: str = None, limit: int = 100) -> list:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT * FROM generations WHERE user_id = ?"
+        params = [user_id]
+
+        if gen_type and gen_type != 'all':
+            if gen_type == 'image':
+                query += " AND (model LIKE 'image_%' OR model LIKE '%flux%' OR model LIKE '%midjourney%' OR model LIKE '%seedream%')"
+            elif gen_type == 'video':
+                query += " AND (model LIKE 'video_%' OR model LIKE '%kling%' OR model LIKE '%runway%' OR model LIKE '%luma%' OR model LIKE '%wan%')"
+            elif gen_type == 'audio':
+                query += " AND (model LIKE 'elevenlabs_%' OR model LIKE '%audio%' OR model LIKE '%music%' OR model LIKE '%tts%' OR model LIKE '%sfx%')"
+            elif gen_type == 'text':
+                query += " AND (model LIKE 'llm_%' OR model LIKE '%chat%' OR model LIKE '%gemini%' OR model LIKE '%gpt%')"
+
+        query += " ORDER BY id DESC LIMIT ?"
+        params.append(limit)
+
+        async with db.execute(query, tuple(params)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+

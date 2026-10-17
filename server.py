@@ -31,7 +31,8 @@ from database import (
     get_user_by_email,
     create_email_user,
     set_user_password,
-    get_user_usage_stats
+    get_user_usage_stats,
+    get_user_generations
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
@@ -613,6 +614,51 @@ async def handle_user_usage_limits(request: web.Request):
     stats = await get_user_usage_stats(user["id"])
     return web.json_response({"success": True, "stats": stats})
 
+def save_generated_media(data_bytes: bytes, prefix: str, ext: str) -> str:
+    try:
+        gen_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", "media", "generations")
+        os.makedirs(gen_dir, exist_ok=True)
+        fname = f"{prefix}_{int(time.time())}_{uuid.uuid4().hex[:8]}.{ext}"
+        fpath = os.path.join(gen_dir, fname)
+        with open(fpath, "wb") as f:
+            f.write(data_bytes)
+        return f"/media/generations/{fname}"
+    except Exception as e:
+        logger.error("Failed to save generated media file: %s", e)
+        return ""
+
+async def handle_user_generations(request: web.Request):
+    user = await get_current_user(request)
+    if not user:
+        user = await get_or_create_demo_user()
+    
+    gen_type = request.query.get("type", "all")
+    generations = await get_user_generations(user["id"], gen_type)
+    
+    feed_items = []
+    for g in generations:
+        m = (g["model"] or "").lower()
+        if m.startswith("image_") or "flux" in m or "midjourney" in m or "recraft" in m or "seedream" in m:
+            cat = "image"
+        elif m.startswith("video_") or "kling" in m or "runway" in m or "luma" in m or "wan" in m:
+            cat = "video"
+        elif "audio" in m or "music" in m or "tts" in m or "sfx" in m or "isolate" in m or "clone" in m:
+            cat = "audio"
+        else:
+            cat = "text"
+            
+        feed_items.append({
+            "id": g["id"],
+            "type": cat,
+            "model": g["model"],
+            "prompt": g["prompt"],
+            "result_url": g["result_url"],
+            "tokens_cost": g["tokens_cost"],
+            "created_at": g["created_at"]
+        })
+        
+    return web.json_response({"success": True, "generations": feed_items})
+
 # --- Payments ---
 
 async def handle_stripe_create_checkout(request: web.Request):
@@ -739,7 +785,8 @@ async def handle_ai_chat(request: web.Request):
         res = await generate_llm_chat(messages, model, system_prompt, deep_research)
         if user:
             last_prompt = messages[-1].get("content", "") if messages else "chat"
-            await log_generation(user["id"], f"llm_{model}", last_prompt[:100], "chat_response", cost)
+            reply_text = res.get("reply", "") if isinstance(res, dict) else ""
+            await log_generation(user["id"], f"llm_{model}", last_prompt[:200], reply_text[:500], cost)
             
         return web.json_response(res)
     except Exception as e:
@@ -762,10 +809,14 @@ async def handle_generate_tts(request: web.Request):
             
         voice_settings = data.get("voice_settings")
         audio_bytes = await text_to_speech(text, voice_id, model_id, voice_settings)
+        result_url = save_generated_media(audio_bytes, "tts", "mp3")
         if user:
-            await log_generation(user["id"], "elevenlabs_tts", text[:100], "tts_audio", 10)
+            await log_generation(user["id"], "elevenlabs_tts", text[:100], result_url or "tts_audio", 10)
             
-        return web.Response(body=audio_bytes, content_type="audio/mpeg")
+        resp = web.Response(body=audio_bytes, content_type="audio/mpeg")
+        if result_url:
+            resp.headers["X-Result-URL"] = result_url
+        return resp
     except Exception as e:
         logger.error("TTS generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -783,10 +834,14 @@ async def handle_generate_sfx(request: web.Request):
             return web.json_response({"error": "Insufficient tokens (requires 10 Credits)"}, status=400)
             
         audio_bytes = await generate_sfx(prompt, duration)
+        result_url = save_generated_media(audio_bytes, "sfx", "mp3")
         if user:
-            await log_generation(user["id"], "elevenlabs_sfx", prompt, "sfx_audio", 10)
+            await log_generation(user["id"], "elevenlabs_sfx", prompt, result_url or "sfx_audio", 10)
             
-        return web.Response(body=audio_bytes, content_type="audio/mpeg")
+        resp = web.Response(body=audio_bytes, content_type="audio/mpeg")
+        if result_url:
+            resp.headers["X-Result-URL"] = result_url
+        return resp
     except Exception as e:
         logger.error("SFX generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -862,10 +917,14 @@ async def handle_generate_isolate(request: web.Request):
             return web.json_response({"error": "Insufficient tokens (requires 12 Credits)"}, status=400)
             
         clean_bytes = await isolate_audio(audio_bytes)
+        result_url = save_generated_media(clean_bytes, "isolate", "mp3")
         if user:
-            await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", "isolated_audio", 12)
+            await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", result_url or "isolated_audio", 12)
             
-        return web.Response(body=clean_bytes, content_type="audio/mpeg")
+        resp = web.Response(body=clean_bytes, content_type="audio/mpeg")
+        if result_url:
+            resp.headers["X-Result-URL"] = result_url
+        return resp
     except Exception as e:
         logger.error("Audio isolation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -885,10 +944,14 @@ async def handle_generate_image(request: web.Request):
             return web.json_response({"error": "Insufficient tokens (requires 12 Credits)"}, status=400)
             
         img_bytes = await generate_ai_image(prompt, aspect, model)
+        result_url = save_generated_media(img_bytes, "img", "jpg")
         if user:
-            await log_generation(user["id"], f"image_{model}", prompt, "image_result", 12)
+            await log_generation(user["id"], f"image_{model}", prompt, result_url or "image_result", 12)
             
-        return web.Response(body=img_bytes, content_type="image/jpeg")
+        resp = web.Response(body=img_bytes, content_type="image/jpeg")
+        if result_url:
+            resp.headers["X-Result-URL"] = result_url
+        return resp
     except Exception as e:
         logger.error("Image generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -928,10 +991,20 @@ async def handle_generate_music(request: web.Request):
             return web.json_response({"error": "Insufficient tokens (requires 20 Credits)"}, status=400)
             
         res = await generate_ai_music(prompt, style, title)
-        if user:
-            await log_generation(user["id"], "ai_music", prompt, res.get("audio_url", ""), 20)
-            
-        return web.Response(body=res if isinstance(res, (bytes, bytearray)) else b"", content_type="audio/mpeg") if isinstance(res, (bytes, bytearray)) else web.json_response(res)
+        result_url = ""
+        if isinstance(res, (bytes, bytearray)):
+            result_url = save_generated_media(res, "music", "mp3")
+            if user:
+                await log_generation(user["id"], "ai_music", prompt, result_url or "music_audio", 20)
+            resp = web.Response(body=res, content_type="audio/mpeg")
+            if result_url:
+                resp.headers["X-Result-URL"] = result_url
+            return resp
+        else:
+            result_url = res.get("audio_url", "") if isinstance(res, dict) else ""
+            if user:
+                await log_generation(user["id"], "ai_music", prompt, result_url, 20)
+            return web.json_response(res)
     except Exception as e:
         logger.error("Music generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
@@ -1066,6 +1139,7 @@ def create_app():
     app.router.add_post("/api/auth/logout", handle_logout)
     app.router.add_post("/api/user/link-account", handle_user_link_account)
     app.router.add_get("/api/user/usage-limits", handle_user_usage_limits)
+    app.router.add_get("/api/user/generations", handle_user_generations)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)

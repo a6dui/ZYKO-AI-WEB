@@ -2769,16 +2769,24 @@
           <!-- SUBVIEW 5: FEED (EXACT MATCH TO SCREENSHOT 1) -->
           <div id="user-subtab-feed" class="hidden space-y-6">
             <div>
-              <h2 class="text-3xl font-extrabold text-white tracking-tight mb-2">Feed</h2>
+              <div class="flex items-center justify-between mb-2">
+                <h2 class="text-3xl font-extrabold text-white tracking-tight">Feed</h2>
+                <button onclick="fetchUserFeed()" title="Refresh Feed" class="text-xs text-stone-400 hover:text-white px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20 transition flex items-center gap-1.5 active:scale-95">
+                  <span id="feed-refresh-icon">↺</span> <span>Refresh</span>
+                </button>
+              </div>
               <div class="text-xs text-stone-400 font-semibold mb-3">Filter</div>
               
               <!-- Filter Row with Type Pills & Grid Toggle -->
               <div class="flex items-center justify-between flex-wrap gap-3">
-                <div class="flex items-center gap-2 text-xs font-semibold">
+                <div class="flex items-center gap-2 text-xs font-semibold overflow-x-auto pb-1 max-w-full">
+                  <button onclick="filterFeedType('all', this)" id="feed-filter-all" class="px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition">
+                    <span>✨</span> <span>All</span>
+                  </button>
                   <button onclick="filterFeedType('text', this)" id="feed-filter-text" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
                     <span>💬</span> <span>Text</span>
                   </button>
-                  <button onclick="filterFeedType('image', this)" id="feed-filter-image" class="px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition">
+                  <button onclick="filterFeedType('image', this)" id="feed-filter-image" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
                     <span>🖼️</span> <span>Image</span>
                   </button>
                   <button onclick="filterFeedType('video', this)" id="feed-filter-video" class="px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition">
@@ -2791,10 +2799,10 @@
 
                 <!-- View Switchers (List / Grid) -->
                 <div class="flex items-center gap-1 text-stone-400">
-                  <button onclick="setFeedLayout('list')" class="p-1.5 hover:text-white transition" title="List View">
+                  <button onclick="setFeedLayout('list')" id="feed-layout-btn-list" class="p-1.5 hover:text-white transition" title="List View">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
                   </button>
-                  <button onclick="setFeedLayout('grid')" class="p-1.5 text-stone-200 hover:text-white transition" title="Grid View">
+                  <button onclick="setFeedLayout('grid')" id="feed-layout-btn-grid" class="p-1.5 text-stone-200 hover:text-white transition" title="Grid View">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm-9 9h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
                   </button>
                 </div>
@@ -2806,16 +2814,16 @@
               <div class="w-12 h-12 text-[#f5efe6] mx-auto mb-3 flex items-center justify-center">
                 <svg class="w-10 h-10 fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg>
               </div>
-              <h4 class="text-sm font-semibold text-stone-200 mb-1">There's nothing here yet</h4>
-              <p class="text-xs text-stone-500 mb-5">Create your first file, and the feed will start filling up</p>
-              <button onclick="switchTab('image')" class="bg-transparent border border-white/20 hover:border-white/50 text-stone-200 hover:text-white text-xs font-semibold px-6 py-2 rounded-full transition shadow active:scale-95">
+              <h4 id="feed-empty-title" class="text-sm font-semibold text-stone-200 mb-1">There's nothing here yet</h4>
+              <p id="feed-empty-desc" class="text-xs text-stone-500 mb-5">Create your first file, and the feed will start filling up</p>
+              <button id="feed-empty-create-btn" onclick="switchTab('image')" class="bg-transparent border border-white/20 hover:border-white/50 text-stone-200 hover:text-white text-xs font-semibold px-6 py-2 rounded-full transition shadow active:scale-95">
                 + Create
               </button>
             </div>
 
             <!-- Grid of User Generations (hidden when empty) -->
-            <div id="profile-feed-grid" class="hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <!-- Dynamically populated from local history when user creates -->
+            <div id="profile-feed-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <!-- Dynamically populated from generations history -->
             </div>
           </div>
 
@@ -4351,10 +4359,11 @@
         }
       } catch (e) {}
 
-      // 1.1 Render cached plan usage limits
+      // 1.1 Render cached plan usage limits & feed
       try {
         if (typeof loadLocalUsageLimits === 'function') loadLocalUsageLimits();
         if (typeof renderUsageLimitsUI === 'function') renderUsageLimitsUI();
+        if (typeof renderFeedUI === 'function') renderFeedUI();
       } catch (e) {}
 
       // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
@@ -5728,6 +5737,15 @@
           renderAgentBubble(chatBox, data.reply);
           deductTokensUI(deepRes ? 18 : 10);
           saveToHistory('chats', text.slice(0, 30), data.reply);
+          if (typeof saveToFeed === 'function') {
+            saveToFeed({
+              type: 'text',
+              model: `Agent: ${persona}`,
+              prompt: text,
+              resultText: data.reply,
+              tokensCost: deepRes ? 18 : 10
+            });
+          }
         } else {
           renderAgentBubble(chatBox, "❌ Request error. Please verify your balance or try again.");
         }
@@ -5802,6 +5820,15 @@
           renderAgentBubble(chatBox, data.reply);
           deductTokensUI(deepRes ? 18 : 10);
           saveToHistory('chats', text.slice(0, 30), data.reply);
+          if (typeof saveToFeed === 'function') {
+            saveToFeed({
+              type: 'text',
+              model: currentStudioModel || 'gemini',
+              prompt: text,
+              resultText: data.reply,
+              tokensCost: deepRes ? 18 : 10
+            });
+          }
         } else {
           const errData = await resp.json().catch(() => ({}));
           renderAgentBubble(chatBox, "❌ " + (errData.error || "Generation failed. Please check token balance."));
@@ -5854,8 +5881,9 @@
         document.getElementById(loadCardId)?.remove();
 
         if (resp.ok) {
+          const serverUrl = resp.headers.get('x-result-url');
           const blob = await resp.blob();
-          const imgUrl = URL.createObjectURL(blob);
+          const imgUrl = serverUrl || URL.createObjectURL(blob);
 
           gallery.insertAdjacentHTML('afterbegin', `
             <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01]">
@@ -5871,6 +5899,15 @@
           `);
           deductTokensUI(12);
           saveToHistory('projects', prompt.slice(0, 30), imgUrl);
+          if (typeof saveToFeed === 'function') {
+            saveToFeed({
+              type: 'image',
+              model: modelToUse,
+              prompt: prompt,
+              resultUrl: imgUrl,
+              tokensCost: 12
+            });
+          }
         } else {
           const errData = await resp.json().catch(() => ({}));
           const errMsg = errData.error || 'Ошибка при генерации изображения. Попробуйте еще раз.';
@@ -6004,6 +6041,15 @@
 
           deductTokensUI(25);
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
+          if (typeof saveToFeed === 'function') {
+            saveToFeed({
+              type: 'video',
+              model: modelToUse,
+              prompt: prompt,
+              resultUrl: data.video_url,
+              tokensCost: 25
+            });
+          }
         } else {
           document.getElementById(loadCardId)?.remove();
           const errData = await resp.json().catch(() => ({}));
@@ -6524,13 +6570,14 @@
             throw new Error(errData.error || `HTTP error ${resp.status}`);
           }
 
+          const serverUrl = resp.headers.get('x-result-url');
           const contentType = resp.headers.get('content-type') || '';
           if (contentType.includes('audio') || contentType.includes('octet-stream')) {
             const blob = await resp.blob();
-            audioUrl = URL.createObjectURL(blob);
+            audioUrl = serverUrl || URL.createObjectURL(blob);
           } else {
             const resData = await resp.json();
-            audioUrl = resData.audio_url || '';
+            audioUrl = resData.audio_url || serverUrl || '';
           }
         } else {
           // Read fine-tuned Voice Settings
@@ -6560,8 +6607,9 @@
             throw new Error(errData.error || `HTTP error ${resp.status}`);
           }
 
+          const serverUrl = resp.headers.get('x-result-url');
           const blob = await resp.blob();
-          audioUrl = URL.createObjectURL(blob);
+          audioUrl = serverUrl || URL.createObjectURL(blob);
         }
 
         document.getElementById(loadId)?.remove();
@@ -6578,6 +6626,15 @@
 
         deductTokensUI(costAmount);
         saveToHistory('projects', `${isMusic ? 'Music' : 'Audio'} (${isMusic ? 'Music 2.5' : voiceName}): ${text.slice(0, 30)}`, audioUrl);
+        if (typeof saveToFeed === 'function') {
+          saveToFeed({
+            type: 'audio',
+            model: isMusic ? 'Music 2.5' : voiceName,
+            prompt: text,
+            resultUrl: audioUrl,
+            tokensCost: costAmount
+          });
+        }
       } catch (e) {
         document.getElementById(loadId)?.remove();
         alert('Ошибка генерации аудио: ' + e.message);
@@ -6650,8 +6707,9 @@
           throw new Error(errData.error || `HTTP error ${resp.status}`);
         }
 
+        const serverUrl = resp.headers.get('x-result-url');
         const blob = await resp.blob();
-        const audioUrl = URL.createObjectURL(blob);
+        const audioUrl = serverUrl || URL.createObjectURL(blob);
         document.getElementById(loadId)?.remove();
 
         renderAudioGenerationCard({
@@ -6666,6 +6724,15 @@
 
         deductTokensUI(10);
         saveToHistory('projects', `SFX: ${prompt.slice(0, 30)}`, audioUrl);
+        if (typeof saveToFeed === 'function') {
+          saveToFeed({
+            type: 'audio',
+            model: 'Sound Effects v2',
+            prompt: prompt,
+            resultUrl: audioUrl,
+            tokensCost: 10
+          });
+        }
       } catch (e) {
         document.getElementById(loadId)?.remove();
         alert('Ошибка генерации SFX: ' + e.message);
@@ -6808,8 +6875,9 @@
           throw new Error(errData.error || `HTTP error ${resp.status}`);
         }
 
+        const serverUrl = resp.headers.get('x-result-url');
         const blob = await resp.blob();
-        const audioUrl = URL.createObjectURL(blob);
+        const audioUrl = serverUrl || URL.createObjectURL(blob);
 
         const gallery = document.getElementById('audio-generation-gallery');
         const emptyState = document.getElementById('audio-empty-placeholder');
@@ -6826,6 +6894,15 @@
         });
 
         deductTokensUI(12);
+        if (typeof saveToFeed === 'function') {
+          saveToFeed({
+            type: 'audio',
+            model: 'Voice Isolator',
+            prompt: `Clean speech: ${file.name}`,
+            resultUrl: audioUrl,
+            tokensCost: 12
+          });
+        }
         if (statusMsg) {
           statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
           statusMsg.textContent = '✅ Запись успешно очищена от шумов!';
@@ -9614,23 +9691,291 @@
     }
 
     
-    function filterFeedType(type, btn) {
-      const container = btn.parentElement;
-      container.querySelectorAll('button').forEach(b => {
-        b.className = 'px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition';
+    // =========================================================================
+    // GENERATION FEED ENGINE (PROFILE SUBTAB: FEED)
+    // =========================================================================
+    let currentFeedFilter = 'all';
+    let currentFeedLayout = 'grid';
+    let serverFeedItems = [];
+
+    function saveToFeed(item) {
+      try {
+        let feed = [];
+        const raw = localStorage.getItem('zyko_generation_feed');
+        if (raw) feed = JSON.parse(raw);
+        if (!Array.isArray(feed)) feed = [];
+
+        const newItem = {
+          id: 'gen-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+          type: item.type || 'image',
+          model: item.model || '',
+          prompt: item.prompt || '',
+          result_url: item.resultUrl || item.result_url || '',
+          result_text: item.resultText || item.result_text || '',
+          tokens_cost: item.tokensCost || item.tokens_cost || 0,
+          created_at: item.time || new Date().toISOString()
+        };
+
+        feed.unshift(newItem);
+        if (feed.length > 200) feed = feed.slice(0, 200);
+        localStorage.setItem('zyko_generation_feed', JSON.stringify(feed));
+
+        renderFeedUI();
+      } catch (e) {
+        console.error('Error saving to feed:', e);
+      }
+    }
+
+    function getCombinedFeedItems() {
+      let localItems = [];
+      try {
+        const raw = localStorage.getItem('zyko_generation_feed');
+        if (raw) localItems = JSON.parse(raw);
+        if (!Array.isArray(localItems)) localItems = [];
+      } catch (e) {}
+
+      const seen = new Set();
+      const combined = [];
+
+      [...localItems, ...serverFeedItems].forEach(it => {
+        const key = it.id || (it.type + '_' + (it.prompt || '').slice(0, 30) + '_' + (it.result_url || it.result_text || '').slice(0, 30));
+        if (!seen.has(key)) {
+          seen.add(key);
+          combined.push(it);
+        }
       });
-      btn.className = 'px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition';
+
+      combined.sort((a, b) => {
+        const tA = new Date(a.created_at || 0).getTime() || 0;
+        const tB = new Date(b.created_at || 0).getTime() || 0;
+        return tB - tA;
+      });
+
+      return combined;
+    }
+
+    function filterFeedType(type, btn) {
+      currentFeedFilter = type;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('button').forEach(b => {
+          b.className = 'px-4 py-2 rounded-xl bg-transparent border border-white/10 hover:border-white/20 text-stone-300 hover:text-white flex items-center gap-2 transition';
+        });
+        btn.className = 'px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition';
+      }
+      renderFeedUI();
     }
 
     function setFeedLayout(layout) {
-      const grid = document.getElementById('profile-feed-grid');
-      if (grid) {
+      currentFeedLayout = layout;
+      const btnList = document.getElementById('feed-layout-btn-list');
+      const btnGrid = document.getElementById('feed-layout-btn-grid');
+      if (btnList && btnGrid) {
         if (layout === 'list') {
-          grid.className = 'grid grid-cols-1 gap-3';
+          btnList.classList.add('text-stone-200');
+          btnList.classList.remove('text-stone-400');
+          btnGrid.classList.add('text-stone-400');
+          btnGrid.classList.remove('text-stone-200');
         } else {
-          grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+          btnGrid.classList.add('text-stone-200');
+          btnGrid.classList.remove('text-stone-400');
+          btnList.classList.add('text-stone-400');
+          btnList.classList.remove('text-stone-200');
         }
       }
+      renderFeedUI();
+    }
+
+    async function fetchUserFeed() {
+      const icon = document.getElementById('feed-refresh-icon');
+      if (icon) icon.classList.add('animate-spin');
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/user/generations?type=' + currentFeedFilter, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.generations)) {
+            serverFeedItems = data.generations;
+            renderFeedUI();
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to fetch server feed:', err);
+      } finally {
+        if (icon) {
+          setTimeout(() => icon.classList.remove('animate-spin'), 400);
+        }
+      }
+    }
+
+    function formatFeedDate(isoStr) {
+      if (!isoStr) return 'Just now';
+      try {
+        const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return 'Recently';
+        return d.toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        return 'Recently';
+      }
+    }
+
+    function renderFeedUI() {
+      const emptyState = document.getElementById('feed-empty-state');
+      const grid = document.getElementById('profile-feed-grid');
+      const emptyTitle = document.getElementById('feed-empty-title');
+      const emptyDesc = document.getElementById('feed-empty-desc');
+      const emptyBtn = document.getElementById('feed-empty-create-btn');
+
+      if (!grid) return;
+
+      const allItems = getCombinedFeedItems();
+      const filtered = currentFeedFilter === 'all' 
+        ? allItems 
+        : allItems.filter(it => it.type === currentFeedFilter);
+
+      if (!filtered.length) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (grid) grid.classList.add('hidden');
+
+        if (emptyTitle && emptyDesc && emptyBtn) {
+          if (currentFeedFilter === 'image') {
+            emptyTitle.textContent = "No Image generations yet";
+            emptyDesc.textContent = "Generate your first image using FLUX.1, Midjourney or other models";
+            emptyBtn.textContent = "+ Create Image";
+            emptyBtn.onclick = () => switchTab('image');
+          } else if (currentFeedFilter === 'video') {
+            emptyTitle.textContent = "No Video generations yet";
+            emptyDesc.textContent = "Generate your first cinematic video using Kling, Runway or Wan";
+            emptyBtn.textContent = "+ Create Video";
+            emptyBtn.onclick = () => switchTab('video');
+          } else if (currentFeedFilter === 'audio') {
+            emptyTitle.textContent = "No Audio generations yet";
+            emptyDesc.textContent = "Create realistic voiceover, sound effects or AI music tracks";
+            emptyBtn.textContent = "+ Create Audio";
+            emptyBtn.onclick = () => switchTab('audio');
+          } else if (currentFeedFilter === 'text') {
+            emptyTitle.textContent = "No Text generations yet";
+            emptyDesc.textContent = "Chat with intelligent AI models and autonomous agents";
+            emptyBtn.textContent = "+ Open Chat";
+            emptyBtn.onclick = () => switchTab('text');
+          } else {
+            emptyTitle.textContent = "There's nothing here yet";
+            emptyDesc.textContent = "Create your first file, and the feed will start filling up";
+            emptyBtn.textContent = "+ Create";
+            emptyBtn.onclick = () => switchTab('image');
+          }
+        }
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      if (grid) grid.classList.remove('hidden');
+
+      if (currentFeedLayout === 'list') {
+        grid.className = 'grid grid-cols-1 gap-3';
+      } else {
+        grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+      }
+
+      grid.innerHTML = filtered.map(it => {
+        const type = it.type || 'image';
+        const model = it.model || '';
+        const prompt = it.prompt || '';
+        const dateStr = formatFeedDate(it.created_at);
+        const tokensCost = it.tokens_cost || (type === 'video' ? 25 : type === 'image' ? 12 : 10);
+
+        if (type === 'image') {
+          return `
+            <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
+              <div class="relative aspect-square w-full overflow-hidden bg-black flex items-center justify-center">
+                <img src="${it.result_url}" loading="lazy" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" alt="AI image">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition p-3 flex flex-col justify-between">
+                  <span class="self-start text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500 text-black uppercase">${escapeHtml(model || 'IMAGE')}</span>
+                  <div class="flex items-center gap-2">
+                    <a href="${it.result_url}" target="_blank" download="zyko_image.jpg" class="flex-1 py-1.5 px-2 bg-white text-black font-bold text-[11px] rounded-lg text-center hover:bg-stone-200 transition">Download</a>
+                    <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); alert('Prompt copied!');" class="p-1.5 bg-black/60 hover:bg-black text-white rounded-lg text-xs" title="Copy Prompt">📋</button>
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 text-xs space-y-1">
+                <p class="text-stone-300 font-medium line-clamp-2" title="${escapeHtml(prompt)}">${escapeHtml(prompt)}</p>
+                <div class="flex items-center justify-between text-[10px] text-stone-500 pt-1 border-t border-white/5">
+                  <span>${dateStr}</span>
+                  <span class="text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (type === 'video') {
+          return `
+            <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
+              <div class="relative aspect-video w-full overflow-hidden bg-black flex items-center justify-center">
+                <video src="${it.result_url}" loop muted playsinline controls class="w-full h-full object-cover"></video>
+                <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500 text-black uppercase pointer-events-none">${escapeHtml(model || 'VIDEO')}</span>
+              </div>
+              <div class="p-3 text-xs space-y-1">
+                <p class="text-stone-300 font-medium line-clamp-2" title="${escapeHtml(prompt)}">${escapeHtml(prompt)}</p>
+                <div class="flex items-center justify-between text-[10px] text-stone-500 pt-1 border-t border-white/5">
+                  <span>${dateStr}</span>
+                  <div class="flex items-center gap-2">
+                    <a href="${it.result_url}" download="zyko_video.mp4" target="_blank" class="hover:text-white transition" title="Download">⬇️</a>
+                    <span class="text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (type === 'audio') {
+          return `
+            <div class="group relative rounded-2xl p-4 border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between space-y-3 transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-lg">🎵</div>
+                  <div>
+                    <div class="text-xs font-bold text-white">${escapeHtml(model || 'Audio AI')}</div>
+                    <div class="text-[10px] text-stone-500">${dateStr}</div>
+                  </div>
+                </div>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ⚡</span>
+              </div>
+              <p class="text-xs text-stone-300 line-clamp-2 leading-relaxed" title="${escapeHtml(prompt)}">"${escapeHtml(prompt)}"</p>
+              <audio src="${it.result_url}" controls class="w-full h-8 rounded-lg bg-black/40"></audio>
+              <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
+                <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); alert('Text copied!');" class="text-stone-400 hover:text-white transition flex items-center gap-1">📋 <span>Copy text</span></button>
+                <a href="${it.result_url}" download="zyko_audio.mp3" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">⬇️ <span>Download</span></a>
+              </div>
+            </div>
+          `;
+        } else {
+          const replyContent = it.result_text || it.result_url || '';
+          return `
+            <div class="group relative rounded-2xl p-4 border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between space-y-3 transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-lg">💬</div>
+                  <div>
+                    <div class="text-xs font-bold text-white">${escapeHtml(model || 'LLM Chat')}</div>
+                    <div class="text-[10px] text-stone-500">${dateStr}</div>
+                  </div>
+                </div>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ⚡</span>
+              </div>
+              <div class="bg-black/30 rounded-xl p-2.5 text-xs text-stone-400 line-clamp-2 border border-white/5">
+                <span class="text-stone-300 font-semibold">User:</span> ${escapeHtml(prompt)}
+              </div>
+              <div class="text-xs text-stone-200 line-clamp-4 leading-relaxed bg-white/5 rounded-xl p-2.5 whitespace-pre-wrap max-h-36 overflow-y-auto">
+                ${escapeHtml(replyContent)}
+              </div>
+              <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
+                <button onclick="navigator.clipboard.writeText('${escapeHtml(replyContent)}'); alert('Reply copied!');" class="text-stone-400 hover:text-white transition flex items-center gap-1">📋 <span>Copy reply</span></button>
+                <button onclick="document.getElementById('llm-prompt-input').value = '${escapeHtml(prompt)}'; switchTab('text');" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">💬 <span>Open Chat</span></button>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
     }
 
     function copyAffiliateUniqueLink() {
@@ -9661,6 +10006,10 @@
       if (subtab === 'profile') {
         renderUsageLimitsUI();
         refreshUsageLimits(false);
+      }
+      if (subtab === 'feed') {
+        renderFeedUI();
+        fetchUserFeed();
       }
       // Scroll to top of dashboard content
       const dash = document.getElementById('view-user-dashboard');
