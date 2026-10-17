@@ -5622,13 +5622,13 @@
         const mobModelSub = document.getElementById('mobile-bar-model-sub');
         if (mobModelName && mobModelSub) {
           if (tabId === 'video') {
-            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeVideoModelKey || 'kling');
-            mobModelName.textContent = document.getElementById('active-video-name')?.textContent || 'Kling';
-            mobModelSub.textContent = document.getElementById('active-video-sub')?.textContent || 'Kling 4.0 Omni';
+            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeVideoModelKey || 'seedance_2_5');
+            mobModelName.textContent = document.getElementById('active-video-name')?.textContent || 'Seedance 2.5';
+            mobModelSub.textContent = document.getElementById('active-video-sub')?.textContent || 'Bytedance';
           } else if (tabId === 'image') {
-            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'seedream');
-            mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Seedream';
-            mobModelSub.textContent = document.getElementById('active-image-sub')?.textContent || 'ByteDance Multimodal';
+            if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'nano_banana_pro');
+            mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Nano Banana Pro';
+            mobModelSub.textContent = document.getElementById('active-image-sub')?.textContent || 'Google';
           } else if (tabId === 'text') {
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon('gemini');
             mobModelName.textContent = document.getElementById('active-text-name')?.textContent || 'Gemini';
