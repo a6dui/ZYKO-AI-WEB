@@ -210,7 +210,7 @@
 
   <!-- Payment Status Banner -->
   <div id="payment-alert" class="hidden bg-emerald-500 text-black py-2.5 px-4 text-center text-xs font-black tracking-wide flex items-center justify-center gap-2 shadow-lg">
-    <span data-i18n="payment_success">🎉 Оплата успешно подтверждена! Токены зачислены на ваш баланс.</span>
+    <span data-i18n="payment_success">🎉 Payment successfully confirmed! Tokens added to your balance.</span>
     <button onclick="this.parentElement.style.display='none'" class="bg-black/20 hover:bg-black/40 text-black px-2 py-0.5 rounded text-xs">✕</button>
   </div>
 
@@ -301,7 +301,7 @@
 
         <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, ONLY for mobile users: block lg:hidden) -->
         <div class="relative block lg:hidden" id="studio-switcher-container">
-          <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="p-1.5 rounded-xl bg-[#141719] hover:bg-white/10 border border-white/15 active:scale-95 transition flex items-center justify-center relative shadow-sm" title="Переключение студий (Studio Switcher)">
+          <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="p-1.5 rounded-xl bg-[#141719] hover:bg-white/10 border border-white/15 active:scale-95 transition flex items-center justify-center relative shadow-sm" title="Studio Switcher">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
               <rect x="4.5" y="4.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
               <rect x="13.5" y="4.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
@@ -383,10 +383,10 @@
             <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="text-emerald-400 text-sm">🔔</span>
-                <span class="text-xs font-bold text-white">Уведомления</span>
-                <span id="notification-count-badge" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full">3 новых</span>
+                <span class="text-xs font-bold text-white" data-i18n="notif_title">Notifications</span>
+                <span id="notification-count-badge" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full">3</span>
               </div>
-              <button onclick="markAllNotificationsRead()" class="text-[10px] text-stone-400 hover:text-emerald-400 transition">Прочитать все</button>
+              <button onclick="markAllNotificationsRead()" class="text-[10px] text-stone-400 hover:text-emerald-400 transition" data-i18n="notif_mark_read">Mark all read</button>
             </div>
 
             <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs">
@@ -394,10 +394,10 @@
                 <span class="text-lg shrink-0">⚡</span>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate">+5.5 ZK токенов начислено</span>
-                    <span class="text-[9px] text-stone-500">Только что</span>
+                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_1_title">+5.5 ZK tokens credited</span>
+                    <span class="text-[9px] text-stone-500" data-i18n="notif_1_time">Just now</span>
                   </div>
-                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Вам начислен стартовый баланс токенов для тестирования всех 100+ нейросетей.</p>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_1_text">Starter token balance granted for trial generations across all models.</p>
                 </div>
               </div>
 
@@ -405,10 +405,10 @@
                 <span class="text-lg shrink-0">🎬</span>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate">Wan 3.0 & Veo 3.1 доступны</span>
-                    <span class="text-[9px] text-stone-500">1 час назад</span>
+                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_2_title">Wan 3.0 & Veo 3.1 available</span>
+                    <span class="text-[9px] text-stone-500" data-i18n="notif_2_time">1 hour ago</span>
                   </div>
-                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Кинематографические нейросети видеогенерации до 30 секунд добавлены в Видео Студию.</p>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_2_text">Cinematic video generation AI models updated to the latest 2026 builds.</p>
                 </div>
               </div>
 
@@ -416,10 +416,10 @@
                 <span class="text-lg shrink-0">🤖</span>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between">
-                    <span class="font-bold text-white text-[11px] truncate">Автономные AI Агенты</span>
-                    <span class="text-[9px] text-stone-500">Вчера</span>
+                    <span class="font-bold text-white text-[11px] truncate" data-i18n="notif_3_title">Autonomous AI Agents</span>
+                    <span class="text-[9px] text-stone-500" data-i18n="notif_3_time">Yesterday</span>
                   </div>
-                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug">Создавайте персональных агентов с глубоким поиском, памятью и авто-генерацией.</p>
+                  <p class="text-[10px] text-stone-400 mt-0.5 leading-snug" data-i18n="notif_3_text">Create custom agents with deep context and tool integration.</p>
                 </div>
               </div>
             </div>
@@ -553,260 +553,85 @@
         </div>
       </section>
 
-      <!-- WHAT'S TRENDING WORLDWIDE (3D PERSPECTIVE SLIDER - PICTURES & PROMPTS) -->
-      <section id="trends" class="glow-section py-16 px-4 sm:px-6 relative">
+      <!-- WHAT'S TRENDING WORLDWIDE: FEATURED HIGHLIGHTS (MAIN MENU SCROLL) -->
+      <section id="trends" class="glow-section py-14 px-4 sm:px-6 relative">
         <div class="max-w-7xl mx-auto">
-          <!-- Trends Headline (Exact Match to Screenshot 4) -->
-          <div class="text-center max-w-2xl mx-auto mb-6">
-            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="trends_title">
-              Trends in just a few clicks
+          <!-- Featured Headline -->
+          <div class="text-center max-w-2xl mx-auto mb-8">
+            <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
+              <span>✦</span> <span data-i18n="showcase_badge">Curated Highlights</span>
+            </div>
+            <h2 class="font-serif-editorial text-3xl sm:text-5xl md:text-6xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="showcase_title">
+              Featured AI Showcase
             </h2>
-            <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium" data-i18n="trends_desc">
-              Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.
+            <p class="text-stone-300 text-xs sm:text-sm font-medium max-w-xl mx-auto leading-relaxed" data-i18n="showcase_desc">
+              Selected creations from Sora 2.0, Seedance 2.5, FLUX and Nano Banana. Hover to preview videos or copy prompts in 1 click.
             </p>
-            <div class="mt-4">
-              <button onclick="scrollToVideoTrends()" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs transition active:scale-95 shadow-lg">
-                <span class="animate-pulse">🔥</span> <span data-i18n="jump_to_video_trends">Watch AI Video Trends 2026 (OpenAI Sora & Kling) ↓</span>
-              </button>
-            </div>
           </div>
 
-          <!-- Model Category Pills (Exact Match to Screenshot 4) -->
-          <div id="model-category-nav" class="flex items-center justify-center gap-2 flex-wrap mb-10 text-xs">
-            <button onclick="switchModelCategory('all', this)" class="bg-[#c2410c] hover:bg-[#ea580c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs" data-i18n="filter_all">All</button>
-            <button onclick="switchModelCategory('new', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_new">New</button>
-            <button onclick="switchModelCategory('featuring', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_featuring">Featuring You</button>
-            <button onclick="switchModelCategory('popular', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_popular">Popular</button>
-            <button onclick="switchModelCategory('anime', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_anime">Anime</button>
-            <button onclick="switchModelCategory('cartoons', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_cartoons">Cartoons</button>
-            <button onclick="switchModelCategory('movies', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_movies">Movies</button>
-            <button onclick="switchModelCategory('fantasy', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fantasy">Fantasy</button>
-            <button onclick="switchModelCategory('fashion', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_fashion">Fashion</button>
-            <button onclick="switchModelCategory('products', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_products">Products</button>
-            <button onclick="switchModelCategory('realistic', this)" class="bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-medium px-4 py-2 rounded-full transition text-xs" data-i18n="filter_realistic">Realistic</button>
+          <!-- Compact 6-Card Grid (Rendered dynamically by renderFeaturedShowcase()) -->
+          <div id="featured-showcase-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+            <!-- Populated by renderFeaturedShowcase() -->
           </div>
 
-          <!-- 3D Card Grid with Perspective Tilt & Category Filtering -->
-          <div id="picture-cards-grid" class="perspective-slider grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            
-            <!-- Card 1: Seedance 2.5 Video Morphing -->
-            <div data-category="all new popular anime fantasy" onclick="openTrendModal('Seedance 2.5: Character Morph', 'Cyberpunk warrior walking smoothly transforming between chrome and cosmic forms, cinematic light trails, 60fps, 4K', 'Seedance 2.5 HD', 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Seedance Video">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>📹</span> AI Video
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-emerald-400 block">Seedance 2.5 HD</span>
-                <span class="text-xs font-bold text-white block truncate">Character Morph</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Cyberpunk warrior walking smoothly transforming between chrome and cosmic forms, cinematic light trails, 60fps, 4K', 'seedance', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 2: Kling 4.0 Pro Hypercar Drift -->
-            <div data-category="all popular realistic movies" onclick="openTrendModal('Kling 4.0: Hypercar Motion', 'Futuristic matte hypercar drifting on neon wet city tarmac, cinematic motion blur, raindrops, 4K 60fps', 'Kling 4.0 Pro', 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Kling Video">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-cyan-500/30 text-[10px] font-bold text-cyan-400 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>📹</span> AI Video
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-cyan-400 block">Kling 4.0 Pro</span>
-                <span class="text-xs font-bold text-white block truncate">Hypercar Drift 4K</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Futuristic matte hypercar drifting on neon wet city tarmac, cinematic motion blur, raindrops, 4K 60fps', 'kling', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-cyan-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 3: Google Veo 3.1 Cinematic Fjord -->
-            <div data-category="all popular movies realistic" onclick="openTrendModal('Veo 3.1: Nordic Fjord', 'Drone sweeping over misty Nordic fjord during sunrise, cinematic lens flare, crystal reflections, IMAX 70mm', 'Google Veo 3.1', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Veo Video">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>📹</span> AI Video
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-emerald-400 block">Google Veo 3.1</span>
-                <span class="text-xs font-bold text-white block truncate">Nordic Fjord 4K</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Drone sweeping over misty Nordic fjord during sunrise, cinematic lens flare, crystal reflections, IMAX 70mm', 'veo', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 4: FLUX 1.1 Pro Haute Couture -->
-            <div data-category="all fashion featuring popular realistic" onclick="openTrendModal('FLUX 1.1 Pro: Haute Couture', 'Editorial high fashion photoshoot with glass refraction, sculptural prism dress, Vogue cover aesthetic', 'FLUX 1.1 Pro', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="FLUX Photo">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-teal-500/30 text-[10px] font-bold text-teal-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🖼️</span> 4K Photo
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-teal-400 block">FLUX 1.1 Pro</span>
-                <span class="text-xs font-bold text-white block truncate">Haute Couture</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Editorial high fashion photoshoot with glass refraction, sculptural prism dress, Vogue cover aesthetic', 'flux', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-teal-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 5: Nano Banana 2.1 Cyber Geisha -->
-            <div data-category="all new anime fantasy" onclick="openTrendModal('Nano Banana 2.1: Cyber Geisha', 'Cyberpunk geisha with polished chrome ornaments in rainy Neo-Kyoto alley, glowing neon kanji, 8K ultra realistic', 'Nano Banana 2.1', 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Nano Banana">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-amber-500/30 text-[10px] font-bold text-amber-400 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🖼️</span> 4K Photo
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-amber-400 block">Nano Banana 2.1</span>
-                <span class="text-xs font-bold text-white block truncate">Cyber Geisha 8K</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Cyberpunk geisha with polished chrome ornaments in rainy Neo-Kyoto alley, glowing neon kanji, 8K ultra realistic', 'nano-banana', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-amber-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 6: Midjourney v6.1 Mythic Dragon -->
-            <div data-category="all fantasy popular movies" onclick="openTrendModal('Midjourney v6.1: Dragon Ruins', 'Colossal obsidian dragon perched atop ancient gothic cathedral ruins in storm clouds, lightning strikes, hyper-detailed', 'Midjourney v6.1', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Midjourney">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-purple-500/30 text-[10px] font-bold text-purple-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🖼️</span> 4K Photo
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-purple-400 block">Midjourney v6.1</span>
-                <span class="text-xs font-bold text-white block truncate">Ancient Citadel</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Colossal obsidian dragon perched atop ancient gothic cathedral ruins in storm clouds, lightning strikes, hyper-detailed', 'midjourney', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-purple-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 7: ElevenLabs Turbo Studio Audio -->
-            <div data-category="all new popular" onclick="openTrendModal('ElevenLabs: Cinematic Trailer Voice', 'Deep theatrical movie trailer voice narration with intense ambient SFX whooshes and binaural reverb', 'ElevenLabs Turbo v2.5', 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600', 'audio')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="ElevenLabs Audio">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-sky-500/30 text-[10px] font-bold text-sky-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🎵</span> AI Voice & SFX
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-sky-400 block">ElevenLabs Turbo</span>
-                <span class="text-xs font-bold text-white block truncate">Trailer Voice + SFX</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('In a world reborn through machine intelligence, only one spark remains...', 'elevenlabs', 'audio');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-sky-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Generate voice</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 8: Pixar 3D Animated Explorer -->
-            <div data-category="all cartoons fantasy" onclick="openTrendModal('Pixar 3D: Forest Explorer', 'Cute 3D animated red panda adventurer with tiny backpack in magical glowing mushroom grove, Pixar Disney style', 'Seedream 3D Toon', 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Pixar 3D">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-orange-500/30 text-[10px] font-bold text-orange-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🎨</span> 3D Cartoon
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-orange-400 block">Seedream 3D</span>
-                <span class="text-xs font-bold text-white block truncate">Forest Explorer 3D</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Cute 3D animated red panda adventurer with tiny backpack in magical glowing mushroom grove, Pixar Disney style', 'seedream', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-orange-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 9: Anime Shinkai Sunset City -->
-            <div data-category="all anime popular" onclick="openTrendModal('Anime 4K: Shinkai Sunset', 'Makoto Shinkai style anime rooftop overlooking glowing Shibuya at dusk, train tracks below, vibrant purple and golden sky', 'Seedream Anime', 'https://images.unsplash.com/photo-1563089145-599997674d42?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1563089145-599997674d42?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Anime Art">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-pink-500/30 text-[10px] font-bold text-pink-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>🌸</span> Anime 4K
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-pink-400 block">Seedream Anime</span>
-                <span class="text-xs font-bold text-white block truncate">Shinkai Sunset</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Makoto Shinkai style anime rooftop overlooking glowing Shibuya at dusk, train tracks below, vibrant purple and golden sky', 'seedream', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-pink-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 10: Product Studio 3D Splash -->
-            <div data-category="all products realistic" onclick="openTrendModal('Product 3D: Luxury Elixir', 'Luxury geometric glass perfume bottle hovering over crystal clear water with frozen splash droplets, softbox studio light', 'FLUX 1.1 Pro Commercial', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600', 'image')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Product Splash">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>💎</span> Product 3D
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-emerald-400 block">FLUX Commercial</span>
-                <span class="text-xs font-bold text-white block truncate">Perfume Splash 3D</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Luxury geometric glass perfume bottle hovering over crystal clear water with frozen splash droplets, softbox studio light', 'flux', 'image');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-emerald-500 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 11: Runway Gen-3 Alpha Deep Space -->
-            <div data-category="all movies fantasy popular" onclick="openTrendModal('Runway Gen-3: Deep Space', 'Interstellar spacecraft entering glowing nebula ring, cinematic slow camera movement, volumetric space dust, anamorphic flare', 'Runway Gen-3 Alpha', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Runway Space">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-indigo-500/30 text-[10px] font-bold text-indigo-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>📹</span> AI Video
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-indigo-400 block">Runway Gen-3</span>
-                <span class="text-xs font-bold text-white block truncate">Deep Space Cinema</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Interstellar spacecraft entering glowing nebula ring, cinematic slow camera movement, volumetric space dust, anamorphic flare', 'runway', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-indigo-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Card 12: Kling Runway Video Fashion -->
-            <div data-category="all fashion featuring realistic" onclick="openTrendModal('Kling Video: Fashion Runway', 'Model walking down wet brutalist concrete runway in beige oversized trench coat, soft overcast natural daylight, slow motion', 'Kling 4.0 Fashion', 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600', 'video')" class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 group relative aspect-[9/14] flex flex-col justify-end p-3 transition duration-300">
-              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Fashion Runway">
-              <span class="absolute top-2.5 left-2.5 bg-black/70 backdrop-blur-md border border-amber-500/30 text-[10px] font-bold text-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>📹</span> AI Video
-              </span>
-              <div class="relative z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent -mx-3 -mb-3 p-3 pt-6 rounded-b-2xl">
-                <span class="text-[10px] font-bold text-amber-400 block">Kling 4.0 Fashion</span>
-                <span class="text-xs font-bold text-white block truncate">Brutalist Runway</span>
-                <button onclick="event.stopPropagation(); recreateWithPrompt('Model walking down wet brutalist concrete runway in beige oversized trench coat, soft overcast natural daylight, slow motion', 'kling', 'video');" class="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-amber-400 text-stone-200 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1 shadow">
-                  <span>⚡ Try prompt</span>
-                </button>
-              </div>
-            </div>
-
+          <!-- Prominent CTA Button to Jump / Explore Full Trends -->
+          <div class="mt-8 text-center">
+            <button onclick="scrollToVideoTrends()" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/20 via-emerald-500/10 to-teal-500/20 hover:from-emerald-500/30 hover:to-teal-500/30 border border-emerald-500/40 text-emerald-300 hover:text-white font-extrabold text-xs sm:text-sm transition active:scale-98 shadow-xl">
+              <span class="text-base animate-pulse">🔥</span> <span data-i18n="showcase_explore_btn">Explore Full Trends Gallery (50+ Real AI Prompts & Models) →</span>
+            </button>
           </div>
         </div>
       </section>
-        </div>
-      </section>
 
-      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI VIDEO SHOWCASE (100% GENUINE OPENAI SORA, KLING, SEEDANCE) -->
-      <section id="ai-video-trends" class="glow-section py-16 px-4 sm:px-6 relative border-t border-white/5">
+      <!-- WHAT'S TRENDING WORLDWIDE: REAL AI CREATIONS GALLERY (100% GENUINE OPENAI SORA, KLING, SEEDANCE, FLUX) -->
+      <section id="ai-video-trends" class="glow-section py-16 px-4 sm:px-6 relative border-t border-white/5 scroll-mt-14">
         <div class="max-w-7xl mx-auto">
           <!-- Trends Headline -->
           <div class="text-center max-w-4xl mx-auto mb-8">
             <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
-              <span>✦</span> <span data-i18n="video_trends_badge">AI Video Showcase • 2026</span>
+              <span>✦</span> <span data-i18n="video_trends_badge">AI Video & Art Showcase • 2026</span>
             </div>
             <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-7xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="video_trends_title">
-              Мировые видео-тренды 2026
+              Global AI Trends 2026
             </h2>
             <p class="text-stone-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto" data-i18n="video_trends_desc">
-              Реальные ролики и вирусные мемы, созданные в Sora 2.0, Kling 4.0 и Seedance. Смотрите, копируйте промпты и создавайте свои видеоролики в 1 клик.
+              100% genuine creations from OpenAI Sora 2.0, Seedance 2.5, Kling 4.0, and FLUX.1 Pro. Browse, copy prompts, and generate in 1 click.
             </p>
           </div>
 
-          <!-- Category Pills Nav (Horizontal Swipeable Ribbon in a single line) -->
-          <div id="trends-category-nav" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 mb-6 text-xs -mx-4 px-4 sm:mx-0 sm:px-0">
-            <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
-            <button onclick="switchTrendCategory('sora', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_sora">🎬 OpenAI Sora</button>
-            <button onclick="switchTrendCategory('viral', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_viral">🚀 Viral & Memes</button>
-            <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
-            <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cinema">🎥 Cinematic 4K</button>
-            <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cars">🚗 Cars & Tech</button>
-            <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals</button>
-            <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
-            <button onclick="switchTrendCategory('space', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_space">🌌 Space & Sci-Fi</button>
-            <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism</button>
+          <!-- Category Pills Nav (Horizontal Swipeable Ribbon in a SINGLE LINE with Left/Right Scroll Arrows) -->
+          <div class="relative flex items-center mb-6">
+            <button type="button" onclick="scrollCategoryRibbon(-260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 mr-2 z-10 transition shadow-lg active:scale-90" title="Scroll left">‹</button>
+            <div id="trends-category-nav" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 text-xs scroll-smooth flex-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+              <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
+              <button onclick="switchTrendCategory('sora', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_sora">🎬 OpenAI Sora</button>
+              <button onclick="switchTrendCategory('seedance', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_seedance">⚡ Seedance 2.5</button>
+              <button onclick="switchTrendCategory('kling', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_kling">🚀 Kling 4.0</button>
+              <button onclick="switchTrendCategory('flux', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_flux">🎨 FLUX & Midjourney</button>
+              <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
+              <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cinema">🎥 Cinematic 4K</button>
+              <button onclick="switchTrendCategory('cars', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cars">🚗 Cars & Tech</button>
+              <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals & Pets</button>
+              <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
+              <button onclick="switchTrendCategory('space', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_space">🌌 Sci-Fi & Space</button>
+              <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism & Memes</button>
+              <button onclick="switchTrendCategory('fantasy', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fantasy">🏰 Fantasy & Myth</button>
+              <button onclick="switchTrendCategory('products', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_products">🛍️ Products & Macro</button>
+            </div>
+            <button type="button" onclick="scrollCategoryRibbon(260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 ml-2 z-10 transition shadow-lg active:scale-90" title="Scroll right">›</button>
           </div>
 
-          <!-- Sort Bar & Controls -->
-          <div class="flex items-center justify-between flex-wrap gap-3 mb-8 px-2 max-w-7xl mx-auto text-xs text-stone-400">
+          <!-- Controls: Media Type Tabs + Sort Bar -->
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-8 px-1 max-w-7xl mx-auto text-xs text-stone-400">
+            <!-- Media Type Switcher: All / Videos / Photos / Audio -->
+            <div class="flex items-center gap-1.5 p-1 bg-black/50 border border-white/10 rounded-xl">
+              <button type="button" id="media-filter-all" onclick="filterTrendsMediaType('all', this)" class="media-type-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="mfilter_all">All</button>
+              <button type="button" id="media-filter-video" onclick="filterTrendsMediaType('video', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_videos">🎬 Videos</button>
+              <button type="button" id="media-filter-image" onclick="filterTrendsMediaType('image', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_photos">🖼️ Photos</button>
+              <button type="button" id="media-filter-audio" onclick="filterTrendsMediaType('audio', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_audio">🎙️ Audio</button>
+            </div>
+
+            <!-- Sort Bar -->
             <div class="flex items-center gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl">
               <button type="button" id="sort-trend-trending" onclick="sortTrends('trending')" class="trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="trends_sort_trending">🔥 Trending</button>
               <button type="button" id="sort-trend-new" onclick="sortTrends('new')" class="trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="trends_sort_new">✨ New 2026</button>
@@ -820,7 +645,7 @@
             </div>
           </div>
 
-          <!-- Dynamic 3D Card Grid with Video Previews -->
+          <!-- Dynamic 3D Card Grid with Video & Art Previews -->
           <div id="video-trends-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
             <!-- Rendered by renderTrendsGrid() -->
           </div>
@@ -830,19 +655,19 @@
       <!-- AI ENHANCER BEFORE / AFTER COMPARISON SLIDER -->
       <section class="py-16 px-6 max-w-5xl mx-auto">
         <div class="text-center mb-8">
-          <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Topaz 4K Neural Enhancer</span>
-          <h3 class="text-3xl font-bold text-white mt-1">Enhance details, sharpen faces, upscale to 4K</h3>
+          <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider" data-i18n="enhancer_badge">Topaz 4K Neural Enhancer</span>
+          <h3 class="text-3xl font-bold text-white mt-1" data-i18n="enhancer_title">Enhance details, sharpen faces, upscale to 4K</h3>
         </div>
         <div id="enhancer-box" class="comparison-container rounded-3xl overflow-hidden border border-emerald-500/30 aspect-[16/9] shadow-2xl relative" onmousemove="handleEnhanceDrag(event)" ontouchmove="handleEnhanceTouch(event)">
           <!-- After (Enhanced 4K) -->
           <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1400" class="w-full h-full object-cover filter contrast-110 brightness-105" alt="After 4K Enhanced">
-          <div class="absolute bottom-4 right-4 bg-emerald-500 text-black font-extrabold text-[10px] px-3 py-1 rounded-full shadow">
+          <div class="absolute bottom-4 right-4 bg-emerald-500 text-black font-extrabold text-[10px] px-3 py-1 rounded-full shadow" data-i18n="enhancer_after">
             ZYKO 4K ENHANCED
           </div>
           <!-- Before (Original) -->
           <div id="comparison-before" class="comparison-before">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" class="absolute top-0 left-0 h-full max-w-none filter blur-[1px] brightness-90" style="width: 100vw; max-width: 1024px;" alt="Before">
-            <div class="absolute bottom-4 left-4 bg-black/80 border border-white/20 text-stone-300 font-bold text-[10px] px-3 py-1 rounded-full">
+            <div class="absolute bottom-4 left-4 bg-black/80 border border-white/20 text-stone-300 font-bold text-[10px] px-3 py-1 rounded-full" data-i18n="enhancer_before">
               RAW ORIGINAL
             </div>
           </div>
@@ -998,16 +823,16 @@
               </div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="openB2BModal()" class="hover:text-emerald-400 transition">B2B</a></li>
-                <li><a href="javascript:void(0)" onclick="openAcademyModal()" class="hover:text-emerald-400 transition">Academy</a></li>
-                <li><a href="javascript:void(0)" onclick="openContestModal()" class="hover:text-emerald-400 transition">Contest</a></li>
-                <li><a href="javascript:void(0)" onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200);" class="hover:text-emerald-400 transition">FAQ</a></li>
-                <li><a href="javascript:void(0)" onclick="switchTab('trends'); window.scrollTo({top: 0, behavior: 'smooth'});" class="hover:text-emerald-400 transition">Trends</a></li>
+                <li><a href="javascript:void(0)" onclick="openAcademyModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_academy">Academy</a></li>
+                <li><a href="javascript:void(0)" onclick="openContestModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_contest">Contest</a></li>
+                <li><a href="javascript:void(0)" onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200);" class="hover:text-emerald-400 transition" data-i18n="drawer_faq">FAQ</a></li>
+                <li><a href="javascript:void(0)" onclick="switchTab('trends'); scrollToVideoTrends();" class="hover:text-emerald-400 transition" data-i18n="nav_trends">Trends</a></li>
               </ul>
             </div>
 
             <!-- Column 2: Text -->
             <div class="space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-white">Text</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-white" data-i18n="footer_text_col">Text</div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="switchTab('text')" class="hover:text-emerald-400 transition">ChatGPT</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('text')" class="hover:text-emerald-400 transition">Claude</a></li>
@@ -1019,7 +844,7 @@
 
             <!-- Column 3: Image -->
             <div class="space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-white">Image</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-white" data-i18n="footer_image_col">Image</div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="switchTab('image'); selectStudioModel('banana')" class="hover:text-emerald-400 transition">Nano Banana</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('image')" class="hover:text-emerald-400 transition">Seedream</a></li>
@@ -1031,7 +856,7 @@
 
             <!-- Column 4: Video -->
             <div class="space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-white">Video</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-white" data-i18n="footer_video_col">Video</div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="switchTab('video')" class="hover:text-emerald-400 transition">Video-Hub</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('video')" class="hover:text-emerald-400 transition">Seedance 2.5</a></li>
@@ -1045,7 +870,7 @@
 
             <!-- Column 5: Audio -->
             <div class="space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-white">Audio</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-white" data-i18n="footer_audio_col">Audio</div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="switchTab('audio')" class="hover:text-emerald-400 transition">Elevenlabs</a></li>
               </ul>
@@ -1055,18 +880,17 @@
 
           <!-- Bottom Row: Copyright + Legal -->
           <div class="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
-            <div>
+            <div data-i18n="footer_legal_rights">
               © 2026 ZYKO AI. All rights reserved.
             </div>
             <div class="flex items-center gap-6">
-              <a href="/privacy-policy" onclick="openPrivacyModal(); return false;" class="hover:text-stone-300 transition underline underline-offset-4 decoration-stone-600">Privacy Policy</a>
-              <a href="/public-offer" onclick="openPublicOfferModal(); return false;" class="hover:text-stone-300 transition underline underline-offset-4 decoration-stone-600">Public Offer</a>
+              <a href="/privacy-policy" onclick="openPrivacyModal(); return false;" class="hover:text-stone-300 transition underline underline-offset-4 decoration-stone-600" data-i18n="footer_privacy">Privacy Policy</a>
+              <a href="/public-offer" onclick="openPublicOfferModal(); return false;" class="hover:text-stone-300 transition underline underline-offset-4 decoration-stone-600" data-i18n="footer_offer">Public Offer</a>
             </div>
           </div>
         </div>
       </footer>
     </section>
-
 
     <!-- ================= WORKSPACE SHELL (SHARED BY AGENTS, LLM, IMAGE, VIDEO, AUDIO) ================= -->
     <div id="workspace-shell" class="hidden flex h-[calc(100vh-53px)] overflow-hidden relative">
@@ -1127,13 +951,13 @@
         <!-- Studio Mobile Topbar (Screenshot 1: 🗨️ + ⭐ | Model Selector Pill) -->
         <div id="studio-mobile-bar" class="md:hidden flex items-center justify-between px-3 py-2 border-b border-white/10 bg-[#0c100e]/95 backdrop-blur shrink-0 z-20">
           <div class="flex items-center gap-1.5">
-            <button onclick="toggleHistoryDrawer(true)" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm active:scale-95 transition" title="История чатов">
+            <button onclick="toggleHistoryDrawer(true)" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm active:scale-95 transition" title="Chat History">
               💬
             </button>
-            <button onclick="startNewSession()" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-base font-bold active:scale-95 transition" title="Новый сеанс">
+            <button onclick="startNewSession()" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-base font-bold active:scale-95 transition" title="New Session">
               +
             </button>
-            <button onclick="toggleStudioFavorite()" id="btn-studio-star" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-400 hover:text-amber-400 flex items-center justify-center text-sm active:scale-95 transition" title="В избранное">
+            <button onclick="toggleStudioFavorite()" id="btn-studio-star" class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 text-stone-400 hover:text-amber-400 flex items-center justify-center text-sm active:scale-95 transition" title="Add to Favorites">
               ⭐
             </button>
           </div>
@@ -1204,26 +1028,26 @@
 
               <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-2">
-                  <button type="button" onclick="triggerStudioAttachment('agents')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить файл">
+                  <button type="button" onclick="triggerStudioAttachment('agents')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach File">
                     📎
                   </button>
                   <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-emerald-400/40 px-2.5 py-1 rounded-lg transition select-none">
                     <input type="checkbox" id="agent-deep-research" class="rounded bg-black/50 border-white/20 text-emerald-500">
                     <span>Deep research</span>
                   </label>
-                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки">
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Settings">
                     ⬡
                   </button>
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <button type="button" onclick="handleVoiceInput('agent')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                  <button type="button" onclick="handleVoiceInput('agent')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span>1</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Отправить сообщение">
+                  <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
                   </button>
                 </div>
@@ -1280,26 +1104,26 @@
 
               <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-2">
-                  <button type="button" onclick="triggerStudioAttachment('text')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить файл">
+                  <button type="button" onclick="triggerStudioAttachment('text')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach File">
                     📎
                   </button>
                   <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-emerald-400/40 px-2.5 py-1 rounded-lg transition select-none">
                     <input type="checkbox" id="llm-deep-research" class="rounded bg-black/50 border-white/20 text-emerald-500">
                     <span>Deep research</span>
                   </label>
-                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки">
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Settings">
                     ⬡
                   </button>
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <button type="button" onclick="handleVoiceInput('llm')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                  <button type="button" onclick="handleVoiceInput('llm')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span>1</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Отправить сообщение">
+                  <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
                   </button>
                 </div>
@@ -1356,7 +1180,7 @@
 
               <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
-                  <button type="button" onclick="triggerStudioAttachment('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить изображение">
+                  <button type="button" onclick="triggerStudioAttachment('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach Image">
                     📎
                   </button>
                   <select id="image-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
@@ -1370,22 +1194,22 @@
                     <option value="2K" selected>2K HD</option>
                     <option value="4K">4K Topaz</option>
                   </select>
-                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки генерации">
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Generation Settings">
                     ⬡
                   </button>
-                  <button type="button" onclick="expandImagePrompt()" title="Улучшить промпт нейросетью" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
+                  <button type="button" onclick="expandImagePrompt()" title="Enhance Prompt with AI" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
                     ✨
                   </button>
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <button type="button" onclick="handleVoiceInput('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                  <button type="button" onclick="handleVoiceInput('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="image-token-cost">2</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Сгенерировать изображение">
+                  <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Image">
                     ➤
                   </button>
                 </div>
@@ -1444,7 +1268,7 @@
               <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
                 <!-- Left controls group -->
                 <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
-                  <button type="button" onclick="triggerStudioAttachment('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Прикрепить изображение или референс">
+                  <button type="button" onclick="triggerStudioAttachment('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach Image or Reference">
                     📎
                   </button>
                   <select id="video-aspect-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
@@ -1461,24 +1285,24 @@
                     <option value="5.0s" selected>5.0s</option>
                     <option value="10.0s">10.0s</option>
                   </select>
-                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Настройки генерации">
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Generation Settings">
                     ⬡
                   </button>
-                  <button type="button" onclick="expandVideoPrompt()" title="Улучшить промпт нейросетью" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
+                  <button type="button" onclick="expandVideoPrompt()" title="Enhance Prompt with AI" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-emerald-400 hover:border-emerald-400 flex items-center justify-center text-xs transition shrink-0">
                     ✨
                   </button>
                 </div>
 
                 <!-- Right controls group -->
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                  <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="video-token-cost">32</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Сгенерировать видео">
+                  <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Video">
                     ➤
                   </button>
                 </div>
@@ -1503,7 +1327,7 @@
                     <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">v3.5 Neural</span>
                   </div>
                   <div class="text-[11px] text-stone-400 mt-0.5 flex items-center gap-2">
-                    <span>Выбранный голос:</span>
+                    <span data-i18n="audio_voice_selected">Selected voice:</span>
                     <span id="center-active-voice-pill" class="text-emerald-400 font-semibold cursor-pointer hover:underline" onclick="toggleMobileControlPanel(true)">🎙️ Rachel (Official • EN/RU)</span>
                   </div>
                 </div>
@@ -1511,7 +1335,7 @@
 
               <!-- Quick Presets / Tag Bar -->
               <div class="flex items-center gap-1.5 flex-wrap text-[11px]">
-                <span class="text-stone-400 mr-1 text-[10px] uppercase font-mono">Эмоции:</span>
+                <span class="text-stone-400 mr-1 text-[10px] uppercase font-mono" data-i18n="audio_emotions">Emotions:</span>
                 <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[laughing]')">😂 [laughing]</button>
                 <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[whispering]')">🤫 [whispering]</button>
                 <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[excited]')">🔥 [excited]</button>
@@ -1523,12 +1347,12 @@
             <div class="bg-[#111615] border border-white/15 focus-within:border-emerald-500/60 rounded-3xl p-5 sm:p-6 shadow-2xl transition space-y-4">
               <div class="flex items-center justify-between text-xs text-stone-400">
                 <div class="flex items-center gap-2">
-                  <span class="font-bold text-stone-200">Текст для озвучки</span>
-                  <span class="text-[10px] text-stone-500">• 29 языков автоопределение</span>
+                  <span class="font-bold text-stone-200" data-i18n="audio_script_title">Script for Voiceover</span>
+                  <span class="text-[10px] text-stone-500" data-i18n="audio_languages_hint">• 29 languages auto-detect</span>
                 </div>
                 <div class="flex items-center gap-3 font-mono text-[11px]">
                   <span id="audio-char-count" class="text-stone-400">0 / 10000</span>
-                  <button type="button" onclick="document.getElementById('audio-text-input').value = ''; document.getElementById('audio-char-count').textContent = '0 / 10000';" class="text-stone-500 hover:text-stone-300 text-[10px]">Очистить</button>
+                  <button type="button" onclick="document.getElementById('audio-text-input').value = ''; document.getElementById('audio-char-count').textContent = '0 / 10000';" class="text-stone-500 hover:text-stone-300 text-[10px]" data-i18n="btn_clear">Clear</button>
                 </div>
               </div>
 
@@ -1539,7 +1363,7 @@
                 <button onclick="removeAttachedFile('audio')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
               </div>
 
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="6" placeholder="Введите или вставьте текст сценария, подкаста или диалога для генерации речи голосом ElevenLabs... (используйте теги [whispering], [laughing] для точной модуляции эмоций)" class="w-full bg-transparent text-sm sm:text-base text-white placeholder-stone-600 focus:outline-none resize-y leading-relaxed font-sans"></textarea>
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="6" placeholder="Enter or paste script text to voiceover with ElevenLabs HD voices... (use tags like [whispering], [laughing] for emotion modulation)" class="w-full bg-transparent text-sm sm:text-base text-white placeholder-stone-600 focus:outline-none resize-y leading-relaxed font-sans"></textarea>
 
               <!-- Hidden file input for paperclip -->
               <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
@@ -1547,25 +1371,25 @@
               <!-- Studio Toolbar & Big Generate Button -->
               <div class="flex items-center justify-between gap-3 pt-3 border-t border-white/10 flex-wrap">
                 <div class="flex items-center gap-2">
-                  <button type="button" onclick="triggerStudioAttachment('audio')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center gap-1.5 text-xs transition active:scale-95" title="Прикрепить аудио образец">
-                    <span>📎</span> <span class="hidden sm:inline">Прикрепить аудио</span>
+                  <button type="button" onclick="triggerStudioAttachment('audio')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center gap-1.5 text-xs transition active:scale-95" title="Attach Audio Sample">
+                    <span>📎</span> <span class="hidden sm:inline" data-i18n="audio_attach">Attach audio</span>
                   </button>
                   <button type="button" onclick="toggleMobileControlPanel(true)" class="md:hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center gap-1.5 text-xs transition active:scale-95">
-                    <span>⚙️</span> <span>Выбор голоса</span>
+                    <span>⚙️</span> <span data-i18n="audio_voice_select">Voice settings</span>
                   </button>
-                  <button type="button" onclick="handleVoiceInput('audio')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-sm transition" title="Голосовой ввод">
+                  <button type="button" onclick="handleVoiceInput('audio')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
                 </div>
 
                 <div class="flex items-center gap-3">
                   <div class="flex items-center gap-1 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-300">
-                    <span>Расход:</span>
+                    <span data-i18n="cost_label">Cost:</span>
                     <span id="audio-token-cost-val" class="text-white">1</span>
-                    <span class="text-amber-400 font-normal">токен</span>
+                    <span class="text-amber-400 font-normal" data-i18n="token_label">token</span>
                   </div>
                   <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs sm:text-sm transition shadow-xl shadow-emerald-500/20 active:scale-95 flex items-center gap-2">
-                    <span>Синтезировать речь</span>
+                    <span data-i18n="audio_synthesize">Generate speech</span>
                     <span class="text-base leading-none">➤</span>
                   </button>
                 </div>
@@ -1575,15 +1399,15 @@
             <!-- Audio Generations Stream / History (Clean Cards with Playable Audio) -->
             <div class="space-y-3">
               <div class="flex items-center justify-between text-xs font-bold text-stone-300 px-1">
-                <span>Сгенерированные аудиодорожки</span>
+                <span data-i18n="audio_generated_tracks">Generated audio tracks</span>
                 <span class="text-[10px] text-stone-500 font-normal font-mono">ElevenLabs Neural Engine</span>
               </div>
               <div id="audio-generation-gallery" class="space-y-3">
                 <!-- Dynamically populated or empty state placeholder -->
                 <div id="audio-empty-placeholder" class="border border-white/10 bg-[#121615]/50 rounded-2xl p-8 text-center shadow-lg">
                   <span class="text-3xl block mb-2 opacity-80">🎙️</span>
-                  <div class="text-xs font-bold text-white mb-1">Готово к синтезу речи</div>
-                  <p class="text-[11px] text-stone-400 max-w-md mx-auto">Введите текст выше, выберите голос и параметры в правой колонке и нажмите «Синтезировать речь».</p>
+                  <div class="text-xs font-bold text-white mb-1" data-i18n="audio_ready_title">Ready for speech synthesis</div>
+                  <p class="text-[11px] text-stone-400 max-w-md mx-auto" data-i18n="audio_ready_desc">Enter text above, select a voice and click 'Generate speech'.</p>
                 </div>
               </div>
             </div>
@@ -2026,7 +1850,7 @@
                     </div>
                   </div>
                   <div class="flex items-center gap-2 shrink-0">
-                    <button type="button" id="btn-active-voice-preview" onclick="event.stopPropagation(); playActiveVoicePreview()" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Прослушать образец">
+                    <button type="button" id="btn-active-voice-preview" onclick="event.stopPropagation(); playActiveVoicePreview()" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Listen to Sample">
                       ▶
                     </button>
                     <span id="voice-picker-caret" class="text-stone-400 text-xs transition-transform duration-200">▾</span>
@@ -2038,7 +1862,7 @@
               <div id="voice-picker-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 z-50 bg-[#0d1210] border border-white/20 rounded-2xl p-3 shadow-2xl space-y-2 backdrop-blur-xl">
                 <!-- Search input -->
                 <div class="relative">
-                  <input type="text" id="voice-search-input" oninput="filterVoicesList(this.value)" placeholder="🔍 Поиск голоса, актера или персонажа..." class="w-full bg-black/60 border border-white/15 focus:border-emerald-400 rounded-xl pl-3 pr-8 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+                  <input type="text" id="voice-search-input" oninput="filterVoicesList(this.value)" placeholder="🔍 Search voice, actor or character..." class="w-full bg-black/60 border border-white/15 focus:border-emerald-400 rounded-xl pl-3 pr-8 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
                   <button type="button" onclick="clearVoiceSearch()" class="absolute right-2.5 top-2 text-stone-500 hover:text-white text-xs">✕</button>
                 </div>
 
@@ -2154,13 +1978,13 @@
             <!-- Clone Name -->
             <div class="space-y-1">
               <label class="block text-xs font-bold text-stone-300">Имя голоса <span class="text-red-400">*</span></label>
-              <input type="text" id="clone-voice-name-input" placeholder="Например: Мой голос / Иван / Подкастер" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+              <input type="text" id="clone-voice-name-input" placeholder="E.g.: My Voice / Narrator / Podcaster" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
             </div>
 
             <!-- Clone Description / Labels -->
             <div class="space-y-1">
               <label class="block text-xs font-bold text-stone-300">Описание и теги</label>
-              <input type="text" id="clone-voice-desc-input" placeholder="Например: Спокойный, глубокий, русский, подкаст" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
+              <input type="text" id="clone-voice-desc-input" placeholder="E.g.: Calm, deep, cinematic, podcast" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
             </div>
 
             <!-- File Upload Dropzone -->
@@ -3053,7 +2877,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <button onclick="refreshAdminData()" title="Обновить данные" class="p-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition text-sm">
+          <button onclick="refreshAdminData()" title="Refresh Data" class="p-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition text-sm">
             🔄
           </button>
           <button onclick="closeAdminPanel()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center transition">
@@ -3157,7 +2981,7 @@
           <!-- Filter & Search Bar -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div class="relative flex-1">
-              <input id="admin-users-search" oninput="debounceAdminUsersSearch()" type="text" placeholder="Поиск по имени, email или Telegram ID..." class="w-full bg-[#141a18] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400">
+              <input id="admin-users-search" oninput="debounceAdminUsersSearch()" type="text" placeholder="Search by name, email or Telegram ID..." class="w-full bg-[#141a18] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400">
             </div>
             <div class="flex items-center gap-2">
               <select id="admin-users-tier-filter" onchange="loadAdminUsers()" class="bg-[#141a18] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
@@ -3541,7 +3365,7 @@
   <!-- 4. TREND PREVIEW CINEMA MODAL (Real AI Video Player & Prompt Inspector) -->
   <div id="trend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-5 modal-backdrop backdrop-blur-xl" onclick="closeTrendModal()">
     <div class="bg-[#0f1412] border border-white/20 rounded-3xl overflow-hidden max-w-4xl w-full relative shadow-2xl flex flex-col md:flex-row max-h-[90vh]" onclick="event.stopPropagation()">
-      <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition active:scale-95" title="Закрыть">✕</button>
+      <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition active:scale-95" title="Close">✕</button>
       
       <!-- Video Player Viewport -->
       <div class="md:w-3/5 bg-black flex items-center justify-center relative overflow-hidden aspect-[9/14] md:aspect-auto max-h-[55vh] md:max-h-none">
@@ -3549,7 +3373,7 @@
         <img id="trend-modal-img" src="" class="hidden w-full h-full object-cover" alt="Trend visual">
       </div>
 
-      <!-- Info & Actions Sidebar inside modal -->
+      <!-- Info & Actions Sidebar inside modal (NO USERNAMES) -->
       <div class="md:w-2/5 p-5 md:p-6 flex flex-col justify-between bg-[#121615] overflow-y-auto custom-scrollbar">
         <div class="space-y-4">
           <div class="flex items-center justify-between">
@@ -3565,20 +3389,15 @@
           </div>
 
           <div>
-            <h3 id="trend-modal-title" class="text-lg sm:text-xl font-black text-white leading-tight mb-2">Илон Маск: Летающий Cybercab 2026</h3>
-            <div id="trend-modal-author-row" class="flex items-center gap-2 text-xs text-stone-400 mb-3">
-              <span id="trend-modal-author-avatar" class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">🚀</span>
-              <span id="trend-modal-author-handle" class="font-semibold text-stone-300">@elon_ai_vision</span>
-              <span class="text-[9px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 font-bold uppercase">PRO CREATOR</span>
-            </div>
+            <h3 id="trend-modal-title" class="text-lg sm:text-xl font-black text-white leading-tight mb-2">AI Creation Showcase</h3>
           </div>
 
           <!-- Generation Prompt Box -->
           <div class="space-y-1.5">
             <div class="flex items-center justify-between text-[11px] font-bold text-stone-300">
-              <span>Промпт генерации:</span>
+              <span data-i18n="tmodal_prompt_label">Generation Prompt:</span>
               <button type="button" onclick="copyTrendPrompt()" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 text-[10px] font-semibold transition">
-                <span>📋</span> <span>Скопировать</span>
+                <span>📋</span> <span id="trend-modal-copy-label" data-i18n="tmodal_copy_btn">Copy</span>
               </button>
             </div>
             <div class="bg-black/60 border border-white/10 rounded-2xl p-3 text-xs text-stone-200 leading-relaxed max-h-36 overflow-y-auto select-text font-sans">
@@ -3589,11 +3408,11 @@
           <!-- Video Specs Grid -->
           <div class="grid grid-cols-2 gap-2 text-[10px] text-stone-400">
             <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-              <span class="block text-stone-500">Разрешение:</span>
+              <span class="block text-stone-500" data-i18n="tmodal_resolution">Resolution:</span>
               <span class="font-bold text-white">4K UHD (60fps)</span>
             </div>
             <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-              <span class="block text-stone-500">Формат:</span>
+              <span class="block text-stone-500" data-i18n="tmodal_aspect">Format:</span>
               <span id="trend-modal-aspect" class="font-bold text-white">16:9 Cinema</span>
             </div>
           </div>
@@ -3601,10 +3420,10 @@
 
         <div class="pt-5 space-y-2 border-t border-white/10 mt-4">
           <button type="button" onclick="recreateTrendInStudio('video')" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-black text-xs py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-            <span>⚡</span> <span>Создать такой же ролик в Video Studio</span>
+            <span>⚡</span> <span data-i18n="tmodal_create_video">Create in Video Studio</span>
           </button>
           <button type="button" onclick="recreateTrendInStudio('image')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white font-bold text-xs py-2 rounded-xl transition flex items-center justify-center gap-2">
-            <span>🎨</span> <span>Использовать в Image Studio</span>
+            <span>🎨</span> <span data-i18n="tmodal_create_image">Open in Image Studio</span>
           </button>
         </div>
       </div>
@@ -3681,7 +3500,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <a id="info-modal-external-link" href="/privacy-policy" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-stone-300 hover:text-white transition" title="Открыть в новой вкладке">
+          <a id="info-modal-external-link" href="/privacy-policy" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-stone-300 hover:text-white transition" title="Open in New Tab">
             <span>В новой вкладке</span> <span class="text-emerald-400">↗</span>
           </a>
           <button onclick="closeInfoModal()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-stone-400 hover:text-white text-lg transition">✕</button>
@@ -3723,7 +3542,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2 pr-8 sm:pr-0">
-          <button onclick="fetchStatusData(false)" id="btn-status-refresh" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 text-xs text-stone-300 hover:text-white transition group" title="Обновить статус">
+          <button onclick="fetchStatusData(false)" id="btn-status-refresh" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 text-xs text-stone-300 hover:text-white transition group" title="Refresh Status">
             <svg id="status-refresh-icon" class="w-3.5 h-3.5 stroke-current transition-transform duration-500 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span class="hidden sm:inline">Обновить</span>
           </button>
@@ -3747,9 +3566,9 @@
             <span id="status-total-count" class="text-[11px] text-stone-400 bg-white/5 px-2 py-0.5 rounded-full border border-white/5">38 моделей</span>
           </div>
           <div class="flex items-center gap-2 text-xs text-stone-400">
-            <button onclick="navigateStatusMonths(-1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Предыдущий месяц">‹</button>
+            <button onclick="navigateStatusMonths(-1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Previous Month">‹</button>
             <span class="font-medium px-1 select-none" id="status-date-range">Sep 2026 — Oct 2026.</span>
-            <button onclick="navigateStatusMonths(1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Следующий месяц">›</button>
+            <button onclick="navigateStatusMonths(1)" class="hover:text-white hover:bg-white/10 active:scale-90 rounded px-2 py-0.5 transition text-sm font-bold" title="Next Month">›</button>
           </div>
         </div>
 
@@ -3797,6 +3616,20 @@
         nav_image: "Image",
         nav_video: "Video",
         nav_audio: "Audio",
+        audio_voice_selected: "Selected voice:",
+        audio_emotions: "Emotions:",
+        audio_script_title: "Script for Voiceover",
+        audio_languages_hint: "• 29 languages auto-detect",
+        btn_clear: "Clear",
+        audio_attach: "Attach audio",
+        audio_voice_select: "Voice settings",
+        cost_label: "Cost:",
+        token_label: "token",
+        audio_synthesize: "Generate speech",
+        audio_generated_tracks: "Generated audio tracks",
+        audio_ready_title: "Ready for speech synthesis",
+        audio_ready_desc: "Enter text above, select a voice and click 'Generate speech'.",
+
         nav_toolkit: "Toolkit",
         sign_in: "Sign in",
         topup: "Top up ZK",
@@ -3809,8 +3642,105 @@
         drawer_support: "Support",
         drawer_language: "Language",
         drawer_admin: "Admin Panel",
-        agent_title: "Create and communicate with your personal agent",
-        agent_desc: "Agents memorize instructions, speech manner, study on your data, know how to look on the Internet, issue files, launch code, work in the neural networks GPT Image, Veo 3.1, Suno.",
+
+        notif_title: "Notifications",
+        notif_mark_read: "Mark all read",
+        notif_1_title: "+5.5 ZK tokens credited",
+        notif_1_time: "Just now",
+        notif_1_text: "Starter token balance granted for trial generations across all models.",
+        notif_2_title: "Wan 3.0 & Veo 3.1 available",
+        notif_2_time: "1 hour ago",
+        notif_2_text: "Cinematic video generation AI models updated to the latest 2026 builds.",
+        notif_3_title: "Autonomous AI Agents",
+        notif_3_time: "Yesterday",
+        notif_3_text: "Create custom agents with deep context and tool integration.",
+
+        promo_text: "Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity",
+        promo_btn: "Create Video",
+        hero_badge: "✦ WAN 3.0 & VEO 3.1 PREVIEW",
+        hero_sub1: "One subscription.",
+        hero_sub2: "Unlimited access to top AI tools.",
+        hero_desc: "4K video generation, photorealistic FLUX images, smart conversational agents, and ElevenLabs studio voiceovers.",
+        hero_cta: "Start creating",
+
+        showcase_badge: "✦ Curated Highlights",
+        showcase_title: "Featured AI Showcase",
+        showcase_desc: "Selected creations from Sora 2.0, Seedance 2.5, FLUX and Nano Banana. Hover to preview videos or copy prompts in 1 click.",
+        showcase_explore_btn: "Explore Full Trends Gallery (50+ Real AI Prompts & Models) →",
+
+        video_trends_badge: "✦ Genuine AI Video & Art Showcase • 2026",
+        video_trends_title: "Global AI Trends 2026",
+        video_trends_desc: "100% genuine creations from OpenAI Sora 2.0, Seedance 2.5, Kling 4.0, and FLUX.1 Pro. Browse, copy prompts, and generate in 1 click.",
+
+        vfilter_all: "🔥 All Trends",
+        vfilter_sora: "🎬 OpenAI Sora",
+        vfilter_seedance: "⚡ Seedance 2.5",
+        vfilter_kling: "🚀 Kling 4.0",
+        vfilter_flux: "🎨 FLUX & Midjourney",
+        vfilter_anime: "🎌 3D & Anime",
+        vfilter_cinema: "🎥 Cinematic 4K",
+        vfilter_cars: "🚗 Cars & Tech",
+        vfilter_animals: "🐱 Animals & Pets",
+        vfilter_fashion: "👗 Fashion & People",
+        vfilter_space: "🌌 Sci-Fi & Space",
+        vfilter_surreal: "☕ Surrealism & Memes",
+        vfilter_fantasy: "🏰 Fantasy & Myth",
+        vfilter_products: "🛍️ Products & Macro",
+
+        mfilter_all: "All",
+        mfilter_videos: "🎬 Videos",
+        mfilter_photos: "🖼️ Photos",
+        mfilter_audio: "🎙️ Audio",
+
+        trends_sort_trending: "🔥 Trending",
+        trends_sort_new: "✨ New 2026",
+        trends_sort_top: "❤️ Top Likes",
+        trends_hover_hint: "Hover or tap card to preview video",
+        btn_try_prompt: "⚡ Try prompt",
+        jump_to_video_trends: "Watch AI Video Trends 2026 (OpenAI Sora & Kling) ↓",
+
+        tmodal_prompt_label: "Generation Prompt:",
+        tmodal_copy_btn: "Copy",
+        tmodal_copied: "Copied!",
+        tmodal_resolution: "Resolution:",
+        tmodal_aspect: "Format:",
+        tmodal_create_video: "⚡ Create in Video Studio",
+        tmodal_create_image: "🎨 Open in Image Studio",
+
+        enhancer_badge: "Topaz 4K Neural Enhancer",
+        enhancer_title: "Enhance details, sharpen faces, upscale to 4K",
+        enhancer_before: "RAW ORIGINAL",
+        enhancer_after: "ZYKO 4K ENHANCED",
+
+        pricing_badge: "✦ Flexible Subscription",
+        pricing_title: "Choose your creative tier",
+        pricing_desc: "Universal token pool. Spend tokens across any model anytime.",
+        billing_monthly: "Monthly",
+        billing_annual: "Annual (Save 15%)",
+        pricing_most_popular: "Most Popular",
+        pricing_select_basic: "Select Basic",
+        pricing_select_pro: "Select Pro",
+        pricing_select_vip: "Select VIP",
+        pricing_select_elite: "Select Elite",
+        pricing_select_ultra: "Select Ultra",
+        pricing_compare: "Compare all features and model quotas in detail →",
+
+        faq_title: "Frequently Asked Questions",
+        faq_q1: "What models are included in ZYKO.AI?",
+        faq_a1: "You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.",
+        faq_q2: "How are tokens spent across models?",
+        faq_a2: "Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.",
+        faq_q3: "Can I use generated media for commercial purposes?",
+        faq_a3: "Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.",
+
+        footer_text_col: "Text",
+        footer_image_col: "Image",
+        footer_video_col: "Video",
+        footer_audio_col: "Audio",
+        footer_legal_rights: "© 2026 ZYKO AI. All rights reserved.",
+        footer_privacy: "Privacy Policy",
+        footer_offer: "Public Offer",
+
         payment_success: "🎉 Payment successfully confirmed! Tokens added to your balance.",
         auth_welcome: "Welcome to ZYKO.AI",
         auth_desc: "Sign in to sync your universal token balance across Web and Telegram, save past generations, and unlock 4K models.",
@@ -3824,62 +3754,8 @@
         auth_toggle_reg: "No account? Register",
         auth_toggle_login: "Already have an account? Sign in",
         auth_terms: "By continuing you accept our Terms & Privacy Policy.",
-        promo_text: "Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity",
-        promo_btn: "Create Video",
-        hero_sub1: "One subscription.",
-        hero_sub2: "Unlimited access to top AI tools.",
-        hero_cta: "Start creating",
-        trends_title: "Trends in just a few clicks",
-        trends_desc: "Get inspired, add your own perspective, and turn ready-to-use ideas into something uniquely yours.",
-                filter_all: "All",
-        filter_new: "New",
-        filter_featuring: "Featuring You",
-        filter_popular: "Popular",
-        filter_anime: "3D Anime",
-        filter_cartoons: "Cartoons",
-        filter_movies: "Movies",
-        filter_fantasy: "Fantasy",
-        filter_fashion: "Fashion",
-        filter_products: "Products",
-        filter_realistic: "Realistic",
-        video_trends_badge: "✦ Genuine AI Video Showcase • 2026",
-        video_trends_title: "Global AI Video Trends",
-        video_trends_desc: "100% genuine AI creations from Sora 2.0, Kling 4.0, and Seedance 2.5. Explore prompts and create your own clips in 1 click.",
-        vfilter_all: "🔥 All Trends",
-        vfilter_sora: "🎬 OpenAI Sora 2.0",
-        vfilter_viral: "🚀 Viral & Memes",
-        vfilter_anime: "🎌 3D & Anime",
-        vfilter_cinema: "🎥 Cinematic 4K",
-        vfilter_cars: "🚗 Cars & Tech",
-        vfilter_animals: "🐱 Animals",
-        vfilter_fashion: "👗 Fashion & People",
-        vfilter_space: "🌌 Sci-Fi & Space",
-        vfilter_surreal: "☕ Surrealism",
-        jump_to_video_trends: "Watch AI Video Trends 2026 (OpenAI Sora & Kling) ↓",
-        btn_try_prompt: "⚡ Try prompt",
-        trends_sort_trending: "🔥 Trending",
-        trends_sort_new: "✨ New 2026",
-        trends_sort_top: "❤️ Top Likes",
-        trends_hover_hint: "Hover or tap card to preview video",
-        pricing_badge: "✦ Flexible Subscription",
-        pricing_title: "Choose your creative tier",
-        pricing_desc: "Universal token pool. Spend tokens across any model anytime.",
-        billing_monthly: "Monthly",
-        billing_annual: "Annual (Save 15%)",
-        pricing_most_popular: "Most Popular",
-        pricing_select_basic: "Select Basic",
-        pricing_select_pro: "Select Pro",
-        pricing_select_vip: "Select VIP",
-        pricing_select_elite: "Select Elite",
-        pricing_select_ultra: "Select Ultra",
-        pricing_compare: "Compare all features and model quotas in detail →",
-        faq_title: "Frequently Asked Questions",
-        faq_q1: "What models are included in ZYKO.AI?",
-        faq_a1: "You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.",
-        faq_q2: "How are tokens spent across models?",
-        faq_a2: "Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.",
-        faq_q3: "Can I use generated media for commercial purposes?",
-        faq_a3: "Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.",
+        agent_title: "Create and communicate with your personal agent",
+        agent_desc: "Agents memorize instructions, speech manner, study on your data, know how to look on the Internet, issue files, launch code, work in the neural networks GPT Image, Veo 3.1, Suno.",
         profile_title: "Profile",
         profile_feed: "Generation feed",
         profile_pricing: "Pricing",
@@ -3902,6 +3778,20 @@
         nav_image: "Фото",
         nav_video: "Видео",
         nav_audio: "Аудио",
+        audio_voice_selected: "Выбранный голос:",
+        audio_emotions: "Эмоции:",
+        audio_script_title: "Текст для озвучки",
+        audio_languages_hint: "• 29 языков автоопределение",
+        btn_clear: "Очистить",
+        audio_attach: "Прикрепить аудио",
+        audio_voice_select: "Выбор голоса",
+        cost_label: "Расход:",
+        token_label: "токен",
+        audio_synthesize: "Синтезировать речь",
+        audio_generated_tracks: "Сгенерированные аудиодорожки",
+        audio_ready_title: "Готово к синтезу речи",
+        audio_ready_desc: "Введите текст выше, выберите голос и параметры в правой колонке и нажмите 'Синтезировать речь'.",
+
         nav_toolkit: "Инструменты",
         sign_in: "Войти",
         topup: "Пополнить ZK",
@@ -3914,8 +3804,105 @@
         drawer_support: "Поддержка",
         drawer_language: "Язык интерфейса",
         drawer_admin: "Панель управления",
-        agent_title: "Создавайте и общайтесь с вашим личным агентом",
-        agent_desc: "Агенты запоминают инструкции, стиль общения, обучаются на ваших данных, умеют искать в интернете, писать код и генерировать в нейросетях GPT Image, Veo 3.1, Suno.",
+
+        notif_title: "Уведомления",
+        notif_mark_read: "Прочитать все",
+        notif_1_title: "+5.5 ZK токенов начислено",
+        notif_1_time: "Только что",
+        notif_1_text: "Вам начислен стартовый баланс токенов для тестовых генераций во всех моделях.",
+        notif_2_title: "Wan 3.0 & Veo 3.1 доступны",
+        notif_2_time: "1 час назад",
+        notif_2_text: "Кинематографические нейросети видеогенерации обновлены до актуальных сборок 2026 года.",
+        notif_3_title: "Автономные AI Агенты",
+        notif_3_time: "Вчера",
+        notif_3_text: "Создавайте персональных агентов с глубоким контекстом и интеграцией инструментов.",
+
+        promo_text: "Встречайте Wan 3.0: До 30 секунд безграничного творчества",
+        promo_btn: "Создать видео",
+        hero_badge: "✦ ПРЕВЬЮ WAN 3.0 & VEO 3.1",
+        hero_sub1: "Одна подписка.",
+        hero_sub2: "Безлимитный доступ к лучшим нейросетям.",
+        hero_desc: "Генерация видео 4K, реалистичные фото FLUX, диалоги с умными агентами и студийная озвучка ElevenLabs.",
+        hero_cta: "Начать создавать",
+
+        showcase_badge: "✦ Избранные работы",
+        showcase_title: "Тренды в несколько кликов",
+        showcase_desc: "Лучшие работы Sora 2.0, Seedance 2.5, FLUX и Nano Banana. Наведите курсор для предпросмотра или копируйте промпты в 1 клик.",
+        showcase_explore_btn: "Смотреть все тренды и категории (50+ промптов) →",
+
+        video_trends_badge: "✦ 100% Настоящие ИИ-Видео и Арт • 2026",
+        video_trends_title: "Мировые ИИ-Тренды 2026",
+        video_trends_desc: "100% настоящие генерации Sora 2.0, Kling 4.0, Seedance 2.5 и FLUX. Смотрите, копируйте промпты и создавайте свои работы в 1 клик.",
+
+        vfilter_all: "🔥 Все тренды",
+        vfilter_sora: "🎬 OpenAI Sora",
+        vfilter_seedance: "⚡ Seedance 2.5",
+        vfilter_kling: "🚀 Kling 4.0",
+        vfilter_flux: "🎨 FLUX & Midjourney",
+        vfilter_anime: "🎌 3D & Аниме",
+        vfilter_cinema: "🎥 Кинематограф 4K",
+        vfilter_cars: "🚗 Летающие авто & Tech",
+        vfilter_animals: "🐱 Животные",
+        vfilter_fashion: "👗 Мода & Люди",
+        vfilter_space: "🌌 Космос & Sci-Fi",
+        vfilter_surreal: "☕ Сюрреализм & Мемы",
+        vfilter_fantasy: "🏰 Фэнтези",
+        vfilter_products: "🛍️ Продукты & Макро",
+
+        mfilter_all: "Все",
+        mfilter_videos: "🎬 Видео",
+        mfilter_photos: "🖼️ Фото",
+        mfilter_audio: "🎙️ Аудио",
+
+        trends_sort_trending: "🔥 В тренде",
+        trends_sort_new: "✨ Новинки 2026",
+        trends_sort_top: "❤️ Топ лайков",
+        trends_hover_hint: "Наведите курсор для живого предпросмотра видео",
+        btn_try_prompt: "⚡ Попробовать промпт",
+        jump_to_video_trends: "Смотреть ИИ Видео-Тренды 2026 (OpenAI Sora & Kling) ↓",
+
+        tmodal_prompt_label: "Промпт генерации:",
+        tmodal_copy_btn: "Скопировать",
+        tmodal_copied: "Скопировано!",
+        tmodal_resolution: "Разрешение:",
+        tmodal_aspect: "Формат:",
+        tmodal_create_video: "⚡ Создать в Video Studio",
+        tmodal_create_image: "🎨 Открыть в Image Studio",
+
+        enhancer_badge: "Нейронный апскейлер Topaz 4K",
+        enhancer_title: "Улучшайте детали, повышайте резкость лиц, масштабируйте до 4K",
+        enhancer_before: "ОРИГИНАЛ",
+        enhancer_after: "ZYKO 4K УЛУЧШЕНИЕ",
+
+        pricing_badge: "✦ Гибкие тарифные планы",
+        pricing_title: "Выберите ваш тариф",
+        pricing_desc: "Единый пул токенов. Тратьте токены на любые нейросети в любое время.",
+        billing_monthly: "Ежемесячно",
+        billing_annual: "Ежегодно (скидка 15%)",
+        pricing_most_popular: "Хит продаж",
+        pricing_select_basic: "Выбрать Basic",
+        pricing_select_pro: "Выбрать Pro",
+        pricing_select_vip: "Выбрать VIP",
+        pricing_select_elite: "Выбрать Elite",
+        pricing_select_ultra: "Выбрать Ultra",
+        pricing_compare: "Подробное сравнение всех возможностей и квот →",
+
+        faq_title: "Часто задаваемые вопросы",
+        faq_q1: "Какие нейросети входят в ZYKO.AI?",
+        faq_a1: "Вы получаете единый доступ к более чем 100 нейросетям: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD голоса и Suno v4.",
+        faq_q2: "Как расходуются токены на модели?",
+        faq_a2: "Токены списываются строго за генерации: текст = 1 ZK, реалистичные фото = 2-3 ZK, озвучка HD = 2 ZK за 1000 знаков, видео 10 сек = 10-15 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
+        faq_q3: "Могу ли я использовать созданный контент в коммерческих целях?",
+        faq_a3: "Да! Все изображения, видео, аудио озвучки и код, созданные на активных тарифах (Basic, Pro, VIP, Elite, Ultra Elite), имеют полные коммерческие права.",
+
+        footer_text_col: "Текст",
+        footer_image_col: "Фото",
+        footer_video_col: "Видео",
+        footer_audio_col: "Аудио",
+        footer_legal_rights: "© 2026 ZYKO AI. Все права защищены.",
+        footer_privacy: "Политика конфиденциальности",
+        footer_offer: "Публичная оферта",
+
         payment_success: "🎉 Оплата успешно подтверждена! Токены начислены на ваш баланс.",
         auth_welcome: "Добро пожаловать в ZYKO.AI",
         auth_desc: "Войдите, чтобы синхронизировать баланс токенов между Web и Telegram, сохранять генерации и использовать 4K модели.",
@@ -3929,62 +3916,8 @@
         auth_toggle_reg: "Нет аккаунта? Зарегистрироваться",
         auth_toggle_login: "Уже есть аккаунт? Войти",
         auth_terms: "Продолжая, вы принимаете Условия сервиса и Политику конфиденциальности.",
-        promo_text: "Встречайте Wan 3.0: До 30 секунд безграничного творчества",
-        promo_btn: "Создать видео",
-        hero_sub1: "Одна подписка.",
-        hero_sub2: "Безлимитный доступ к лучшим нейросетям.",
-        hero_cta: "Начать создавать",
-        trends_title: "Тренды в несколько кликов",
-        trends_desc: "Вдохновляйтесь, добавляйте своё видение и превращайте готовые идеи в уникальные работы.",
-                filter_all: "Все",
-        filter_new: "Новое",
-        filter_featuring: "С вашим лицом",
-        filter_popular: "Популярное",
-        filter_anime: "3D Аниме",
-        filter_cartoons: "Мультфильмы",
-        filter_movies: "Кино",
-        filter_fantasy: "Фэнтези",
-        filter_fashion: "Мода",
-        filter_products: "Продукты",
-        filter_realistic: "Реалистичное",
-        video_trends_badge: "✦ 100% Настоящие ИИ-Видео • 2026",
-        video_trends_title: "Мировые видео-тренды 2026",
-        video_trends_desc: "100% настоящие генерации Sora 2.0, Kling 4.0 и Seedance 2.5. Выбирайте тему, копируйте промпты и создавайте свои ролики в 1 клик.",
-        vfilter_all: "🔥 Все тренды",
-        vfilter_sora: "🎬 OpenAI Sora 2.0",
-        vfilter_viral: "🚀 Вирусные & Мемы",
-        vfilter_anime: "🎌 3D & Аниме",
-        vfilter_cinema: "🎥 Кинематограф 4K",
-        vfilter_cars: "🚗 Летающие авто & Tech",
-        vfilter_animals: "🐱 Животные",
-        vfilter_fashion: "👗 Мода & Люди",
-        vfilter_space: "🌌 Космос & Sci-Fi",
-        vfilter_surreal: "☕ Сюрреализм",
-        jump_to_video_trends: "Смотреть ИИ Видео-Тренды 2026 (OpenAI Sora & Kling) ↓",
-        btn_try_prompt: "⚡ Попробовать промпт",
-        trends_sort_trending: "🔥 В тренде",
-        trends_sort_new: "✨ Новинки 2026",
-        trends_sort_top: "❤️ Топ лайков",
-        trends_hover_hint: "Наведите курсор для живого предпросмотра видео",
-        pricing_badge: "✦ Гибкие тарифные планы",
-        pricing_title: "Выберите ваш тариф",
-        pricing_desc: "Единый пул токенов. Тратьте токены на любые нейросети в любое время.",
-        billing_monthly: "Ежемесячно",
-        billing_annual: "Ежегодно (скидка 15%)",
-        pricing_most_popular: "Хит продаж",
-        pricing_select_basic: "Выбрать Basic",
-        pricing_select_pro: "Выбрать Pro",
-        pricing_select_vip: "Выбрать VIP",
-        pricing_select_elite: "Выбрать Elite",
-        pricing_select_ultra: "Выбрать Ultra",
-        pricing_compare: "Подробное сравнение всех возможностей и квот →",
-        faq_title: "Часто задаваемые вопросы",
-        faq_q1: "Какие нейросети входят в ZYKO.AI?",
-        faq_a1: "Вы получаете единый доступ к более чем 100 нейросетям: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD голоса и Suno v4.",
-        faq_q2: "Как расходуются токены на модели?",
-        faq_a2: "Токены списываются строго за генерации: текст = 1 ZK, реалистичные фото = 2-3 ZK, озвучка HD = 2 ZK за 1000 знаков, видео 10 сек = 10-15 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
-        faq_q3: "Могу ли я использовать созданный контент в коммерческих целях?",
-        faq_a3: "Да! Все изображения, видео, аудио озвучки и код, созданные на активных тарифах (Basic, Pro, VIP, Elite, Ultra Elite), имеют полные коммерческие права.",
+        agent_title: "Создавайте и общайтесь с вашим личным агентом",
+        agent_desc: "Агенты запоминают инструкции, стиль общения, обучаются на ваших данных, умеют искать в интернете, писать код и генерировать в нейросетях GPT Image, Veo 3.1, Suno.",
         profile_title: "Профиль",
         profile_feed: "Лента генераций",
         profile_pricing: "Тарифы",
@@ -4019,152 +3952,75 @@
         drawer_support: "Soporte",
         drawer_language: "Idioma",
         drawer_admin: "Panel de administración",
-        agent_title: "Crea y comunícate con tu agente personal",
-        agent_desc: "Los agentes memorizan instrucciones, estilo de habla y se entrenan con tus datos.",
-        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo.",
-        auth_welcome: "Bienvenido a ZYKO.AI",
-        auth_desc: "Inicia sesión para sincronizar tu saldo de tokens entre Web y Telegram, guardar generaciones y desbloquear modelos 4K.",
-        auth_tg: "Iniciar sesión con Telegram",
-        auth_google: "Iniciar sesión con Google",
-        auth_or_email: "o por correo",
-        auth_email: "Correo electrónico",
-        auth_password: "Contraseña",
-        auth_submit_login: "Iniciar sesión con contraseña",
-        auth_submit_reg: "Registrarse",
-        auth_toggle_reg: "¿No tienes cuenta? Regístrate",
-        auth_toggle_login: "¿Ya tienes cuenta? Inicia sesión",
-        auth_terms: "Al continuar aceptas nuestros Términos y Política de privacidad.",
-        promo_text: "Conoce Wan 3.0: Hasta 30 segundos de creatividad sin límites",
+        notif_title: "Notificaciones",
+        notif_mark_read: "Marcar leídas",
+        promo_text: "Conoce Wan 3.0: hasta 30 segundos de creatividad sin límites",
         promo_btn: "Crear vídeo",
-        hero_sub1: "Una suscripción.",
+        hero_badge: "✦ WAN 3.0 & VEO 3.1 PREVIO",
+        hero_sub1: "Una sola suscripción.",
         hero_sub2: "Acceso ilimitado a las mejores herramientas de IA.",
         hero_cta: "Comenzar a crear",
-        trends_title: "Tendencias en solo unos clics",
-        trends_desc: "Inspírate, añade tu perspectiva y convierte ideas listas en algo único.",
-        filter_all: "Todos",
-        filter_new: "Nuevo",
-        filter_featuring: "Con tu cara",
-        filter_popular: "Popular",
-        filter_anime: "Anime 3D",
-        filter_cartoons: "Dibujos",
-        filter_movies: "Películas",
-        filter_fantasy: "Fantasía",
-        filter_fashion: "Moda",
-        filter_products: "Productos",
-        filter_realistic: "Realista",
-        pricing_badge: "✦ Suscripción Flexible",
-        pricing_title: "Elige tu plan creativo",
-        pricing_desc: "Pool de tokens universal. Gasta tokens en cualquier modelo en cualquier momento.",
+        showcase_badge: "✦ Destacados",
+        showcase_title: "Tendencias con pocos clics",
+        showcase_desc: "Creaciones de Sora 2.0, Seedance 2.5, FLUX y Nano Banana.",
+        showcase_explore_btn: "Explorar galería completa de tendencias →",
+        video_trends_badge: "✦ Muestra de IA Real • 2026",
+        video_trends_title: "Tendencias Globales de IA",
+        video_trends_desc: "Creaciones 100% reales de Sora 2.0, Kling 4.0, Seedance 2.5 y FLUX.",
+        vfilter_all: "🔥 Todas",
+        vfilter_sora: "🎬 OpenAI Sora",
+        vfilter_seedance: "⚡ Seedance 2.5",
+        vfilter_kling: "🚀 Kling 4.0",
+        vfilter_flux: "🎨 FLUX & Midjourney",
+        vfilter_anime: "🎌 3D & Anime",
+        vfilter_cinema: "🎥 Cinemático 4K",
+        vfilter_cars: "🚗 Autos & Tech",
+        vfilter_animals: "🐱 Animales",
+        vfilter_fashion: "👗 Moda & Personas",
+        vfilter_space: "🌌 Espacio & Sci-Fi",
+        vfilter_surreal: "☕ Surrealismo",
+        vfilter_fantasy: "🏰 Fantasía",
+        vfilter_products: "🛍️ Productos",
+        mfilter_all: "Todo",
+        mfilter_videos: "🎬 Vídeos",
+        mfilter_photos: "🖼️ Fotos",
+        mfilter_audio: "🎙️ Audio",
+        trends_sort_trending: "🔥 En tendencia",
+        trends_sort_new: "✨ Nuevos 2026",
+        trends_sort_top: "❤️ Más votados",
+        trends_hover_hint: "Pasa el cursor o pulsa para previsualizar vídeo",
+        btn_try_prompt: "⚡ Probar prompt",
+        tmodal_prompt_label: "Prompt de generación:",
+        tmodal_copy_btn: "Copiar",
+        tmodal_copied: "¡Copiado!",
+        tmodal_resolution: "Resolución:",
+        tmodal_aspect: "Formato:",
+        tmodal_create_video: "⚡ Crear en Video Studio",
+        tmodal_create_image: "🎨 Abrir en Image Studio",
+        enhancer_badge: "Optimizador Neuronal Topaz 4K",
+        enhancer_title: "Mejore detalles y escale a 4K",
+        enhancer_before: "ORIGINAL",
+        enhancer_after: "ZYKO 4K MEJORADO",
+        pricing_badge: "✦ Suscripción flexible",
+        pricing_title: "Elija su plan",
+        pricing_desc: "Fondo universal de tokens.",
         billing_monthly: "Mensual",
-        billing_annual: "Anual (Ahorra 15%)",
-        pricing_most_popular: "Más Popular",
+        billing_annual: "Anual (Ahorro 15%)",
+        pricing_most_popular: "Más popular",
         pricing_select_basic: "Elegir Basic",
         pricing_select_pro: "Elegir Pro",
         pricing_select_vip: "Elegir VIP",
         pricing_select_elite: "Elegir Elite",
         pricing_select_ultra: "Elegir Ultra",
-        pricing_compare: "Comparar todas las características y cuotas →",
         faq_title: "Preguntas frecuentes",
-        faq_q1: "¿Qué modelos están incluidos en ZYKO.AI?",
-        faq_a1: "Acceso universal a más de 100 redes neuronales: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs y Suno v4.",
-        faq_q2: "¿Cómo se consumen los tokens?",
-        faq_a2: "Los tokens se gastan por generación: texto = 1 ZK, imágenes fotorrealistas = 2-3 ZK, voz HD = 2 ZK por 1000 caracteres, y vídeo de 10s = 10-15 ZK. Tu saldo se sincroniza en tiempo real.",
-        faq_q3: "¿Puedo usar los medios generados comercialmente?",
-        faq_a3: "¡Sí! Todas las imágenes, vídeos, audios y códigos generados con planes activos incluyen derechos comerciales completos.",
-        profile_title: "Perfil",
-        profile_feed: "Feed de generaciones",
-        profile_pricing: "Precios",
-        profile_affiliate: "Programa de afiliados",
-        profile_sync_title: "Vinculación y sincronización de cuentas",
-        profile_sync_desc: "Saldo de tokens, suscripción e historial sincronizados entre Web y Telegram",
-        profile_sync_status: "Sincronizado",
-        profile_google_acc: "Cuenta de Google",
-        profile_tg_acc: "Cuenta de Telegram",
-        btn_change: "Cambiar",
-        btn_link: "Vincular"
-      },
-      de: {
-        nav_trends: "Trends",
-        nav_agents: "Agenten",
-        nav_llm: "LLM Studio",
-        nav_image: "Bild",
-        nav_video: "Video",
-        nav_audio: "Audio",
-        nav_toolkit: "Werkzeuge",
-        sign_in: "Anmelden",
-        topup: "ZK aufladen",
-        logout: "Abmelden",
-        drawer_home: "Startseite",
-        drawer_academy: "Akademie",
-        drawer_contest: "Wettbewerbe",
-        drawer_faq: "FAQ",
-        drawer_status: "Statusseite",
-        drawer_support: "Support",
-        drawer_language: "Sprache",
-        drawer_admin: "Admin-Bereich",
-        agent_title: "Erstelle und kommuniziere mit deinem persönlichen Agenten",
-        agent_desc: "Agenten merken sich Anweisungen, Sprachstil und lernen aus Ihren Daten.",
-        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben.",
-        auth_welcome: "Willkommen bei ZYKO.AI",
-        auth_desc: "Melden Sie sich an, um Ihr Token-Guthaben im Web und auf Telegram zu synchronisieren.",
-        auth_tg: "Mit Telegram anmelden",
-        auth_google: "Mit Google anmelden",
-        auth_or_email: "oder per E-Mail",
-        auth_email: "E-Mail",
-        auth_password: "Passwort",
-        auth_submit_login: "Mit Passwort anmelden",
-        auth_submit_reg: "Registrieren",
-        auth_toggle_reg: "Kein Konto? Registrieren",
-        auth_toggle_login: "Bereits ein Konto? Anmelden",
-        auth_terms: "Mit dem Fortfahren akzeptieren Sie unsere AGB und Datenschutzrichtlinien.",
-        promo_text: "Entdecken Sie Wan 3.0: Bis zu 30 Sekunden grenzenlose Kreativität",
-        promo_btn: "Video erstellen",
-        hero_sub1: "Ein Abonnement.",
-        hero_sub2: "Unbegrenzter Zugang zu den besten KI-Tools.",
-        hero_cta: "Jetzt erstellen",
-        trends_title: "Trends mit wenigen Klicks",
-        trends_desc: "Lassen Sie sich inspirieren, bringen Sie Ihre eigene Note ein und machen Sie Ideen zu etwas Einzigartigem.",
-        filter_all: "Alle",
-        filter_new: "Neu",
-        filter_featuring: "Mit deinem Gesicht",
-        filter_popular: "Beliebt",
-        filter_anime: "3D-Anime",
-        filter_cartoons: "Cartoons",
-        filter_movies: "Filme",
-        filter_fantasy: "Fantasy",
-        filter_fashion: "Mode",
-        filter_products: "Produkte",
-        filter_realistic: "Realistisch",
-        pricing_badge: "✦ Flexible Abonnements",
-        pricing_title: "Wählen Sie Ihren kreativen Tarif",
-        pricing_desc: "Universeller Token-Pool. Nutzen Sie Tokens jederzeit für jedes Modell.",
-        billing_monthly: "Monatlich",
-        billing_annual: "Jährlich (15% Rabatt)",
-        pricing_most_popular: "Am beliebtesten",
-        pricing_select_basic: "Basic wählen",
-        pricing_select_pro: "Pro wählen",
-        pricing_select_vip: "VIP wählen",
-        pricing_select_elite: "Elite wählen",
-        pricing_select_ultra: "Ultra wählen",
-        pricing_compare: "Alle Funktionen und Quoten im Detail vergleichen →",
-        faq_title: "Häufig gestellte Fragen",
-        faq_q1: "Welche Modelle sind in ZYKO.AI enthalten?",
-        faq_a1: "Sie erhalten universellen Zugang zu über 100 neuronalen Netzen: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs und Suno v4.",
-        faq_q2: "Wie werden Tokens verbraucht?",
-        faq_a2: "Tokens werden pro Generation abgerechnet: Text = 1 ZK, realistische Fotos = 2-3 ZK, HD-Audio = 2 ZK pro 1000 Zeichen, 10s Video = 10-15 ZK. Guthaben synchronisiert sich in Echtzeit.",
-        faq_q3: "Darf ich generierte Medien kommerziell nutzen?",
-        faq_a3: "Ja! Alle Bilder, Videos, Stimmen und Codes, die mit aktiven Abonnements generiert wurden, enthalten volle kommerzielle Rechte.",
-        profile_title: "Profil",
-        profile_feed: "Generierungs-Feed",
-        profile_pricing: "Preise",
-        profile_affiliate: "Partnerprogramm",
-        profile_sync_title: "Kontoverknüpfung & Synchronisierung",
-        profile_sync_desc: "Token-Guthaben, Abonnement und Verlauf werden sofort synchronisiert",
-        profile_sync_status: "Synchronisiert",
-        profile_google_acc: "Google-Konto",
-        profile_tg_acc: "Telegram-Konto",
-        btn_change: "Ändern",
-        btn_link: "Verknüpfen"
+        footer_text_col: "Texto",
+        footer_image_col: "Imagen",
+        footer_video_col: "Vídeo",
+        footer_audio_col: "Audio",
+        footer_legal_rights: "© 2026 ZYKO AI. Todos los derechos reservados.",
+        footer_privacy: "Política de privacidad",
+        footer_offer: "Oferta pública",
+        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo."
       },
       pt: {
         nav_trends: "Tendências",
@@ -4180,78 +4036,172 @@
         drawer_home: "Início",
         drawer_academy: "Academia",
         drawer_contest: "Concurso",
-        drawer_faq: "Perguntas Frequentes",
-        drawer_status: "Status das IAs",
+        drawer_faq: "Perguntas frequentes",
+        drawer_status: "Status dos modelos",
         drawer_support: "Suporte",
         drawer_language: "Idioma",
-        drawer_admin: "Painel de Administração",
-        agent_title: "Crie e converse com seu agente pessoal",
-        agent_desc: "Os agentes memorizam instruções, estilo de conversa e aprendem com seus dados.",
-        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens creditados na sua conta.",
-        auth_welcome: "Bem-vindo ao ZYKO.AI",
-        auth_desc: "Faça login para sincronizar seu saldo de tokens entre a Web e o Telegram, salvar gerações e desbloquear modelos 4K.",
-        auth_tg: "Entrar com Telegram",
-        auth_google: "Entrar com Google",
-        auth_or_email: "ou por e-mail",
-        auth_email: "E-mail",
-        auth_password: "Senha",
-        auth_submit_login: "Entrar com senha",
-        auth_submit_reg: "Registrar-se",
-        auth_toggle_reg: "Não tem conta? Registre-se",
-        auth_toggle_login: "Já tem conta? Entrar",
-        auth_terms: "Ao continuar, você aceita nossos Termos e Política de Privacidade.",
-        promo_text: "Conheça Wan 3.0: Até 30 segundos de criatividade sem limites",
+        drawer_admin: "Painel de administração",
+        notif_title: "Notificações",
+        notif_mark_read: "Marcar lidas",
+        promo_text: "Conheça Wan 3.0: até 30 segundos de criatividade ilimitada",
         promo_btn: "Criar vídeo",
+        hero_badge: "✦ PRÉVIA WAN 3.0 & VEO 3.1",
         hero_sub1: "Uma assinatura.",
-        hero_sub2: "Acesso ilimitado às melhores ferramentas de IA.",
+        hero_sub2: "Acesso ilimitado às melhores IAs.",
         hero_cta: "Começar a criar",
-        trends_title: "Tendências em poucos cliques",
-        trends_desc: "Inspire-se, adicione sua perspectiva e transforme ideias prontas em criações únicas.",
-        filter_all: "Todos",
-        filter_new: "Novo",
-        filter_featuring: "Com seu rosto",
-        filter_popular: "Popular",
-        filter_anime: "Anime 3D",
-        filter_cartoons: "Desenhos",
-        filter_movies: "Filmes",
-        filter_fantasy: "Fantasia",
-        filter_fashion: "Moda",
-        filter_products: "Produtos",
-        filter_realistic: "Realista",
-        pricing_badge: "✦ Assinatura Flexível",
-        pricing_title: "Escolha seu plano criativo",
-        pricing_desc: "Pool de tokens universal. Use tokens em qualquer modelo a qualquer momento.",
+        showcase_badge: "✦ Destaques",
+        showcase_title: "Tendências em poucos cliques",
+        showcase_desc: "Criações de Sora 2.0, Seedance 2.5, FLUX e Nano Banana.",
+        showcase_explore_btn: "Explorar galeria completa de tendências →",
+        video_trends_badge: "✦ Mostra de IA Real • 2026",
+        video_trends_title: "Tendências Globais de IA",
+        video_trends_desc: "Criações 100% reais de Sora 2.0, Kling 4.0, Seedance 2.5 e FLUX.",
+        vfilter_all: "🔥 Todas",
+        vfilter_sora: "🎬 OpenAI Sora",
+        vfilter_seedance: "⚡ Seedance 2.5",
+        vfilter_kling: "🚀 Kling 4.0",
+        vfilter_flux: "🎨 FLUX & Midjourney",
+        vfilter_anime: "🎌 3D & Anime",
+        vfilter_cinema: "🎥 Cinemático 4K",
+        vfilter_cars: "🚗 Carros & Tech",
+        vfilter_animals: "🐱 Animais",
+        vfilter_fashion: "👗 Moda & Pessoas",
+        vfilter_space: "🌌 Espaço & Sci-Fi",
+        vfilter_surreal: "☕ Surrealismo",
+        vfilter_fantasy: "🏰 Fantasia",
+        vfilter_products: "🛍️ Produtos",
+        mfilter_all: "Tudo",
+        mfilter_videos: "🎬 Vídeos",
+        mfilter_photos: "🖼️ Fotos",
+        mfilter_audio: "🎙️ Áudio",
+        trends_sort_trending: "🔥 Em alta",
+        trends_sort_new: "✨ Novos 2026",
+        trends_sort_top: "❤️ Mais curtidos",
+        trends_hover_hint: "Passe o cursor ou toque para pré-visualizar vídeo",
+        btn_try_prompt: "⚡ Testar prompt",
+        tmodal_prompt_label: "Prompt de geração:",
+        tmodal_copy_btn: "Copiar",
+        tmodal_copied: "Copiado!",
+        tmodal_resolution: "Resolução:",
+        tmodal_aspect: "Formato:",
+        tmodal_create_video: "⚡ Criar no Video Studio",
+        tmodal_create_image: "🎨 Abrir no Image Studio",
+        enhancer_badge: "Aprimorador Neural Topaz 4K",
+        enhancer_title: "Aprimore detalhes e escale para 4K",
+        enhancer_before: "ORIGINAL",
+        enhancer_after: "ZYKO 4K APRIMORADO",
+        pricing_badge: "✦ Assinatura flexível",
+        pricing_title: "Escolha seu plano",
+        pricing_desc: "Pool universal de tokens.",
         billing_monthly: "Mensal",
-        billing_annual: "Anual (Poupe 15%)",
-        pricing_most_popular: "Mais Popular",
+        billing_annual: "Anual (15% de desconto)",
+        pricing_most_popular: "Mais popular",
         pricing_select_basic: "Escolher Basic",
         pricing_select_pro: "Escolher Pro",
         pricing_select_vip: "Escolher VIP",
         pricing_select_elite: "Escolher Elite",
         pricing_select_ultra: "Escolher Ultra",
-        pricing_compare: "Comparar todos os recursos e cotas em detalhes →",
-        faq_title: "Perguntas Frequentes",
-        faq_q1: "Quais modelos estão incluídos no ZYKO.AI?",
-        faq_a1: "Acesso universal a mais de 100 redes neurais: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT, Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs e Suno v4.",
-        faq_q2: "Como os tokens são consumidos?",
-        faq_a2: "Os tokens são debitados por geração: texto = 1 ZK, fotos realistas = 2-3 ZK, voz HD = 2 ZK por 1000 caracteres, vídeo 10s = 10-15 ZK. O saldo é sincronizado em tempo real.",
-        faq_q3: "Posso usar a mídia gerada comercialmente?",
-        faq_a3: "Sim! Todas as imagens, vídeos, áudios e códigos gerados com assinaturas ativas têm direitos comerciais completos.",
-        profile_title: "Perfil",
-        profile_feed: "Feed de gerações",
-        profile_pricing: "Preços",
-        profile_affiliate: "Programa de afiliados",
-        profile_sync_title: "Vinculação e sincronização de contas",
-        profile_sync_desc: "Saldo de tokens, assinatura e histórico sincronizados instantaneamente",
-        profile_sync_status: "Sincronizado",
-        profile_google_acc: "Conta Google",
-        profile_tg_acc: "Conta Telegram",
-        btn_change: "Alterar",
-        btn_link: "Vincular"
+        faq_title: "Perguntas frequentes",
+        footer_text_col: "Texto",
+        footer_image_col: "Imagem",
+        footer_video_col: "Vídeo",
+        footer_audio_col: "Áudio",
+        footer_legal_rights: "© 2026 ZYKO AI. Todos os direitos reservados.",
+        footer_privacy: "Política de privacidade",
+        footer_offer: "Oferta pública",
+        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens adicionados."
+      },
+      de: {
+        nav_trends: "Trends",
+        nav_agents: "Agenten",
+        nav_llm: "LLM Studio",
+        nav_image: "Bild",
+        nav_video: "Video",
+        nav_audio: "Audio",
+        nav_toolkit: "Werkzeuge",
+        sign_in: "Anmelden",
+        topup: "ZK aufladen",
+        logout: "Abmelden",
+        drawer_home: "Startseite",
+        drawer_academy: "Akademie",
+        drawer_contest: "Wettbewerb",
+        drawer_faq: "FAQ",
+        drawer_status: "Modell-Status",
+        drawer_support: "Support",
+        drawer_language: "Sprache",
+        drawer_admin: "Admin-Panel",
+        notif_title: "Benachrichtigungen",
+        notif_mark_read: "Alle als gelesen markieren",
+        promo_text: "Entdecken Sie Wan 3.0: Bis zu 30 Sekunden grenzenlose Kreativität",
+        promo_btn: "Video erstellen",
+        hero_badge: "✦ VORSCHAU WAN 3.0 & VEO 3.1",
+        hero_sub1: "Ein Abonnement.",
+        hero_sub2: "Unbegrenzter Zugriff auf Top-KI-Tools.",
+        hero_cta: "Jetzt erstellen",
+        showcase_badge: "✦ Highlights",
+        showcase_title: "Trends mit wenigen Klicks",
+        showcase_desc: "Ausgewählte Werke von Sora 2.0, Seedance 2.5, FLUX und Nano Banana.",
+        showcase_explore_btn: "Gesamte Trend-Galerie ansehen →",
+        video_trends_badge: "✦ Echte KI-Videos • 2026",
+        video_trends_title: "Globale KI-Trends 2026",
+        video_trends_desc: "100% echte Kreationen von Sora 2.0, Kling 4.0, Seedance 2.5 und FLUX.",
+        vfilter_all: "🔥 Alle",
+        vfilter_sora: "🎬 OpenAI Sora",
+        vfilter_seedance: "⚡ Seedance 2.5",
+        vfilter_kling: "🚀 Kling 4.0",
+        vfilter_flux: "🎨 FLUX & Midjourney",
+        vfilter_anime: "🎌 3D & Anime",
+        vfilter_cinema: "🎥 Filmisch 4K",
+        vfilter_cars: "🚗 Autos & Tech",
+        vfilter_animals: "🐱 Tiere",
+        vfilter_fashion: "👗 Mode & Menschen",
+        vfilter_space: "🌌 Weltraum & Sci-Fi",
+        vfilter_surreal: "☕ Surrealismus",
+        vfilter_fantasy: "🏰 Fantasy",
+        vfilter_products: "🛍️ Produkte",
+        mfilter_all: "Alle",
+        mfilter_videos: "🎬 Videos",
+        mfilter_photos: "🖼️ Fotos",
+        mfilter_audio: "🎙️ Audio",
+        trends_sort_trending: "🔥 Im Trend",
+        trends_sort_new: "✨ Neu 2026",
+        trends_sort_top: "❤️ Meiste Likes",
+        trends_hover_hint: "Mit der Maus über Karte fahren für Vorschau",
+        btn_try_prompt: "⚡ Prompt testen",
+        tmodal_prompt_label: "Generierungs-Prompt:",
+        tmodal_copy_btn: "Kopieren",
+        tmodal_copied: "Kopiert!",
+        tmodal_resolution: "Auflösung:",
+        tmodal_aspect: "Format:",
+        tmodal_create_video: "⚡ In Video Studio erstellen",
+        tmodal_create_image: "🎨 In Image Studio öffnen",
+        enhancer_badge: "Topaz 4K Neural Enhancer",
+        enhancer_title: "Details verbessern und auf 4K hochskalieren",
+        enhancer_before: "ORIGINAL",
+        enhancer_after: "ZYKO 4K VERBESSERT",
+        pricing_badge: "✦ Flexibles Abonnement",
+        pricing_title: "Wählen Sie Ihren Plan",
+        pricing_desc: "Universeller Token-Pool.",
+        billing_monthly: "Monatlich",
+        billing_annual: "Jährlich (15% Rabatt)",
+        pricing_most_popular: "Am beliebtesten",
+        pricing_select_basic: "Basic wählen",
+        pricing_select_pro: "Pro wählen",
+        pricing_select_vip: "VIP wählen",
+        pricing_select_elite: "Elite wählen",
+        pricing_select_ultra: "Ultra wählen",
+        faq_title: "Häufig gestellte Fragen",
+        footer_text_col: "Text",
+        footer_image_col: "Bild",
+        footer_video_col: "Video",
+        footer_audio_col: "Audio",
+        footer_legal_rights: "© 2026 ZYKO AI. Alle Rechte vorbehalten.",
+        footer_privacy: "Datenschutzerklärung",
+        footer_offer: "AGB",
+        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben."
       }
     };
 
-    // 1. Initial State & Auto-Login from URL
     document.addEventListener('DOMContentLoaded', async () => {
       // 1. Immediately render cached user to eliminate UI flicker
       try {
@@ -4334,13 +4284,7 @@
         console.warn('Config fetch error:', e);
       }
 
-      // Restore saved language
-      try {
-        const savedLang = localStorage.getItem('zyko_lang') || 'en';
-        setLanguage(savedLang);
-      } catch (e) {
-        console.warn('Lang restore error:', e);
-      }
+      // Language restore deferred to end of DOMContentLoaded
 
       // Load System Settings (e.g. Announcement banner)
       try {
@@ -4396,6 +4340,14 @@
       loadLocalHistory();
       initAudioStudio();
       initTrendsShowcase();
+
+      // Apply saved language universally across all freshly rendered components
+      try {
+        const savedLang = localStorage.getItem('zyko_lang') || 'en';
+        setLanguage(savedLang);
+      } catch (e) {
+        console.warn('Lang restore error:', e);
+      }
     });
 
     // 2. Tab Switcher
@@ -5433,7 +5385,7 @@
               </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0 ml-2">
-              <button type="button" onclick="event.stopPropagation(); playVoicePreview('${v.id}', '${v.preview}', this)" class="w-6 h-6 rounded-md bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-[10px] transition" title="Прослушать пример">
+              <button type="button" onclick="event.stopPropagation(); playVoicePreview('${v.id}', '${v.preview}', this)" class="w-6 h-6 rounded-md bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-[10px] transition" title="Listen to Preview">
                 ${isPlaying ? '⏸' : '▶'}
               </button>
             </div>
@@ -5981,10 +5933,10 @@
             </div>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
-            <a href="${audioUrl}" download="${type.toLowerCase()}_${Date.now()}.mp3" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Скачать MP3">
+            <a href="${audioUrl}" download="${type.toLowerCase()}_${Date.now()}.mp3" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Download MP3">
               📥
             </a>
-            <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); alert('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Копировать текст">
+            <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); alert('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Copy Text">
               📋
             </button>
           </div>
@@ -6697,7 +6649,7 @@
                 ` : ''}
               </div>
               <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                <span class="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1" title="Текущая задержка отклика">
+                <span class="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1" title="Current Response Latency">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   ⚡ ${latency} ms
                 </span>
@@ -7363,6 +7315,86 @@
         aspect: '16:9 Cinema'
       },
       {
+        id: 'flux_couture',
+        title_en: 'Haute Couture Prism Glass Gown',
+        title_ru: 'Высокая мода: стеклянное призматическое платье',
+        prompt_en: 'Editorial high fashion photoshoot with glass refraction, sculptural prism dress refracting rainbow spectral light, Vogue cover aesthetic, 8K',
+        prompt_ru: 'Высокая мода: скульптурное платье из граненого оптического стекла с радужным преломлением света, обложка Vogue, 8K',
+        model: 'FLUX 1.1 Pro',
+        modelKey: 'flux',
+        type: 'image',
+        categories: ['all', 'flux', 'fashion', 'cinema'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800',
+        likes: 412000,
+        views: '5.2M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'surfing_otter',
+        title_en: 'Sea Otter Riding Neon Surfboard',
+        title_ru: 'Морская выдра на неоновом серфборде',
+        prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
+        prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
+        model: 'Seedance 2.5 Fun',
+        modelKey: 'seedance',
+        type: 'video',
+        categories: ['all', 'seedance', 'animals', 'viral'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
+        likes: 542000,
+        views: '6.8M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'nano_geisha',
+        title_en: 'Cyberpunk Chrome Geisha in Neo-Kyoto',
+        title_ru: 'Киберпанк-гейша с хромом в Нео-Киото',
+        prompt_en: 'Cyberpunk geisha with polished chrome ornaments in rainy Neo-Kyoto alley, glowing neon kanji, ultra realistic reflections, 8K',
+        prompt_ru: 'Киберпанк-гейша с хромированными украшениями в дождливом переулке Нео-Киото, светящиеся иероглифы, 8K реализм',
+        model: 'Nano Banana 2.1',
+        modelKey: 'nano-banana',
+        type: 'image',
+        categories: ['all', 'flux', 'anime', 'cars'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800',
+        likes: 374500,
+        views: '4.8M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'amalfi_coast',
+        title_en: 'Amalfi Coast Drone Sweep Over Cliffs',
+        title_ru: 'Полет дрона над побережьем Амальфи',
+        prompt_en: 'Breathtaking cinematic drone flight diving over pastel cliffside villas and turquoise Mediterranean sea of Amalfi coast in golden light, 4K',
+        prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами Амальфитанского побережья в золотом свете, 4K',
+        model: 'Google Veo 3.1',
+        modelKey: 'veo',
+        type: 'video',
+        categories: ['all', 'sora', 'cinema', 'fashion'],
+        videoUrl: 'https://cdn.openai.com/sora/videos/amalfi-coast.mp4',
+        posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
+        likes: 359000,
+        views: '4.0M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'midjourney_dragon',
+        title_en: 'Mythic Obsidian Dragon on Cathedral',
+        title_ru: 'Обсидиановый дракон на руинах собора',
+        prompt_en: 'Colossal obsidian dragon perched atop ancient gothic cathedral ruins in storm clouds, lightning strikes, volumetric mist, hyper-detailed, 8K',
+        prompt_ru: 'Колоссальный обсидиановый дракон на вершине руин готического собора в грозовых облаках, удары молний, 8K',
+        model: 'Midjourney v6.1',
+        modelKey: 'midjourney',
+        type: 'image',
+        categories: ['all', 'flux', 'fantasy', 'cinema'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
+        likes: 498000,
+        views: '6.1M',
+        aspect: '16:9 Cinema'
+      },
+      {
         id: 'big_sur',
         title_en: 'Vintage SUV on Big Sur Highway',
         title_ru: 'Винтажный внедорожник на обрывах Биг-Сур',
@@ -7403,7 +7435,7 @@
         model: 'Seedance 2.5 3D',
         modelKey: 'seedance',
         type: 'video',
-        categories: ['all', 'sora', 'anime', 'viral'],
+        categories: ['all', 'seedance', 'anime', 'viral'],
         videoUrl: 'https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 425300,
@@ -7419,7 +7451,7 @@
         model: 'Kling 4.0 Cinema',
         modelKey: 'kling',
         type: 'video',
-        categories: ['all', 'sora', 'cinema', 'anime'],
+        categories: ['all', 'kling', 'cinema', 'anime'],
         videoUrl: 'https://cdn.openai.com/sora/videos/train-window.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 319200,
@@ -7451,7 +7483,7 @@
         model: 'Seedance 2.5 Animal',
         modelKey: 'seedance',
         type: 'video',
-        categories: ['all', 'sora', 'animals', 'viral'],
+        categories: ['all', 'seedance', 'animals', 'viral'],
         videoUrl: 'https://cdn.openai.com/sora/videos/cat-on-bed.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 491000,
@@ -7467,7 +7499,7 @@
         model: 'Kling 4.0 Macro',
         modelKey: 'kling',
         type: 'video',
-        categories: ['all', 'sora', 'animals', 'cinema'],
+        categories: ['all', 'kling', 'animals', 'cinema'],
         videoUrl: 'https://cdn.openai.com/sora/videos/chameleon.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800',
         likes: 334000,
@@ -7507,38 +7539,88 @@
         aspect: '16:9 Cinema'
       },
       {
-        id: 'amalfi_coast',
-        title_en: 'Amalfi Coast Drone Sweep Over Cliffs',
-        title_ru: 'Полет дрона над побережьем Амальфи',
-        prompt_en: 'Breathtaking cinematic drone flight diving over pastel cliffside villas and turquoise Mediterranean sea of Amalfi coast in golden light, 4K',
-        prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами Амальфитанского побережья в золотом свете, 4K',
-        model: 'Google Veo 3.1',
-        modelKey: 'veo',
-        type: 'video',
-        categories: ['all', 'sora', 'cinema', 'fashion'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/amalfi-coast.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
-        likes: 359000,
-        views: '4.0M',
+        id: 'seedream_panda',
+        title_en: '3D Red Panda Explorer in Magical Grove',
+        title_ru: '3D панда-исследователь в волшебной роще',
+        prompt_en: 'Cute 3D animated red panda adventurer with tiny explorer backpack in magical glowing mushroom grove, Pixar Disney style, octane render, 4K',
+        prompt_ru: 'Очаровательная 3D красная панда в походном рюкзачке исследует светящуюся грибную рощу, стиль Pixar 3D, 4K',
+        model: 'Seedream 3D',
+        modelKey: 'seedream',
+        type: 'image',
+        categories: ['all', 'seedance', 'anime', 'animals', 'fantasy'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
+        likes: 326000,
+        views: '3.8M',
+        aspect: '1:1 Square'
+      },
+      {
+        id: 'shinkai_city',
+        title_en: 'Makoto Shinkai Sunset Tokyo Rooftop',
+        title_ru: 'Закат над Токио в стиле Макото Синкая',
+        prompt_en: 'Makoto Shinkai style anime rooftop overlooking glowing Tokyo at sunset, passing bullet train tracks below, vibrant purple and golden sky, 4K',
+        prompt_ru: 'Крыша небоскреба с видом на закатный Токио в стиле Макото Синкая, золотисто-фиолетовые облака, поезд-синкансэн внизу, 4K',
+        model: 'Seedream Anime',
+        modelKey: 'seedream',
+        type: 'image',
+        categories: ['all', 'anime', 'cinema', 'cars'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
+        likes: 419000,
+        views: '5.3M',
         aspect: '16:9 Cinema'
       },
       {
-        id: 'surfing_otter',
-        title_en: 'Sea Otter Riding Neon Surfboard',
-        title_ru: 'Морская выдра на неоновом серфборде',
-        prompt_en: 'Playful cute sea otter balancing on small neon surfboard carving through crystal blue ocean barrel wave, slow motion water spray, 4K',
-        prompt_ru: 'Милая морская выдра ловко балансирует на миниатюрном неоновом серфе внутри лазурной океанской волны, брызги в замедленной съемке, 4K',
-        model: 'Seedance 2.5 Fun',
-        modelKey: 'seedance',
-        type: 'video',
-        categories: ['all', 'sora', 'animals', 'viral'],
-        videoUrl: 'https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4',
-        posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
-        likes: 542000,
-        views: '6.8M',
+        id: 'cyber_hypercar',
+        title_en: 'Matte Hypercar on Wet Neon Asphalt',
+        title_ru: 'Матовый гиперкар на мокром неоновом асфальте',
+        prompt_en: 'Futuristic matte black hypercar idling on neon wet city street with neon puddle reflections and raindrops, 4K ultra photorealistic',
+        prompt_ru: 'Футуристичный матовый гиперкар на залитой неоном ночной трассе с отражениями капель дождя в лужах, 4K фотореализм',
+        model: 'Kling 4.0 Pro',
+        modelKey: 'kling',
+        type: 'image',
+        categories: ['all', 'kling', 'cars', 'cinema'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800',
+        likes: 362000,
+        views: '4.4M',
         aspect: '16:9 Cinema'
+      },
+      {
+        id: 'dalle_biodome',
+        title_en: 'Orbital Botanical Biodome Over Earth',
+        title_ru: 'Орбитальный ботанический биокупол над Землей',
+        prompt_en: 'Futuristic glass biodome greenhouse orbiting planet Earth, filled with lush tropical palms and waterfalls, aurora borealis background, 8K',
+        prompt_ru: 'Футуристический стеклянный биокупол на орбите Земли с тропическими растениями и водопадами, северное сияние на фоне, 8K',
+        model: 'GPT Image 4.0',
+        modelKey: 'gpt-image',
+        type: 'image',
+        categories: ['all', 'space', 'cinema', 'fantasy'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
+        likes: 289000,
+        views: '3.6M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'elevenlabs_narration',
+        title_en: 'Epic Theatrical Voiceover + Ambient SFX',
+        title_ru: 'Эпичная дикторская озвучка трейлера + SFX',
+        prompt_en: 'Deep dramatic movie trailer voice narration with intense ambient cinematic SFX whooshes, subwoofer drops, and binaural studio reverb',
+        prompt_ru: 'Глубокий бархатный дикторский голос трейлера с нарастающими кинематографическими звуковыми эффектами и бинауральной реверберацией',
+        model: 'ElevenLabs Turbo',
+        modelKey: 'elevenlabs',
+        type: 'audio',
+        categories: ['all', 'cinema', 'viral'],
+        videoUrl: '',
+        posterUrl: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
+        likes: 312000,
+        views: '3.9M',
+        aspect: '1:1 Square'
       }
     ];
+
+    const FEATURED_SHOWCASE_IDS = ['tokyo_walk', 'flux_couture', 'surfing_otter', 'nano_geisha', 'amalfi_coast', 'midjourney_dragon'];
 
     function formatTrendLikes(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -7546,15 +7628,141 @@
       return num;
     }
 
-    function initTrendsShowcase() {
+    function isTrendLiked(id) {
       try {
         const liked = JSON.parse(localStorage.getItem('zyko_liked_trends') || '{}');
-        TRENDS_DATA.forEach(t => {
-          if (liked[t.id]) t.likes += 1;
-        });
-      } catch (e) {}
+        return !!liked[id];
+      } catch (e) { return false; }
+    }
 
-      renderTrendsGrid('all', 'trending');
+    function toggleLikeTrend(id, btn) {
+      try {
+        const liked = JSON.parse(localStorage.getItem('zyko_liked_trends') || '{}');
+        const item = TRENDS_DATA.find(t => t.id === id);
+        if (!item) return;
+
+        if (liked[id]) {
+          delete liked[id];
+          item.likes = Math.max(0, item.likes - 1);
+        } else {
+          liked[id] = true;
+          item.likes += 1;
+        }
+        localStorage.setItem('zyko_liked_trends', JSON.stringify(liked));
+
+        if (btn) {
+          const isLikedNow = !!liked[id];
+          btn.classList.toggle('text-rose-400', isLikedNow);
+          btn.classList.toggle('border-rose-500/40', isLikedNow);
+          btn.classList.toggle('bg-rose-500/10', isLikedNow);
+          const iconSpan = btn.querySelector('span:first-child');
+          const countSpan = btn.querySelector('.like-count');
+          if (iconSpan) iconSpan.textContent = isLikedNow ? '❤️' : '🤍';
+          if (countSpan) countSpan.textContent = formatTrendLikes(item.likes);
+        }
+      } catch (e) {}
+    }
+
+    function scrollCategoryRibbon(amount) {
+      const container = document.getElementById('trends-category-nav');
+      if (container) {
+        container.scrollBy({ left: amount, behavior: 'smooth' });
+      }
+    }
+
+    function filterTrendsMediaType(type, btn) {
+      currentTrendMediaType = type;
+      document.querySelectorAll('.media-type-btn').forEach(b => {
+        b.className = 'media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition';
+      });
+      if (btn) {
+        btn.className = 'media-type-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40';
+      }
+      renderTrendsGrid(currentTrendCategory, currentTrendSort);
+    }
+
+    function switchTrendCategory(category, btn) {
+      currentTrendCategory = category;
+      document.querySelectorAll('.trend-filter-btn').forEach(b => {
+        b.className = 'trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95';
+      });
+      if (btn) {
+        btn.className = 'trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95';
+      }
+      renderTrendsGrid(category, currentTrendSort);
+    }
+
+    function sortTrends(sortType) {
+      currentTrendSort = sortType;
+      document.querySelectorAll('.trend-sort-btn').forEach(b => {
+        b.className = 'trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition';
+      });
+      const activeBtn = document.getElementById(`sort-trend-${sortType}`);
+      if (activeBtn) {
+        activeBtn.className = 'trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40';
+      }
+      renderTrendsGrid(currentTrendCategory, sortType);
+    }
+
+    function renderFeaturedShowcase() {
+      const container = document.getElementById('featured-showcase-grid');
+      if (!container) return;
+
+      const isRu = (currentLang === 'ru');
+      const btnText = isRu ? '⚡ Попробовать промпт' : '⚡ Try prompt';
+
+      const items = FEATURED_SHOWCASE_IDS.map(id => TRENDS_DATA.find(t => t.id === id)).filter(Boolean);
+
+      container.innerHTML = items.map(t => {
+        const liked = isTrendLiked(t.id);
+        const title = isRu ? t.title_ru : t.title_en;
+        const prompt = isRu ? t.prompt_ru : t.prompt_en;
+        const isVideo = (t.type === 'video');
+        const mediaTag = isVideo ? '📹' : (t.type === 'audio' ? '🎵' : '🖼️');
+
+        return `
+          <div class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3 transition duration-300 shadow-xl select-none"
+               onmouseenter="const v=this.querySelector('video'); if(v) v.play().catch(()=>{})"
+               onmouseleave="const v=this.querySelector('video'); if(v) v.pause()"
+               onclick="openTrendModalById('${t.id}')">
+            ${isVideo ? `
+              <video src="${t.videoUrl}" poster="${t.posterUrl}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+            ` : `
+              <img src="${t.posterUrl}" alt="${escapeHtml(title)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            `}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/60 pointer-events-none"></div>
+
+            <!-- Top Badge & Like -->
+            <div class="relative z-10 flex items-center justify-between">
+              <span class="bg-black/75 backdrop-blur-md border border-emerald-500/30 text-[9px] font-bold text-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1 shadow">
+                <span>${mediaTag}</span> <span class="truncate max-w-[85px]">${t.model}</span>
+              </span>
+              <button type="button" onclick="event.stopPropagation(); toggleLikeTrend('${t.id}', this)" class="like-btn flex items-center gap-1 bg-black/70 hover:bg-rose-500/30 border border-white/15 px-2 py-0.5 rounded-full text-[10px] font-bold transition backdrop-blur-md ${liked ? 'text-rose-400 border-rose-500/40 bg-rose-500/10' : 'text-stone-300 hover:text-rose-400'}">
+                <span>${liked ? '❤️' : '🤍'}</span> <span class="like-count font-mono">${formatTrendLikes(t.likes)}</span>
+              </button>
+            </div>
+
+            ${isVideo ? `
+              <div class="relative z-10 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300 my-auto">
+                <div class="w-10 h-10 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white text-sm shadow-xl">
+                  ▶
+                </div>
+              </div>
+            ` : ''}
+
+            <!-- Bottom Information -->
+            <div class="relative z-10 space-y-1 bg-gradient-to-t from-black/95 via-black/80 to-transparent -mx-3 -mb-3 p-3 pt-5 rounded-b-2xl">
+              <h3 class="text-xs font-bold text-white group-hover:text-emerald-300 transition leading-snug truncate">${escapeHtml(title)}</h3>
+              <p class="text-[9px] text-stone-300 italic line-clamp-1 leading-tight opacity-80">
+                "${escapeHtml(prompt)}"
+              </p>
+              <button type="button" onclick="event.stopPropagation(); recreateWithPrompt('${escapeHtml(t.prompt_en || prompt)}', '${t.modelKey}', '${t.type}')" class="w-full py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-extrabold text-[9px] transition flex items-center justify-center gap-1 border border-emerald-500/40 shadow mt-1 active:scale-95">
+                <span>${btnText}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderTrendsGrid(category = 'all', sort = 'trending') {
@@ -7564,10 +7772,12 @@
       currentTrendCategory = category;
       currentTrendSort = sort;
       const isRu = (currentLang === 'ru');
+      const btnText = isRu ? 'Попробовать промпт' : 'Try prompt';
 
       let list = TRENDS_DATA.filter(t => {
-        if (category === 'all') return true;
-        return t.categories.includes(category);
+        const matchesCategory = (category === 'all') || (t.categories && t.categories.includes(category));
+        const matchesMedia = (currentTrendMediaType === 'all') || (t.type === currentTrendMediaType);
+        return matchesCategory && matchesMedia;
       });
 
       if (sort === 'top') {
@@ -7580,39 +7790,46 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const btnText = isRu ? 'Попробовать промпт' : 'Try prompt';
+        const isVideo = (t.type === 'video');
+        const mediaTag = isVideo ? '📹' : (t.type === 'audio' ? '🎵' : '🖼️');
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
                onmouseenter="const v=this.querySelector('video'); if(v) v.play().catch(()=>{})"
                onmouseleave="const v=this.querySelector('video'); if(v) v.pause()"
                onclick="openTrendModalById('${t.id}')">
-            <!-- Background Video Clip with Poster -->
-            <video src="${t.videoUrl}" poster="${t.posterUrl}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
+            
+            ${isVideo ? `
+              <video src="${t.videoUrl}" poster="${t.posterUrl}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>
+            ` : `
+              <img src="${t.posterUrl}" alt="${escapeHtml(title)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            `}
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/60 pointer-events-none"></div>
 
             <!-- Top Floating Bar: Model Badge + Like Counter -->
             <div class="relative z-10 flex items-center justify-between">
               <span class="bg-black/75 backdrop-blur-md border border-emerald-500/30 text-[10px] font-bold text-emerald-300 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow">
-                <span>📹</span> <span>${t.model}</span>
+                <span>${mediaTag}</span> <span>${t.model}</span>
               </span>
               <button type="button" onclick="event.stopPropagation(); toggleLikeTrend('${t.id}', this)" class="like-btn flex items-center gap-1 bg-black/70 hover:bg-rose-500/30 border border-white/15 px-2.5 py-1 rounded-full text-xs font-bold transition backdrop-blur-md active:scale-90 ${liked ? 'text-rose-400 border-rose-500/40 bg-rose-500/10' : 'text-stone-300 hover:text-rose-400'}">
                 <span>${liked ? '❤️' : '🤍'}</span> <span class="like-count font-mono">${formatTrendLikes(t.likes)}</span>
               </button>
             </div>
 
-            <!-- Center Hover Play Button -->
-            <div class="relative z-10 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300 my-auto">
-              <div class="w-12 h-12 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg shadow-2xl">
-                ▶
+            <!-- Center Hover Play Button (For Videos) -->
+            ${isVideo ? `
+              <div class="relative z-10 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition duration-300 my-auto">
+                <div class="w-12 h-12 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg shadow-2xl">
+                  ▶
+                </div>
               </div>
-            </div>
+            ` : ''}
 
             <!-- Bottom Information Panel (NO USERNAMES) -->
             <div class="relative z-10 space-y-2">
               <div class="flex items-center justify-between text-[10px] text-stone-400">
                 <span class="inline-flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <span>✦</span> <span>AI Studio</span>
+                  <span>✦</span> <span>${isVideo ? 'AI Video' : (t.type === 'audio' ? 'AI Audio' : 'AI 4K Photo')}</span>
                 </span>
                 <span class="text-stone-300 font-mono">👁️ ${t.views}</span>
               </div>
@@ -7620,7 +7837,7 @@
               <p class="text-[10px] text-stone-300 italic line-clamp-2 leading-relaxed bg-black/45 p-2 rounded-xl border border-white/5">
                 "${escapeHtml(prompt)}"
               </p>
-              <button type="button" onclick="event.stopPropagation(); recreateWithPrompt('${escapeHtml(t.prompt_en || prompt)}', '${t.modelKey}', 'video')" class="w-full py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1.5 border border-emerald-500/40 shadow mt-1 active:scale-95">
+              <button type="button" onclick="event.stopPropagation(); recreateWithPrompt('${escapeHtml(t.prompt_en || prompt)}', '${t.modelKey}', '${t.type}')" class="w-full py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-extrabold text-[10px] transition flex items-center justify-center gap-1.5 border border-emerald-500/40 shadow mt-1 active:scale-95">
                 <span>⚡</span> <span>${btnText}</span>
               </button>
             </div>
@@ -7629,80 +7846,16 @@
       }).join('');
     }
 
-    function switchTrendCategory(category, btn) {
-      document.querySelectorAll('.trend-filter-btn').forEach(b => {
-        b.className = 'trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95';
-      });
-      if (btn) {
-        btn.className = 'trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95';
-      }
-      renderTrendsGrid(category, currentTrendSort);
-    }
-
-    function sortTrends(sortType) {
-      document.querySelectorAll('.trend-sort-btn').forEach(b => {
-        b.className = 'trend-sort-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition';
-      });
-      const activeBtn = document.getElementById(`sort-trend-${sortType}`);
-      if (activeBtn) {
-        activeBtn.className = 'trend-sort-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40';
-      }
-      renderTrendsGrid(currentTrendCategory, sortType);
-    }
-
-    function isTrendLiked(id) {
+    function initTrendsShowcase() {
       try {
         const liked = JSON.parse(localStorage.getItem('zyko_liked_trends') || '{}');
-        return !!liked[id];
-      } catch (e) { return false; }
-    }
-
-    function toggleLikeTrend(id, btn) {
-      const item = TRENDS_DATA.find(t => t.id === id);
-      if (!item) return;
-
-      try {
-        const liked = JSON.parse(localStorage.getItem('zyko_liked_trends') || '{}');
-        if (liked[id]) {
-          delete liked[id];
-          item.likes = Math.max(0, item.likes - 1);
-        } else {
-          liked[id] = true;
-          item.likes += 1;
-        }
-        localStorage.setItem('zyko_liked_trends', JSON.stringify(liked));
+        TRENDS_DATA.forEach(t => {
+          if (liked[t.id]) t.likes += 1;
+        });
       } catch (e) {}
 
-      if (btn) {
-        const isNowLiked = isTrendLiked(id);
-        btn.className = `like-btn flex items-center gap-1 bg-black/70 hover:bg-rose-500/30 border border-white/15 px-2.5 py-1 rounded-full text-xs font-bold transition backdrop-blur-md active:scale-90 ${isNowLiked ? 'text-rose-400 border-rose-500/40 bg-rose-500/10' : 'text-stone-300 hover:text-rose-400'}`;
-        btn.innerHTML = `<span>${isNowLiked ? '❤️' : '🤍'}</span> <span class="like-count font-mono">${formatTrendLikes(item.likes)}</span>`;
-      }
-    }
-
-    // Modal supporting both Picture Cards (openTrendModal) and Video Cards (openTrendModalById)
-    function openTrendModal(title, desc, model, imgUrl, mode = 'image') {
-      currentTrendMode = mode;
-      currentTrendModel = model;
-      document.getElementById('trend-modal-title').textContent = title;
-      document.getElementById('trend-modal-desc').textContent = desc;
-      const modelNameEl = document.getElementById('trend-modal-model-name');
-      if (modelNameEl) modelNameEl.textContent = model;
-      
-      const authorRow = document.getElementById('trend-modal-author-row');
-      if (authorRow) authorRow.classList.add('hidden');
-
-      const video = document.getElementById('trend-modal-video');
-      const img = document.getElementById('trend-modal-img');
-      if (video) {
-        video.pause();
-        video.classList.add('hidden');
-      }
-      if (img) {
-        img.src = imgUrl;
-        img.classList.remove('hidden');
-      }
-      document.getElementById('trend-modal').classList.remove('hidden');
+      renderFeaturedShowcase();
+      renderTrendsGrid('all', 'trending');
     }
 
     function openTrendModalById(id) {
@@ -7711,29 +7864,36 @@
       activeModalTrend = t;
       const isRu = (currentLang === 'ru');
 
-      document.getElementById('trend-modal-title').textContent = isRu ? t.title_ru : t.title_en;
-      document.getElementById('trend-modal-desc').textContent = isRu ? t.prompt_ru : t.prompt_en;
-      document.getElementById('trend-modal-model-name').textContent = t.model;
+      const titleEl = document.getElementById('trend-modal-title');
+      const descEl = document.getElementById('trend-modal-desc');
+      const modelEl = document.getElementById('trend-modal-model-name');
       const aspectEl = document.getElementById('trend-modal-aspect');
-      if (aspectEl) aspectEl.textContent = t.aspect;
-      document.getElementById('trend-modal-views').textContent = '👁️ ' + t.views;
-      document.getElementById('trend-modal-likes-count').textContent = formatTrendLikes(t.likes);
+      const viewsEl = document.getElementById('trend-modal-views');
+      const likesEl = document.getElementById('trend-modal-likes-count');
 
-      const authorRow = document.getElementById('trend-modal-author-row');
-      if (authorRow) authorRow.classList.add('hidden');
+      if (titleEl) titleEl.textContent = isRu ? t.title_ru : t.title_en;
+      if (descEl) descEl.textContent = isRu ? t.prompt_ru : t.prompt_en;
+      if (modelEl) modelEl.textContent = t.model;
+      if (aspectEl) aspectEl.textContent = t.aspect;
+      if (viewsEl) viewsEl.textContent = '👁️ ' + t.views;
+      if (likesEl) likesEl.textContent = formatTrendLikes(t.likes);
 
       const video = document.getElementById('trend-modal-video');
       const img = document.getElementById('trend-modal-img');
 
       if (t.videoUrl) {
-        video.src = t.videoUrl;
-        video.poster = t.posterUrl;
-        video.classList.remove('hidden');
+        if (video) {
+          video.src = t.videoUrl;
+          video.poster = t.posterUrl;
+          video.classList.remove('hidden');
+          video.play().catch(() => {});
+        }
         if (img) img.classList.add('hidden');
-        video.play().catch(() => {});
       } else {
-        video.pause();
-        video.classList.add('hidden');
+        if (video) {
+          video.pause();
+          video.classList.add('hidden');
+        }
         if (img) {
           img.src = t.posterUrl;
           img.classList.remove('hidden');
@@ -7747,34 +7907,37 @@
       const modal = document.getElementById('trend-modal');
       if (modal) modal.classList.add('hidden');
       const video = document.getElementById('trend-modal-video');
-      if (video) video.pause();
-    }
-
-    function recreateTrendInStudio() {
-      const prompt = document.getElementById('trend-modal-desc').textContent;
-      closeTrendModal();
-      if (activeModalTrend) {
-        recreateWithPrompt(activeModalTrend.prompt_en || prompt, activeModalTrend.modelKey, 'video');
-      } else {
-        recreateWithPrompt(prompt, currentTrendModel, currentTrendMode || 'image');
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
       }
     }
 
     function copyTrendPrompt() {
       if (!activeModalTrend) return;
-      navigator.clipboard.writeText(activeModalTrend.prompt);
-      alert('✅ Промпт скопирован в буфер обмена!');
+      const isRu = (currentLang === 'ru');
+      const p = isRu ? activeModalTrend.prompt_ru : activeModalTrend.prompt_en;
+      navigator.clipboard.writeText(p || '').then(() => {
+        const copyLabel = document.getElementById('trend-modal-copy-label');
+        if (copyLabel) {
+          const original = copyLabel.textContent;
+          copyLabel.textContent = isRu ? 'Скопировано!' : 'Copied!';
+          setTimeout(() => { copyLabel.textContent = original; }, 1800);
+        }
+      }).catch(() => {});
     }
 
     function likeActiveTrendModal() {
       if (!activeModalTrend) return;
       toggleLikeTrend(activeModalTrend.id);
-      document.getElementById('trend-modal-likes-count').textContent = formatTrendLikes(activeModalTrend.likes);
+      const likesEl = document.getElementById('trend-modal-likes-count');
+      if (likesEl) likesEl.textContent = formatTrendLikes(activeModalTrend.likes);
     }
 
     function recreateTrendInStudio(targetStudio = 'video') {
       if (!activeModalTrend) return;
-      const prompt = activeModalTrend.prompt;
+      const isRu = (currentLang === 'ru');
+      const prompt = activeModalTrend.prompt_en || activeModalTrend.prompt_ru;
       const model = activeModalTrend.modelKey;
       closeTrendModal();
       recreateWithPrompt(prompt, model, targetStudio);
@@ -7788,7 +7951,8 @@
         if (el) {
           el.value = p;
           el.focus();
-          document.getElementById('video-char-count').textContent = p.length + ' / 24000';
+          const cnt = document.getElementById('video-char-count');
+          if (cnt) cnt.textContent = p.length + ' / 24000';
         }
       } else if (tab === 'audio') {
         const el = document.getElementById('audio-text-input') || document.getElementById('audio-tts-input');
@@ -7801,7 +7965,8 @@
         if (el) {
           el.value = p;
           el.focus();
-          document.getElementById('image-char-count').textContent = p.length + ' / 24000';
+          const cnt = document.getElementById('image-char-count');
+          if (cnt) cnt.textContent = p.length + ' / 24000';
         }
       }
     }
@@ -8231,15 +8396,17 @@
       const dict = i18n[lang] || i18n['en'];
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict && dict[key]) {
+        const val = (dict && dict[key]) || (i18n.en && i18n.en[key]);
+        if (val) {
           if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.placeholder = dict[key];
+            el.placeholder = val;
           } else {
-            el.textContent = dict[key];
+            el.textContent = val;
           }
         }
       });
 
+      renderFeaturedShowcase();
       renderTrendsGrid(currentTrendCategory, currentTrendSort);
       triggerFullPageTranslation(lang);
     }
