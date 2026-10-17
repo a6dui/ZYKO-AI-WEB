@@ -812,7 +812,7 @@
               <span class="faq-chevron transition text-stone-400">▾</span>
             </button>
             <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a2">
-              Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.
+              Tokens are spent strictly per generation: text & LLM = 10 ZK, photorealistic images = 12 ZK, HD audio speech & SFX = 10 ZK, AI music & voice cloning = 20-25 ZK, and cinematic video (Kling, Seedance, Sora) = 25 ZK. Your balance syncs between Web and Telegram in real-time.
             </div>
           </div>
 
@@ -1062,7 +1062,7 @@
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span>1</span>
+                    <span>10</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
                   <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
@@ -1138,7 +1138,7 @@
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span>1</span>
+                    <span>10</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
                   <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
@@ -1224,7 +1224,7 @@
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span id="image-token-cost">2</span>
+                    <span id="image-token-cost">12</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
                   <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Image">
@@ -1317,7 +1317,7 @@
                     🎙️
                   </button>
                   <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span id="video-token-cost">32</span>
+                    <span id="video-token-cost">25</span>
                     <span class="text-amber-400">⚡</span>
                   </div>
                   <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Video">
@@ -1477,7 +1477,7 @@
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
                 <button onclick="sendToolkitInpaint()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg active:scale-95">
-                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">3 ⚡</span>
+                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">15 ⚡</span>
                 </button>
               </div>
             </div>
@@ -1906,12 +1906,12 @@
               <label class="block text-xs font-bold text-stone-200">Нейросетевая модель</label>
               <div class="bg-[#141b18] border border-white/15 rounded-xl p-2.5">
                 <select id="audio-model-select" onchange="onAudioModelChange(this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg p-2 text-xs text-stone-200 focus:outline-none focus:border-emerald-400">
-                  <option value="eleven_v4" selected>Eleven v4 Neural — NEW (Революционная эмоциональная модуляция, шепот и дыхание • 1 ZK)</option>
-                  <option value="music_2_5">ElevenLabs Music 2.5 — NEW (Синтез песен, битов и вокала студийного качества • 2 ZK)</option>
-                  <option value="eleven_v3_5">Eleven v3.5 Neural (Сверхреалистичная эмоциональная озвучка • 1 ZK)</option>
-                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик 150мс • 0.5 ZK)</option>
-                  <option value="eleven_multilingual_v2">Eleven Multilingual v2 (29 языков — Студийный стандарт • 1 ZK)</option>
-                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Сверхнизкая задержка 75мс • 0.5 ZK)</option>
+                  <option value="eleven_v4" selected>Eleven v4 Neural — NEW (Революционная эмоциональная модуляция, шепот и дыхание • 10 ZK)</option>
+                  <option value="music_2_5">ElevenLabs Music 2.5 — NEW (Синтез песен, битов и вокала студийного качества • 20 ZK)</option>
+                  <option value="eleven_v3_5">Eleven v3.5 Neural (Сверхреалистичная эмоциональная озвучка • 10 ZK)</option>
+                  <option value="eleven_turbo_v2_5">Eleven Turbo v2.5 (Сверхбыстрый отклик 150мс • 10 ZK)</option>
+                  <option value="eleven_multilingual_v2">Eleven Multilingual v2 (29 языков — Студийный стандарт • 10 ZK)</option>
+                  <option value="eleven_flash_v2_5">Eleven Flash v2.5 (Сверхнизкая задержка 75мс • 10 ZK)</option>
                 </select>
               </div>
             </div>
@@ -2024,7 +2024,7 @@
             <div id="clone-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-clone" onclick="submitVoiceClone()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>⚡</span> <span>Создать клон голоса (5 Credits)</span>
+              <span>⚡</span> <span>Создать клон голоса (25 Credits)</span>
             </button>
           </div>
 
@@ -2066,7 +2066,7 @@
             </div>
 
             <button type="button" onclick="sendGenerateAudioAction()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🔊</span> <span>Сгенерировать SFX (1 Credit)</span>
+              <span>🔊</span> <span>Сгенерировать SFX (10 Credits)</span>
             </button>
           </div>
 
@@ -2099,7 +2099,7 @@
             <div id="isolate-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-isolate" onclick="submitVoiceIsolator()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>✨</span> <span>Изолировать речь (2 Credits)</span>
+              <span>✨</span> <span>Изолировать речь (12 Credits)</span>
             </button>
           </div>
 
@@ -3749,7 +3749,7 @@
         faq_q1: "What models are included in ZYKO.AI?",
         faq_a1: "You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.",
         faq_q2: "How are tokens spent across models?",
-        faq_a2: "Tokens are spent strictly per generation: text messages = 1 ZK, photorealistic images = 2-3 ZK, HD audio speech = 2 ZK per 1000 characters, and 10s video = 10-15 ZK. Your balance syncs between Web and Telegram in real-time.",
+        faq_a2: "Tokens are spent strictly per generation: text & LLM = 10 ZK, photorealistic images = 12 ZK, HD audio speech & SFX = 10 ZK, AI music & voice cloning = 20-25 ZK, and cinematic video (Kling, Seedance, Sora) = 25 ZK. Your balance syncs between Web and Telegram in real-time.",
         faq_q3: "Can I use generated media for commercial purposes?",
         faq_a3: "Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.",
 
@@ -3911,7 +3911,7 @@
         faq_q1: "Какие нейросети входят в ZYKO.AI?",
         faq_a1: "Вы получаете единый доступ к более чем 100 нейросетям: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD голоса и Suno v4.",
         faq_q2: "Как расходуются токены на модели?",
-        faq_a2: "Токены списываются строго за генерации: текст = 1 ZK, реалистичные фото = 2-3 ZK, озвучка HD = 2 ZK за 1000 знаков, видео 10 сек = 10-15 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
+        faq_a2: "Токены списываются за генерации: текст и LLM = 10 ZK, реалистичные фото = 12 ZK, озвучка речи и SFX = 10 ZK, музыка и клонирование = 20-25 ZK, кинематографичные видео = 25 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
         faq_q3: "Могу ли я использовать созданный контент в коммерческих целях?",
         faq_a3: "Да! Все изображения, видео, аудио озвучки и код, созданные на активных тарифах (Basic, Pro, VIP, Elite, Ultra Elite), имеют полные коммерческие права.",
 
@@ -4889,7 +4889,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 2 : 1);
+          deductTokensUI(deepRes ? 18 : 10);
           saveToHistory('chats', text.slice(0, 30), data.reply);
         } else {
           renderAgentBubble(chatBox, "❌ Request error. Please verify your balance or try again.");
@@ -4963,7 +4963,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 2 : 1);
+          deductTokensUI(deepRes ? 18 : 10);
           saveToHistory('chats', text.slice(0, 30), data.reply);
         } else {
           const errData = await resp.json().catch(() => ({}));
@@ -5032,7 +5032,7 @@
               </div>
             </div>
           `);
-          deductTokensUI(2);
+          deductTokensUI(12);
           saveToHistory('projects', prompt.slice(0, 30), imgUrl);
         } else {
           const errData = await resp.json().catch(() => ({}));
@@ -5165,7 +5165,7 @@
             }
           }, 400);
 
-          deductTokensUI(19);
+          deductTokensUI(25);
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
         } else {
           document.getElementById(loadCardId)?.remove();
@@ -5612,25 +5612,23 @@
       return sendGenerateAudioAction();
     }
 
-    // 1. Text-to-Speech Generation (TTS)
+    // 1. Text-to-Speech & Music Generation
     async function executeGenerateTTS() {
       const input = document.getElementById('audio-text-input');
       const text = input ? input.value.trim() : '';
       if (!text) {
-        alert('Пожалуйста, введите текст для озвучки.');
+        alert('Пожалуйста, введите текст для озвучки или описание музыкального трека.');
         if (input) input.focus();
         return;
       }
 
       const voiceId = selectedAudioVoice ? selectedAudioVoice.id : '21m0aC4C9KstEPqMsrxW';
       const voiceName = selectedAudioVoice ? selectedAudioVoice.name : 'Rachel';
-      const modelId = document.getElementById('audio-model-select')?.value || 'eleven_multilingual_v2';
-
-      // Read fine-tuned Voice Settings
-      const stability = parseFloat(document.getElementById('slider-audio-stability')?.value || 50) / 100;
-      const similarity = parseFloat(document.getElementById('slider-audio-similarity')?.value || 75) / 100;
-      const style = parseFloat(document.getElementById('slider-audio-style')?.value || 15) / 100;
-      const speakerBoost = document.getElementById('toggle-speaker-boost')?.checked !== false;
+      const modelId = document.getElementById('audio-model-select')?.value || 'eleven_v4';
+      const isMusic = (modelId === 'music_2_5');
+      const costAmount = isMusic ? 20 : 10;
+      const typeLabel = isMusic ? 'MUSIC' : 'TTS';
+      const modelTitle = isMusic ? 'ElevenLabs Music 2.5' : (voiceName + ' • ' + modelId);
 
       // Gallery & Loading state
       const gallery = document.getElementById('audio-generation-gallery');
@@ -5644,16 +5642,16 @@
       loadCard.innerHTML = `
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2.5">
-            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm font-bold">🎙️</span>
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm font-bold">${isMusic ? '🎵' : '🎙️'}</span>
             <div>
               <div class="text-xs font-bold text-white flex items-center gap-2">
-                <span>${escapeHtml(voiceName)}</span>
-                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono font-bold">ElevenLabs TTS</span>
+                <span>${escapeHtml(modelTitle)}</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono font-bold">${isMusic ? 'Music 2.5' : 'ElevenLabs TTS'}</span>
               </div>
-              <div class="text-[10px] text-stone-400">Генерация нейросетевого аудио высокого разрешения...</div>
+              <div class="text-[10px] text-stone-400">${isMusic ? 'Синтез студийной музыки и вокала нейросетью...' : 'Генерация нейросетевого аудио высокого разрешения...'}</div>
             </div>
           </div>
-          <span class="text-xs text-emerald-400 font-bold">1 ⚡</span>
+          <span class="text-xs text-emerald-400 font-bold">${costAmount} ⚡</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(text.length > 120 ? text.slice(0, 120) + '...' : text)}"
@@ -5672,46 +5670,81 @@
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const resp = await fetch('/api/generate/tts', {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            text,
-            voice_id: voiceId,
-            model_id: modelId,
-            voice_settings: {
-              stability,
-              similarity_boost: similarity,
-              style,
-              use_speaker_boost: speakerBoost
-            }
-          })
-        });
+        let audioUrl = '';
 
-        if (!resp.ok) {
-          const errData = await resp.json().catch(() => ({}));
-          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        if (isMusic) {
+          const resp = await fetch('/api/generate/music', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              prompt: text,
+              style: 'cinematic studio music, high fidelity, 44.1kHz',
+              title: text.slice(0, 30)
+            })
+          });
+
+          if (!resp.ok) {
+            const errData = await resp.json().catch(() => ({}));
+            throw new Error(errData.error || `HTTP error ${resp.status}`);
+          }
+
+          const contentType = resp.headers.get('content-type') || '';
+          if (contentType.includes('audio') || contentType.includes('octet-stream')) {
+            const blob = await resp.blob();
+            audioUrl = URL.createObjectURL(blob);
+          } else {
+            const resData = await resp.json();
+            audioUrl = resData.audio_url || '';
+          }
+        } else {
+          // Read fine-tuned Voice Settings
+          const stability = parseFloat(document.getElementById('slider-audio-stability')?.value || 50) / 100;
+          const similarity = parseFloat(document.getElementById('slider-audio-similarity')?.value || 75) / 100;
+          const style = parseFloat(document.getElementById('slider-audio-style')?.value || 15) / 100;
+          const speakerBoost = document.getElementById('toggle-speaker-boost')?.checked !== false;
+
+          const resp = await fetch('/api/generate/tts', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              text,
+              voice_id: voiceId,
+              model_id: modelId,
+              voice_settings: {
+                stability,
+                similarity_boost: similarity,
+                style,
+                use_speaker_boost: speakerBoost
+              }
+            })
+          });
+
+          if (!resp.ok) {
+            const errData = await resp.json().catch(() => ({}));
+            throw new Error(errData.error || `HTTP error ${resp.status}`);
+          }
+
+          const blob = await resp.blob();
+          audioUrl = URL.createObjectURL(blob);
         }
 
-        const blob = await resp.blob();
-        const audioUrl = URL.createObjectURL(blob);
         document.getElementById(loadId)?.remove();
 
         renderAudioGenerationCard({
-          type: 'TTS',
-          voiceName,
-          avatar: selectedAudioVoice.avatar || '🎙️',
-          model: modelId,
+          type: typeLabel,
+          voiceName: isMusic ? 'Eleven Music 2.5' : voiceName,
+          avatar: isMusic ? '🎵' : (selectedAudioVoice.avatar || '🎙️'),
+          model: isMusic ? 'Music 2.5 Studio' : modelId,
           text,
           audioUrl,
-          cost: 1
+          cost: costAmount
         });
 
-        deductTokensUI(1);
-        saveToHistory('projects', `Audio (${voiceName}): ${text.slice(0, 30)}`, audioUrl);
+        deductTokensUI(costAmount);
+        saveToHistory('projects', `${isMusic ? 'Music' : 'Audio'} (${isMusic ? 'Music 2.5' : voiceName}): ${text.slice(0, 30)}`, audioUrl);
       } catch (e) {
         document.getElementById(loadId)?.remove();
-        alert('Ошибка синтеза аудио: ' + e.message);
+        alert('Ошибка генерации аудио: ' + e.message);
       } finally {
         if (btn) { btn.disabled = false; btn.innerHTML = '➤'; }
       }
@@ -5754,7 +5787,7 @@
               <div class="text-[10px] text-stone-400">Генерация звукового эффекта нейросетью...</div>
             </div>
           </div>
-          <span class="text-xs text-emerald-400 font-bold">1 ⚡</span>
+          <span class="text-xs text-emerald-400 font-bold">10 ⚡</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(prompt)}"
@@ -5792,10 +5825,10 @@
           model: `Duration: ${duration.toFixed(1)}s`,
           text: prompt,
           audioUrl,
-          cost: 1
+          cost: 10
         });
 
-        deductTokensUI(1);
+        deductTokensUI(10);
         saveToHistory('projects', `SFX: ${prompt.slice(0, 30)}`, audioUrl);
       } catch (e) {
         document.getElementById(loadId)?.remove();
@@ -5880,7 +5913,7 @@
           localStorage.setItem('zyko_cloned_voices', JSON.stringify(savedClones));
         } catch (e) {}
 
-        deductTokensUI(5);
+        deductTokensUI(25);
         if (statusMsg) {
           statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
           statusMsg.textContent = `✅ Голос "${name}" успешно клонирован и выбран для озвучки!`;
@@ -5898,7 +5931,7 @@
         }
         alert('Ошибка клонирования голоса: ' + e.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span>⚡</span> <span>Создать клон голоса (5 Credits)</span>'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>⚡</span> <span>Создать клон голоса (25 Credits)</span>'; }
       }
     }
 
@@ -5953,10 +5986,10 @@
           model: file.name,
           text: `Изолированный чистый голос без шумов из файла "${file.name}"`,
           audioUrl,
-          cost: 2
+          cost: 12
         });
 
-        deductTokensUI(2);
+        deductTokensUI(12);
         if (statusMsg) {
           statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
           statusMsg.textContent = '✅ Запись успешно очищена от шумов!';
@@ -5968,7 +6001,7 @@
         }
         alert('Ошибка изоляции голоса: ' + e.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span>✨</span> <span>Изолировать речь (2 Credits)</span>'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>✨</span> <span>Изолировать речь (12 Credits)</span>'; }
       }
     }
 
@@ -7711,6 +7744,86 @@
         aspect: '9:16 Portrait'
       },
       {
+        id: 'eleven_v4_neural',
+        title_en: 'Eleven v4 Next-Gen Neural Voiceover',
+        title_ru: 'Eleven v4 Нейросетевая Озвучка Нового Поколения',
+        prompt_en: 'Hyper-expressive cinematic multi-character storytelling with dynamic emotional modulation, natural breathing, and studio acoustic depth',
+        prompt_ru: 'Сверхвыразительное кинематографическое повествование с динамическими эмоциями, естественным дыханием и студийной акустикой',
+        model: 'Eleven v4 Neural',
+        modelKey: 'eleven_v4',
+        type: 'audio',
+        categories: ['all', 'cinema', 'viral'],
+        videoUrl: '',
+        posterUrl: '/media/elevenlabs/el_v4_cover.png',
+        likes: 642000,
+        views: '7.8M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'eleven_spaceship_fx',
+        title_en: 'Interstellar Warp Drive SFX Demo',
+        title_ru: 'Демо гиперпрыжка космического корабля SFX',
+        prompt_en: 'Massive starship accelerating into hyperdrive with deafening deep bass rumble, sonic boom, and stereo ion dispersion SFX',
+        prompt_ru: 'Космический крейсер уходит в гиперпространство с нарастающим басовым гулом, звуковым ударом и стерео-ионным эхо',
+        model: 'ElevenLabs SFX 2.0',
+        modelKey: 'elevenlabs',
+        type: 'video',
+        categories: ['all', 'cinema', 'space', 'viral'],
+        videoUrl: '/media/elevenlabs/el_spaceship.mp4',
+        posterUrl: '/media/elevenlabs/el_spaceship_poster.webp',
+        likes: 589000,
+        views: '7.1M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'eleven_cinematic_creative',
+        title_en: 'Eleven Creative Studio Production',
+        title_ru: 'Творческий продакшн Eleven Creative Studio',
+        prompt_en: 'Cinematic multimedia showcase: synced Foley sound effects, dynamic orchestral score, and emotional character acting',
+        prompt_ru: 'Кинематографичный продакшн: синхронные звуковые эффекты фоли, симфонический саундтрек и эмоциональная актерская озвучка',
+        model: 'Eleven Creative Studio',
+        modelKey: 'elevenlabs',
+        type: 'video',
+        categories: ['all', 'cinema', 'viral'],
+        videoUrl: '/media/elevenlabs/el_cinematic_1080.mp4',
+        posterUrl: '/media/elevenlabs/el_cinematic_poster.webp',
+        likes: 531000,
+        views: '6.5M',
+        aspect: '16:9 Cinema'
+      },
+      {
+        id: 'eleven_music_synth',
+        title_en: 'Cyberpunk Synthwave Drop (Music 2.5)',
+        title_ru: 'Киберпанк синтвейв-трек (Music 2.5)',
+        prompt_en: 'High energy retro-futuristic synthwave track with punchy analog drums, arpeggiated bassline, and euphoric lead melody, 44.1kHz studio master',
+        prompt_ru: 'Энергичный ретро-футуристичный синтвейв с аналоговыми ударными, арпеджио баса и парящим лид-синтезатором, студийный мастер',
+        model: 'Eleven Music 2.5',
+        modelKey: 'music_2_5',
+        type: 'audio',
+        categories: ['all', 'viral', 'cinema'],
+        videoUrl: '',
+        posterUrl: '/media/elevenlabs/el_creative.webp',
+        likes: 472000,
+        views: '5.8M',
+        aspect: '9:16 Portrait'
+      },
+      {
+        id: 'eleven_conversational_agents',
+        title_en: 'Autonomous Multilingual Voice Agent',
+        title_ru: 'Автономный мультиязычный голосовой ИИ-агент',
+        prompt_en: 'Real-time conversational voice agent handling queries with 75ms ultra-low latency, empathetic tone, and natural conversational cadence',
+        prompt_ru: 'Голосовой агент реального времени со сверхнизкой задержкой 75мс, живыми интонациями и естественными паузами в диалоге',
+        model: 'Eleven Agents v2',
+        modelKey: 'elevenlabs',
+        type: 'image',
+        categories: ['all', 'viral'],
+        videoUrl: '',
+        posterUrl: '/media/elevenlabs/el_agents.webp',
+        likes: 448000,
+        views: '5.4M',
+        aspect: '9:16 Portrait'
+      },
+      {
         id: 'elevenlabs_narration',
         title_en: 'Epic Theatrical Voiceover + Ambient SFX',
         title_ru: 'Эпичная дикторская озвучка трейлера + SFX',
@@ -7721,14 +7834,14 @@
         type: 'audio',
         categories: ['all', 'cinema', 'viral'],
         videoUrl: '',
-        posterUrl: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800',
+        posterUrl: '/media/elevenlabs/el_epic_voices.webp',
         likes: 312000,
         views: '3.9M',
         aspect: '9:16 Portrait'
       }
     ];
 
-    const FEATURED_SHOWCASE_IDS = ['seedance_morph', 'kling_drift', 'flux_couture', 'nano_geisha', 'veo_fjord', 'midjourney_dragon'];
+    const FEATURED_SHOWCASE_IDS = ['eleven_v4_neural', 'seedance_morph', 'eleven_spaceship_fx', 'kling_drift', 'flux_couture', 'nano_geisha'];
 
     function formatTrendLikes(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -7825,7 +7938,7 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const mediaTag = (t.type === 'audio' ? '🎵' : '🖼️');
+        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3 transition duration-300 shadow-xl select-none"
@@ -7883,7 +7996,7 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const mediaTag = (t.type === 'audio' ? '🎵' : '🖼️');
+        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
@@ -8222,8 +8335,8 @@
     }
 
     function sendToolkitInpaint() {
-      alert('Inpainting and neural reconstruction started! Cost: 3 ⚡');
-      deductTokensUI(2);
+      alert('Inpainting and neural reconstruction started! Cost: 15 ⚡');
+      deductTokensUI(15);
     }
 
     function resetVideoFormat() {
