@@ -123,8 +123,13 @@
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
       opacity: 0;
     }
+    .faq-item.active {
+      border-color: rgba(16, 185, 129, 0.45);
+      background-color: #141c19;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px -3px rgba(16, 185, 129, 0.15);
+    }
     .faq-item.active .faq-answer {
-      max-height: 280px;
+      max-height: 420px;
       opacity: 1;
     }
     .faq-item.active .faq-chevron {
@@ -365,35 +370,7 @@
 
     /* Responsive Notification Drawer Positioning & Luxury Styling */
     #notification-drawer {
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 25px -5px rgba(16, 185, 129, 0.12);
-    }
-    @media (max-width: 639px) {
-      #notification-bell-container {
-        position: static !important;
-      }
-      #notification-drawer {
-        position: absolute !important;
-        top: calc(100% + 8px) !important;
-        left: 12px !important;
-        right: 12px !important;
-        width: auto !important;
-        max-width: none !important;
-        margin-top: 0 !important;
-      }
-    }
-    @media (min-width: 640px) {
-      #notification-bell-container {
-        position: relative !important;
-      }
-      #notification-drawer {
-        position: absolute !important;
-        top: calc(100% + 8px) !important;
-        right: 0 !important;
-        left: auto !important;
-        width: 24rem !important; /* 384px */
-        max-width: calc(100vw - 32px) !important;
-        margin-top: 0 !important;
-      }
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 30px -5px rgba(16, 185, 129, 0.15);
     }
   </style>
 </head>
@@ -604,14 +581,14 @@
       <div class="flex items-center gap-2.5" id="header-actions">
 
         <!-- Notifications Bell & Popover -->
-        <div class="static sm:relative" id="notification-bell-container">
-          <button onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative flex items-center justify-center" title="Notifications" aria-label="Notifications">
+        <div class="relative" id="notification-bell-container">
+          <button type="button" onclick="toggleNotificationDrawer(event)" id="notification-bell-btn" class="text-stone-300 hover:text-white p-2 rounded-xl hover:bg-white/5 transition relative flex items-center justify-center" title="Notifications" aria-label="Notifications">
             <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0c1110] animate-pulse"></span>
           </button>
 
           <!-- Notification Popover -->
-          <div id="notification-drawer" class="hidden absolute left-3 right-3 sm:left-auto sm:right-0 top-[calc(100%+8px)] w-auto sm:w-96 max-w-none sm:max-w-[calc(100vw-32px)] bg-[#121615]/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50">
+          <div id="notification-drawer" class="hidden bg-[#121615]/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50">
             <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="text-emerald-400 text-sm">🔔</span>
@@ -931,38 +908,117 @@
         </div>
       </section>
 
-      <!-- FAQ ACCORDION -->
-      <section id="faq" class="py-16 px-6 max-w-4xl mx-auto">
-        <h3 class="text-3xl font-black text-white text-center mb-8" data-i18n="faq_title">Frequently Asked Questions</h3>
-        <div class="space-y-3">
-          <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
-            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span data-i18n="faq_q1">What models are included in ZYKO.AI?</span>
-              <span class="faq-chevron transition text-stone-400">▾</span>
-            </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a1">
-              You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.
+      <!-- FAQ SECTION (Split Layout matching Reference Screenshot) -->
+      <section id="faq" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          
+          <!-- Left Column: Sticky Header & Telegram Support Callout -->
+          <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold mb-3.5 shadow-sm">
+                <span>💬</span> <span data-i18n="faq_badge">Help & FAQ</span>
+              </div>
+              <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-3" data-i18n="faq_title">Got questions?</h2>
+              <p class="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-md" data-i18n="faq_desc">Everything you need to know about ZYKO.AI subscriptions, universal token pool, model access, and commercial rights.</p>
+            </div>
+
+            <!-- Support Card -->
+            <div class="p-5 sm:p-6 rounded-2xl bg-[#111514] border border-white/10 shadow-2xl relative overflow-hidden group">
+              <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div class="flex items-center gap-2.5 text-xs font-bold text-white mb-2">
+                <span class="text-emerald-400 text-base">🎧</span>
+                <span data-i18n="faq_help_title">Still have questions?</span>
+              </div>
+              <p class="text-xs text-stone-400 leading-relaxed mb-4" data-i18n="faq_help_desc">Our support team is available 24/7 on Telegram to help with plans, API integration, or token refills.</p>
+              <a href="https://t.me/Zykolandstore" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25 active:scale-95">
+                <span>✈️</span> <span data-i18n="faq_support_btn">Contact Support</span>
+              </a>
             </div>
           </div>
 
-          <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
-            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span data-i18n="faq_q2">How are tokens spent across models?</span>
-              <span class="faq-chevron transition text-stone-400">▾</span>
-            </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a2">
-              Tokens are spent strictly per generation: text & LLM = 10 ZK, photorealistic images = 12 ZK, HD audio speech & SFX = 10 ZK, AI music & voice cloning = 20-25 ZK, and cinematic video (Kling, Seedance, Sora) = 25 ZK. Your balance syncs between Web and Telegram in real-time.
+          <!-- Right Column: 8 Comprehensive Accordion Items -->
+          <div class="lg:col-span-7 space-y-3">
+            
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q1">Can I try ZYKO.AI tools for free?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a1">
+                Yes! Every new user receives complimentary trial tokens (5.5 ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.
+              </div>
             </div>
-          </div>
 
-          <div class="faq-item bg-[#111514] border border-white/10 rounded-2xl overflow-hidden p-4">
-            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white">
-              <span data-i18n="faq_q3">Can I use generated media for commercial purposes?</span>
-              <span class="faq-chevron transition text-stone-400">▾</span>
-            </button>
-            <div class="faq-answer text-xs text-stone-400 mt-2 leading-relaxed" data-i18n="faq_a3">
-              Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q2">Does one subscription give access to all 100+ AI tools?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a2">
+                Absolutely. Instead of paying for separate subscriptions to ChatGPT, Midjourney, Kling, Runway, and ElevenLabs (which would cost over $250/mo combined), ZYKO.AI gives you universal access to all leading models from a single token balance.
+              </div>
             </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q3">What neural networks and models are included in ZYKO.AI?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a3">
+                You get instant access to ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD voices with voice cloning, cinematic sound effects (SFX), and autonomous AI Agents.
+              </div>
+            </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q4">What are ZK tokens and how are they spent?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a4">
+                Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 ZK, photorealistic images = 12 ZK, voice synthesis & SFX = 10 ZK, AI Music = 20 ZK, and cinematic video (Kling, Seedance, Veo) = 25 ZK.
+              </div>
+            </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q5">Can I use generated media for commercial purposes?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a5">
+                Yes! All images, videos, audio voiceovers, musical tracks, and text generated on paid subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full unrestricted commercial license and rights.
+              </div>
+            </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q6">Does my account and balance synchronize between Web and Telegram?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a6">
+                Yes! Your ZYKO.AI account, token balance, generation history, cloned voices, and active subscriptions seamlessly synchronize in real-time across both the Web platform and the official Telegram bot.
+              </div>
+            </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q7">What payment methods are supported?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a7">
+                We accept international bank cards (Visa, Mastercard), cryptocurrency (USDT TRC20/TON, BTC, ETH), and Telegram Stars with instant automated crediting.
+              </div>
+            </div>
+
+            <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
+              <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q8">Can I upgrade, downgrade, or cancel my subscription anytime?</span>
+                <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
+              </button>
+              <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a8">
+                Yes, you have full control over your subscription in your profile settings. You can upgrade, downgrade, or cancel auto-renewal with a single click at any time without hidden fees.
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -980,10 +1036,9 @@
               </div>
               <ul class="text-xs space-y-2.5 font-medium">
                 <li><a href="javascript:void(0)" onclick="openB2BModal()" class="hover:text-emerald-400 transition">B2B</a></li>
-                <li><a href="javascript:void(0)" onclick="openAcademyModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_academy">Academy</a></li>
-                <li><a href="javascript:void(0)" onclick="openContestModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_contest">Contest</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200);" class="hover:text-emerald-400 transition" data-i18n="drawer_faq">FAQ</a></li>
                 <li><a href="javascript:void(0)" onclick="switchTab('trends')" class="hover:text-emerald-400 transition" data-i18n="nav_trends">Trends</a></li>
+                <li><a href="javascript:void(0)" onclick="openStatusModal()" class="hover:text-emerald-400 transition" data-i18n="drawer_status">Status Page</a></li>
               </ul>
             </div>
 
@@ -4240,13 +4295,29 @@
         pricing_select_ultra: "Select Ultra",
         pricing_compare: "Compare all features and model quotas in detail →",
 
-        faq_title: "Frequently Asked Questions",
-        faq_q1: "What models are included in ZYKO.AI?",
-        faq_a1: "You get universal access to over 100 neural networks: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD voices with voice cloning, and Suno v4.",
-        faq_q2: "How are tokens spent across models?",
-        faq_a2: "Tokens are spent strictly per generation: text & LLM = 10 ZK, photorealistic images = 12 ZK, HD audio speech & SFX = 10 ZK, AI music & voice cloning = 20-25 ZK, and cinematic video (Kling, Seedance, Sora) = 25 ZK. Your balance syncs between Web and Telegram in real-time.",
-        faq_q3: "Can I use generated media for commercial purposes?",
-        faq_a3: "Yes! All images, videos, audio voiceovers, and code generated with active subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full commercial rights.",
+        faq_badge: "Help & FAQ",
+        faq_title: "Got questions?",
+        faq_desc: "Everything you need to know about ZYKO.AI subscriptions, universal token pool, model access, and commercial rights.",
+        faq_help_title: "Still have questions?",
+        faq_help_desc: "Our support team is available 24/7 on Telegram to help with plans, API integration, or token refills.",
+        faq_support_btn: "Contact Support",
+
+        faq_q1: "Can I try ZYKO.AI tools for free?",
+        faq_a1: "Yes! Every new user receives complimentary trial tokens (5.5 ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.",
+        faq_q2: "Does one subscription give access to all 100+ AI tools?",
+        faq_a2: "Absolutely. Instead of paying for separate subscriptions to ChatGPT, Midjourney, Kling, Runway, and ElevenLabs (which would cost over $250/mo combined), ZYKO.AI gives you universal access to all leading models from a single token balance.",
+        faq_q3: "What neural networks and models are included in ZYKO.AI?",
+        faq_a3: "You get instant access to ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD voices with voice cloning, cinematic sound effects (SFX), and autonomous AI Agents.",
+        faq_q4: "What are ZK tokens and how are they spent?",
+        faq_a4: "Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 ZK, photorealistic images = 12 ZK, voice synthesis & SFX = 10 ZK, AI Music = 20 ZK, and cinematic video (Kling, Seedance, Veo) = 25 ZK.",
+        faq_q5: "Can I use generated media for commercial purposes?",
+        faq_a5: "Yes! All images, videos, audio voiceovers, musical tracks, and text generated on paid subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full unrestricted commercial license and rights.",
+        faq_q6: "Does my account and balance synchronize between Web and Telegram?",
+        faq_a6: "Yes! Your ZYKO.AI account, token balance, generation history, cloned voices, and active subscriptions seamlessly synchronize in real-time across both the Web platform and the official Telegram bot.",
+        faq_q7: "What payment methods are supported?",
+        faq_a7: "We accept international bank cards (Visa, Mastercard), cryptocurrency (USDT TRC20/TON, BTC, ETH), and Telegram Stars with instant automated crediting.",
+        faq_q8: "Can I upgrade, downgrade, or cancel my subscription anytime?",
+        faq_a8: "Yes, you have full control over your subscription in your profile settings. You can upgrade, downgrade, or cancel auto-renewal with a single click at any time without hidden fees.",
 
         footer_text_col: "Text",
         footer_image_col: "Image",
@@ -4394,13 +4465,29 @@
         pricing_select_ultra: "Выбрать Ultra",
         pricing_compare: "Подробное сравнение всех возможностей и квот →",
 
+        faq_badge: "Помощь и FAQ",
         faq_title: "Часто задаваемые вопросы",
-        faq_q1: "Какие нейросети входят в ZYKO.AI?",
-        faq_a1: "Вы получаете единый доступ к более чем 100 нейросетям: Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, FLUX.1 Pro, ChatGPT (GPT 6 Luna), Claude 3.7 Sonnet, DeepSeek R1, ElevenLabs HD голоса и Suno v4.",
-        faq_q2: "Как расходуются токены на модели?",
-        faq_a2: "Токены списываются за генерации: текст и LLM = 10 ZK, реалистичные фото = 12 ZK, озвучка речи и SFX = 10 ZK, музыка и клонирование = 20-25 ZK, кинематографичные видео = 25 ZK. Баланс мгновенно синхронизируется между Вебом и Telegram.",
-        faq_q3: "Могу ли я использовать созданный контент в коммерческих целях?",
-        faq_a3: "Да! Все изображения, видео, аудио озвучки и код, созданные на активных тарифах (Basic, Pro, VIP, Elite, Ultra Elite), имеют полные коммерческие права.",
+        faq_desc: "Всё, что вам нужно знать о подписках ZYKO.AI, едином пуле токенов, доступе к нейросетям и коммерческих правах.",
+        faq_help_title: "Остались вопросы?",
+        faq_help_desc: "Наша служба поддержки доступна 24/7 в Telegram и поможет с выбором тарифа, API и пополнением токенов.",
+        faq_support_btn: "Написать в поддержку",
+
+        faq_q1: "Могу ли я попробовать инструменты ZYKO.AI бесплатно?",
+        faq_a1: "Да! Каждый новый пользователь получает приветственные пробные токены (5.5 ZK) сразу после регистрации, чтобы протестировать генерацию текста, создание реалистичных фото и нейросетевой голос перед выбором тарифа.",
+        faq_q2: "Дает ли одна подписка доступ ко всем 100+ нейросетям?",
+        faq_a2: "Да, абсолютно. Вместо оплаты отдельных подписок на ChatGPT, Midjourney, Kling, Runway и ElevenLabs (что стоило бы более $250 в месяц), ZYKO.AI открывает универсальный доступ ко всем передовым моделям из единого баланса токенов.",
+        faq_q3: "Какие нейросети и модели входят в ZYKO.AI?",
+        faq_a3: "Вы получаете мгновенный доступ к ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD голосам с клонированием речи, кинематографичным звуковым эффектам (SFX) и автономным AI-агентам.",
+        faq_q4: "Что такое токены ZK и как они расходуются?",
+        faq_a4: "Токены — это универсальная внутренняя валюта на сайте и в Telegram. Списания происходят строго за запрос: запросы к LLM = 10 ZK, генерация фото = 12 ZK, синтез речи и SFX = 10 ZK, AI-музыка = 20 ZK, а кинематографичное видео (Kling, Seedance, Veo) = 25 ZK.",
+        faq_q5: "Могу ли я использовать созданный контент в коммерческих целях?",
+        faq_a5: "Да! Все изображения, видео, аудио озвучки, музыкальные треки и тексты, созданные на платных подписках (Basic, Pro, VIP, Elite, Ultra Elite), имеют полную бессрочную коммерческую лицензию и права.",
+        faq_q6: "Синхронизируются ли мой аккаунт и баланс между Вебом и Telegram?",
+        faq_a6: "Да! Ваш аккаунт ZYKO.AI, баланс токенов, история генераций, клонированные голоса и активные подписки мгновенно и бесшовно синхронизируются в реальном времени между сайтом и официальным Telegram-ботом.",
+        faq_q7: "Какие способы оплаты поддерживаются?",
+        faq_a7: "Мы принимаем международные банковские карты (Visa, Mastercard), криптовалюту (USDT TRC20/TON, BTC, ETH) и Telegram Stars с моментальным автоматическим зачислением.",
+        faq_q8: "Могу ли я изменить тариф или отменить подписку в любое время?",
+        faq_a8: "Да, вы полностью управляете подпиской в настройках своего профиля. Вы можете повысить, понизить тариф или отключить автопродление в 1 клик в любой момент без скрытых комиссий.",
 
         footer_text_col: "Текст",
         footer_image_col: "Фото",
@@ -4512,8 +4599,29 @@
         pricing_select_pro: "Elegir Pro",
         pricing_select_vip: "Elegir VIP",
         pricing_select_elite: "Elegir Elite",
-        pricing_select_ultra: "Elegir Ultra",
-        faq_title: "Preguntas frecuentes",
+        faq_badge: "Ayuda y FAQ",
+        faq_title: "¿Tienes preguntas?",
+        faq_desc: "Todo lo que necesitas saber sobre suscripciones a ZYKO.AI, saldo unificado de tokens, acceso a modelos y derechos comerciales.",
+        faq_help_title: "¿Aún tienes dudas?",
+        faq_help_desc: "Nuestro equipo de soporte está disponible 24/7 en Telegram para ayudarte con planes, API y recargas.",
+        faq_support_btn: "Contactar soporte",
+
+        faq_q1: "¿Puedo probar las herramientas de ZYKO.AI gratis?",
+        faq_a1: "¡Sí! Cada nuevo usuario recibe tokens de prueba (5.5 ZK) al registrarse para probar texto, imágenes fotorrealistas y síntesis de voz.",
+        faq_q2: "¿Una sola suscripción da acceso a más de 100 herramientas?",
+        faq_a2: "Totalmente. En lugar de pagar suscripciones separadas para ChatGPT, Midjourney, Kling y ElevenLabs (más de $250/mes), ZYKO.AI te ofrece acceso unificado desde un solo saldo.",
+        faq_q3: "¿Qué redes neuronales y modelos están incluidos?",
+        faq_a3: "Acceso instantáneo a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, voces ElevenLabs HD y agentes IA autónomos.",
+        faq_q4: "¿Qué son los tokens ZK y cómo se consumen?",
+        faq_a4: "Son nuestra moneda interna unificada: consultas LLM = 10 ZK, imágenes = 12 ZK, voces y SFX = 10 ZK, música = 20 ZK, y vídeo cinemático = 25 ZK.",
+        faq_q5: "¿Puedo usar el contenido generado para fines comerciales?",
+        faq_a5: "¡Sí! Todo el contenido generado en suscripciones de pago cuenta con licencia comercial completa e irrestricta.",
+        faq_q6: "¿Se sincroniza mi cuenta entre la Web y Telegram?",
+        faq_a6: "¡Sí! Tu cuenta, saldo de tokens, historial y voces clonadas se sincronizan en tiempo real entre la Web y el bot oficial de Telegram.",
+        faq_q7: "¿Qué métodos de pago son compatibles?",
+        faq_a7: "Aceptamos tarjetas bancarias internacionales (Visa, Mastercard), criptomonedas (USDT TRC20/TON, BTC, ETH) y Telegram Stars.",
+        faq_q8: "¿Puedo cambiar o cancelar mi suscripción en cualquier momento?",
+        faq_a8: "Sí, tienes control total en tu perfil para subir, bajar o cancelar la renovación automática en 1 clic sin cargos ocultos.",
         footer_text_col: "Texto",
         footer_image_col: "Imagen",
         footer_video_col: "Vídeo",
@@ -4595,8 +4703,29 @@
         pricing_select_pro: "Escolher Pro",
         pricing_select_vip: "Escolher VIP",
         pricing_select_elite: "Escolher Elite",
-        pricing_select_ultra: "Escolher Ultra",
-        faq_title: "Perguntas frequentes",
+        faq_badge: "Ajuda e FAQ",
+        faq_title: "Dúvidas frequentes",
+        faq_desc: "Tudo o que você precisa saber sobre assinaturas do ZYKO.AI, saldo unificado de tokens, acesso a modelos e direitos comerciais.",
+        faq_help_title: "Ainda tem dúvidas?",
+        faq_help_desc: "Nossa equipe de suporte está disponível 24/7 no Telegram para ajudar com planos, API e recargas.",
+        faq_support_btn: "Falar com suporte",
+
+        faq_q1: "Posso testar as ferramentas do ZYKO.AI de graça?",
+        faq_a1: "Sim! Novos usuários recebem tokens de teste (5.5 ZK) ao se registrar para experimentar texto, imagens fotorrealistas e voz neural.",
+        faq_q2: "Uma assinatura dá acesso a mais de 100 ferramentas de IA?",
+        faq_a2: "Com certeza. Em vez de pagar por ChatGPT, Midjourney, Kling e ElevenLabs separadamente, você tem acesso universal em um só saldo.",
+        faq_q3: "Quais redes neurais e modelos estão inclusos?",
+        faq_a3: "Acesso a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Google Veo 3.1, vozes ElevenLabs HD e agentes IA.",
+        faq_q4: "O que são tokens ZK e como são consumidos?",
+        faq_a4: "Nossa moeda unificada: consultas LLM = 10 ZK, imagens = 12 ZK, vozes e SFX = 10 ZK, música = 20 ZK e vídeos = 25 ZK.",
+        faq_q5: "Posso usar as mídias geradas comercialmente?",
+        faq_a5: "Sim! Todas as mídias geradas em assinaturas ativas contam com direitos e licença comercial completa.",
+        faq_q6: "Minha conta e saldo sincronizam entre Web e Telegram?",
+        faq_a6: "Sim! Sua conta, saldo, histórico de gerações e vozes clonadas sincronizam em tempo real entre a Web e o bot do Telegram.",
+        faq_q7: "Quais métodos de pagamento são aceitos?",
+        faq_a7: "Aceitamos cartões internacionais (Visa, Mastercard), criptomoedas (USDT TRC20/TON, BTC, ETH) e Telegram Stars.",
+        faq_q8: "Posso cancelar ou alterar meu plano a qualquer momento?",
+        faq_a8: "Sim, você pode alterar ou cancelar a renovação automática a qualquer momento com um clique no seu perfil.",
         footer_text_col: "Texto",
         footer_image_col: "Imagem",
         footer_video_col: "Vídeo",
@@ -4678,8 +4807,29 @@
         pricing_select_pro: "Pro wählen",
         pricing_select_vip: "VIP wählen",
         pricing_select_elite: "Elite wählen",
-        pricing_select_ultra: "Ultra wählen",
+        faq_badge: "Hilfe & FAQ",
         faq_title: "Häufig gestellte Fragen",
+        faq_desc: "Alles über ZYKO.AI-Abonnements, den universellen Token-Pool, Modellzugriff und kommerzielle Nutzungsrechte.",
+        faq_help_title: "Noch Fragen?",
+        faq_help_desc: "Unser Support-Team ist rund um die Uhr auf Telegram erreichbar, um bei Plänen, API und Token zu helfen.",
+        faq_support_btn: "Support kontaktieren",
+
+        faq_q1: "Kann ich ZYKO.AI kostenlos testen?",
+        faq_a1: "Ja! Jeder neue Nutzer erhält bei der Registrierung Test-Token (5.5 ZK), um Text, Bilder und KI-Stimmen auszuprobieren.",
+        faq_q2: "Bietet ein einziges Abo Zugriff auf alle 100+ KI-Tools?",
+        faq_a2: "Absolut. Statt separate Abos für ChatGPT, Midjourney, Kling und ElevenLabs zu zahlen, haben Sie universellen Zugriff aus einem Token-Guthaben.",
+        faq_q3: "Welche neuronalen Netze sind in ZYKO.AI enthalten?",
+        faq_a3: "Sofortiger Zugriff auf ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, ElevenLabs HD und KI-Agenten.",
+        faq_q4: "Was sind ZK-Token und wie werden sie verbraucht?",
+        faq_a4: "Unsere universelle Währung: LLM = 10 ZK, Fotos = 12 ZK, Stimmen & SFX = 10 ZK, Musik = 20 ZK und Videos = 25 ZK.",
+        faq_q5: "Darf ich generierte Medien kommerziell nutzen?",
+        faq_a5: "Ja! Alle bei aktiven Abonnements erstellten Medien beinhalten vollständige kommerzielle Nutzungsrechte.",
+        faq_q6: "Synchronisieren sich Konto und Guthaben zwischen Web und Telegram?",
+        faq_a6: "Ja! Ihr Account, Token-Guthaben, Verlauf und geklonte Stimmen synchronisieren sich in Echtzeit zwischen Web und Telegram.",
+        faq_q7: "Welche Zahlungsmethoden werden unterstützt?",
+        faq_a7: "Wir akzeptieren internationale Bankkarten (Visa, Mastercard), Kryptowährungen (USDT TRC20/TON, BTC, ETH) und Telegram Stars.",
+        faq_q8: "Kann ich mein Abo jederzeit kündigen oder ändern?",
+        faq_a8: "Ja, Sie können Ihr Abo jederzeit mit einem Klick in Ihren Profileinstellungen upgraden, downgraden oder kündigen.",
         footer_text_col: "Text",
         footer_image_col: "Bild",
         footer_video_col: "Video",
@@ -7919,7 +8069,10 @@
     }
 
     function toggleNotificationDrawer(e) {
-      if (e) e.stopPropagation();
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       closeStudioSwitcher();
       closeBurgerDropdown();
       closeAvatarDropdown();
@@ -7927,14 +8080,11 @@
       if (!drawer) return;
       const isOpening = drawer.classList.contains('hidden');
       if (isOpening) {
-        // Clear any old inline position styles if they existed
-        drawer.style.top = '';
-        drawer.style.left = '';
-        drawer.style.width = '';
-        drawer.style.position = '';
         drawer.classList.remove('hidden');
-        // Dismiss unread dot and persist seen state
-        markAllNotificationsRead(true);
+        positionNotificationDrawer();
+        // Hide the pulsing bell unread indicator dot, but do NOT wipe notifications until explicit click/read!
+        const bellDot = document.getElementById('notification-unread-dot');
+        if (bellDot) bellDot.classList.add('hidden');
       } else {
         drawer.classList.add('hidden');
       }
@@ -7945,8 +8095,33 @@
       if (drawer) drawer.classList.add('hidden');
     }
 
-    // Keep safe dummy function so any legacy caller won't throw
-    function positionNotificationDrawer() {}
+    function positionNotificationDrawer() {
+      const drawer = document.getElementById('notification-drawer');
+      const btn = document.getElementById('notification-bell-btn');
+      if (!drawer || !btn || drawer.classList.contains('hidden')) return;
+
+      const rect = btn.getBoundingClientRect();
+      const screenW = window.innerWidth;
+      const drawerWidth = Math.min(380, screenW - 24);
+
+      // Anchor drawer directly below the bell button, clamped within viewport margins
+      let left = (rect.right - drawerWidth) + 16;
+      if (left + drawerWidth > screenW - 12) {
+        left = screenW - drawerWidth - 12;
+      }
+      if (left < 12) {
+        left = 12;
+      }
+
+      const top = Math.max(rect.bottom + 8, 56);
+
+      drawer.style.position = 'fixed';
+      drawer.style.top = `${top}px`;
+      drawer.style.left = `${left}px`;
+      drawer.style.right = 'auto';
+      drawer.style.width = `${drawerWidth}px`;
+      drawer.style.zIndex = '90';
+    }
 
     window.addEventListener('resize', () => {
       const panel = document.getElementById('workspace-control-panel');
@@ -8001,18 +8176,69 @@
     }
 
     function openB2BModal() {
+      const b2bContent = {
+        en: {
+          title: 'ZYKO B2B & Enterprise',
+          desc: 'Corporate solutions, dedicated GPU clusters, unified REST API integrations, and invoice billing for teams and creative studios.',
+          feature1: 'Private dedicated high-throughput GPU clusters',
+          feature2: 'Custom 99.9% uptime SLA & dedicated account manager',
+          feature3: 'Direct access to all 100+ neural networks via single REST API',
+          feature4: 'Bulk enterprise token discounts from 40%',
+          contact: 'Contact B2B Department:'
+        },
+        ru: {
+          title: 'ZYKO B2B & Корпоративные решения',
+          desc: 'Корпоративные решения, выделенные серверные мощности GPU, API-интеграции и работа по безналичному расчету для команд и студий.',
+          feature1: 'Приватные выделенные кластеры GPU',
+          feature2: 'Индивидуальный SLA 99.9% и персональный менеджер',
+          feature3: 'Доступ ко всем 100+ нейросетям через единый REST API',
+          feature4: 'Оптовые скидки на токены от 40%',
+          contact: 'Связаться с отделом B2B:'
+        },
+        es: {
+          title: 'ZYKO B2B y Soluciones Corporativas',
+          desc: 'Soluciones corporativas, clústeres de GPU dedicados, integración REST API unificada y facturación para empresas y estudios.',
+          feature1: 'Clústeres privados de GPU dedicados',
+          feature2: 'SLA personalizado de 99.9% y gestor de cuenta dedicado',
+          feature3: 'Acceso a más de 100 redes neuronales mediante una única REST API',
+          feature4: 'Descuentos corporativos en tokens a partir del 40%',
+          contact: 'Contactar con el departamento B2B:'
+        },
+        pt: {
+          title: 'ZYKO B2B e Soluções Corporativas',
+          desc: 'Soluções corporativas, clusters de GPU dedicados, integrações via REST API e faturamento empresarial para estúdios e equipas.',
+          feature1: 'Clusters privados de GPU dedicados',
+          feature2: 'SLA personalizado de 99.9% e gestor de conta dedicado',
+          feature3: 'Acesso a mais de 100 redes neurais através de uma única API REST',
+          feature4: 'Descontos empresariais em tokens a partir de 40%',
+          contact: 'Contactar o departamento B2B:'
+        },
+        de: {
+          title: 'ZYKO B2B & Enterprise-Lösungen',
+          desc: 'Unternehmenslösungen, dedizierte GPU-Cluster, einheitliche REST-API-Integrationen und Rechnungsstellung für Teams und Studios.',
+          feature1: 'Private dedizierte GPU-Cluster mit hohem Durchsatz',
+          feature2: 'Individuelle 99.9% SLA & persönlicher Account-Manager',
+          feature3: 'Zugriff auf alle 100+ KI-Modelle über eine zentrale REST-API',
+          feature4: 'Enterprise-Rabatte auf Token ab 40%',
+          contact: 'B2B-Abteilung kontaktieren:'
+        }
+      };
+
+      const lang = (typeof currentLang !== 'undefined' && b2bContent[currentLang]) ? currentLang : 'en';
+      const c = b2bContent[lang];
+
       document.getElementById('info-modal-icon').textContent = '💼';
-      document.getElementById('info-modal-title').textContent = 'ZYKO B2B & Enterprise';
+      document.getElementById('info-modal-title').textContent = c.title;
       document.getElementById('info-modal-content').innerHTML = `
-        <p class="mb-3 text-stone-300">Корпоративные решения, выделенные серверные мощности, API-интеграции и работа по безналичному расчету для команд и студий.</p>
+        <p class="mb-3 text-stone-300">${c.desc}</p>
         <div class="space-y-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-stone-200">
-          <div class="flex items-center gap-2 text-emerald-400 font-semibold">✓ Приватные выделенные кластеры GPU</div>
-          <div class="flex items-center gap-2">✓ Индивидуальный SLA 99.9% и персональный менеджер</div>
-          <div class="flex items-center gap-2">✓ Доступ ко всем 100+ нейросетям через единый REST API</div>
-          <div class="flex items-center gap-2">✓ Оптовые скидки на токены от 40%</div>
+          <div class="flex items-center gap-2 text-emerald-400 font-semibold">✓ ${c.feature1}</div>
+          <div class="flex items-center gap-2">✓ ${c.feature2}</div>
+          <div class="flex items-center gap-2">✓ ${c.feature3}</div>
+          <div class="flex items-center gap-2">✓ ${c.feature4}</div>
         </div>
         <div class="pt-3 text-xs">
-          Связаться с отделом B2B: <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline font-bold">@Zykolandstore</a>
+          ${c.contact} <a href="https://t.me/Zykolandstore" target="_blank" class="text-emerald-400 underline font-bold">@Zykolandstore</a>
         </div>
       `;
       document.getElementById('info-modal').classList.remove('hidden');
@@ -11327,9 +11553,11 @@
     // Auto-reposition popovers on viewport resize or scroll
     window.addEventListener('resize', () => {
       positionStudioSwitcherDropdown();
+      positionNotificationDrawer();
     });
     window.addEventListener('scroll', () => {
       positionStudioSwitcherDropdown();
+      positionNotificationDrawer();
     }, { passive: true });
 
     // =========================================================================
