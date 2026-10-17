@@ -106,12 +106,12 @@ async def init_db():
                 if not admin_row:
                     await db.execute("""
                         INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
-                        VALUES (755843448, 'kirabakuta', 'Kirabakuta (Admin)', 500000, 'Max', 1)
+                        VALUES (755843448, 'Zykolandstore', 'Zykolandstore', 500000, 'Max', 1)
                     """)
                 else:
                     await db.execute("""
-                        UPDATE users SET is_superadmin = 1, tier = 'Max'
-                        WHERE telegram_id = 755843448 AND tier IN ('Free', NULL, '')
+                        UPDATE users SET is_superadmin = 1, tier = 'Max', telegram_username = 'Zykolandstore', name = 'Zykolandstore'
+                        WHERE telegram_id = 755843448
                     """)
         except Exception as e:
             logger.warning("Admin seeding warning: %s", e)
@@ -190,7 +190,7 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                 user = dict(row)
                 updates = ["last_login = CURRENT_TIMESTAMP"]
                 params = []
-                if display_name and not user.get("name"):
+                if display_name and (not user.get("name") or "kirabakuta" in str(user.get("name")).lower()):
                     updates.append("name = ?")
                     params.append(display_name)
                 if photo_url and not user.get("avatar"):

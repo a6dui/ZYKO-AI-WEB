@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="dark scroll-smooth notranslate">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <meta name="googlebot" content="notranslate">
   <title>ZYKO.AI — 100+ AI Models in One Place | Web & Telegram</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=5">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=5">
@@ -346,37 +348,13 @@
       background-color: transparent !important;
       box-shadow: none !important;
     }
-    #goog-gt-tt,
-    .goog-te-balloon-frame {
-      display: none !important;
-    }
-    .goog-te-gadget {
-      font-size: 0px !important;
-      color: transparent !important;
-    }
-    .goog-te-gadget .goog-te-combo {
-      margin: 0 !important;
-    }
-    #google_translate_element {
-      position: absolute !important;
-      left: -9999px !important;
-      top: -9999px !important;
-      width: 1px !important;
-      height: 1px !important;
-      overflow: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
     /* Responsive Notification Drawer Positioning & Luxury Styling */
     #notification-drawer {
       box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 30px -5px rgba(16, 185, 129, 0.15);
     }
   </style>
 </head>
-<body class="selection:bg-emerald-400 selection:text-black">
-  <!-- Hidden Google Translate Element -->
-  <div id="google_translate_element"></div>
+<body class="selection:bg-emerald-400 selection:text-black notranslate">
 
   <!-- Payment Status Banner -->
   <div id="payment-alert" class="hidden bg-emerald-500 text-black py-2.5 px-4 text-center text-xs font-black tracking-wide flex items-center justify-center gap-2 shadow-lg">
@@ -4842,17 +4820,30 @@
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // 1. Immediately render cached user to eliminate UI flicker
-      try {
-        const cachedUserStr = localStorage.getItem('zyko_cached_user');
-        if (cachedUserStr) {
-          const cachedUser = JSON.parse(cachedUserStr);
-          if (cachedUser && (cachedUser.id || cachedUser.tokens != null)) {
-            currentUser = cachedUser;
-            updateUserUI(currentUser);
+      // 0. Proactively clear any stale Google Translate cookies
+      if (typeof clearGoogleTranslateCookies === 'function') {
+        clearGoogleTranslateCookies();
+      }
+
+      const isExplicitLogout = sessionStorage.getItem('zyko_explicit_logout') === 'true';
+      const hasToken = !!localStorage.getItem('zyko_token');
+
+      // 1. Immediately render cached user only if user has a token and has NOT explicitly logged out
+      if (hasToken && !isExplicitLogout) {
+        try {
+          const cachedUserStr = localStorage.getItem('zyko_cached_user');
+          if (cachedUserStr) {
+            const cachedUser = JSON.parse(cachedUserStr);
+            if (cachedUser && (cachedUser.id || cachedUser.tokens != null)) {
+              currentUser = cachedUser;
+              updateUserUI(currentUser);
+            }
           }
-        }
-      } catch (e) {}
+        } catch (e) {}
+      } else {
+        currentUser = null;
+        updateUserUI(null);
+      }
 
       // 1.1 Render cached plan usage limits, feed & token history
       try {
@@ -4866,14 +4857,14 @@
       // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
       const params = new URLSearchParams(window.location.search);
       const incomingToken = params.get('auth_token') || params.get('token');
-      if (incomingToken) {
+      if (incomingToken && !isExplicitLogout) {
         localStorage.setItem('zyko_token', incomingToken);
         document.cookie = `zyko_token=${incomingToken}; path=/; max-age=2592000; SameSite=None; Secure`;
         const cleanUrl = window.location.pathname + window.location.hash;
         window.history.replaceState({}, document.title, cleanUrl);
       }
 
-      // 3. Telegram WebApp & Mini App Seamless Auto-Login
+      // 3. Telegram WebApp & Mini App Seamless Auto-Login (guarded against explicit logout)
       const tgWebApp = window.Telegram?.WebApp;
       if (tgWebApp) {
         try {
@@ -4886,8 +4877,8 @@
       const tgUserIdParam = params.get('user_id') || params.get('tg_id');
       const tgUsernameParam = params.get('username');
 
-      // Auto-authenticate if entering from Telegram WebApp or with user_id parameter
-      if ((tgUser?.id || tgUserIdParam) && (!incomingToken && !localStorage.getItem('zyko_token'))) {
+      // Auto-authenticate if entering from Telegram WebApp or with user_id parameter (ONLY if user has not explicitly logged out)
+      if (!isExplicitLogout && (tgUser?.id || tgUserIdParam) && (!incomingToken && !localStorage.getItem('zyko_token'))) {
         try {
           const authPayload = {
             initData: tgWebApp?.initData || '',
@@ -8906,6 +8897,7 @@
     }
 
     function openAuthModal() {
+      sessionStorage.removeItem('zyko_explicit_logout');
       const modal = document.getElementById('auth-modal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -8972,6 +8964,8 @@
               localStorage.setItem('zyko_token', data.token);
               document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
             }
+            localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+            sessionStorage.removeItem('zyko_explicit_logout');
             const statusBox = document.getElementById('tg-auth-status');
             if (statusBox) {
               statusBox.className = 'bg-emerald-500/20 border border-emerald-500/60 rounded-xl p-3 text-center';
@@ -9059,6 +9053,8 @@
             localStorage.setItem('zyko_token', data.token);
             document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
           }
+          localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+          sessionStorage.removeItem('zyko_explicit_logout');
           updateUserUI(currentUser);
           closeAuthModal();
         } else {
@@ -9090,6 +9086,8 @@
             localStorage.setItem('zyko_token', data.token);
             document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
           }
+          localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+          sessionStorage.removeItem('zyko_explicit_logout');
           updateUserUI(currentUser);
           closeAuthModal();
         }
@@ -9118,6 +9116,8 @@
                 localStorage.setItem('zyko_token', d.token);
                 document.cookie = `zyko_token=${d.token}; path=/; max-age=2592000; SameSite=Lax`;
               }
+              localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+              sessionStorage.removeItem('zyko_explicit_logout');
               updateUserUI(currentUser);
               closeAuthModal();
             }
@@ -9137,6 +9137,11 @@
     }
 
     async function checkAuthStatus() {
+      if (sessionStorage.getItem('zyko_explicit_logout') === 'true') {
+        currentUser = null;
+        updateUserUI(null);
+        return null;
+      }
       try {
         const token = localStorage.getItem('zyko_token');
         const headers = {};
@@ -9147,19 +9152,32 @@
           if (data.authenticated && data.user) {
             currentUser = data.user;
             localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+            sessionStorage.removeItem('zyko_explicit_logout');
             updateUserUI(currentUser);
             return currentUser;
           }
         }
       } catch (e) {}
+
+      // If unauthenticated or token expired
+      currentUser = null;
+      localStorage.removeItem('zyko_cached_user');
+      updateUserUI(null);
       return null;
     }
 
     function updateUserUI(user) {
-      if (!user) return;
-      document.getElementById('btn-login-header').classList.add('hidden');
+      const loginBtn = document.getElementById('btn-login-header');
       const profile = document.getElementById('user-profile-header');
-      profile.classList.remove('hidden');
+
+      if (!user) {
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (profile) profile.classList.add('hidden');
+        return;
+      }
+
+      if (loginBtn) loginBtn.classList.add('hidden');
+      if (profile) profile.classList.remove('hidden');
 
       let tokVal;
       if (user.tokens != null) {
@@ -9252,6 +9270,8 @@
             localStorage.setItem('zyko_token', data.token);
             document.cookie = `zyko_token=${data.token}; path=/; max-age=2592000; SameSite=Lax`;
           }
+          localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+          sessionStorage.removeItem('zyko_explicit_logout');
           updateUserUI(currentUser);
           closeAuthModal();
         }
@@ -9336,10 +9356,32 @@
     }
 
     async function handleLogout() {
+      sessionStorage.setItem('zyko_explicit_logout', 'true');
       localStorage.removeItem('zyko_token');
+      localStorage.removeItem('zyko_cached_user');
+      currentUser = null;
+
+      const host = window.location.hostname;
       document.cookie = 'zyko_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.reload();
+      if (host) {
+        document.cookie = `zyko_token=; path=/; domain=${host}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        document.cookie = `zyko_token=; path=/; domain=.${host}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      }
+
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (e) {}
+
+      updateUserUI(null);
+
+      // Clean auth params from URL and reload cleanly without re-authenticating
+      const url = new URL(window.location.href);
+      url.searchParams.delete('auth_token');
+      url.searchParams.delete('token');
+      url.searchParams.delete('user_id');
+      url.searchParams.delete('tg_id');
+      url.searchParams.delete('username');
+      window.location.replace(url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : ''));
     }
 
     // 15. Payments (Stripe, Platega, Crypto)
@@ -11455,41 +11497,22 @@
       de: { flag: '🇩🇪', label: 'Deutsch' }
     };
 
-    function triggerFullPageTranslation(lang) {
+    function clearGoogleTranslateCookies() {
       try {
-        const hostname = window.location.hostname;
-        const isEn = (lang === 'en');
-        const domains = [hostname, `.${hostname}`, ''];
-
-        // Clean any stale cookies first
-        domains.forEach(d => {
-          const domStr = d ? `; domain=${d}` : '';
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${domStr}`;
-        });
-
-        if (!isEn) {
-          domains.forEach(d => {
-            const domStr = d ? `; domain=${d}` : '';
-            document.cookie = `googtrans=/auto/${lang}; path=/${domStr}`;
-            document.cookie = `googtrans=/en/${lang}; path=/${domStr}`;
-          });
+        const host = window.location.hostname;
+        const parts = host ? host.split('.') : [];
+        const domains = [host, host ? '.' + host : '', ''];
+        for (let i = 0; i < parts.length - 1; i++) {
+          domains.push('.' + parts.slice(i).join('.'));
         }
-
-        let attempts = 0;
-        const interval = setInterval(() => {
-          attempts++;
-          const selectEl = document.querySelector('.goog-te-combo');
-          if (selectEl) {
-            selectEl.value = isEn ? '' : lang;
-            selectEl.dispatchEvent(new Event('change'));
-            clearInterval(interval);
-          } else if (attempts > 30) {
-            clearInterval(interval);
-          }
-        }, 100);
-      } catch (e) {
-        console.debug('Translate trigger error:', e);
-      }
+        const paths = ['/', window.location.pathname];
+        domains.forEach(d => {
+          paths.forEach(p => {
+            const domStr = d ? `; domain=${d}` : '';
+            document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}${domStr}`;
+          });
+        });
+      } catch (e) {}
     }
 
     function setLanguage(lang) {
@@ -11499,6 +11522,7 @@
       } catch (e) {}
 
       document.documentElement.lang = lang;
+      clearGoogleTranslateCookies();
 
       const info = langDetails[lang] || langDetails['en'];
       const flagEl = document.getElementById('active-lang-flag');
@@ -11521,7 +11545,6 @@
 
       renderFeaturedShowcase();
       renderTrendsGrid(currentTrendCategory, currentTrendSort);
-      triggerFullPageTranslation(lang);
     }
 
     document.addEventListener('click', (e) => {
@@ -12000,27 +12023,11 @@
     }
 
   </script>
-  <!-- Full-Page Google Translate Engine -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      try {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'en,ru,es,de,pt',
-          autoDisplay: false
-        }, 'google_translate_element');
-        
-        const savedLang = localStorage.getItem('zyko_lang') || 'en';
-        if (savedLang && savedLang !== 'en') {
-          setTimeout(() => {
-            if (typeof triggerFullPageTranslation === 'function') {
-              triggerFullPageTranslation(savedLang);
-            }
-          }, 600);
-        }
-      } catch(e) {}
+  <script>
+    // Proactively clean any residual Google Translate cookies on initialization
+    if (typeof clearGoogleTranslateCookies === 'function') {
+      clearGoogleTranslateCookies();
     }
   </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
