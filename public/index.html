@@ -4359,11 +4359,12 @@
         }
       } catch (e) {}
 
-      // 1.1 Render cached plan usage limits & feed
+      // 1.1 Render cached plan usage limits, feed & token history
       try {
         if (typeof loadLocalUsageLimits === 'function') loadLocalUsageLimits();
         if (typeof renderUsageLimitsUI === 'function') renderUsageLimitsUI();
         if (typeof renderFeedUI === 'function') renderFeedUI();
+        if (typeof renderTokenHistoryUI === 'function') renderTokenHistoryUI();
       } catch (e) {}
 
       // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
@@ -8217,15 +8218,17 @@
       }
     }
 
-    function deductTokensUI(amount) {
+    function deductTokensUI(amount, description = 'AI Service Generation') {
       if (!amount || isNaN(amount) || amount <= 0) return;
 
+      let newBal = 1000;
       // 1. Header tokens counter
       const el = document.getElementById('header-user-tokens');
       if (el) {
         let cur = parseInt(el.textContent.replace(/\D/g, '')) || 1000;
         cur = Math.max(0, cur - amount);
         el.textContent = cur.toLocaleString();
+        newBal = cur;
       }
 
       // 2. Profile card tokens counter
@@ -8234,6 +8237,7 @@
         let pCur = parseInt(pTokens.textContent.replace(/\D/g, '')) || 0;
         pCur = Math.max(0, pCur - amount);
         pTokens.textContent = pCur.toLocaleString();
+        newBal = pCur;
       }
 
       // 3. Dropdown user tokens
@@ -8246,6 +8250,17 @@
 
       // 4. Record expenditure in plan usage limits
       recordUsageLimitExpenditure(amount);
+
+      // 5. Record in local token history
+      if (typeof recordLocalTokenHistory === 'function') {
+        recordLocalTokenHistory({
+          type: 'used',
+          description: description,
+          amount: -amount,
+          balance: newBal,
+          created_at: new Date().toISOString()
+        });
+      }
     }
 
     async function handleLogout() {
@@ -9676,14 +9691,150 @@
       if (priceEl) priceEl.textContent = priceText;
     }
 
-    function filterTokenHistory(type, btn) {
-      const parent = btn.parentElement;
-      parent.querySelectorAll('button').forEach(b => {
-        b.classList.remove('bg-[#c2410c]', 'text-white', 'font-bold');
-        b.classList.add('text-stone-400');
+    // =========================================================================
+    // TOKEN TRANSACTION HISTORY ENGINE (PROFILE SUBTAB: HISTORY)
+    // =========================================================================
+    let currentTokenHistoryFilter = 'all';
+    let serverTokenHistoryItems = [];
+
+    function recordLocalTokenHistory(item) {
+      try {
+        let history = [];
+        const raw = localStorage.getItem('zyko_token_history');
+        if (raw) history = JSON.parse(raw);
+        if (!Array.isArray(history)) history = [];
+
+        const newItem = {
+          id: 'tx_loc_' + Date.now(),
+          type: item.type || 'used',
+          description: item.description || 'AI Generation',
+          amount: item.amount || 0,
+          balance: item.balance || 0,
+          created_at: item.created_at || new Date().toISOString()
+        };
+
+        history.unshift(newItem);
+        if (history.length > 200) history = history.slice(0, 200);
+        localStorage.setItem('zyko_token_history', JSON.stringify(history));
+
+        renderTokenHistoryUI();
+      } catch (e) {
+        console.error('Error saving local token history:', e);
+      }
+    }
+
+    function getCombinedTokenHistoryItems() {
+      let localItems = [];
+      try {
+        const raw = localStorage.getItem('zyko_token_history');
+        if (raw) localItems = JSON.parse(raw);
+        if (!Array.isArray(localItems)) localItems = [];
+      } catch (e) {}
+
+      const seen = new Set();
+      const combined = [];
+
+      [...localItems, ...serverTokenHistoryItems].forEach(it => {
+        const key = it.id || (it.created_at + '_' + it.amount + '_' + it.description);
+        if (!seen.has(key)) {
+          seen.add(key);
+          combined.push(it);
+        }
       });
-      btn.classList.add('bg-[#c2410c]', 'text-white', 'font-bold');
-      btn.classList.remove('text-stone-400');
+
+      combined.sort((a, b) => {
+        const tA = new Date(a.created_at || 0).getTime() || 0;
+        const tB = new Date(b.created_at || 0).getTime() || 0;
+        return tB - tA;
+      });
+
+      return combined;
+    }
+
+    function filterTokenHistory(type, btn) {
+      currentTokenHistoryFilter = type;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('button').forEach(b => {
+          b.className = 'px-4 py-1.5 rounded-lg text-stone-400 hover:text-white transition';
+        });
+        btn.className = 'px-4 py-1.5 rounded-lg bg-[#c2410c] text-white font-bold transition';
+      }
+      renderTokenHistoryUI();
+    }
+
+    async function fetchTokenHistory() {
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/user/token-history?type=' + currentTokenHistoryFilter, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.history)) {
+            serverTokenHistoryItems = data.history;
+            renderTokenHistoryUI();
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to fetch server token history:', err);
+      }
+    }
+
+    function formatTokenDate(isoStr) {
+      if (!isoStr) return 'Just now';
+      try {
+        const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return 'Recently';
+        return d.toLocaleDateString([], { 
+          day: '2-digit', 
+          month: 'short', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        });
+      } catch (e) {
+        return 'Recently';
+      }
+    }
+
+    function renderTokenHistoryUI() {
+      const tbody = document.getElementById('token-history-table-body');
+      if (!tbody) return;
+
+      const allItems = getCombinedTokenHistoryItems();
+      const filtered = currentTokenHistoryFilter === 'all'
+        ? allItems
+        : allItems.filter(it => it.type === currentTokenHistoryFilter);
+
+      if (!filtered.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-16 text-center text-stone-500 font-medium">
+              No Data
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(it => {
+        const isAdded = it.type === 'added' || it.amount > 0;
+        const absAmt = Math.abs(it.amount);
+        const amountDisplay = isAdded ? `+${absAmt.toLocaleString()} ⚡` : `-${absAmt.toLocaleString()} ⚡`;
+        const amountClass = isAdded ? 'text-emerald-400 font-bold' : 'text-stone-300 font-semibold';
+        const dateDisplay = formatTokenDate(it.created_at);
+        const balanceDisplay = (it.balance != null ? Number(it.balance).toLocaleString() : '—') + ' ⚡';
+
+        return `
+          <tr class="border-b border-white/5 hover:bg-white/[0.02] transition">
+            <td class="py-3 px-2 text-stone-400 font-mono text-[11px] whitespace-nowrap">${dateDisplay}</td>
+            <td class="py-3 px-2 text-stone-200 font-medium text-xs">${escapeHtml(it.description || 'AI Generation')}</td>
+            <td class="py-3 px-2 text-right text-xs whitespace-nowrap ${amountClass}">${amountDisplay}</td>
+            <td class="py-3 px-2 text-right text-stone-400 font-mono text-xs whitespace-nowrap">${balanceDisplay}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function openContactSupport() {
@@ -10010,6 +10161,10 @@
       if (subtab === 'feed') {
         renderFeedUI();
         fetchUserFeed();
+      }
+      if (subtab === 'history') {
+        renderTokenHistoryUI();
+        fetchTokenHistory();
       }
       // Scroll to top of dashboard content
       const dash = document.getElementById('view-user-dashboard');

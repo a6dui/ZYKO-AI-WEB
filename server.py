@@ -32,7 +32,8 @@ from database import (
     create_email_user,
     set_user_password,
     get_user_usage_stats,
-    get_user_generations
+    get_user_generations,
+    get_user_token_history
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
@@ -659,6 +660,15 @@ async def handle_user_generations(request: web.Request):
         
     return web.json_response({"success": True, "generations": feed_items})
 
+async def handle_user_token_history(request: web.Request):
+    user = await get_current_user(request)
+    if not user:
+        user = await get_or_create_demo_user()
+    
+    filter_type = request.query.get("type", "all")
+    history = await get_user_token_history(user["id"], filter_type)
+    return web.json_response({"success": True, "history": history})
+
 # --- Payments ---
 
 async def handle_stripe_create_checkout(request: web.Request):
@@ -1140,6 +1150,7 @@ def create_app():
     app.router.add_post("/api/user/link-account", handle_user_link_account)
     app.router.add_get("/api/user/usage-limits", handle_user_usage_limits)
     app.router.add_get("/api/user/generations", handle_user_generations)
+    app.router.add_get("/api/user/token-history", handle_user_token_history)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)

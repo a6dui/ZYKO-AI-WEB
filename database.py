@@ -561,4 +561,106 @@ async def get_user_generations(user_id: int, gen_type: str = None, limit: int = 
             rows = await cursor.fetchall()
             return [dict(r) for r in rows]
 
+async def get_user_token_history(user_id: int, filter_type: str = 'all', limit: int = 100) -> list:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        current_balance = 1000
+        user_created_at = None
+        async with db.execute("SELECT tokens, created_at FROM users WHERE id = ?", (user_id,)) as cursor:
+            user_row = await cursor.fetchone()
+            if user_row:
+                current_balance = int(user_row["tokens"] if user_row["tokens"] is not None else 1000)
+                user_created_at = user_row["created_at"]
+
+        events = []
+
+        # 1. Transactions (Top ups / Credits)
+        async with db.execute(
+            "SELECT * FROM transactions WHERE user_id = ? AND status = 'completed' ORDER BY id DESC",
+            (user_id,)
+        ) as cursor:
+            tx_rows = await cursor.fetchall()
+            for tx in tx_rows:
+                events.append({
+                    "id": f"tx_{tx['id']}",
+                    "type": "added",
+                    "description": f"Subscription {tx['tier_activated'] or 'Credits'} ({tx['provider'].capitalize()})",
+                    "amount": int(tx["tokens_credited"] or 0),
+                    "created_at": tx["created_at"]
+                })
+
+        # 2. Generations (Tokens used)
+        async with db.execute(
+            "SELECT * FROM generations WHERE user_id = ? ORDER BY id DESC",
+            (user_id,)
+        ) as cursor:
+            gen_rows = await cursor.fetchall()
+            for g in gen_rows:
+                m = (g["model"] or "").lower()
+                cost = int(g["tokens_cost"] or 0)
+                prompt_snippet = (g["prompt"] or "").strip()[:40]
+                if len((g["prompt"] or "").strip()) > 40:
+                    prompt_snippet += "..."
+
+                if m.startswith("image_"):
+                    model_clean = g["model"][6:].upper()
+                    desc = f"Image Generation • {model_clean} ({prompt_snippet})"
+                elif m.startswith("video_"):
+                    model_clean = g["model"][6:].upper()
+                    desc = f"Video Generation • {model_clean} ({prompt_snippet})"
+                elif m.startswith("llm_"):
+                    model_clean = g["model"][4:].upper()
+                    desc = f"Chat Query • {model_clean} ({prompt_snippet})"
+                elif "tts" in m:
+                    desc = f"Voice Synthesis TTS ({prompt_snippet})"
+                elif "sfx" in m:
+                    desc = f"Sound Effect SFX ({prompt_snippet})"
+                elif "music" in m:
+                    desc = f"AI Music Generation ({prompt_snippet})"
+                elif "isolate" in m:
+                    desc = f"Voice Isolation ({prompt_snippet})"
+                elif "clone" in m:
+                    desc = f"Voice Clone ({prompt_snippet})"
+                else:
+                    desc = f"AI Generation • {g['model']} ({prompt_snippet})"
+
+                events.append({
+                    "id": f"gen_{g['id']}",
+                    "type": "used",
+                    "description": desc,
+                    "amount": -cost,
+                    "created_at": g["created_at"]
+                })
+
+        # 3. Initial welcome bonus if user exists
+        if user_created_at:
+            events.append({
+                "id": "init_bonus",
+                "type": "added",
+                "description": "Welcome Starter Gift Bonus",
+                "amount": 1000,
+                "created_at": user_created_at
+            })
+
+        # Sort all events chronologically (newest first)
+        events.sort(key=lambda x: str(x["created_at"]), reverse=True)
+
+        # Calculate backward running balances so the latest matches current_balance
+        running = current_balance
+        for ev in events:
+            ev["balance"] = running
+            running = max(0, running - ev["amount"])
+
+        # Filter by type
+        if filter_type == "added":
+            filtered = [e for e in events if e["type"] == "added"]
+        elif filter_type == "used":
+            filtered = [e for e in events if e["type"] == "used"]
+        else:
+            filtered = events
+
+        return filtered[:limit]
+
+
 
