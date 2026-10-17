@@ -96,6 +96,19 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
         }
 
     try:
+        plan_slug_map = {
+            "Basic": "basic",
+            "Pro": "pro",
+            "VIP": "vip",
+            "Elite": "elite",
+            "Ultra Elite": "ultra_elite"
+        }
+        card_slug = plan_slug_map.get(plan_name, "pro")
+        if origin_url and origin_url.startswith("https://") and "localhost" not in origin_url and "127.0.0.1" not in origin_url:
+            card_image_url = f"{origin_url}/cards/card_{card_slug}.png"
+        else:
+            card_image_url = f"https://raw.githubusercontent.com/a6dui/ZYKO-AI-WEB/main/public/cards/card_{card_slug}.png"
+
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
@@ -104,7 +117,7 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
                     "product_data": {
                         "name": f"ZYKO.AI Subscription: {plan_name}",
                         "description": f"{plan['tokens']} ZK Tokens + {plan['desc']}",
-                        "images": ["https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400"]
+                        "images": [card_image_url]
                     },
                     "unit_amount": amount_cents,
                 },
