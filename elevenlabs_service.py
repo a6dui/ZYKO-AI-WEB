@@ -344,48 +344,37 @@ async def translate_prompt_to_english(text: str) -> str:
 
 async def fetch_prompt_matched_image(query: str) -> bytes:
     """
-    Fetches an ultra-relevant 4K image matching the user's prompt (e.g. Lamborghini Urus, Avatar Aang)
+    Fetches an ultra-relevant high-resolution image matching the user's prompt (e.g. Lamborghini Urus, Avatar Aang)
     if neural generation APIs are temporarily rate-limited or busy.
+    Uses Wikimedia Commons high-resolution image search.
     """
-    import re
     first_part = query.split(',')[0].strip()
-    clean_q = first_part.replace("photorealistic", "").replace("8k resolution", "").replace("35mm photograph", "").strip(" ,")
-    search_term = f"{clean_q} 4k"
+    clean_q = first_part.replace("photorealistic", "").replace("8k resolution", "").replace("35mm photograph", "").replace("award winning composition", "").strip(" ,")
     
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Referer": "https://duckduckgo.com/"
+        "User-Agent": "ZykoAiBot/2.0 (contact@zyko.ai; high-resolution image retriever)"
     }
     try:
+        url = f"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch={urllib.parse.quote(clean_q)}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1024&format=json"
         async with aiohttp.ClientSession(headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as session:
-            async with session.get(f"https://duckduckgo.com/?q={urllib.parse.quote(search_term)}&iax=images&ia=images") as r:
-                if r.status != 200:
-                    return b""
-                html = await r.text()
-                m = re.search(r'vqd=([0-9-]+)', html)
-                if not m:
-                    return b""
-                vqd = m.group(1)
-
-            api_url = f"https://duckduckgo.com/i.js?l=us-en&o=json&q={urllib.parse.quote(search_term)}&vqd={vqd}&f=,,,&p=1"
-            async with session.get(api_url) as r:
-                if r.status != 200:
-                    return b""
-                data = await r.json(content_type=None)
-                results = data.get("results", [])
-                for item in results[:8]:
-                    img_url = item.get("image")
-                    if img_url and img_url.startswith("http"):
-                        try:
-                            async with session.get(img_url, timeout=aiohttp.ClientTimeout(total=5)) as img_r:
-                                if img_r.status == 200:
-                                    img_data = await img_r.read()
-                                    if len(img_data) > 8000:
-                                        return img_data
-                        except Exception:
-                            continue
+            async with session.get(url) as r:
+                if r.status == 200:
+                    data = await r.json(content_type=None)
+                    pages = data.get("query", {}).get("pages", {})
+                    for page in pages.values():
+                        for info in page.get("imageinfo", []):
+                            img_target = info.get("thumburl") or info.get("url")
+                            if img_target and img_target.startswith("http"):
+                                try:
+                                    async with session.get(img_target, timeout=aiohttp.ClientTimeout(total=8)) as img_r:
+                                        if img_r.status == 200:
+                                            b = await img_r.read()
+                                            if len(b) > 5000:
+                                                return b
+                                except Exception:
+                                    continue
     except Exception as e:
-        logger.warning("Exact match image search error: %s", e)
+        logger.warning("Wikimedia exact match search error: %s", e)
     return b""
 
 # --- 5. AI Image Generation (FLUX.1 Ultra, Midjourney styles) ---
@@ -413,73 +402,58 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
     full_prompt = f"{en_prompt}{art_modifier}"
     encoded = urllib.parse.quote(full_prompt)
     seed = random.randint(100000, 9999999)
-    
-    width, height = 1024, 1024
-    if aspect == "9:16":
-        width, height = 768, 1344
-    elif aspect == "16:9":
-        width, height = 1344, 768
-    elif aspect == "3:4":
-        width, height = 896, 1152
-    elif aspect == "4:3":
-        width, height = 1152, 896
 
-    fake_ip = f"{random.randint(50, 200)}.{random.randint(1, 254)}.{random.randint(1, 254)}.{random.randint(1, 254)}"
     req_headers = {
-        "X-Forwarded-For": fake_ip,
-        "Client-IP": fake_ip,
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
     }
 
-    # 1. Try Pollinations neural engine with extra vertical margin, then crop watermark using PIL
+    # 1. Try Pollinations neural engine with standard square 1024x1024 (best compatibility)
     try:
-        req_h = height + 52
-        url = f"https://image.pollinations.ai/prompt/{encoded}?width={width}&height={req_h}&seed={seed}&nologo=true"
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=45)) as session:
-            async with session.get(url, headers=req_headers) as resp:
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=1024&height=1024&seed={seed}&nologo=true"
+        async with aiohttp.ClientSession(headers=req_headers, timeout=aiohttp.ClientTimeout(total=35)) as session:
+            async with session.get(url) as resp:
                 if resp.status == 200:
                     data = await resp.read()
                     if len(data) > 3000:
-                        try:
-                            import io
-                            from PIL import Image
-                            im = Image.open(io.BytesIO(data))
-                            clean_im = im.crop((0, 0, width, height))
-                            buf = io.BytesIO()
-                            clean_im.save(buf, format="JPEG", quality=95)
-                            return buf.getvalue()
-                        except Exception as pe:
-                            logger.warning("PIL crop error, returning raw: %s", pe)
-                            return data
+                        if aspect in ("9:16", "16:9", "3:4", "4:3"):
+                            try:
+                                import io
+                                from PIL import Image
+                                im = Image.open(io.BytesIO(data))
+                                w, h = im.size
+                                if aspect == "9:16":
+                                    target_w = int(h * 9 / 16)
+                                    left = max(0, (w - target_w) // 2)
+                                    im = im.crop((left, 0, left + target_w, h))
+                                elif aspect == "16:9":
+                                    target_h = int(w * 9 / 16)
+                                    top = max(0, (h - target_h) // 2)
+                                    im = im.crop((0, top, w, top + target_h))
+                                elif aspect == "3:4":
+                                    target_w = int(h * 3 / 4)
+                                    left = max(0, (w - target_w) // 2)
+                                    im = im.crop((left, 0, left + target_w, h))
+                                elif aspect == "4:3":
+                                    target_h = int(w * 3 / 4)
+                                    top = max(0, (h - target_h) // 2)
+                                    im = im.crop((0, top, w, top + target_h))
+                                buf = io.BytesIO()
+                                im.save(buf, format="JPEG", quality=95)
+                                return buf.getvalue()
+                            except Exception as pe:
+                                logger.warning("PIL crop error, returning standard image: %s", pe)
+                        return data
     except Exception as e:
-        logger.warning("Primary image generation error: %s. Trying exact match fallback...", e)
+        logger.warning("Primary neural image generation failed: %s. Initiating exact match fallback...", e)
 
     # 2. Exact-match high-res image fallback (guaranteed to return Urus, Aang, etc.)
     matched_img = await fetch_prompt_matched_image(en_prompt)
-    if matched_img and len(matched_img) > 10000:
+    if matched_img and len(matched_img) > 5000:
         logger.info("Delivered exact prompt-matched image for '%s' (bytes: %d)", en_prompt, len(matched_img))
         return matched_img
 
-    # 3. Resilient fallback attempt with simplified prompt and fresh IP
-    try:
-        fresh_ip = f"{random.randint(50, 200)}.{random.randint(1, 254)}.{random.randint(1, 254)}.{random.randint(1, 254)}"
-        fallback_headers = {
-            "X-Forwarded-For": fresh_ip,
-            "Client-IP": fresh_ip,
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        }
-        simp_encoded = urllib.parse.quote(f"{en_prompt}, 8k, photorealistic")
-        url = f"https://image.pollinations.ai/prompt/{simp_encoded}?width={width}&height={height}&seed={seed+1}&nologo=true"
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-            async with session.get(url, headers=fallback_headers) as resp:
-                if resp.status == 200:
-                    data = await resp.read()
-                    if len(data) > 3000:
-                        return data
-    except Exception as e:
-        logger.error("Fallback image generation failed: %s", e)
-
-    raise ValueError("Image generation service temporarily busy. Please retry.")
+    raise ValueError("Image generation service temporarily busy. Please retry in a few moments.")
 
 # --- 6. AI Video Generation (Kling 4.0 / Seedance 2.5 / Veo 3.1 / Wan 3.0 / Runway) ---
 
