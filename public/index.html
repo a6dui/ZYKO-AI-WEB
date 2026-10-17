@@ -622,9 +622,6 @@
             <button type="button" onclick="scrollCategoryRibbon(-260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 mr-2 z-10 transition shadow-lg active:scale-90" title="Scroll left">‹</button>
             <div id="trends-category-nav" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 text-xs scroll-smooth flex-1 -mx-4 px-4 sm:mx-0 sm:px-0">
               <button onclick="switchTrendCategory('all', this)" class="trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95" data-i18n="vfilter_all">🔥 All Trends</button>
-              <button onclick="switchTrendCategory('sora', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_sora">🎬 OpenAI Sora</button>
-              <button onclick="switchTrendCategory('seedance', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_seedance">⚡ Seedance 2.5</button>
-              <button onclick="switchTrendCategory('kling', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_kling">🚀 Kling 4.0</button>
               <button onclick="switchTrendCategory('flux', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_flux">🎨 FLUX & Midjourney</button>
               <button onclick="switchTrendCategory('anime', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_anime">🎌 3D & Anime</button>
               <button onclick="switchTrendCategory('cinema', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_cinema">🎥 Cinematic 4K</button>
@@ -632,19 +629,18 @@
               <button onclick="switchTrendCategory('animals', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_animals">🐱 Animals & Pets</button>
               <button onclick="switchTrendCategory('fashion', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fashion">👗 Fashion & People</button>
               <button onclick="switchTrendCategory('space', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_space">🌌 Sci-Fi & Space</button>
-              <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism & Memes</button>
               <button onclick="switchTrendCategory('fantasy', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_fantasy">🏰 Fantasy & Myth</button>
-              <button onclick="switchTrendCategory('products', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_products">🛍️ Products & Macro</button>
+              <button onclick="switchTrendCategory('surreal', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_surreal">☕ Surrealism & Memes</button>
+              <button onclick="switchTrendCategory('audio', this)" class="trend-filter-btn shrink-0 bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold px-4 py-2 rounded-full transition text-xs active:scale-95" data-i18n="vfilter_audio">🎙️ Voice & Audio</button>
             </div>
             <button type="button" onclick="scrollCategoryRibbon(260)" class="hidden md:flex w-8 h-8 rounded-full bg-black/80 hover:bg-black text-stone-300 hover:text-white border border-white/10 items-center justify-center shrink-0 ml-2 z-10 transition shadow-lg active:scale-90" title="Scroll right">›</button>
           </div>
 
           <!-- Controls: Media Type Tabs + Sort Bar -->
           <div class="flex items-center justify-between flex-wrap gap-3 mb-8 px-1 max-w-7xl mx-auto text-xs text-stone-400">
-            <!-- Media Type Switcher: All / Videos / Photos / Audio -->
+            <!-- Media Type Switcher: All / Photos / Audio -->
             <div class="flex items-center gap-1.5 p-1 bg-black/50 border border-white/10 rounded-xl">
               <button type="button" id="media-filter-all" onclick="filterTrendsMediaType('all', this)" class="media-type-btn px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40" data-i18n="mfilter_all">All</button>
-              <button type="button" id="media-filter-video" onclick="filterTrendsMediaType('video', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_videos">🎬 Videos</button>
               <button type="button" id="media-filter-image" onclick="filterTrendsMediaType('image', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_photos">🖼️ Photos</button>
               <button type="button" id="media-filter-audio" onclick="filterTrendsMediaType('audio', this)" class="media-type-btn px-3 py-1.5 rounded-lg text-stone-400 hover:text-white transition" data-i18n="mfilter_audio">🎙️ Audio</button>
             </div>
@@ -3693,9 +3689,6 @@
         video_trends_desc: "100% genuine creations from OpenAI Sora 2.0, Seedance 2.5, Kling 4.0, and FLUX.1 Pro. Browse, copy prompts, and generate in 1 click.",
 
         vfilter_all: "🔥 All Trends",
-        vfilter_sora: "🎬 OpenAI Sora",
-        vfilter_seedance: "⚡ Seedance 2.5",
-        vfilter_kling: "🚀 Kling 4.0",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
         vfilter_cinema: "🎥 Cinematic 4K",
@@ -3703,12 +3696,11 @@
         vfilter_animals: "🐱 Animals & Pets",
         vfilter_fashion: "👗 Fashion & People",
         vfilter_space: "🌌 Sci-Fi & Space",
-        vfilter_surreal: "☕ Surrealism & Memes",
         vfilter_fantasy: "🏰 Fantasy & Myth",
-        vfilter_products: "🛍️ Products & Macro",
+        vfilter_surreal: "☕ Surrealism & Memes",
+        vfilter_audio: "🎙️ Voice & Audio",
 
         mfilter_all: "All",
-        mfilter_videos: "🎬 Videos",
         mfilter_photos: "🖼️ Photos",
         mfilter_audio: "🎙️ Audio",
 
@@ -3855,9 +3847,6 @@
         video_trends_desc: "100% настоящие генерации Sora 2.0, Kling 4.0, Seedance 2.5 и FLUX. Смотрите, копируйте промпты и создавайте свои работы в 1 клик.",
 
         vfilter_all: "🔥 Все тренды",
-        vfilter_sora: "🎬 OpenAI Sora",
-        vfilter_seedance: "⚡ Seedance 2.5",
-        vfilter_kling: "🚀 Kling 4.0",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Аниме",
         vfilter_cinema: "🎥 Кинематограф 4K",
@@ -3865,12 +3854,11 @@
         vfilter_animals: "🐱 Животные",
         vfilter_fashion: "👗 Мода & Люди",
         vfilter_space: "🌌 Космос & Sci-Fi",
-        vfilter_surreal: "☕ Сюрреализм & Мемы",
         vfilter_fantasy: "🏰 Фэнтези",
-        vfilter_products: "🛍️ Продукты & Макро",
+        vfilter_surreal: "☕ Сюрреализм & Мемы",
+        vfilter_audio: "🎙️ Озвучка & Музыка",
 
         mfilter_all: "Все",
-        mfilter_videos: "🎬 Видео",
         mfilter_photos: "🖼️ Фото",
         mfilter_audio: "🎙️ Аудио",
 
@@ -3988,9 +3976,6 @@
         video_trends_title: "Tendencias Globales de IA",
         video_trends_desc: "Creaciones 100% reales de Sora 2.0, Kling 4.0, Seedance 2.5 y FLUX.",
         vfilter_all: "🔥 Todas",
-        vfilter_sora: "🎬 OpenAI Sora",
-        vfilter_seedance: "⚡ Seedance 2.5",
-        vfilter_kling: "🚀 Kling 4.0",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
         vfilter_cinema: "🎥 Cinemático 4K",
@@ -3998,11 +3983,11 @@
         vfilter_animals: "🐱 Animales",
         vfilter_fashion: "👗 Moda & Personas",
         vfilter_space: "🌌 Espacio & Sci-Fi",
-        vfilter_surreal: "☕ Surrealismo",
         vfilter_fantasy: "🏰 Fantasía",
-        vfilter_products: "🛍️ Productos",
+        vfilter_surreal: "☕ Surrealismo",
+        vfilter_audio: "🎙️ Voz y Audio",
+
         mfilter_all: "Todo",
-        mfilter_videos: "🎬 Vídeos",
         mfilter_photos: "🖼️ Fotos",
         mfilter_audio: "🎙️ Audio",
         trends_sort_trending: "🔥 En tendencia",
@@ -4077,9 +4062,6 @@
         video_trends_title: "Tendências Globais de IA",
         video_trends_desc: "Criações 100% reais de Sora 2.0, Kling 4.0, Seedance 2.5 e FLUX.",
         vfilter_all: "🔥 Todas",
-        vfilter_sora: "🎬 OpenAI Sora",
-        vfilter_seedance: "⚡ Seedance 2.5",
-        vfilter_kling: "🚀 Kling 4.0",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
         vfilter_cinema: "🎥 Cinemático 4K",
@@ -4087,11 +4069,11 @@
         vfilter_animals: "🐱 Animais",
         vfilter_fashion: "👗 Moda & Pessoas",
         vfilter_space: "🌌 Espaço & Sci-Fi",
-        vfilter_surreal: "☕ Surrealismo",
         vfilter_fantasy: "🏰 Fantasia",
-        vfilter_products: "🛍️ Produtos",
+        vfilter_surreal: "☕ Surrealismo",
+        vfilter_audio: "🎙️ Voz e Áudio",
+
         mfilter_all: "Tudo",
-        mfilter_videos: "🎬 Vídeos",
         mfilter_photos: "🖼️ Fotos",
         mfilter_audio: "🎙️ Áudio",
         trends_sort_trending: "🔥 Em alta",
@@ -4166,9 +4148,6 @@
         video_trends_title: "Globale KI-Trends 2026",
         video_trends_desc: "100% echte Kreationen von Sora 2.0, Kling 4.0, Seedance 2.5 und FLUX.",
         vfilter_all: "🔥 Alle",
-        vfilter_sora: "🎬 OpenAI Sora",
-        vfilter_seedance: "⚡ Seedance 2.5",
-        vfilter_kling: "🚀 Kling 4.0",
         vfilter_flux: "🎨 FLUX & Midjourney",
         vfilter_anime: "🎌 3D & Anime",
         vfilter_cinema: "🎥 Filmisch 4K",
@@ -4176,11 +4155,11 @@
         vfilter_animals: "🐱 Tiere",
         vfilter_fashion: "👗 Mode & Menschen",
         vfilter_space: "🌌 Weltraum & Sci-Fi",
-        vfilter_surreal: "☕ Surrealismus",
         vfilter_fantasy: "🏰 Fantasy",
-        vfilter_products: "🛍️ Produkte",
+        vfilter_surreal: "☕ Surrealismus",
+        vfilter_audio: "🎙️ Stimme & Audio",
+
         mfilter_all: "Alle",
-        mfilter_videos: "🎬 Videos",
         mfilter_photos: "🖼️ Fotos",
         mfilter_audio: "🎙️ Audio",
         trends_sort_trending: "🔥 Im Trend",
@@ -7432,7 +7411,7 @@
         model: 'Seedance 2.5 HD',
         modelKey: 'seedance',
         type: 'image',
-        categories: ['all', 'seedance', 'anime', 'cinema'],
+        categories: ['all', 'anime', 'cinema', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
         likes: 542000,
@@ -7448,7 +7427,7 @@
         model: 'Kling 4.0 Pro',
         modelKey: 'kling',
         type: 'image',
-        categories: ['all', 'kling', 'cars', 'cinema'],
+        categories: ['all', 'cars', 'cinema'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800',
         likes: 489000,
@@ -7496,7 +7475,7 @@
         model: 'Google Veo 3.1',
         modelKey: 'veo',
         type: 'image',
-        categories: ['all', 'sora', 'cinema', 'fashion'],
+        categories: ['all', 'cinema', 'fashion', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
         likes: 359000,
@@ -7528,7 +7507,7 @@
         model: 'Sora 2.0 Cinema',
         modelKey: 'sora',
         type: 'image',
-        categories: ['all', 'sora', 'cinema', 'fashion'],
+        categories: ['all', 'cinema', 'fashion'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800',
         likes: 382400,
@@ -7544,7 +7523,7 @@
         model: 'Seedance 2.5 Fun',
         modelKey: 'seedance',
         type: 'image',
-        categories: ['all', 'seedance', 'animals', 'viral'],
+        categories: ['all', 'animals', 'surreal'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=800',
         likes: 542000,
@@ -7560,7 +7539,7 @@
         model: 'Sora 2.0 Surreal',
         modelKey: 'sora',
         type: 'image',
-        categories: ['all', 'sora', 'viral', 'surreal'],
+        categories: ['all', 'surreal', 'fantasy'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800',
         likes: 512000,
@@ -7576,7 +7555,7 @@
         model: 'Seedance 2.5 3D',
         modelKey: 'seedance',
         type: 'image',
-        categories: ['all', 'seedance', 'anime', 'viral'],
+        categories: ['all', 'anime', 'surreal'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 425300,
@@ -7592,7 +7571,7 @@
         model: 'Kling 4.0 Cinema',
         modelKey: 'kling',
         type: 'image',
-        categories: ['all', 'kling', 'cinema', 'anime'],
+        categories: ['all', 'cinema', 'anime', 'cars'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 319200,
@@ -7608,7 +7587,7 @@
         model: 'Sora 2.0 Nature',
         modelKey: 'sora',
         type: 'image',
-        categories: ['all', 'sora', 'surreal', 'space'],
+        categories: ['all', 'surreal', 'space'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
         likes: 278500,
@@ -7624,7 +7603,7 @@
         model: 'Seedance 2.5 Animal',
         modelKey: 'seedance',
         type: 'image',
-        categories: ['all', 'seedance', 'animals', 'viral'],
+        categories: ['all', 'animals', 'cinema'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 491000,
@@ -7640,7 +7619,7 @@
         model: 'Kling 4.0 Macro',
         modelKey: 'kling',
         type: 'image',
-        categories: ['all', 'kling', 'animals', 'cinema'],
+        categories: ['all', 'animals', 'cinema'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800',
         likes: 334000,
@@ -7656,7 +7635,7 @@
         model: 'Sora 2.0 Cinematic',
         modelKey: 'sora',
         type: 'image',
-        categories: ['all', 'sora', 'cinema', 'viral'],
+        categories: ['all', 'cinema', 'fantasy'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800',
         likes: 468000,
@@ -7672,7 +7651,7 @@
         model: 'Runway Gen-3 Pro',
         modelKey: 'runway',
         type: 'image',
-        categories: ['all', 'sora', 'anime', 'cars'],
+        categories: ['all', 'anime', 'cars', 'space'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
         likes: 387600,
@@ -7688,7 +7667,7 @@
         model: 'Seedream 3D',
         modelKey: 'seedream',
         type: 'image',
-        categories: ['all', 'seedance', 'anime', 'animals', 'fantasy'],
+        categories: ['all', 'anime', 'animals', 'fantasy', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=800',
         likes: 326000,
@@ -7704,7 +7683,7 @@
         model: 'Seedream Anime',
         modelKey: 'seedream',
         type: 'image',
-        categories: ['all', 'anime', 'cinema', 'cars'],
+        categories: ['all', 'anime', 'cinema', 'cars', 'flux'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800',
         likes: 419000,
@@ -7720,7 +7699,7 @@
         model: 'Kling 4.0 Pro',
         modelKey: 'kling',
         type: 'image',
-        categories: ['all', 'kling', 'cars', 'cinema'],
+        categories: ['all', 'cars', 'cinema'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800',
         likes: 362000,
@@ -7736,7 +7715,7 @@
         model: 'GPT Image 4.0',
         modelKey: 'gpt-image',
         type: 'image',
-        categories: ['all', 'space', 'cinema', 'fantasy'],
+        categories: ['all', 'space', 'cinema', 'fantasy', 'flux', 'surreal'],
         videoUrl: '',
         posterUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
         likes: 289000,
@@ -7752,7 +7731,7 @@
         model: 'Eleven v4 Neural',
         modelKey: 'eleven_v4',
         type: 'audio',
-        categories: ['all', 'cinema', 'viral'],
+        categories: ['all', 'cinema', 'audio'],
         videoUrl: '',
         posterUrl: '/media/elevenlabs/el_v4_cover.png',
         likes: 642000,
@@ -7767,8 +7746,8 @@
         prompt_ru: 'Космический крейсер уходит в гиперпространство с нарастающим басовым гулом, звуковым ударом и стерео-ионным эхо',
         model: 'ElevenLabs SFX 2.0',
         modelKey: 'elevenlabs',
-        type: 'video',
-        categories: ['all', 'cinema', 'space', 'viral'],
+        type: 'image',
+        categories: ['all', 'cinema', 'space', 'audio'],
         videoUrl: '/media/elevenlabs/el_spaceship.mp4',
         posterUrl: '/media/elevenlabs/el_spaceship_poster.webp',
         likes: 589000,
@@ -7783,8 +7762,8 @@
         prompt_ru: 'Кинематографичный продакшн: синхронные звуковые эффекты фоли, симфонический саундтрек и эмоциональная актерская озвучка',
         model: 'Eleven Creative Studio',
         modelKey: 'elevenlabs',
-        type: 'video',
-        categories: ['all', 'cinema', 'viral'],
+        type: 'image',
+        categories: ['all', 'cinema', 'audio'],
         videoUrl: '/media/elevenlabs/el_cinematic_1080.mp4',
         posterUrl: '/media/elevenlabs/el_cinematic_poster.webp',
         likes: 531000,
@@ -7800,7 +7779,7 @@
         model: 'Eleven Music 2.5',
         modelKey: 'music_2_5',
         type: 'audio',
-        categories: ['all', 'viral', 'cinema'],
+        categories: ['all', 'cinema', 'audio'],
         videoUrl: '',
         posterUrl: '/media/elevenlabs/el_creative.webp',
         likes: 472000,
@@ -7816,7 +7795,7 @@
         model: 'Eleven Agents v2',
         modelKey: 'elevenlabs',
         type: 'image',
-        categories: ['all', 'viral'],
+        categories: ['all', 'audio'],
         videoUrl: '',
         posterUrl: '/media/elevenlabs/el_agents.webp',
         likes: 448000,
@@ -7832,7 +7811,7 @@
         model: 'ElevenLabs Turbo',
         modelKey: 'elevenlabs',
         type: 'audio',
-        categories: ['all', 'cinema', 'viral'],
+        categories: ['all', 'cinema', 'audio'],
         videoUrl: '',
         posterUrl: '/media/elevenlabs/el_epic_voices.webp',
         likes: 312000,
@@ -7841,7 +7820,7 @@
       }
     ];
 
-    const FEATURED_SHOWCASE_IDS = ['eleven_v4_neural', 'seedance_morph', 'eleven_spaceship_fx', 'kling_drift', 'flux_couture', 'nano_geisha'];
+    const FEATURED_SHOWCASE_IDS = ['flux_couture', 'nano_geisha', 'midjourney_dragon', 'kling_drift', 'seedance_morph', 'veo_fjord'];
 
     function formatTrendLikes(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -7911,6 +7890,13 @@
         btn.className = 'trend-filter-btn shrink-0 bg-[#c2410c] text-white font-bold px-4 py-2 rounded-full transition shadow-lg shadow-orange-900/40 text-xs active:scale-95';
       }
       renderTrendsGrid(category, currentTrendSort);
+    }
+
+    function resetTrendsFilters() {
+      const allCatBtn = document.querySelector('.trend-filter-btn');
+      const allMediaBtn = document.getElementById('media-filter-all');
+      if (allCatBtn) switchTrendCategory('all', allCatBtn);
+      if (allMediaBtn) filterTrendsMediaType('all', allMediaBtn);
     }
 
     function sortTrends(sortType) {
@@ -7990,6 +7976,21 @@
         list.sort((a, b) => b.likes - a.likes);
       } else if (sort === 'new') {
         list.reverse();
+      }
+
+      if (list.length === 0) {
+        const emptyMsg = isRu ? 'В этой категории пока нет работ' : 'No works found for this filter';
+        const resetMsg = isRu ? 'Показать все работы' : 'Show all works';
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white/[0.02] border border-dashed border-white/10 rounded-3xl p-8 my-4">
+            <div class="text-4xl mb-3">🎨</div>
+            <p class="text-stone-300 font-semibold mb-4 text-sm">${emptyMsg}</p>
+            <button type="button" onclick="resetTrendsFilters()" class="px-5 py-2.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold text-xs transition border border-emerald-500/40 shadow-lg active:scale-95">
+              ${resetMsg}
+            </button>
+          </div>
+        `;
+        return;
       }
 
       container.innerHTML = list.map(t => {
