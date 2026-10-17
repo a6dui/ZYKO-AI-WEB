@@ -1265,107 +1265,97 @@
           </div>
         </div>
 
-        <!-- ================= VIEW 6: AUDIO & VOICE STUDIO (AUTHENTIC ELEVENLABS WORKSPACE) ================= -->
-        <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#070a09] p-4 sm:p-6 md:p-8 overflow-y-auto relative">
-          <div class="max-w-4xl w-full mx-auto space-y-6">
-            
-            <!-- Top Audio Studio Header Bar -->
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-lg font-black shadow-md tracking-tighter">
-                  ||
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <h2 class="text-base sm:text-lg font-bold text-white leading-tight">ElevenLabs Audio Studio</h2>
-                    <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">v3.5 Neural</span>
-                  </div>
-                  <div class="text-[11px] text-stone-400 mt-0.5 flex items-center gap-2">
-                    <span data-i18n="audio_voice_selected">Selected voice:</span>
-                    <span id="center-active-voice-pill" class="text-emerald-400 font-semibold cursor-pointer hover:underline" onclick="toggleMobileControlPanel(true)">🎙️ Rachel (Official • EN/RU)</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Quick Presets / Tag Bar -->
-              <div class="flex items-center gap-1.5 flex-wrap text-[11px]">
-                <span class="text-stone-400 mr-1 text-[10px] uppercase font-mono" data-i18n="audio_emotions">Emotions:</span>
-                <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[laughing]')">😂 [laughing]</button>
-                <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[whispering]')">🤫 [whispering]</button>
-                <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[excited]')">🔥 [excited]</button>
-                <button type="button" class="bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg hover:bg-emerald-500/20 hover:text-emerald-300 transition text-stone-300" onclick="insertAudioTag('[calm]')">😌 [calm]</button>
-              </div>
+        <!-- ================= VIEW 6: AUDIO & VOICE STUDIO ================= -->
+        <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
+            <!-- Dynamic Voice / Model Icon (Opens Voice Dropdown / Modal) -->
+            <div id="audio-model-icon" onclick="toggleVoicePickerDropdown()" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 flex items-center justify-center text-xl sm:text-2xl font-black mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition tracking-tighter" title="ElevenLabs Voice & Audio Studio">
+              ||
+            </div>
+            <div class="flex items-center justify-center gap-2 mb-2">
+              <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">ElevenLabs Voice & Audio</h2>
+              <span id="audio-model-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">v4 Neural • 1,240+ Voices</span>
+            </div>
+            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
+              Studio-grade voice cloning, emotional text-to-speech with tags like [whispering], sound effects, and voice isolation across 29 languages.
+            </p>
+            <div class="mb-5 flex items-center justify-center gap-2">
+              <button type="button" onclick="toggleVoicePickerDropdown()" class="inline-flex items-center gap-2 text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-4 py-1.5 rounded-full text-xs font-bold transition shadow active:scale-95">
+                <span>🎙️ Каталог голосов (1,240+ дикторов и персонажей)</span> <span class="text-[10px]">▾</span>
+              </button>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
+              <span class="text-emerald-400">Key capabilities:</span>
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">emotion modulation</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">instant voice cloning</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">cinematic SFX</span> •
+              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">voice isolation</span>
             </div>
 
-            <!-- Main Script & Prompt Editor Card (ElevenLabs authentic style) -->
-            <div class="bg-[#111615] border border-white/15 focus-within:border-emerald-500/60 rounded-3xl p-5 sm:p-6 shadow-2xl transition space-y-4">
-              <div class="flex items-center justify-between text-xs text-stone-400">
-                <div class="flex items-center gap-2">
-                  <span class="font-bold text-stone-200" data-i18n="audio_script_title">Script for Voiceover</span>
-                  <span class="text-[10px] text-stone-500" data-i18n="audio_languages_hint">• 29 languages auto-detect</span>
-                </div>
-                <div class="flex items-center gap-3 font-mono text-[11px]">
-                  <span id="audio-char-count" class="text-stone-400">0 / 10000</span>
-                  <button type="button" onclick="document.getElementById('audio-text-input').value = ''; document.getElementById('audio-char-count').textContent = '0 / 10000';" class="text-stone-500 hover:text-stone-300 text-[10px]" data-i18n="btn_clear">Clear</button>
-                </div>
+            <!-- Audio Generation Live Gallery / Stream -->
+            <div id="audio-generation-gallery" class="space-y-3 max-w-2xl mx-auto mb-4 sm:mb-6">
+              <!-- Dynamically populated or empty state placeholder -->
+              <div id="audio-empty-placeholder" class="border border-white/10 bg-[#121615]/50 rounded-2xl p-6 text-center shadow-lg">
+                <span class="text-3xl block mb-2 opacity-80">🎙️</span>
+                <div class="text-xs font-bold text-white mb-1" data-i18n="audio_ready_title">Ready for speech synthesis</div>
+                <p class="text-[11px] text-stone-400 max-w-md mx-auto" data-i18n="audio_ready_desc">Enter text below or in the prompt box, select a voice on the right and click Generate.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Prompt Box (Exact same structure & elegance as Image and Video) -->
+          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
+                <span class="flex items-center gap-1.5 text-stone-400">
+                  <span>🔒</span> <span id="audio-input-hint-text" class="truncate">Write script text and use tags like [whispering], [laughing] for emotions</span>
+                </span>
+                <span id="audio-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 10000</span>
               </div>
 
               <!-- Attached file chip preview -->
-              <div id="audio-file-preview" class="hidden flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-2 rounded-xl text-xs text-stone-200">
+              <div id="audio-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
                 <span class="text-emerald-400">📎</span>
-                <span id="audio-file-name" class="truncate max-w-[250px] text-[11px] font-medium">voice_sample.wav</span>
+                <span id="audio-file-name" class="truncate max-w-[200px] text-[11px] font-medium">voice_sample.wav</span>
                 <button onclick="removeAttachedFile('audio')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
               </div>
 
-              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="6" placeholder="Enter or paste script text to voiceover with ElevenLabs HD voices... (use tags like [whispering], [laughing] for emotion modulation)" class="w-full bg-transparent text-sm sm:text-base text-white placeholder-stone-600 focus:outline-none resize-y leading-relaxed font-sans"></textarea>
+              <!-- Textarea for script / prompt -->
+              <textarea id="audio-text-input" oninput="document.getElementById('audio-char-count').textContent = this.value.length + ' / 10000'" rows="2" placeholder="Enter script text to voiceover with ElevenLabs HD voices... (use tags like [whispering], [laughing])" class="w-full bg-transparent text-sm text-white placeholder-stone-500 focus:outline-none resize-none leading-relaxed"></textarea>
 
               <!-- Hidden file input for paperclip -->
               <input type="file" id="audio-file-input" onchange="handleStudioAttachment('audio', this)" class="hidden" accept="audio/*">
 
-              <!-- Studio Toolbar & Big Generate Button -->
-              <div class="flex items-center justify-between gap-3 pt-3 border-t border-white/10 flex-wrap">
-                <div class="flex items-center gap-2">
-                  <button type="button" onclick="triggerStudioAttachment('audio')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center gap-1.5 text-xs transition active:scale-95" title="Attach Audio Sample">
-                    <span>📎</span> <span class="hidden sm:inline" data-i18n="audio_attach">Attach audio</span>
+              <!-- Action Controls Row -->
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
+                <!-- Left controls group -->
+                <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
+                  <button type="button" onclick="triggerStudioAttachment('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach Audio Sample">
+                    📎
                   </button>
-                  <button type="button" onclick="toggleMobileControlPanel(true)" class="md:hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center gap-1.5 text-xs transition active:scale-95">
-                    <span>⚙️</span> <span data-i18n="audio_voice_select">Voice settings</span>
+                  <button type="button" onclick="insertAudioTag('[laughing]')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">😂 [laughing]</button>
+                  <button type="button" onclick="insertAudioTag('[whispering]')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">🤫 [whispering]</button>
+                  <button type="button" onclick="insertAudioTag('[excited]')" class="hidden sm:inline-block bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-medium transition shrink-0">🔥 [excited]</button>
+                  <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Voice Settings & Models">
+                    ⬡
                   </button>
-                  <button type="button" onclick="handleVoiceInput('audio')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-sm transition" title="Voice Input">
+                </div>
+
+                <!-- Right controls group -->
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <button type="button" onclick="handleVoiceInput('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                </div>
-
-                <div class="flex items-center gap-3">
-                  <div class="flex items-center gap-1 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-300">
-                    <span data-i18n="cost_label">Cost:</span>
-                    <span id="audio-token-cost-val" class="text-white">1</span>
-                    <span class="text-amber-400 font-normal" data-i18n="token_label">token</span>
+                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span id="audio-token-cost-val">10</span>
+                    <span class="text-amber-400">⚡</span>
                   </div>
-                  <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs sm:text-sm transition shadow-xl shadow-emerald-500/20 active:scale-95 flex items-center gap-2">
-                    <span data-i18n="audio_synthesize">Generate speech</span>
-                    <span class="text-base leading-none">➤</span>
+                  <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Speech">
+                    ➤
                   </button>
                 </div>
               </div>
             </div>
-
-            <!-- Audio Generations Stream / History (Clean Cards with Playable Audio) -->
-            <div class="space-y-3">
-              <div class="flex items-center justify-between text-xs font-bold text-stone-300 px-1">
-                <span data-i18n="audio_generated_tracks">Generated audio tracks</span>
-                <span class="text-[10px] text-stone-500 font-normal font-mono">ElevenLabs Neural Engine</span>
-              </div>
-              <div id="audio-generation-gallery" class="space-y-3">
-                <!-- Dynamically populated or empty state placeholder -->
-                <div id="audio-empty-placeholder" class="border border-white/10 bg-[#121615]/50 rounded-2xl p-8 text-center shadow-lg">
-                  <span class="text-3xl block mb-2 opacity-80">🎙️</span>
-                  <div class="text-xs font-bold text-white mb-1" data-i18n="audio_ready_title">Ready for speech synthesis</div>
-                  <p class="text-[11px] text-stone-400 max-w-md mx-auto" data-i18n="audio_ready_desc">Enter text above, select a voice and click 'Generate speech'.</p>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -1426,7 +1416,7 @@
       <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-40 md:hidden"></div>
 
       <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
-      <aside id="workspace-control-panel" class="hidden md:block md:w-72 fixed md:static inset-y-0 right-0 w-80 max-w-[85vw] bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-50 shadow-2xl transition-all duration-300 shrink-0">
+      <aside id="workspace-control-panel" class="hidden md:block md:w-80 fixed md:static inset-y-0 right-0 w-80 max-w-[85vw] bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-50 shadow-2xl transition-all duration-300 shrink-0">
         
         <!-- Mobile Drawer Header (Visible only on < md) -->
         <div class="md:hidden flex items-center justify-between pb-3 border-b border-white/10 mb-2">
@@ -1819,7 +1809,6 @@
                 </button>
               </div>
               </div>
-            </div>
 
             <!-- Box 2: Version Selector Dropdown -->
             <div class="relative mt-2">
@@ -5736,7 +5725,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 18 : 10);
+          deductTokensUI(deepRes ? 18 : 10, 'Agent Query • ' + persona);
           saveToHistory('chats', text.slice(0, 30), data.reply);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
@@ -5819,7 +5808,7 @@
         if (resp.ok) {
           const data = await resp.json();
           renderAgentBubble(chatBox, data.reply);
-          deductTokensUI(deepRes ? 18 : 10);
+          deductTokensUI(deepRes ? 18 : 10, 'Chat Query • ' + (currentStudioModel || 'Gemini').toUpperCase());
           saveToHistory('chats', text.slice(0, 30), data.reply);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
@@ -5898,14 +5887,14 @@
               </div>
             </div>
           `);
-          deductTokensUI(12);
-          saveToHistory('projects', prompt.slice(0, 30), imgUrl);
+          deductTokensUI(12, 'Image Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
+          saveToHistory('projects', prompt.slice(0, 30), serverUrl || imgUrl);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
               type: 'image',
               model: modelToUse,
               prompt: prompt,
-              resultUrl: imgUrl,
+              resultUrl: serverUrl || imgUrl,
               tokensCost: 12
             });
           }
@@ -6040,7 +6029,7 @@
             }
           }, 400);
 
-          deductTokensUI(25);
+          deductTokensUI(25, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
@@ -6263,6 +6252,9 @@
 
       const shouldOpen = (forceState !== undefined) ? forceState : dd.classList.contains('hidden');
       if (shouldOpen) {
+        if (window.innerWidth < 768) {
+          toggleMobileControlPanel(true);
+        }
         dd.classList.remove('hidden');
         if (caret) caret.style.transform = 'rotate(180deg)';
         const searchInp = document.getElementById('voice-search-input');
@@ -6625,14 +6617,14 @@
           cost: costAmount
         });
 
-        deductTokensUI(costAmount);
-        saveToHistory('projects', `${isMusic ? 'Music' : 'Audio'} (${isMusic ? 'Music 2.5' : voiceName}): ${text.slice(0, 30)}`, audioUrl);
+        deductTokensUI(costAmount, (isMusic ? 'AI Music • Music 2.5 Studio' : 'Voice Synthesis TTS • ' + voiceName) + ' (' + text.slice(0, 30) + ')');
+        saveToHistory('projects', `${isMusic ? 'Music' : 'Audio'} (${isMusic ? 'Music 2.5' : voiceName}): ${text.slice(0, 30)}`, serverUrl || audioUrl);
         if (typeof saveToFeed === 'function') {
           saveToFeed({
             type: 'audio',
             model: isMusic ? 'Music 2.5' : voiceName,
             prompt: text,
-            resultUrl: audioUrl,
+            resultUrl: serverUrl || audioUrl,
             tokensCost: costAmount
           });
         }
@@ -6723,14 +6715,14 @@
           cost: 10
         });
 
-        deductTokensUI(10);
-        saveToHistory('projects', `SFX: ${prompt.slice(0, 30)}`, audioUrl);
+        deductTokensUI(10, 'Sound Effect SFX (' + prompt.slice(0, 30) + ')');
+        saveToHistory('projects', `SFX: ${prompt.slice(0, 30)}`, serverUrl || audioUrl);
         if (typeof saveToFeed === 'function') {
           saveToFeed({
             type: 'audio',
             model: 'Sound Effects v2',
             prompt: prompt,
-            resultUrl: audioUrl,
+            resultUrl: serverUrl || audioUrl,
             tokensCost: 10
           });
         }
@@ -6817,7 +6809,16 @@
           localStorage.setItem('zyko_cloned_voices', JSON.stringify(savedClones));
         } catch (e) {}
 
-        deductTokensUI(25);
+        deductTokensUI(25, 'Instant Voice Clone (' + name + ')');
+        if (typeof saveToFeed === 'function') {
+          saveToFeed({
+            type: 'audio',
+            model: 'Voice Clone: ' + name,
+            prompt: `Cloned voice profile: ${name}`,
+            resultUrl: newVoiceObj.previewUrl || '/media/mock_preview.mp3',
+            tokensCost: 25
+          });
+        }
         if (statusMsg) {
           statusMsg.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 block font-bold';
           statusMsg.textContent = `✅ Голос "${name}" успешно клонирован и выбран для озвучки!`;
@@ -6894,13 +6895,13 @@
           cost: 12
         });
 
-        deductTokensUI(12);
+        deductTokensUI(12, 'Voice Isolation (' + file.name + ')');
         if (typeof saveToFeed === 'function') {
           saveToFeed({
             type: 'audio',
             model: 'Voice Isolator',
             prompt: `Clean speech: ${file.name}`,
-            resultUrl: audioUrl,
+            resultUrl: serverUrl || audioUrl,
             tokensCost: 12
           });
         }
@@ -9734,8 +9735,8 @@
       const seen = new Set();
       const combined = [];
 
-      [...localItems, ...serverTokenHistoryItems].forEach(it => {
-        const key = it.id || (it.created_at + '_' + it.amount + '_' + it.description);
+      [...serverTokenHistoryItems, ...localItems].forEach(it => {
+        const key = it.id || (it.created_at + '_' + it.amount + '_' + (it.description || '').slice(0, 30));
         if (!seen.has(key)) {
           seen.add(key);
           combined.push(it);
@@ -9760,6 +9761,7 @@
         btn.className = 'px-4 py-1.5 rounded-lg bg-[#c2410c] text-white font-bold transition';
       }
       renderTokenHistoryUI();
+      fetchTokenHistory();
     }
 
     async function fetchTokenHistory() {
@@ -9888,10 +9890,12 @@
       const seen = new Set();
       const combined = [];
 
-      [...localItems, ...serverFeedItems].forEach(it => {
-        const key = it.id || (it.type + '_' + (it.prompt || '').slice(0, 30) + '_' + (it.result_url || it.result_text || '').slice(0, 30));
-        if (!seen.has(key)) {
-          seen.add(key);
+      [...serverFeedItems, ...localItems].forEach(it => {
+        const promptKey = (it.prompt || '').trim().toLowerCase().slice(0, 40);
+        const urlKey = (it.result_url || it.resultText || it.result_text || '').slice(0, 40);
+        const dedupeKey = it.type + '_' + promptKey + (urlKey ? '_' + urlKey : '');
+        if (!seen.has(dedupeKey)) {
+          seen.add(dedupeKey);
           combined.push(it);
         }
       });
@@ -9914,6 +9918,7 @@
         btn.className = 'px-4 py-2 rounded-xl bg-[#f5efe6] text-black font-extrabold flex items-center gap-2 shadow-sm transition';
       }
       renderFeedUI();
+      fetchUserFeed();
     }
 
     function setFeedLayout(layout) {

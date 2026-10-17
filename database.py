@@ -546,13 +546,13 @@ async def get_user_generations(user_id: int, gen_type: str = None, limit: int = 
 
         if gen_type and gen_type != 'all':
             if gen_type == 'image':
-                query += " AND (model LIKE 'image_%' OR model LIKE '%flux%' OR model LIKE '%midjourney%' OR model LIKE '%seedream%')"
+                query += " AND (model LIKE 'image_%' OR model LIKE '%flux%' OR model LIKE '%midjourney%' OR model LIKE '%seedream%' OR model LIKE '%recraft%' OR model LIKE '%imagen%' OR model LIKE '%banana%')"
             elif gen_type == 'video':
-                query += " AND (model LIKE 'video_%' OR model LIKE '%kling%' OR model LIKE '%runway%' OR model LIKE '%luma%' OR model LIKE '%wan%')"
+                query += " AND (model LIKE 'video_%' OR model LIKE '%kling%' OR model LIKE '%runway%' OR model LIKE '%luma%' OR model LIKE '%wan%' OR model LIKE '%seedance%' OR model LIKE '%minimax%' OR model LIKE '%veo%')"
             elif gen_type == 'audio':
-                query += " AND (model LIKE 'elevenlabs_%' OR model LIKE '%audio%' OR model LIKE '%music%' OR model LIKE '%tts%' OR model LIKE '%sfx%')"
+                query += " AND (model LIKE 'elevenlabs_%' OR model LIKE '%audio%' OR model LIKE '%music%' OR model LIKE '%tts%' OR model LIKE '%sfx%' OR model LIKE '%clone%' OR model LIKE '%isolate%')"
             elif gen_type == 'text':
-                query += " AND (model LIKE 'llm_%' OR model LIKE '%chat%' OR model LIKE '%gemini%' OR model LIKE '%gpt%')"
+                query += " AND (model LIKE 'llm_%' OR model LIKE '%chat%' OR model LIKE '%gemini%' OR model LIKE '%gpt%' OR model LIKE '%claude%' OR model LIKE '%deepseek%' OR model LIKE '%agent%')"
 
         query += " ORDER BY id DESC LIMIT ?"
         params.append(limit)
@@ -567,11 +567,13 @@ async def get_user_token_history(user_id: int, filter_type: str = 'all', limit: 
         
         current_balance = 1000
         user_created_at = None
-        async with db.execute("SELECT tokens, created_at FROM users WHERE id = ?", (user_id,)) as cursor:
+        user_tier = "Free"
+        async with db.execute("SELECT tokens, created_at, tier FROM users WHERE id = ?", (user_id,)) as cursor:
             user_row = await cursor.fetchone()
             if user_row:
                 current_balance = int(user_row["tokens"] if user_row["tokens"] is not None else 1000)
                 user_created_at = user_row["created_at"]
+                user_tier = user_row["tier"] or "Free"
 
         events = []
 
@@ -633,13 +635,20 @@ async def get_user_token_history(user_id: int, filter_type: str = 'all', limit: 
                     "created_at": g["created_at"]
                 })
 
-        # 3. Initial welcome bonus if user exists
+        # 3. Initial welcome bonus or plan allocation if user exists
         if user_created_at:
+            if current_balance > 1000 and not tx_rows:
+                bonus_desc = f"{user_tier} Plan Initial Allocation"
+                bonus_amt = current_balance
+            else:
+                bonus_desc = "Welcome Starter Gift Bonus"
+                bonus_amt = 1000
+
             events.append({
                 "id": "init_bonus",
                 "type": "added",
-                "description": "Welcome Starter Gift Bonus",
-                "amount": 1000,
+                "description": bonus_desc,
+                "amount": bonus_amt,
                 "created_at": user_created_at
             })
 
