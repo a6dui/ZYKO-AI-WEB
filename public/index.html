@@ -298,6 +298,61 @@
           <img src="/favicon.svg?v=5" alt="Z" class="w-7 h-7 rounded-lg shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition">
           <span class="text-stone-100 font-extrabold tracking-tight text-base md:text-lg">ZYKO<span class="text-emerald-400">.AI</span></span>
         </a>
+
+        <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, ONLY for mobile users: block lg:hidden) -->
+        <div class="relative block lg:hidden" id="studio-switcher-container">
+          <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="p-1.5 rounded-xl bg-[#141719] hover:bg-white/10 border border-white/15 active:scale-95 transition flex items-center justify-center relative shadow-sm" title="Переключение студий (Studio Switcher)">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+              <rect x="4.5" y="4.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
+              <rect x="13.5" y="4.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
+              <rect x="4.5" y="13.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
+              <rect x="13.5" y="13.5" width="6" height="6" rx="1.8" fill="#f59e0b"/>
+            </svg>
+          </button>
+
+          <!-- Studio Switcher Dropdown Menu (Screenshot 2) -->
+          <div id="studio-switcher-dropdown" class="hidden z-50 bg-[#131618]/98 border border-white/15 rounded-2xl shadow-2xl p-1.5 backdrop-blur-2xl">
+            <div class="space-y-0.5 text-xs font-semibold">
+              <button onclick="switchTab('trends'); closeStudioSwitcher();" id="switcher-item-trends" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base">🔥</span>
+                  <span>Trends</span>
+                </div>
+                <span class="bg-[#f97316] text-black text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">NEW</span>
+              </button>
+
+              <button onclick="switchTab('agents'); closeStudioSwitcher();" id="switcher-item-agents" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">🤖</span>
+                <span>Agents</span>
+              </button>
+
+              <button onclick="switchTab('text'); closeStudioSwitcher();" id="switcher-item-text" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">💭</span>
+                <span>LLM Studio</span>
+              </button>
+
+              <button onclick="switchTab('image'); closeStudioSwitcher();" id="switcher-item-image" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">🖼️</span>
+                <span>Image</span>
+              </button>
+
+              <button onclick="switchTab('video'); closeStudioSwitcher();" id="switcher-item-video" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">🎬</span>
+                <span>Video</span>
+              </button>
+
+              <button onclick="switchTab('audio'); closeStudioSwitcher();" id="switcher-item-audio" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">🎵</span>
+                <span>Audio</span>
+              </button>
+
+              <button onclick="switchTab('toolkit'); closeStudioSwitcher();" id="switcher-item-toolkit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-300">
+                <span class="text-base">🛠️</span>
+                <span>Toolkit</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Center Nav Tabs (Matching Screenshots: Trends, Agents, LLM Studio, Image, Video, Audio, Toolkit) -->
@@ -315,60 +370,6 @@
 
       <!-- Right Actions: Notification, User Profile / Sign in -->
       <div class="flex items-center gap-2.5" id="header-actions">
-        <!-- Studio Switcher Dropdown (Screenshot 2: 4-diamonds icon, hidden on Trends landing, visible in Studios) -->
-        <div class="relative hidden" id="studio-switcher-container">
-          <button onclick="toggleStudioSwitcher(event)" id="studio-switcher-btn" class="text-amber-400 hover:text-amber-300 p-2 rounded-xl hover:bg-white/10 active:scale-95 transition flex items-center justify-center relative" title="Переключение студий (Studio Switcher)">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <circle cx="7" cy="7" r="2.8"/>
-              <circle cx="17" cy="7" r="2.8"/>
-              <circle cx="7" cy="17" r="2.8"/>
-              <circle cx="17" cy="17" r="2.8"/>
-            </svg>
-          </button>
-
-          <!-- Studio Switcher Dropdown Menu (Screenshot 2) -->
-          <div id="studio-switcher-dropdown" class="hidden absolute right-0 top-full mt-2 w-60 sm:w-64 bg-[#141416]/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-2xl">
-            <div class="space-y-1 text-xs font-semibold">
-              <button onclick="switchTab('trends'); closeStudioSwitcher();" id="switcher-item-trends" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <div class="flex items-center gap-3">
-                  <span class="text-base">🔥</span>
-                  <span>Trends</span>
-                </div>
-                <span class="bg-gradient-to-r from-orange-500 to-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">New</span>
-              </button>
-
-              <button onclick="switchTab('agents'); closeStudioSwitcher();" id="switcher-item-agents" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">🤖</span>
-                <span>Agents</span>
-              </button>
-
-              <button onclick="switchTab('text'); closeStudioSwitcher();" id="switcher-item-text" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">💭</span>
-                <span>LLM Studio</span>
-              </button>
-
-              <button onclick="switchTab('image'); closeStudioSwitcher();" id="switcher-item-image" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">🖼️</span>
-                <span>Image</span>
-              </button>
-
-              <button onclick="switchTab('video'); closeStudioSwitcher();" id="switcher-item-video" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">🎬</span>
-                <span>Video</span>
-              </button>
-
-              <button onclick="switchTab('audio'); closeStudioSwitcher();" id="switcher-item-audio" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">🎵</span>
-                <span>Audio</span>
-              </button>
-
-              <button onclick="switchTab('toolkit'); closeStudioSwitcher();" id="switcher-item-toolkit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition text-stone-200">
-                <span class="text-base">🛠️</span>
-                <span>Toolkit</span>
-              </button>
-            </div>
-          </div>
-        </div>
 
         <!-- Notifications Bell & Popover -->
         <div class="relative" id="notification-bell-container">
@@ -4243,11 +4244,45 @@
     }
 
 
-    // Studio Switcher Dropdown controls
+    // Studio Switcher Dropdown Controller (Screenshot 2: Mobile Only)
+    function positionStudioSwitcherDropdown() {
+      const menu = document.getElementById('studio-switcher-dropdown');
+      const btn = document.getElementById('studio-switcher-btn');
+      if (!menu || !btn || menu.classList.contains('hidden')) return;
+
+      const rect = btn.getBoundingClientRect();
+      const screenW = window.innerWidth;
+      const menuWidth = Math.min(220, screenW - 16);
+
+      // On mobile phones (screenW <= 480px), dock 8px from left edge matching Screenshot 2 perfectly.
+      // On small tablets (screenW > 480px), align with button clamped safely within screen bounds.
+      let left = 8;
+      if (screenW > 480) {
+        left = Math.min(Math.max(rect.left, 8), screenW - menuWidth - 8);
+      }
+      const top = rect.bottom > 0 ? (rect.bottom + 6) : 56;
+
+      menu.style.position = 'fixed';
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
+      menu.style.width = `${menuWidth}px`;
+      menu.style.zIndex = '60';
+    }
+
     function toggleStudioSwitcher(e) {
       if (e) e.stopPropagation();
+      closeBurgerDropdown();
+      closeNotificationDrawer();
+      closeAvatarDropdown();
       const menu = document.getElementById('studio-switcher-dropdown');
-      if (menu) menu.classList.toggle('hidden');
+      if (!menu) return;
+      const isOpening = menu.classList.contains('hidden');
+      if (isOpening) {
+        menu.classList.remove('hidden');
+        positionStudioSwitcherDropdown();
+      } else {
+        menu.classList.add('hidden');
+      }
     }
 
     function closeStudioSwitcher() {
@@ -4360,16 +4395,16 @@
       const switcherContainer = document.getElementById('studio-switcher-container');
       const mobStudioNav = document.getElementById('mobile-studio-nav');
 
-      // Highlight active item in studio switcher dropdown (Screenshot 2)
+      // Highlight active item in studio switcher dropdown (Screenshot 2: dark grey bg + amber text)
       ['trends', 'agents', 'text', 'image', 'video', 'audio', 'toolkit'].forEach(t => {
         const item = document.getElementById(`switcher-item-${t}`);
         if (item) {
           if (t === tabId) {
-            item.classList.add('bg-white/10', 'text-amber-400');
-            item.classList.remove('text-stone-200');
+            item.classList.add('bg-white/10', 'text-amber-400', 'font-bold');
+            item.classList.remove('text-stone-300');
           } else {
-            item.classList.remove('bg-white/10', 'text-amber-400');
-            item.classList.add('text-stone-200');
+            item.classList.remove('bg-white/10', 'text-amber-400', 'font-bold');
+            item.classList.add('text-stone-300');
           }
         }
       });
@@ -4385,21 +4420,18 @@
       }
 
       if (tabId === 'trends') {
-        if (switcherContainer) switcherContainer.classList.add('hidden');
         if (mobStudioNav) mobStudioNav.classList.remove('hidden');
         viewTrends.classList.remove('hidden');
         workspaceShell.classList.add('hidden');
         if (userDash) userDash.classList.add('hidden');
       } else if (tabId === 'profile') {
-        if (switcherContainer) switcherContainer.classList.add('hidden');
         if (mobStudioNav) mobStudioNav.classList.remove('hidden');
         viewTrends.classList.add('hidden');
         workspaceShell.classList.add('hidden');
         if (userDash) userDash.classList.remove('hidden');
         switchUserSubtab('profile');
       } else {
-        // In studios: Studio switcher icon is VISIBLE in header, secondary nav hidden for clean vertical mobile space!
-        if (switcherContainer) switcherContainer.classList.remove('hidden');
+        // In studios: mobile sub-nav is hidden for maximum workspace space
         if (mobStudioNav) mobStudioNav.classList.add('hidden');
         viewTrends.classList.add('hidden');
         if (userDash) userDash.classList.add('hidden');
@@ -5775,12 +5807,42 @@
       }
     }
 
-    // Notifications Drawer Controller
+    // Notifications Drawer Controller with Smart Screen Clamping (Screenshot 1 fix)
+    function positionNotificationDrawer() {
+      const drawer = document.getElementById('notification-drawer');
+      const btn = document.getElementById('notification-bell-btn');
+      if (!drawer || !btn || drawer.classList.contains('hidden')) return;
+
+      const rect = btn.getBoundingClientRect();
+      const screenW = window.innerWidth;
+      const drawerWidth = Math.min(340, screenW - 16);
+
+      // Align right edge of drawer with button right edge, clamped with 8px screen margins
+      let left = rect.right - drawerWidth;
+      left = Math.min(Math.max(left, 8), screenW - drawerWidth - 8);
+      const top = rect.bottom > 0 ? (rect.bottom + 6) : 56;
+
+      drawer.style.position = 'fixed';
+      drawer.style.top = `${top}px`;
+      drawer.style.left = `${left}px`;
+      drawer.style.width = `${drawerWidth}px`;
+      drawer.style.zIndex = '60';
+    }
+
     function toggleNotificationDrawer(e) {
       if (e) e.stopPropagation();
+      closeStudioSwitcher();
+      closeBurgerDropdown();
+      closeAvatarDropdown();
       const drawer = document.getElementById('notification-drawer');
       if (!drawer) return;
-      drawer.classList.toggle('hidden');
+      const isOpening = drawer.classList.contains('hidden');
+      if (isOpening) {
+        drawer.classList.remove('hidden');
+        positionNotificationDrawer();
+      } else {
+        drawer.classList.add('hidden');
+      }
     }
 
     function closeNotificationDrawer() {
@@ -7589,6 +7651,8 @@
     // --- USER PROFILE & DASHBOARD LOGIC (SCREENSHOTS 1, 2, 3, 4) ---
     function toggleAvatarDropdown(e) {
       if (e) e.stopPropagation();
+      closeStudioSwitcher();
+      closeNotificationDrawer();
       closeBurgerDropdown();
       const menu = document.getElementById('avatar-dropdown-menu');
       if (menu) menu.classList.toggle('hidden');
@@ -7714,6 +7778,8 @@
     // =========================================================================
     function toggleBurgerDropdown(e) {
       if (e) e.stopPropagation();
+      closeStudioSwitcher();
+      closeNotificationDrawer();
       closeAvatarDropdown();
       const menu = document.getElementById('burger-dropdown-menu');
       if (menu) menu.classList.toggle('hidden');
@@ -7831,6 +7897,16 @@
         }
       }
     });
+
+    // Auto-reposition popovers on viewport resize or scroll
+    window.addEventListener('resize', () => {
+      positionStudioSwitcherDropdown();
+      positionNotificationDrawer();
+    });
+    window.addEventListener('scroll', () => {
+      positionStudioSwitcherDropdown();
+      positionNotificationDrawer();
+    }, { passive: true });
 
     // =========================================================================
     // 2. ADMIN PANEL & CONTROL CENTER
