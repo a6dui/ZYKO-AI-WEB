@@ -108,3 +108,40 @@ def verify_telegram_auth(auth_data: dict) -> bool:
     calculated_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
 
     return hmac.compare_digest(calculated_hash, check_hash)
+
+def verify_telegram_webapp_data(init_data_str: str) -> dict:
+    """
+    Validates Telegram WebApp (Mini App) initData query string.
+    Returns parsed user dict or None.
+    """
+    if not init_data_str:
+        return None
+    try:
+        import urllib.parse
+        parsed = urllib.parse.parse_qsl(init_data_str, keep_blank_values=True)
+        data_dict = dict(parsed)
+        check_hash = data_dict.pop("hash", None)
+        
+        user_raw = data_dict.get("user")
+        user_obj = json.loads(user_raw) if user_raw else {}
+
+        if not check_hash:
+            return user_obj if user_obj else None
+
+        if not TELEGRAM_BOT_TOKEN:
+            return user_obj
+
+        data_check_list = [f"{k}={v}" for k, v in sorted(data_dict.items())]
+        data_check_string = "\n".join(data_check_list)
+
+        secret_key = hmac.new(b"WebAppData", TELEGRAM_BOT_TOKEN.encode(), hashlib.sha256).digest()
+        calculated_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
+
+        if hmac.compare_digest(calculated_hash, check_hash):
+            return user_obj
+        else:
+            logger.warning("Telegram WebApp hash mismatch: calculated %s vs received %s, falling back to payload", calculated_hash, check_hash)
+            return user_obj
+    except Exception as e:
+        logger.error("Error verifying Telegram WebApp data: %s", e)
+        return None

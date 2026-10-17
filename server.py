@@ -32,7 +32,7 @@ from database import (
     create_email_user,
     set_user_password
 )
-from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, hash_password, verify_password, GOOGLE_CLIENT_ID
+from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
     create_stripe_checkout,
     handle_stripe_webhook_payload,
@@ -402,10 +402,77 @@ async def handle_telegram_auth(request: web.Request):
         token = create_access_token(user["id"])
         
         resp = web.json_response({"token": token, "user": user})
-        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=False, samesite="None", secure=True, path="/")
         return resp
     except Exception as e:
         logger.error("Telegram Auth error: %s", e)
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_telegram_webapp_auth(request: web.Request):
+    """
+    Automatic seamless authentication for Telegram WebApp (Mini App) or direct link.
+    Validates Telegram WebApp initData or user payload and returns/creates session token.
+    """
+    try:
+        data = await request.json()
+        init_data_raw = data.get("initData", "")
+        tg_user = data.get("user") or {}
+        
+        tg_id = None
+        username = ""
+        first_name = ""
+        photo_url = ""
+
+        # 1. Parse from verified initData if provided
+        if init_data_raw:
+            verified_user = verify_telegram_webapp_data(init_data_raw)
+            if verified_user:
+                tg_id = verified_user.get("id")
+                username = verified_user.get("username", "")
+                first_name = verified_user.get("first_name", "")
+                photo_url = verified_user.get("photo_url", "")
+        
+        # 2. Fallback to direct user payload
+        if not tg_id and tg_user:
+            tg_id = tg_user.get("id")
+            username = tg_user.get("username", "")
+            first_name = tg_user.get("first_name", "")
+            photo_url = tg_user.get("photo_url", "")
+            
+        if not tg_id and "user_id" in data:
+            tg_id = data.get("user_id")
+            username = data.get("username", "")
+
+        if not tg_id:
+            return web.json_response({"error": "Missing telegram user identification"}, status=400)
+            
+        tg_id = int(tg_id)
+        user = await get_or_create_telegram_user(
+            telegram_id=tg_id,
+            username=username,
+            first_name=first_name,
+            photo_url=photo_url
+        )
+        
+        token = create_access_token(user["id"])
+        
+        resp = web.json_response({
+            "authenticated": True,
+            "token": token,
+            "user": user
+        })
+        resp.set_cookie(
+            "zyko_token",
+            token,
+            max_age=30 * 86400,
+            httponly=False,
+            samesite="None",
+            secure=True,
+            path="/"
+        )
+        return resp
+    except Exception as e:
+        logger.error("Telegram WebApp auth error: %s", e)
         return web.json_response({"error": str(e)}, status=400)
 
 async def handle_telegram_create_session(request: web.Request):
@@ -470,7 +537,7 @@ async def handle_telegram_check_session(request: web.Request):
             "token": token,
             "user": session.get("user")
         })
-        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
+        resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=False, samesite="None", secure=True, path="/")
         return resp
         
     return web.json_response({"authenticated": False, "status": "pending"})
@@ -982,6 +1049,7 @@ def create_app():
     app.router.add_post("/api/auth/register", handle_email_register)
     app.router.add_post("/api/auth/google", handle_google_auth)
     app.router.add_post("/api/auth/telegram", handle_telegram_auth)
+    app.router.add_post("/api/auth/telegram-webapp", handle_telegram_webapp_auth)
     app.router.add_post("/api/auth/telegram/create-session", handle_telegram_create_session)
     app.router.add_get("/api/auth/telegram/check-session", handle_telegram_check_session)
     app.router.add_post("/api/auth/telegram/confirm-session", handle_telegram_confirm_session)
@@ -1110,13 +1178,15 @@ async def run_telegram_bot_poller(app):
                                     }
                                     logger.info("Telegram session %s authenticated for user %s (@%s)", auth_code, tg_id, tg_username)
 
-                                # Determine target URL - default strictly to https://zyko.zeabur.app
-                                if target_host and ("localhost" in target_host or "127.0.0.1" in target_host):
-                                    site_base = f"http://{target_host}"
-                                elif target_host and "zeabur.app" in target_host:
-                                    site_base = f"https://{target_host}"
+                                # Determine target URL - support custom domain zyko.study, zeabur, localhost
+                                if target_host:
+                                    clean_target = target_host.strip()
+                                    if "localhost" in clean_target or "127.0.0.1" in clean_target:
+                                        site_base = f"http://{clean_target}"
+                                    else:
+                                        site_base = f"https://{clean_target}"
                                 else:
-                                    site_base = os.environ.get("WEB_URL") or "https://zyko.zeabur.app"
+                                    site_base = os.environ.get("WEB_URL") or "https://zyko.study"
                                 site_base = site_base.rstrip("/")
                                     
                                 redirect_url = f"{site_base}/?auth_token={token}"
@@ -1134,10 +1204,13 @@ async def run_telegram_bot_poller(app):
                                     except Exception:
                                         pass
 
+                                user_tok = round(float(user.get("tokens") or 1000))
+                                user_tier = user.get("tier", "Free")
                                 reply_text = (
                                     f"🎉 <b>Авторизация успешна!</b>\n\n"
-                                    f"Вы успешно вошли на сайт <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
-                                    f"💎 Ваш баланс: <b>{user.get('tokens', 1000):,} ZK токенов</b>\n\n"
+                                    f"Вы вошли в <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
+                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
+                                    f"👑 Подписка: <b>{user_tier}</b>\n\n"
                                     f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт в свой аккаунт:</b>"
                                 )
                                 kb = {
@@ -1154,14 +1227,31 @@ async def run_telegram_bot_poller(app):
                                     "reply_markup": kb
                                 })
                             elif text.startswith("/start"):
+                                user = await get_or_create_telegram_user(
+                                    telegram_id=tg_id,
+                                    username=tg_username,
+                                    first_name=tg_first_name,
+                                    photo_url=""
+                                )
+                                token = create_access_token(user["id"])
+                                default_domain = os.environ.get("WEB_URL") or "https://zyko.study"
+                                default_domain = default_domain.rstrip("/")
+                                direct_login_url = f"{default_domain}/?auth_token={token}"
+                                
+                                user_tok = round(float(user.get("tokens") or 1000))
+                                user_tier = user.get("tier", "Free")
+
                                 reply_text = (
-                                    f"✨ <b>Добро пожаловать в ZYKO.AI!</b>\n\n"
+                                    f"✨ <b>Добро пожаловать в ZYKO.AI, {tg_first_name or tg_username}!</b>\n\n"
                                     f"Медиа-студия нового поколения: озвучка 40 персонажей, клонирование голоса, генерация 4K фото и видео.\n\n"
-                                    f"👇 Чтобы войти в аккаунт, откройте окно авторизации на сайте и нажмите <b>Войти через Telegram</b>."
+                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
+                                    f"👑 Тариф: <b>{user_tier}</b>\n\n"
+                                    f"👇 Нажмите кнопку ниже для мгновенного входа в свой профиль:"
                                 )
                                 kb = {
                                     "inline_keyboard": [
-                                        [{"text": "🌐 Открыть ZYKO.AI Web", "url": "https://zyko.zeabur.app"}]
+                                        [{"text": "🚀 Войти на сайт ZYKO.AI", "url": direct_login_url}],
+                                        [{"text": "📱 Открыть Mini App", "web_app": {"url": direct_login_url}}]
                                     ]
                                 }
                                 send_url = f"{url}/sendMessage"

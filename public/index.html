@@ -13,8 +13,9 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="description" content="One subscription. Unlimited access to top AI tools: Nano Banana, Kling, FLUX, Veo, Seedance, ElevenLabs, ChatGPT, Claude, and 100+ neural networks in Web and Telegram.">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Identity Services -->
+  <!-- Google Identity Services & Telegram WebApp -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -3962,14 +3963,66 @@
 
     // 1. Initial State & Auto-Login from URL
     document.addEventListener('DOMContentLoaded', async () => {
-      // Check auth_token from Telegram bot direct link (?auth_token=...)
+      // 1. Immediately render cached user to eliminate UI flicker
+      try {
+        const cachedUserStr = localStorage.getItem('zyko_cached_user');
+        if (cachedUserStr) {
+          const cachedUser = JSON.parse(cachedUserStr);
+          if (cachedUser && (cachedUser.id || cachedUser.tokens != null)) {
+            currentUser = cachedUser;
+            updateUserUI(currentUser);
+          }
+        }
+      } catch (e) {}
+
+      // 2. Check auth_token from Telegram bot direct link (?auth_token=...)
       const params = new URLSearchParams(window.location.search);
       const incomingToken = params.get('auth_token') || params.get('token');
       if (incomingToken) {
         localStorage.setItem('zyko_token', incomingToken);
-        document.cookie = `zyko_token=${incomingToken}; path=/; max-age=2592000; SameSite=Lax`;
+        document.cookie = `zyko_token=${incomingToken}; path=/; max-age=2592000; SameSite=None; Secure`;
         const cleanUrl = window.location.pathname + window.location.hash;
         window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      // 3. Telegram WebApp & Mini App Seamless Auto-Login
+      const tgWebApp = window.Telegram?.WebApp;
+      if (tgWebApp) {
+        try {
+          tgWebApp.ready();
+          tgWebApp.expand();
+        } catch (e) {}
+      }
+
+      const tgUser = tgWebApp?.initDataUnsafe?.user;
+      const tgUserIdParam = params.get('user_id') || params.get('tg_id');
+      const tgUsernameParam = params.get('username');
+
+      // Auto-authenticate if entering from Telegram WebApp or with user_id parameter
+      if ((tgUser?.id || tgUserIdParam) && (!incomingToken && !localStorage.getItem('zyko_token'))) {
+        try {
+          const authPayload = {
+            initData: tgWebApp?.initData || '',
+            user: tgUser || { id: tgUserIdParam, username: tgUsernameParam }
+          };
+          const tgResp = await fetch('/api/auth/telegram-webapp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(authPayload)
+          });
+          if (tgResp.ok) {
+            const authData = await tgResp.json();
+            if (authData.token && authData.user) {
+              localStorage.setItem('zyko_token', authData.token);
+              localStorage.setItem('zyko_cached_user', JSON.stringify(authData.user));
+              document.cookie = `zyko_token=${authData.token}; path=/; max-age=2592000; SameSite=None; Secure`;
+              currentUser = authData.user;
+              updateUserUI(currentUser);
+            }
+          }
+        } catch (err) {
+          console.warn('Telegram WebApp auto-login error:', err);
+        }
       }
 
       if (params.get('payment') === 'success') {
@@ -3977,7 +4030,7 @@
         if (alertBox) alertBox.classList.remove('hidden');
       }
 
-      // Restore session
+      // Restore session from server
       await checkAuthStatus();
 
       // Load public config
@@ -6613,10 +6666,13 @@
           const data = await resp.json();
           if (data.authenticated && data.user) {
             currentUser = data.user;
+            localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
             updateUserUI(currentUser);
+            return currentUser;
           }
         }
       } catch (e) {}
+      return null;
     }
 
     function updateUserUI(user) {
@@ -6625,16 +6681,36 @@
       const profile = document.getElementById('user-profile-header');
       profile.classList.remove('hidden');
 
-      const tokVal = (user.tokens != null ? user.tokens : 5.5).toString().replace('.', ',');
-      const initialChar = (user.name || user.email || 'Д')[0].toUpperCase();
-      const userName = user.name || 'Дима';
-      const userEmail = user.email || 'foryafrom@gmail.com';
-      const userHandle = '@' + (userEmail.split('@')[0] || 'foryafrom-em');
-      const userTier = (user.tier || 'FREE').toUpperCase();
+      let tokVal;
+      if (user.tokens != null) {
+        const num = Number(user.tokens);
+        tokVal = num >= 100 ? Math.round(num).toLocaleString() : num.toString().replace('.', ',');
+      } else {
+        tokVal = '1 000';
+      }
+
+      const rawName = user.name || (user.telegram_username ? '@' + user.telegram_username : (user.email ? user.email.split('@')[0] : 'Пользователь'));
+      const initialChar = rawName.replace(/^@/, '')[0]?.toUpperCase() || 'U';
+      const userName = user.name || (user.telegram_username ? '@' + user.telegram_username : (user.email ? user.email.split('@')[0] : 'Пользователь'));
+      const userEmail = user.email || (user.telegram_username ? '@' + user.telegram_username : (user.telegram_id ? 'Telegram ID: ' + user.telegram_id : ''));
+      const userHandle = user.telegram_username ? '@' + user.telegram_username : (user.email ? '@' + user.email.split('@')[0] : (user.telegram_id ? '@id' + user.telegram_id : '@user'));
+      const userTier = (user.tier || 'Free').toUpperCase();
 
       document.getElementById('header-user-tokens').textContent = tokVal;
       document.getElementById('header-user-tier').textContent = userTier;
       document.getElementById('header-user-initial').textContent = initialChar;
+
+      // Handle avatar if present
+      const avatarImg = document.getElementById('header-user-avatar');
+      const initialSpan = document.getElementById('header-user-initial');
+      if (user.avatar && avatarImg) {
+        avatarImg.src = user.avatar;
+        avatarImg.classList.remove('hidden');
+        if (initialSpan) initialSpan.classList.add('hidden');
+      } else {
+        if (avatarImg) avatarImg.classList.add('hidden');
+        if (initialSpan) initialSpan.classList.remove('hidden');
+      }
 
       // Dropdown elements
       const dTokens = document.getElementById('dropdown-user-tokens');
@@ -6657,22 +6733,13 @@
       if (pTier) pTier.textContent = userTier;
 
       const linkGoogleEl = document.getElementById('linked-google-email');
-      if (linkGoogleEl) linkGoogleEl.textContent = userEmail;
+      if (linkGoogleEl) linkGoogleEl.textContent = user.email || 'Не привязан';
       const linkTgEl = document.getElementById('linked-telegram-handle');
       if (linkTgEl) {
-        if (user.telegram_id) {
-          linkTgEl.textContent = `@ZykoAi_bot (ID: ${user.telegram_id})`;
+        if (user.telegram_id || user.telegram_username) {
+          linkTgEl.textContent = user.telegram_username ? `@${user.telegram_username}` : `ID: ${user.telegram_id}`;
         } else {
-          linkTgEl.textContent = '@ZykoAi_bot (Дмитрий)';
-        }
-      }
-
-      if (user.avatar) {
-        const img = document.getElementById('header-user-avatar');
-        if (img) {
-          img.src = user.avatar;
-          img.classList.remove('hidden');
-          document.getElementById('header-user-initial').classList.add('hidden');
+          linkTgEl.textContent = 'Не привязан';
         }
       }
     }

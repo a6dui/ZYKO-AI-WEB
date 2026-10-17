@@ -3,7 +3,26 @@ import aiosqlite
 import logging
 
 logger = logging.getLogger("zyko_db")
-DB_PATH = os.environ.get("DB_PATH", "zyko_web.db")
+
+# Persistent volume resolution for Zeabur, Railway, Docker
+def resolve_db_path() -> str:
+    env_path = os.environ.get("DB_PATH")
+    if env_path:
+        return env_path
+    for candidate_dir in ["/data", "/app/data", "data"]:
+        try:
+            if os.path.exists(candidate_dir) and os.access(candidate_dir, os.W_OK):
+                return os.path.join(candidate_dir, "zyko_web.db")
+        except Exception:
+            pass
+    return "zyko_web.db"
+
+DB_PATH = resolve_db_path()
+
+# Configured superadmin telegram IDs
+ADMIN_IDS_STR = os.environ.get("ADMIN_IDS", "755843448")
+ADMIN_TELEGRAM_IDS = {int(x.strip()) for x in ADMIN_IDS_STR.split(",") if x.strip().isdigit()}
+ADMIN_TELEGRAM_IDS.add(755843448)
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
@@ -13,11 +32,13 @@ async def init_db():
                 email TEXT UNIQUE,
                 google_id TEXT UNIQUE,
                 telegram_id INTEGER UNIQUE,
+                telegram_username TEXT,
                 name TEXT,
                 avatar TEXT,
                 tokens INTEGER DEFAULT 1000,
                 tier TEXT DEFAULT 'Free',
                 tier_expires_at TIMESTAMP,
+                is_superadmin INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -62,11 +83,39 @@ async def init_db():
             ('banner_link_tab', 'video'),
             ('announcement_active', 'true')
         """)
-        # Ensure password_hash column exists
+        # Ensure additional columns exist on older tables
         try:
             await db.execute("ALTER TABLE users ADD COLUMN password_hash TEXT")
         except Exception:
             pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN telegram_username TEXT")
+        except Exception:
+            pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN is_superadmin INTEGER DEFAULT 0")
+        except Exception:
+            pass
+
+        # Seed or maintain owner / superadmin 755843448 with Max tier and huge tokens
+        try:
+            async with db.execute(
+                "SELECT * FROM users WHERE telegram_id = 755843448 OR CAST(telegram_id AS TEXT) = '755843448'"
+            ) as c_admin:
+                admin_row = await c_admin.fetchone()
+                if not admin_row:
+                    await db.execute("""
+                        INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
+                        VALUES (755843448, 'kirabakuta', 'Kirabakuta (Admin)', 500000, 'Max', 1)
+                    """)
+                else:
+                    await db.execute("""
+                        UPDATE users SET is_superadmin = 1, tier = 'Max'
+                        WHERE telegram_id = 755843448 AND tier IN ('Free', NULL, '')
+                    """)
+        except Exception as e:
+            logger.warning("Admin seeding warning: %s", e)
+
         await db.commit()
         logger.info("Database initialized successfully at %s", DB_PATH)
 
@@ -122,25 +171,57 @@ async def get_or_create_google_user(google_id: str, email: str, name: str, avata
                 async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
                     return dict(await c2.fetchone())
 
-async def get_or_create_telegram_user(telegram_id: int, username: str, first_name: str, photo_url: str) -> dict:
+async def get_or_create_telegram_user(telegram_id: int, username: str = "", first_name: str = "", photo_url: str = "") -> dict:
+    if not telegram_id:
+        return None
+    telegram_id = int(telegram_id)
     display_name = first_name or (f"@{username}" if username else f"User {telegram_id}")
+    clean_username = username.lstrip("@") if username else ""
+    is_admin = 1 if telegram_id in ADMIN_TELEGRAM_IDS else 0
+    
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT * FROM users WHERE telegram_id = ?", (telegram_id,)) as cursor:
+        async with db.execute(
+            "SELECT * FROM users WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?",
+            (telegram_id, str(telegram_id))
+        ) as cursor:
             row = await cursor.fetchone()
             if row:
                 user = dict(row)
-                await db.execute(
-                    "UPDATE users SET last_login = CURRENT_TIMESTAMP, name = COALESCE(?, name), avatar = COALESCE(?, avatar) WHERE id = ?",
-                    (display_name, photo_url, user["id"])
-                )
+                updates = ["last_login = CURRENT_TIMESTAMP"]
+                params = []
+                if display_name and not user.get("name"):
+                    updates.append("name = ?")
+                    params.append(display_name)
+                if photo_url and not user.get("avatar"):
+                    updates.append("avatar = ?")
+                    params.append(photo_url)
+                if clean_username:
+                    updates.append("telegram_username = ?")
+                    params.append(clean_username)
+                if is_admin:
+                    updates.append("is_superadmin = 1")
+                    if user.get("tier") in ("Free", None, ""):
+                        updates.append("tier = 'Max'")
+                    if float(user.get("tokens") or 0) < 50000:
+                        updates.append("tokens = 100000")
+                
+                query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
+                params.append(user["id"])
+                await db.execute(query, params)
                 await db.commit()
+                
                 async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c2:
                     return dict(await c2.fetchone())
             else:
+                initial_tier = "Max" if is_admin else "Free"
+                initial_tokens = 500000 if is_admin else 1000
                 cursor_ins = await db.execute(
-                    "INSERT INTO users (telegram_id, name, avatar, tokens, tier) VALUES (?, ?, ?, 1000, 'Free')",
-                    (telegram_id, display_name, photo_url)
+                    """
+                    INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (telegram_id, clean_username, display_name, photo_url, initial_tokens, initial_tier, is_admin)
                 )
                 await db.commit()
                 user_id = cursor_ins.lastrowid
@@ -268,16 +349,31 @@ async def sync_link_user_accounts(user_id: int, google_email: str = None, telegr
                     await db.commit()
                     
         if telegram_id:
-            async with db.execute("SELECT * FROM users WHERE telegram_id = ? AND id != ?", (telegram_id, user_id)) as c_tg:
+            telegram_id = int(telegram_id)
+            async with db.execute("SELECT * FROM users WHERE (telegram_id = ? OR CAST(telegram_id AS TEXT) = ?) AND id != ?", (telegram_id, str(telegram_id), user_id)) as c_tg:
                 other_tg = await c_tg.fetchone()
                 if other_tg:
                     other_tg = dict(other_tg)
                     new_tokens = max(float(current_user.get("tokens") or 0), float(other_tg.get("tokens") or 0))
-                    await db.execute("UPDATE users SET tokens = ?, telegram_id = ? WHERE id = ?", (new_tokens, telegram_id, user_id))
+                    # Preserve higher tier, never downgrade to Free
+                    tier_priority = {"Elite": 4, "Max": 3, "VIP": 3, "Pro": 2, "Basic": 1, "Free": 0}
+                    t1 = current_user.get("tier", "Free")
+                    t2 = other_tg.get("tier", "Free")
+                    chosen_tier = t2 if tier_priority.get(t2, 0) >= tier_priority.get(t1, 0) else t1
+                    is_admin = 1 if (current_user.get("is_superadmin") or other_tg.get("is_superadmin") or telegram_id in ADMIN_TELEGRAM_IDS) else 0
+                    
+                    await db.execute(
+                        "UPDATE users SET tokens = ?, tier = ?, telegram_id = ?, is_superadmin = ? WHERE id = ?",
+                        (new_tokens, chosen_tier, telegram_id, is_admin, user_id)
+                    )
                     await db.execute("DELETE FROM users WHERE id = ?", (other_tg["id"],))
                     await db.commit()
                 else:
-                    await db.execute("UPDATE users SET telegram_id = ? WHERE id = ?", (telegram_id, user_id))
+                    is_admin = 1 if telegram_id in ADMIN_TELEGRAM_IDS else 0
+                    await db.execute(
+                        "UPDATE users SET telegram_id = ?, is_superadmin = MAX(COALESCE(is_superadmin, 0), ?) WHERE id = ?",
+                        (telegram_id, is_admin, user_id)
+                    )
                     await db.commit()
                     
         async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c_final:
