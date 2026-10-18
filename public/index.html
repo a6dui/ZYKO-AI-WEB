@@ -361,6 +361,12 @@
       box-shadow: none !important;
     }
     /* Responsive Notification Drawer Positioning & Luxury Styling */
+    header {
+      z-index: 99999 !important;
+    }
+    #notification-drawer, #avatar-dropdown-menu, #studio-switcher-dropdown, #burger-dropdown-menu {
+      z-index: 99999999 !important;
+    }
     #notification-drawer {
       box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 30px -5px rgba(16, 185, 129, 0.15);
     }
@@ -393,7 +399,7 @@
   </div>
 
   <!-- STICKY GLOBAL HEADER -->
-  <header class="sticky top-0 z-[9999] bg-[#0c1110]/98 backdrop-blur-2xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200">
+  <header class="sticky top-0 z-[99999] bg-[#0c1110]/98 backdrop-blur-2xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200" style="z-index: 99999 !important;">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
       <!-- Left: Logo + Floating Hamburger Dropdown (Screenshot 5) -->
@@ -613,10 +619,10 @@
             <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0c1110] animate-pulse"></span>
           </button>
 
-          <!-- Notification Popover (Anchored directly under the bell) -->
-          <div id="notification-drawer" class="hidden absolute right-[-20px] sm:right-[-60px] top-full mt-2.5 w-[calc(100vw-32px)] sm:w-96 max-w-[390px] border border-white/15 rounded-2xl shadow-2xl p-3.5" style="background-color: #121614 !important; opacity: 1 !important; z-index: 99999 !important;">
+          <!-- Notification Popover (Smart positioned directly under the bell) -->
+          <div id="notification-drawer" class="hidden border border-white/15 rounded-2xl shadow-2xl p-3.5" style="background-color: #121614 !important; opacity: 1 !important; z-index: 99999999 !important;">
             <!-- Top pointer caret arrow aligned with bell icon -->
-            <div class="absolute -top-1.5 right-[28px] sm:right-[68px] w-3 h-3 bg-[#121615] border-t border-l border-white/15 rotate-45 pointer-events-none"></div>
+            <div class="hidden sm:block absolute -top-1.5 right-6 w-3 h-3 bg-[#121615] border-t border-l border-white/15 rotate-45 pointer-events-none"></div>
             <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center justify-center shrink-0">
@@ -886,97 +892,200 @@
           </div>
         </div>
 
-        <!-- Pricing Cards Grid (Basic, Pro, VIP, Elite, Ultra Elite) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          <!-- Basic -->
-          <div class="bg-[#111514] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-white/25 transition">
+        <!-- Pricing Cards Grid (Basic, Pro, VIP, Elite, Ultra Elite) - Styled to Match Profile Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+          <!-- 1. Basic -->
+          <div class="bg-[#171a19] border border-white/10 rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-xl relative hover:border-white/20 transition">
             <div>
-              <div class="text-xs font-bold text-stone-400 mb-1">Basic</div>
-              <div class="flex items-baseline gap-1 mb-2">
-                <span class="text-2xl font-black text-white price-val">€7.56</span>
-                <span class="text-[10px] text-stone-500">/mo</span>
+              <h3 class="font-serif-editorial text-3xl sm:text-4xl text-stone-100 font-bold mb-3">Basic</h3>
+              
+              <!-- Token Pill -->
+              <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-4">
+                <span class="px-3 py-1 rounded bg-[#ea580c] text-white">3,120 TOKENS</span>
+                <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
-                <span>3,120</span>
-                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
 
+              <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                <p class="font-medium text-stone-400">Essential neural network starter with:</p>
+                <p class="font-semibold text-white">Kling, Nano Banana and <span class="underline cursor-pointer text-stone-300">more</span></p>
+                <div class="pt-2 space-y-1.5 text-stone-300">
+                  <div>+ Create up to 516 videos</div>
+                  <div>+ Generate up to 10,404 images</div>
+                  <div>+ Create up to 624 songs</div>
+                  <div>+ Basic access to text models in LLM Studio</div>
+                </div>
               </div>
-              <p class="text-xs text-stone-400 mb-4 leading-relaxed">Essential neural network starter with Kling & Nano Banana.</p>
             </div>
-            <button onclick="openPaymentModal('Basic')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_basic">Select Basic</button>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline gap-2">
+                <span class="price-original text-xs text-stone-500 line-through">€342.90</span>
+                <span class="text-3xl font-black text-white price-val">€7.56</span>
+                <span class="text-stone-500 text-xs">/mo</span>
+              </div>
+              <button onclick="openPaymentModal('Basic')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95" data-i18n="pricing_select_basic">
+                Select Basic
+              </button>
+            </div>
           </div>
 
-          <!-- Pro (Highlighted) -->
-          <div class="pro-card-gradient border border-emerald-500/50 rounded-2xl p-5 flex flex-col justify-between shadow-xl shadow-emerald-500/10 relative">
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-400 text-black text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase" data-i18n="pricing_most_popular">Most Popular</div>
+          <!-- 2. Pro (Highlighted Top Choice) -->
+          <div class="bg-[#171a19] border border-orange-500/40 rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-4 right-4 bg-gradient-to-r from-orange-600 to-amber-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
+              <svg class="w-3 h-3 fill-current text-amber-300" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span data-i18n="pricing_most_popular">Most Popular</span>
+            </div>
+
             <div>
-              <div class="text-xs font-bold text-emerald-300 mb-1">Pro</div>
-              <div class="flex items-baseline gap-1 mb-2">
+              <h3 class="font-serif-editorial text-3xl sm:text-4xl text-stone-100 font-bold mb-3">Pro</h3>
+              
+              <!-- Token Pill -->
+              <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-4">
+                <span class="px-3 py-1 rounded bg-[#ea580c] text-white">8,160 TOKENS</span>
+                <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
+              </div>
+
+              <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                <p class="font-medium text-stone-400">Full neural network package:</p>
+                <p class="font-semibold text-white">Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs</p>
+                <div class="pt-2 space-y-1.5 text-stone-300">
+                  <div>+ Create up to 1,360 videos</div>
+                  <div>+ Generate up to 27,200 images</div>
+                  <div>+ Create up to 1,632 songs</div>
+                  <div>+ Create GPT agents</div>
+                  <div>+ Enhance video (Topaz) and image quality</div>
+                  <div class="text-amber-300 font-bold">+ 3× more requests <span class="font-normal text-stone-300">than Basic</span></div>
+                  <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">lightweight models</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline gap-2">
+                <span class="price-original text-xs text-stone-500 line-through">€595.80</span>
                 <span class="text-3xl font-black text-white price-val">€14.36</span>
-                <span class="text-[10px] text-stone-400">/mo</span>
+                <span class="text-stone-500 text-xs">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-extrabold mb-4 flex items-center gap-1.5">
-                <span>8,160</span>
-                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
-
-              </div>
-              <p class="text-xs text-stone-300 mb-4 leading-relaxed">Full package: Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs.</p>
+              <button onclick="openPaymentModal('Pro')" class="w-full py-3 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95" data-i18n="pricing_select_pro">
+                Select Pro
+              </button>
             </div>
-            <button onclick="openPaymentModal('Pro')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25" data-i18n="pricing_select_pro">Select Pro</button>
           </div>
 
-          <!-- VIP -->
-          <div class="bg-[#111514] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-white/25 transition">
+          <!-- 3. VIP -->
+          <div class="bg-[#171a19] border border-white/10 rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-xl relative hover:border-white/20 transition">
             <div>
-              <div class="text-xs font-bold text-stone-400 mb-1">VIP</div>
-              <div class="flex items-baseline gap-1 mb-2">
-                <span class="text-2xl font-black text-white price-val">€33.90</span>
-                <span class="text-[10px] text-stone-500">/mo</span>
+              <h3 class="font-serif-editorial text-3xl sm:text-4xl text-stone-100 font-bold mb-3">VIP</h3>
+              
+              <!-- Token Pill -->
+              <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-4">
+                <span class="px-3 py-1 rounded bg-[#ea580c] text-white">20,400 TOKENS</span>
+                <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
-                <span>20,400</span>
-                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
 
+              <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                <p class="font-medium text-stone-400">Full package + Topaz 4K + 6x more requests:</p>
+                <p class="font-semibold text-white">High-volume creators, agency & studio workflow</p>
+                <div class="pt-2 space-y-1.5 text-stone-300">
+                  <div>+ Create up to 3,400 videos</div>
+                  <div>+ Generate up to 68,000 images</div>
+                  <div>+ Create up to 4,080 songs</div>
+                  <div>+ Enhance video (Topaz) & image quality</div>
+                  <div class="text-amber-300 font-bold">+ 6× more requests <span class="font-normal text-stone-300">than Basic</span></div>
+                  <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">Grok 4.3 & Qwen 3.7 Plus</span></div>
+                </div>
               </div>
-              <p class="text-xs text-stone-400 mb-4 leading-relaxed">Full package + Topaz 4K + 6x more requests for high-volume creators.</p>
             </div>
-            <button onclick="openPaymentModal('VIP')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_vip">Select VIP</button>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline gap-2">
+                <span class="price-original text-xs text-stone-500 line-through">€908.10</span>
+                <span class="text-3xl font-black text-white price-val">€33.90</span>
+                <span class="text-stone-500 text-xs">/mo</span>
+              </div>
+              <button onclick="openPaymentModal('VIP')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95" data-i18n="pricing_select_vip">
+                Select VIP
+              </button>
+            </div>
           </div>
 
-          <!-- Elite -->
-          <div class="bg-[#111514] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-white/25 transition">
+          <!-- 4. Elite -->
+          <div class="bg-[#171a19] border border-white/10 rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-xl relative hover:border-white/20 transition">
             <div>
-              <div class="text-xs font-bold text-stone-400 mb-1">Elite</div>
-              <div class="flex items-baseline gap-1 mb-2">
-                <span class="text-2xl font-black text-white price-val">€50.91</span>
-                <span class="text-[10px] text-stone-500">/mo</span>
+              <h3 class="font-serif-editorial text-3xl sm:text-4xl text-stone-100 font-bold mb-3">Elite</h3>
+              
+              <!-- Token Pill -->
+              <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-4">
+                <span class="px-3 py-1 rounded bg-[#ea580c] text-white">31,200 TOKENS</span>
+                <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
-                <span>31,200</span>
-                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
 
+              <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                <p class="font-medium text-stone-400">Unlimited generations in:</p>
+                <p class="font-semibold text-white">Veo 3.1 Lite, Runway, and Topaz upscaler</p>
+                <div class="pt-2 space-y-1.5 text-stone-300">
+                  <div>+ Create unlimited videos*</div>
+                  <div>+ Generate unlimited images*</div>
+                  <div>+ Record up to 6,240 songs</div>
+                  <div>+ Create GPT agents</div>
+                  <div class="text-amber-300 font-bold">+ 10× more requests <span class="font-normal text-stone-300">than Basic</span></div>
+                  <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">VIP + GPT 5.6 Luna & Gemini 3.5</span></div>
+                </div>
               </div>
-              <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited generations in Veo 3.1 Lite, Runway, and Topaz upscaler.</p>
             </div>
-            <button onclick="openPaymentModal('Elite')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_elite">Select Elite</button>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline gap-2">
+                <span class="price-original text-xs text-stone-500 line-through">€1,049.40</span>
+                <span class="text-3xl font-black text-white price-val">€50.91</span>
+                <span class="text-stone-500 text-xs">/mo</span>
+              </div>
+              <button onclick="openPaymentModal('Elite')" class="w-full py-3 rounded-2xl bg-[#ea580c] hover:bg-[#f97316] text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95" data-i18n="pricing_select_elite">
+                Select Elite
+              </button>
+            </div>
           </div>
 
-          <!-- Ultra Elite -->
-          <div class="bg-[#111514] border border-cyan-500/30 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-400 transition">
-            <div>
-              <div class="text-xs font-bold text-cyan-400 mb-1">Ultra Elite</div>
-              <div class="flex items-baseline gap-1 mb-2">
-                <span class="text-2xl font-black text-white price-val">€101.15</span>
-                <span class="text-[10px] text-stone-500">/mo</span>
-              </div>
-              <div class="text-[11px] text-cyan-400 font-bold mb-4 flex items-center gap-1.5">
-                <span>36,000</span>
-                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
-
-              </div>
-              <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API.</p>
+          <!-- 5. Ultra Elite -->
+          <div class="bg-[#171a19] border-2 border-orange-500/50 rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-6 bg-gradient-to-r from-orange-600 via-red-600 to-purple-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-b-xl shadow-lg flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 fill-current text-amber-300" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg>
+              <span>BEST VALUE</span>
             </div>
-            <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs transition" data-i18n="pricing_select_ultra">Select Ultra</button>
+
+            <div>
+              <h3 class="font-serif-editorial text-3xl sm:text-4xl text-stone-100 font-bold mb-3 mt-1">Ultra Elite</h3>
+              
+              <!-- Token Pill -->
+              <div class="inline-flex items-center bg-black/60 border border-white/10 rounded-lg p-0.5 text-[11px] font-bold mb-4">
+                <span class="px-3 py-1 rounded bg-[#ea580c] text-white">36,000 TOKENS</span>
+                <span class="text-stone-500 cursor-pointer text-xs ml-1.5" title="Tokens included monthly">ⓘ</span>
+              </div>
+
+              <div class="text-xs text-stone-300 space-y-2 mb-6 leading-relaxed">
+                <p class="font-medium text-stone-400">Unlimited Veo 3.1, Claude 3.7 & Priority API:</p>
+                <p class="font-semibold text-white">Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API</p>
+                <div class="pt-2 space-y-1.5 text-stone-300">
+                  <div>+ Create unlimited videos*</div>
+                  <div>+ Generate unlimited images*</div>
+                  <div>+ Record up to 7,200 songs*</div>
+                  <div>+ Create GPT agents</div>
+                  <div class="text-amber-300 font-bold">+ 15× more requests <span class="font-normal text-stone-300">than Basic</span></div>
+                  <div class="text-amber-300 font-bold">+ Unlimited in LLM Studio: <span class="font-normal text-stone-300">Claude Sonnet 5.0 & Gemini 3.1 Pro</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 space-y-3">
+              <div class="flex items-baseline gap-2">
+                <span class="price-original text-xs text-stone-500 line-through">€1,341.90</span>
+                <span class="text-3xl font-black text-white price-val">€101.15</span>
+                <span class="text-stone-500 text-xs">/mo</span>
+              </div>
+              <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-3 rounded-2xl bg-gradient-to-r from-orange-600 via-red-600 to-purple-600 hover:from-orange-500 hover:to-purple-500 text-white font-extrabold text-xs transition shadow-lg shadow-orange-900/30 active:scale-95" data-i18n="pricing_select_ultra">
+                Select Ultra
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2012,9 +2121,9 @@
             <span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center justify-center shrink-0">
               <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
             </span>
-            <span class="font-bold text-white text-xs sm:text-sm">Параметры и Модели</span>
+            <span class="font-bold text-white text-xs sm:text-sm" data-i18n="drawer_params_title">Parameters & Models</span>
           </div>
-          <button onclick="toggleMobileControlPanel(false)" class="px-2.5 py-1 rounded-lg bg-white/10 text-stone-300 hover:text-white text-xs font-semibold">✕ Закрыть</button>
+          <button onclick="toggleMobileControlPanel(false)" class="px-2.5 py-1 rounded-lg bg-white/10 text-stone-300 hover:text-white text-xs font-semibold" data-i18n="close_btn">✕ Close</button>
         </div>
 
         <!-- Model Filter Info Header -->
@@ -2127,7 +2236,7 @@
               </button>
 
               <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
-                <div class="px-2.5 py-1.5 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-white/5 mb-1">Модели фото</div>
+                <div class="px-2.5 py-1.5 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-white/5 mb-1" data-i18n="models_photo">Photo Models</div>
                 <button onclick="selectElevenLabsImageModel('nano_banana_pro'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-amber-400">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-amber-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 18c3.5 3 9.5 3 14-2.5 3-3.5 3-8.5 2-12.5-3 1-8 3-12 7.5-2.5 3-4 7.5-4 7.5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18 4.5c.8-1 2-1.5 3-1.5M7 15c2.5-1 6-3 9-7"/></svg>
@@ -2266,7 +2375,7 @@
               </button>
 
               <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
-                <div class="px-2.5 py-1.5 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-white/5 mb-1">Модели видео</div>
+                <div class="px-2.5 py-1.5 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-white/5 mb-1" data-i18n="models_video">Video Models</div>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-300">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg> <span>Seedance 2.5</span></span>
                   <span class="text-[10px] text-stone-400"> ZK</span>
@@ -3135,6 +3244,26 @@
               </div>
             </div>
 
+            <!-- Card 2.5: Promo Code Activation Card -->
+            <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 space-y-4 shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(245,158,11,0.25)]">
+                  <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+                </span>
+                <div>
+                  <h4 class="text-base font-bold text-white" data-i18n="promo_card_title">Promo code activation</h4>
+                  <p class="text-xs text-stone-400 mt-0.5" data-i18n="promo_card_desc">Enter a promo code for instant ZK tokens credit or tier activation.</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 max-w-lg">
+                <input id="user-promo-input" type="text" placeholder="e.g. ZYKO2026" data-i18n="promo_card_placeholder" class="flex-1 bg-black/40 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white uppercase tracking-wider placeholder-stone-500 focus:outline-none focus:border-emerald-400 font-mono">
+                <button onclick="redeemUserPromo()" id="btn-redeem-promo" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-5 py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 whitespace-nowrap active:scale-95" data-i18n="promo_card_btn">
+                  Activate
+                </button>
+              </div>
+              <div id="user-promo-status" class="hidden text-xs font-medium"></div>
+            </div>
+
             <!-- Card 3: Subscription & Purchase Tokens Card -->
             <div class="bg-[#171a19] border border-white/10 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-sm">
               <!-- Left: Subscription -->
@@ -3517,24 +3646,6 @@
                 <button onclick="switchUserSubtab('pricing')" class="bg-[#26211f] hover:bg-[#342b28] border border-white/15 text-white font-semibold text-xs px-6 py-2.5 rounded-full transition shadow-lg active:scale-95">
                   Buy a subscription
                 </button>
-              </div>
-
-              <!-- Promo Code Redemption Box -->
-              <div class="mt-6 w-full bg-[#161a19] border border-white/10 rounded-2xl p-5 text-left shadow-lg">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
-                    <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
-                  </span>
-                  <h4 class="text-sm font-bold text-white">Активация промокода</h4>
-                </div>
-                <p class="text-xs text-stone-400 mb-3">Введите промокод для мгновенного зачисления ZK токенов или активации тарифа.</p>
-                <div class="flex items-center gap-2">
-                  <input id="user-promo-input" type="text" placeholder="Например: ZYKO2026" class="flex-1 bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white uppercase tracking-wider placeholder-stone-500 focus:outline-none focus:border-emerald-400 font-mono">
-                  <button onclick="redeemUserPromo()" id="btn-redeem-promo" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-md shadow-emerald-500/20 whitespace-nowrap active:scale-95">
-                    Активировать
-                  </button>
-                </div>
-                <div id="user-promo-status" class="hidden text-xs mt-2.5 font-medium"></div>
               </div>
             </div>
           </div>
@@ -5846,7 +5957,15 @@
         btn_link: "Link",
         mob_history: "History",
         mob_new: "New",
-        mob_settings: "Settings"
+        mob_settings: "Settings",
+        drawer_params_title: "Parameters & Models",
+        close_btn: "✕ Close",
+        models_photo: "Photo Models",
+        models_video: "Video Models",
+        promo_card_title: "Promo code activation",
+        promo_card_desc: "Enter a promo code for instant ZK tokens credit or tier activation.",
+        promo_card_placeholder: "e.g. ZYKO2026",
+        promo_card_btn: "Activate"
       },
       ru: {
         nav_trends: "Тренды",
@@ -6076,7 +6195,15 @@
         btn_link: "Связать",
         mob_history: "История",
         mob_new: "Новый",
-        mob_settings: "Параметры"
+        mob_settings: "Параметры",
+        drawer_params_title: "Параметры и Модели",
+        close_btn: "✕ Закрыть",
+        models_photo: "Модели фото",
+        models_video: "Модели видео",
+        promo_card_title: "Активация промокода",
+        promo_card_desc: "Введите промокод для мгновенного зачисления ZK токенов или активации тарифа.",
+        promo_card_placeholder: "Например: ZYKO2026",
+        promo_card_btn: "Активировать"
       },
       es: {
         nav_trends: "Tendencias",
@@ -6180,7 +6307,16 @@
         footer_legal_rights: "© 2026 ZYKO AI. Todos los derechos reservados.",
         footer_privacy: "Política de privacidad",
         footer_offer: "Oferta pública",
-        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo."
+        payment_success: "🎉 ¡Pago confirmado con éxito! Tokens añadidos a su saldo.",
+        drawer_params_title: "Parámetros y Modelos",
+        close_btn: "✕ Cerrar",
+        models_photo: "Modelos de fotos",
+        models_video: "Modelos de vídeo",
+        promo_card_title: "Activación de código promocional",
+        promo_card_desc: "Introduce un código promocional para obtener tokens ZK al instante o activar un plan.",
+        promo_card_placeholder: "p. ej. ZYKO2026",
+        promo_card_btn: "Activar",
+        pricing_select_ultra: "Seleccionar Ultra"
       },
       pt: {
         nav_trends: "Tendências",
@@ -6284,7 +6420,16 @@
         footer_legal_rights: "© 2026 ZYKO AI. Todos os direitos reservados.",
         footer_privacy: "Política de privacidade",
         footer_offer: "Oferta pública",
-        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens adicionados."
+        payment_success: "🎉 Pagamento confirmado com sucesso! Tokens adicionados.",
+        drawer_params_title: "Parâmetros e Modelos",
+        close_btn: "✕ Fechar",
+        models_photo: "Modelos de fotos",
+        models_video: "Modelos de vídeo",
+        promo_card_title: "Ativação de código promocional",
+        promo_card_desc: "Digite um código promocional para crédito instantâneo de tokens ZK ou ativação de plano.",
+        promo_card_placeholder: "ex.: ZYKO2026",
+        promo_card_btn: "Ativar",
+        pricing_select_ultra: "Selecionar Ultra"
       },
       de: {
         nav_trends: "Trends",
@@ -6388,7 +6533,16 @@
         footer_legal_rights: "© 2026 ZYKO AI. Alle Rechte vorbehalten.",
         footer_privacy: "Datenschutzerklärung",
         footer_offer: "AGB",
-        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben."
+        payment_success: "🎉 Zahlung erfolgreich bestätigt! Tokens gutgeschrieben.",
+        drawer_params_title: "Parameter & Modelle",
+        close_btn: "✕ Schließen",
+        models_photo: "Foto-Modelle",
+        models_video: "Video-Modelle",
+        promo_card_title: "Gutscheincode-Aktivierung",
+        promo_card_desc: "Geben Sie einen Gutscheincode ein, um ZK-Token sofort gutgeschrieben zu bekommen oder einen Tarif zu aktivieren.",
+        promo_card_placeholder: "z. B. ZYKO2026",
+        promo_card_btn: "Aktivieren",
+        pricing_select_ultra: "Ultra wählen"
       }
     };
 
@@ -10891,14 +11045,32 @@
 
     function positionNotificationDrawer() {
       const drawer = document.getElementById('notification-drawer');
-      if (!drawer) return;
-      // Clear legacy inline fixed styles so native Tailwind CSS handles crisp positioning
-      drawer.style.position = '';
-      drawer.style.top = '';
-      drawer.style.left = '';
-      drawer.style.right = '';
-      drawer.style.width = '';
-      drawer.style.zIndex = '';
+      const btn = document.getElementById('notification-bell-btn');
+      if (!drawer || !btn || drawer.classList.contains('hidden')) return;
+
+      const rect = btn.getBoundingClientRect();
+      const screenW = window.innerWidth;
+      const isMobile = screenW < 640;
+      const drawerWidth = isMobile ? Math.min(screenW - 24, 380) : 380;
+
+      let right = screenW - rect.right - 10;
+      if (right < 12) right = 12;
+      if (right + drawerWidth > screenW - 12) {
+        right = Math.max(12, screenW - drawerWidth - 12);
+      }
+
+      const top = Math.max(rect.bottom + 8, 52);
+
+      drawer.style.position = 'fixed';
+      drawer.style.top = `${top}px`;
+      drawer.style.right = `${right}px`;
+      drawer.style.left = 'auto';
+      drawer.style.width = `${drawerWidth}px`;
+      drawer.style.maxWidth = 'calc(100vw - 24px)';
+      drawer.style.zIndex = '99999999';
+      drawer.style.backgroundColor = '#121614';
+      drawer.style.opacity = '1';
+      drawer.style.display = 'block';
     }
 
     window.addEventListener('resize', () => {
@@ -13138,7 +13310,12 @@
       }
       const tiers = ['Basic', 'Pro', 'VIP', 'Elite', 'Ultra Elite'];
       document.querySelectorAll('#pricing .price-val').forEach((el, idx) => {
-        el.textContent = c === 'annual' ? planPrices[tiers[idx]].eurAnnual : planPrices[tiers[idx]].eurMonthly;
+        if (tiers[idx] && planPrices[tiers[idx]]) {
+          el.textContent = c === 'annual' ? planPrices[tiers[idx]].eurAnnual : planPrices[tiers[idx]].eurMonthly;
+        }
+      });
+      document.querySelectorAll('#pricing .price-original').forEach((el) => {
+        el.style.display = c === 'annual' ? 'inline' : 'none';
       });
     }
 
@@ -13880,9 +14057,10 @@
       menu.style.right = `${right}px`;
       menu.style.left = 'auto';
       menu.style.width = `${menuWidth}px`;
-      menu.style.zIndex = '999999';
+      menu.style.zIndex = '99999999';
       menu.style.backgroundColor = '#121614';
       menu.style.opacity = '1';
+      menu.style.display = 'block';
     }
 
     function toggleAvatarDropdown(e) {
@@ -14292,8 +14470,9 @@
 
         if (type === 'image') {
           const safePrompt = escapeHtml(prompt).replace(/'/g, "\\'");
-          const promptSeed = Math.abs((prompt || '').split('').reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) % 100000 || 42;
-          const fallbackUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt || 'photorealistic AI masterpiece')}?model=flux&nologo=true&seed=${promptSeed}`;
+          const localMasterpieces = ['/media/avatar_aang.jpg', '/media/lamborghini_urus.jpg'];
+          const promptSeed = Math.abs((prompt || '').split('').reduce((acc, c) => ((acc << 5) - acc) + c.charCodeAt(0), 0)) || 0;
+          const fallbackUrl = localMasterpieces[promptSeed % localMasterpieces.length];
           const initialUrl = (it.result_url && !it.result_url.startsWith('blob:')) ? it.result_url : fallbackUrl;
           const imgDomId = 'feed-img-' + idx + '-' + Date.now();
 
@@ -14301,7 +14480,7 @@
             <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
               <div class="relative aspect-square w-full overflow-hidden bg-black flex items-center justify-center cursor-pointer" onclick="openPhotoLightbox(document.getElementById('${imgDomId}')?.src || '${initialUrl}', '${safePrompt}', '${escapeHtml(model || "IMAGE")}')">
                 <img id="${imgDomId}" src="${initialUrl}" loading="lazy" 
-                  onerror="if(this.src!=='${fallbackUrl}'){this.src='${fallbackUrl}'; const dl=document.getElementById('${imgDomId}-dl'); if(dl) dl.href='${fallbackUrl}';}"
+                  onerror="this.onerror=null; this.src='${fallbackUrl}'; const dl=document.getElementById('${imgDomId}-dl'); if(dl) dl.href='${fallbackUrl}';"
                   class="w-full h-full object-cover transition duration-300 group-hover:scale-105" alt="${safePrompt}">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition p-3 flex flex-col justify-between">
                   <div class="flex items-center justify-between">
@@ -15836,16 +16015,25 @@
       }
     }
 
-    // User-side Promo Redemption
     async function redeemUserPromo() {
       const input = document.getElementById('user-promo-input');
       const statusEl = document.getElementById('user-promo-status');
       const btn = document.getElementById('btn-redeem-promo');
       const code = (input?.value || '').trim();
 
+      const isRu = currentLang === 'ru';
+      const isEs = currentLang === 'es';
+      const isPt = currentLang === 'pt';
+      const isDe = currentLang === 'de';
+
+      const msgEnter = isRu ? 'Введите промокод' : isEs ? 'Introduce un código promocional' : isPt ? 'Digite um código promocional' : isDe ? 'Bitte Gutscheincode eingeben' : 'Please enter a promo code';
+      const msgChecking = isRu ? 'Проверка промокода...' : isEs ? 'Comprobando código...' : isPt ? 'Verificando código...' : isDe ? 'Code wird geprüft...' : 'Checking promo code...';
+      const msgInvalid = isRu ? 'Неверный промокод' : isEs ? 'Código promocional no válido' : isPt ? 'Código promocional inválido' : isDe ? 'Ungültiger Gutscheincode' : 'Invalid promo code';
+      const msgNetErr = isRu ? 'Ошибка сети' : isEs ? 'Error de red' : isPt ? 'Erro de rede' : isDe ? 'Netzwerkfehler' : 'Network error';
+
       if (!code) {
         if (statusEl) {
-          statusEl.textContent = 'Введите промокод';
+          statusEl.textContent = msgEnter;
           statusEl.className = 'text-xs mt-2.5 font-medium text-amber-400';
           statusEl.classList.remove('hidden');
         }
@@ -15854,7 +16042,7 @@
 
       if (btn) btn.disabled = true;
       if (statusEl) {
-        statusEl.textContent = 'Проверка промокода...';
+        statusEl.textContent = msgChecking;
         statusEl.className = 'text-xs mt-2.5 font-medium text-stone-400';
         statusEl.classList.remove('hidden');
       }
@@ -15886,13 +16074,13 @@
           }
         } else {
           if (statusEl) {
-            statusEl.textContent = `❌ ${data.error || 'Неверный промокод'}`;
+            statusEl.textContent = `❌ ${data.error || msgInvalid}`;
             statusEl.className = 'text-xs mt-2.5 font-medium text-red-400';
           }
         }
       } catch (e) {
         if (statusEl) {
-          statusEl.textContent = `❌ Ошибка сети: ${e.message}`;
+          statusEl.textContent = `❌ ${msgNetErr}: ${e.message}`;
           statusEl.className = 'text-xs mt-2.5 font-medium text-red-400';
         }
       } finally {
