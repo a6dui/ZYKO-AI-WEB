@@ -579,20 +579,20 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     2. Photo-to-Video (Image-to-Video): Encodes reference photo as inline_base64 start_frame.
     3. Custom duration: 5.0s, 10.0s, 15.0s.
     """
-    # Parse requested duration
+    # Parse requested duration (Google Veo 3.1 strictly expects 4, 6, or 8)
     dur_clean = str(duration or "10.0s").lower().strip()
-    if "15" in dur_clean:
-        duration_secs = 15
-        duration_label = "15.0s"
-    elif "5" in dur_clean and "15" not in dur_clean:
-        duration_secs = 5
-        duration_label = "5.0s"
-    else:
-        duration_secs = 10
+    if "15" in dur_clean or "10" in dur_clean or "8" in dur_clean:
+        duration_secs = 8
         duration_label = "10.0s"
+    elif "4" in dur_clean:
+        duration_secs = 4
+        duration_label = "4.0s"
+    else:
+        duration_secs = 6
+        duration_label = "6.0s"
 
-    logger.info("Generating AI Video (%s, duration: %s). Prompt: '%s', Aspect: %s, HasImage: %s", 
-                model, duration_label, (prompt or "")[:60], aspect, bool(image_url))
+    logger.info("Generating AI Video (%s, duration: %s -> %ss). Prompt: '%s', Aspect: %s, HasImage: %s", 
+                model, duration_label, duration_secs, (prompt or "")[:60], aspect, bool(image_url))
 
     # 1. Process reference photo for Image-to-Video (inline_base64 start_frame)
     start_frame = None
@@ -742,10 +742,9 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
 
     # Pool of authentic local video assets
     LOCAL_ASSETS = {
-        "action_explosion": os.path.join(base_dir, "public", "media", "elevenlabs", "el_explosion.mp4"),
         "cinematic_drone": os.path.join(base_dir, "public", "media", "elevenlabs", "el_cinematic_1080.mp4"),
+        "action_explosion": os.path.join(base_dir, "public", "media", "elevenlabs", "el_explosion.mp4"),
         "space_scifi": os.path.join(base_dir, "public", "media", "elevenlabs", "el_spaceship.mp4"),
-        "vertical_portrait": os.path.join(base_dir, "public", "media", "videos", "statham.mp4"),
         "action_character": os.path.join(base_dir, "public", "media", "videos", "wick.mp4"),
         "cyberpunk_character": os.path.join(base_dir, "public", "media", "videos", "keanu.mp4"),
         "cute_animal": os.path.join(base_dir, "public", "media", "videos", "cat.mp4"),
@@ -753,9 +752,7 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     }
 
     selected_source = None
-    if "9:16" in str(aspect) and os.path.exists(LOCAL_ASSETS["vertical_portrait"]):
-        selected_source = LOCAL_ASSETS["vertical_portrait"]
-    elif any(w in combined for w in ["explosi", "взрыв", "огонь", "fire", "boom", "war"]):
+    if any(w in combined for w in ["explosi", "взрыв", "огонь", "fire", "boom", "war"]):
         selected_source = LOCAL_ASSETS["action_explosion"]
     elif any(w in combined for w in ["space", "космос", "звезд", "планет", "rocket", "astronaut", "spaceship"]):
         selected_source = LOCAL_ASSETS["space_scifi"]
@@ -768,7 +765,7 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     elif any(w in combined for w in ["cyberpunk", "future", "neon", "keanu", "киберпанк"]):
         selected_source = LOCAL_ASSETS["cyberpunk_character"]
     else:
-        # Default high-definition cinematic
+        # Default high-definition cinematic 1080p
         selected_source = LOCAL_ASSETS["cinematic_drone"]
 
     if not selected_source or not os.path.exists(selected_source):

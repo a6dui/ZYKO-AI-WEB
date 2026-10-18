@@ -1348,10 +1348,9 @@ async def handle_media_route(request: web.Request):
     if tail.lower().endswith((".mp4", ".webm")):
         for cand in [
             os.path.join(media_dir, "elevenlabs", "el_cinematic_1080.mp4"),
-            os.path.join(media_dir, "videos", "statham.mp4"),
-            os.path.join(media_dir, "videos", "wick.mp4"),
             os.path.join(media_dir, "elevenlabs", "el_spaceship.mp4"),
-            os.path.join(media_dir, "elevenlabs", "el_explosion.mp4")
+            os.path.join(media_dir, "elevenlabs", "el_explosion.mp4"),
+            os.path.join(media_dir, "videos", "wick.mp4")
         ]:
             if os.path.exists(cand):
                 resp = web.FileResponse(cand)
