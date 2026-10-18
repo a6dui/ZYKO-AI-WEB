@@ -9794,6 +9794,7 @@
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
         let audioUrl = '';
+        let serverUrl = null;
 
         if (isMusic) {
           const resp = await fetch('/api/generate/music', {
@@ -9811,7 +9812,7 @@
             throw new Error(errData.error || `HTTP error ${resp.status}`);
           }
 
-          const serverUrl = resp.headers.get('x-result-url');
+          serverUrl = resp.headers.get('x-result-url');
           const contentType = resp.headers.get('content-type') || '';
           if (contentType.includes('audio') || contentType.includes('octet-stream')) {
             const blob = await resp.blob();
@@ -9848,7 +9849,7 @@
             throw new Error(errData.error || `HTTP error ${resp.status}`);
           }
 
-          const serverUrl = resp.headers.get('x-result-url');
+          serverUrl = resp.headers.get('x-result-url');
           const blob = await resp.blob();
           audioUrl = serverUrl || URL.createObjectURL(blob);
         }
