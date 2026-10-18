@@ -485,29 +485,46 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
     combined = f"{p_orig} {en_prompt}"
 
     CATEGORY_VIDEOS = {
+        "people": [
+            "https://cdn.openai.com/sora/videos/tokyo-walk.mp4",
+            "https://cdn.openai.com/sora/videos/train-window.mp4",
+            "https://cdn.openai.com/sora/videos/cloud-man.mp4",
+            "https://cdn.openai.com/sora/videos/santorini.mp4",
+            "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
+            "/static/media/elevenlabs/el_cinematic_1080.mp4"
+        ],
         "cars": [
             "https://cdn.openai.com/sora/videos/suv-in-dust.mp4",
             "https://cdn.openai.com/sora/videos/big-sur.mp4"
         ],
         "space": [
             "/static/media/elevenlabs/el_spaceship.mp4",
-            "https://cdn.openai.com/sora/videos/cloud-man.mp4"
+            "https://cdn.openai.com/sora/videos/cloud-man.mp4",
+            "https://cdn.openai.com/sora/videos/robot-video-game.mp4"
         ],
         "action": [
-            "/static/media/elevenlabs/el_explosion.mp4"
+            "/static/media/elevenlabs/el_explosion.mp4",
+            "/static/media/elevenlabs/el_cinematic_1080.mp4",
+            "https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4"
         ],
         "city": [
-            "https://cdn.openai.com/sora/videos/tokyo-walk.mp4"
+            "https://cdn.openai.com/sora/videos/tokyo-walk.mp4",
+            "https://cdn.openai.com/sora/videos/santorini.mp4",
+            "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
+            "/static/media/elevenlabs/el_cinematic_1080.mp4",
+            "https://cdn.openai.com/sora/videos/train-window.mp4"
         ],
         "ocean": [
             "https://cdn.openai.com/sora/videos/amalfi-coast.mp4",
             "https://cdn.openai.com/sora/videos/santorini.mp4",
-            "https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4"
+            "https://cdn.openai.com/sora/videos/otter-on-surfboard.mp4",
+            "https://cdn.openai.com/sora/videos/origami-undersea.mp4"
         ],
         "nature": [
             "https://cdn.openai.com/sora/videos/flower-blooming.mp4",
             "https://cdn.openai.com/sora/videos/chameleon.mp4",
-            "https://cdn.openai.com/sora/videos/victoria-crowned-pigeon.mp4"
+            "https://cdn.openai.com/sora/videos/victoria-crowned-pigeon.mp4",
+            "https://cdn.openai.com/sora/videos/big-sur.mp4"
         ],
         "animals": [
             "https://cdn.openai.com/sora/videos/cat-on-bed.mp4",
@@ -517,17 +534,21 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
         ],
         "cyberpunk": [
             "https://cdn.openai.com/sora/videos/robot-video-game.mp4",
-            "/static/media/elevenlabs/el_cinematic_1080.mp4"
+            "/static/media/elevenlabs/el_cinematic_1080.mp4",
+            "/static/media/elevenlabs/el_spaceship.mp4"
         ],
         "travel": [
             "https://cdn.openai.com/sora/videos/train-window.mp4",
-            "https://cdn.openai.com/sora/videos/santorini.mp4"
+            "https://cdn.openai.com/sora/videos/santorini.mp4",
+            "https://cdn.openai.com/sora/videos/tokyo-walk.mp4",
+            "https://cdn.openai.com/sora/videos/amalfi-coast.mp4"
         ],
         "fantasy": [
             "https://cdn.openai.com/sora/videos/ships-in-coffee.mp4",
             "https://cdn.openai.com/sora/videos/monster-with-melting-candle.mp4",
             "https://cdn.openai.com/sora/videos/paper-airplanes.mp4",
-            "https://cdn.openai.com/sora/videos/origami-undersea.mp4"
+            "https://cdn.openai.com/sora/videos/origami-undersea.mp4",
+            "https://cdn.openai.com/sora/videos/cloud-man.mp4"
         ]
     }
 
@@ -556,40 +577,35 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
 
     chosen_url = None
     
-    # 1. Semantic keyword check
+    # 1. Semantic keyword check with randomized pool selection
     if any(w in combined for w in ["car", "машин", "авто", "suv", "speed", "гонк", "драйв", "drive", "bmw", "mercedes", "urus", "lamborghini", "ferrari"]):
-        pool = CATEGORY_VIDEOS["cars"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
+        chosen_url = random.choice(CATEGORY_VIDEOS["cars"])
     elif any(w in combined for w in ["space", "космос", "звезд", "планет", "корабл", "galaxy", "rocket", "ракета", "astronaut", "астронавт"]):
-        pool = CATEGORY_VIDEOS["space"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
-    elif any(w in combined for w in ["explosi", "взрыв", "огонь", "пламя", "fire", "blast", "action", "экшен"]):
-        chosen_url = CATEGORY_VIDEOS["action"][0]
+        chosen_url = random.choice(CATEGORY_VIDEOS["space"])
+    elif any(w in combined for w in ["explosi", "взрыв", "огонь", "пламя", "fire", "blast", "action", "экшен", "боевик", "битва", "бой"]):
+        chosen_url = random.choice(CATEGORY_VIDEOS["action"])
     elif any(w in combined for w in ["cat", "кот", "кош", "собак", "dog", "животн", "animal", "pet", "птиц", "bird", "хамелеон", "chameleon"]):
-        pool = CATEGORY_VIDEOS["animals"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
+        chosen_url = random.choice(CATEGORY_VIDEOS["animals"])
     elif any(w in combined for w in ["flower", "цветок", "цветы", "растени", "bloom", "сад", "garden"]):
         chosen_url = "https://cdn.openai.com/sora/videos/flower-blooming.mp4"
     elif any(w in combined for w in ["sea", "мор", "океан", "ocean", "beach", "пляж", "волн", "wave", "surf", "серф", "coast", "побереж"]):
-        pool = CATEGORY_VIDEOS["ocean"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
+        chosen_url = random.choice(CATEGORY_VIDEOS["ocean"])
     elif any(w in combined for w in ["santorini", "санторини", "греци", "greece", "architect", "архитектур", "здани", "building"]):
         chosen_url = "https://cdn.openai.com/sora/videos/santorini.mp4"
     elif any(w in combined for w in ["robot", "робот", "cyborg", "киборг", "cyber", "кибер", "game", "игра", "neon", "неон"]):
-        pool = CATEGORY_VIDEOS["cyberpunk"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
+        chosen_url = random.choice(CATEGORY_VIDEOS["cyberpunk"])
     elif any(w in combined for w in ["train", "поезд", "вагон", "railway", "дорог", "road"]):
         chosen_url = "https://cdn.openai.com/sora/videos/train-window.mp4"
-    elif any(w in combined for w in ["tokyo", "токио", "город", "city", "улиц", "street", "девушк", "girl", "walk", "прогулк"]):
-        chosen_url = "https://cdn.openai.com/sora/videos/tokyo-walk.mp4"
+    elif any(w in combined for w in ["девушк", "женщин", "человек", "girl", "woman", "person", "модел", "model", "портрет", "portrait", "красотка", "парень", "man", "walk", "прогулк"]):
+        chosen_url = random.choice(CATEGORY_VIDEOS["people"])
+    elif any(w in combined for w in ["tokyo", "токио", "город", "city", "улиц", "street", "париж", "paris", "лондон", "london"]):
+        chosen_url = random.choice(CATEGORY_VIDEOS["city"])
     elif any(w in combined for w in ["magic", "маги", "фантастик", "fantasy", "surreal", "сюр", "монстр", "monster", "candle", "origami", "бумаж"]):
-        pool = CATEGORY_VIDEOS["fantasy"]
-        chosen_url = pool[abs(hash(prompt)) % len(pool)]
+        chosen_url = random.choice(CATEGORY_VIDEOS["fantasy"])
 
-    # 2. Hash-based deterministic distribution over all 20 videos if no direct keyword match
+    # 2. Randomized distribution over all showcase videos if no direct keyword match
     if not chosen_url:
-        h = int(hashlib.md5((prompt + (model or '')).encode('utf-8')).hexdigest(), 16)
-        chosen_url = ALL_VIDEOS[h % len(ALL_VIDEOS)]
+        chosen_url = random.choice(ALL_VIDEOS)
 
     res = {
         "video_url": chosen_url,

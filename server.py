@@ -1340,8 +1340,10 @@ def create_app():
     if os.path.exists(public_dir):
         app.router.add_static("/static", public_dir)
         media_dir = os.path.join(public_dir, "media")
-        if os.path.exists(media_dir):
-            app.router.add_static("/media", media_dir)
+        os.makedirs(media_dir, exist_ok=True)
+        os.makedirs(os.path.join(media_dir, "generations"), exist_ok=True)
+        app.router.add_static("/media", media_dir)
+        
         
     return app
 
