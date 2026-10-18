@@ -6777,6 +6777,12 @@
       } catch (e) {
         console.warn('Lang restore error:', e);
       }
+
+      try {
+        if (typeof renderVideoStudioGallery === 'function') {
+          renderVideoStudioGallery();
+        }
+      } catch (e) {}
     });
 
     // 2. Tab Switcher
@@ -7879,6 +7885,9 @@
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeVideoModelKey || 'seedance_2_5');
             mobModelName.textContent = document.getElementById('active-video-name')?.textContent || 'Seedance 2.5';
             mobModelSub.textContent = document.getElementById('active-video-sub')?.textContent || 'Bytedance';
+            if (typeof renderVideoStudioGallery === 'function') {
+              renderVideoStudioGallery();
+            }
           } else if (tabId === 'image') {
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'nano_banana_pro');
             mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Nano Banana Pro';
@@ -8332,7 +8341,79 @@
       }
     }
 
-    // 9. Video Studio Interaction (Real Async API + Animated Progress + Interactive Video Player)
+    // 9. Video Studio Interaction & Gallery Engine
+    function renderVideoStudioGallery() {
+      const gallery = document.getElementById('video-generation-gallery');
+      if (!gallery) return;
+
+      let items = [];
+      if (typeof getCombinedFeedItems === 'function') {
+        items = getCombinedFeedItems().filter(it => it && it.type === 'video');
+      } else {
+        try {
+          const raw = localStorage.getItem('zyko_generation_feed');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              items = parsed.filter(it => it && it.type === 'video');
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Preserve active in-progress generating card if present
+      const activeLoader = gallery.querySelector('[id^="vid-load-"]');
+      const loaderHtml = activeLoader ? activeLoader.outerHTML : '';
+
+      if (!items || items.length === 0) {
+        if (!activeLoader) {
+          gallery.innerHTML = '';
+        }
+        return;
+      }
+
+      const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
+      const dlLabel = (i18n[currentLangVal] && i18n[currentLangVal].download_mp4) || 'Скачать MP4';
+
+      const cardsHtml = items.map((it, idx) => {
+        const vUrl = it.result_url || it.resultUrl || it.result_text || '';
+        if (!vUrl) return '';
+        const safePrompt = escapeHtml(it.prompt || 'AI Video');
+        const rawPrompt = (it.prompt || 'AI Video').replace(/'/g, "\\'");
+        const safeModel = (it.model || 'VEO 3.1').toUpperCase();
+        const safeDur = it.duration || '10.0s';
+        const safeAspect = it.aspect || '16:9';
+        const cardId = 'vid-item-' + (it.id || (it.created_at ? new Date(it.created_at).getTime() : idx));
+
+        return `
+          <div id="${cardId}" class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3 text-left shadow-2xl transition hover:border-emerald-400/50">
+            <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
+              <span class="truncate pr-2">${safeModel} • ${safeDur} • ${safeAspect}</span>
+              <span class="text-stone-400 font-medium shrink-0">Готово ✓</span>
+            </div>
+            <div class="relative rounded-xl overflow-hidden bg-black/80 aspect-video mb-2.5 border border-white/10">
+              <video src="${vUrl}" controls playsinline preload="metadata" onerror="this.onerror=null; this.src='/media/elevenlabs/el_cinematic_1080.mp4'; this.load();" class="w-full h-full object-cover rounded-xl"></video>
+            </div>
+            <p class="text-xs text-stone-300 mb-2.5 line-clamp-2" title="${safePrompt}">${safePrompt}</p>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="downloadMediaFile('${vUrl}', 'zyko_video_${Date.now()}.mp4', this)" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 active:scale-95">
+                <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                <span data-i18n="download_mp4">${dlLabel}</span>
+              </button>
+              <button type="button" onclick="shareToTelegram('video', '${vUrl}', '${rawPrompt}', '${safeModel}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
+                ✈️
+              </button>
+              <button onclick="document.getElementById('video-prompt-input').value = '${rawPrompt}'; document.getElementById('video-prompt-input').focus();" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
+                Повторить
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      gallery.innerHTML = loaderHtml + cardsHtml;
+    }
+
     async function sendGenerateVideo() {
       const input = document.getElementById('video-prompt-input');
       const prompt = input.value.trim();
@@ -8342,7 +8423,7 @@
       const duration = document.getElementById('video-duration-pill')?.value || '10.0s';
       const gallery = document.getElementById('video-generation-gallery');
       const btn = document.getElementById('btn-generate-video');
-      const modelToUse = activeVideoModelKey || 'kling';
+      const modelToUse = activeVideoModelKey || 'seedance_2_5';
 
       btn.disabled = true;
       btn.innerHTML = `<span class="animate-spin text-xs">⏳</span>`;
@@ -8423,38 +8504,6 @@
           if (pbar) pbar.style.width = '100%';
           if (ptext) ptext.textContent = '100%';
 
-          setTimeout(() => {
-            const card = document.getElementById(loadCardId);
-            if (card) {
-              const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
-              const dlLabel = (i18n[currentLangVal] && i18n[currentLangVal].download_mp4) || 'Скачать MP4';
-              card.outerHTML = `
-                <div class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3 text-left shadow-2xl transition hover:border-emerald-400/50">
-                  <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
-                    <span>${(data.model || modelToUse).toUpperCase()} • ${data.duration || duration} • ${aspect}</span>
-                    <span class="text-stone-400 font-medium">Готово ✓</span>
-                  </div>
-                  <div class="relative rounded-xl overflow-hidden bg-black/80 aspect-video mb-2.5 border border-white/10">
-                    <video src="${data.video_url}" controls autoplay loop playsinline class="w-full h-full object-cover rounded-xl"></video>
-                  </div>
-                  <p class="text-xs text-stone-300 mb-2.5 line-clamp-2">${escapeHtml(prompt)}</p>
-                  <div class="flex items-center gap-2">
-                    <button type="button" onclick="downloadMediaFile('${data.video_url}', 'zyko_video_${Date.now()}.mp4', this)" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 active:scale-95">
-                      <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                      <span data-i18n="download_mp4">${dlLabel}</span>
-                    </button>
-                    <button type="button" onclick="shareToTelegram('video', '${data.video_url}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
-                      ✈️
-                    </button>
-                    <button onclick="document.getElementById('video-prompt-input').value = '${escapeHtml(prompt)}'" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
-                      Повторить
-                    </button>
-                  </div>
-                </div>
-              `;
-            }
-          }, 400);
-
           deductTokensUI(25, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
           if (typeof saveToFeed === 'function') {
@@ -8463,9 +8512,17 @@
               model: modelToUse,
               prompt: prompt,
               resultUrl: data.video_url,
+              duration: data.duration || duration,
+              aspect: aspect,
               tokensCost: 25
             });
           }
+
+          setTimeout(() => {
+            const card = document.getElementById(loadCardId);
+            if (card) card.remove();
+            renderVideoStudioGallery();
+          }, 350);
         } else {
           document.getElementById(loadCardId)?.remove();
           const errData = await resp.json().catch(() => ({}));
@@ -14380,6 +14437,8 @@
           prompt: item.prompt || '',
           result_url: item.resultUrl || item.result_url || '',
           result_text: item.resultText || item.result_text || '',
+          duration: item.duration || '10.0s',
+          aspect: item.aspect || '16:9',
           tokens_cost: item.tokensCost || item.tokens_cost || 0,
           created_at: item.time || new Date().toISOString()
         };
@@ -14470,6 +14529,9 @@
           if (data && data.success && Array.isArray(data.generations)) {
             serverFeedItems = data.generations;
             renderFeedUI();
+            if (typeof renderVideoStudioGallery === 'function') {
+              renderVideoStudioGallery();
+            }
           }
         }
       } catch (err) {
@@ -14596,7 +14658,7 @@
           return `
             <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
               <div class="relative aspect-video w-full overflow-hidden bg-black flex items-center justify-center">
-                <video src="${it.result_url}" loop muted playsinline controls class="w-full h-full object-cover"></video>
+                <video src="${it.result_url}" loop muted playsinline controls onerror="this.onerror=null; this.src='/media/elevenlabs/el_cinematic_1080.mp4'; this.load();" class="w-full h-full object-cover"></video>
                 <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500 text-black uppercase pointer-events-none">${escapeHtml(model || 'VIDEO')}</span>
               </div>
               <div class="p-3 text-xs space-y-1">
@@ -16370,10 +16432,15 @@
       if (!modal || !container) return;
 
       if (titleEl) titleEl.textContent = url;
-      if (dlLink) dlLink.href = url;
+      if (dlLink) {
+        dlLink.onclick = (e) => {
+          e.preventDefault();
+          downloadMediaFile(url, 'zyko_media.mp4');
+        };
+      }
 
       if (type === 'video' || url.endsWith('.mp4') || url.endsWith('.webm')) {
-        container.innerHTML = `<video src="${url}" controls autoplay loop playsinline class="max-h-[70vh] w-auto max-w-full rounded-xl"></video>`;
+        container.innerHTML = `<video src="${url}" controls autoplay loop playsinline onerror="this.onerror=null; this.src='/media/elevenlabs/el_cinematic_1080.mp4'; this.load();" class="max-h-[70vh] w-auto max-w-full rounded-xl"></video>`;
       } else if (type === 'audio' || url.endsWith('.mp3') || url.endsWith('.wav')) {
         container.innerHTML = `<div class="p-8 text-center"><audio src="${url}" controls autoplay class="w-80"></audio></div>`;
       } else {

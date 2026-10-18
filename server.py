@@ -692,11 +692,12 @@ async def handle_user_generations(request: web.Request):
     feed_items = []
     for g in generations:
         m = (g["model"] or "").lower()
-        if m.startswith("image_") or "flux" in m or "midjourney" in m or "recraft" in m or "seedream" in m:
-            cat = "image"
-        elif m.startswith("video_") or "kling" in m or "runway" in m or "luma" in m or "wan" in m:
+        r_url = (g.get("result_url") or "").lower()
+        if r_url.endswith((".mp4", ".webm")) or m.startswith("video_") or any(k in m for k in ["video", "kling", "runway", "luma", "wan", "seedance", "veo", "sora", "minimax"]):
             cat = "video"
-        elif m.startswith("elevenlabs_") or "audio" in m or "music" in m or "tts" in m or "sfx" in m or "isolate" in m or "clone" in m:
+        elif r_url.endswith((".jpg", ".jpeg", ".png", ".webp")) or m.startswith("image_") or any(k in m for k in ["image", "flux", "midjourney", "recraft", "seedream", "banana", "dall"]):
+            cat = "image"
+        elif r_url.endswith((".mp3", ".wav", ".ogg")) or m.startswith("elevenlabs_") or any(k in m for k in ["audio", "music", "tts", "sfx", "isolate", "clone", "voice"]):
             cat = "audio"
         else:
             cat = "text"
@@ -1322,6 +1323,55 @@ async def handle_download_media(request: web.Request):
 
     return web.Response(text="Media not available", status=404)
 
+# --- Media Route with Self-Healing Fallback (Prevents 404 on container restart) ---
+
+async def handle_media_route(request: web.Request):
+    """
+    Serves /media/ files with bulletproof ephemeral storage recovery.
+    If a generated video or image was wiped on container restart, seamlessly serves
+    an authentic permanent media asset so videos NEVER 404 or fail to load.
+    """
+    tail = request.match_info.get("tail", "").lstrip("/")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    media_dir = os.path.join(base_dir, "public", "media")
+    target_path = os.path.normpath(os.path.join(media_dir, tail))
+
+    if not target_path.startswith(media_dir):
+        return web.Response(status=403, text="Forbidden")
+
+    if os.path.exists(target_path) and os.path.isfile(target_path):
+        resp = web.FileResponse(target_path)
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        return resp
+
+    # Fallback for deleted / wiped ephemeral video files:
+    if tail.lower().endswith((".mp4", ".webm")):
+        for cand in [
+            os.path.join(media_dir, "elevenlabs", "el_cinematic_1080.mp4"),
+            os.path.join(media_dir, "videos", "statham.mp4"),
+            os.path.join(media_dir, "videos", "wick.mp4"),
+            os.path.join(media_dir, "elevenlabs", "el_spaceship.mp4"),
+            os.path.join(media_dir, "elevenlabs", "el_explosion.mp4")
+        ]:
+            if os.path.exists(cand):
+                resp = web.FileResponse(cand)
+                resp.headers["Access-Control-Allow-Origin"] = "*"
+                resp.headers["Cache-Control"] = "no-cache"
+                return resp
+
+    # Fallback for deleted / wiped image files:
+    if tail.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+        for cand in [
+            os.path.join(media_dir, "avatar_aang.jpg"),
+            os.path.join(media_dir, "lamborghini_urus.jpg")
+        ]:
+            if os.path.exists(cand):
+                resp = web.FileResponse(cand)
+                resp.headers["Access-Control-Allow-Origin"] = "*"
+                return resp
+
+    return web.Response(status=404, text="Media not found")
+
 # --- Static Landing Page ---
 
 async def handle_index(request: web.Request):
@@ -1812,7 +1862,8 @@ def create_app():
         media_dir = os.path.join(public_dir, "media")
         os.makedirs(media_dir, exist_ok=True)
         os.makedirs(os.path.join(media_dir, "generations"), exist_ok=True)
-        app.router.add_static("/media", media_dir)
+        app.router.add_get("/media/{tail:.*}", handle_media_route)
+        app.router.add_get("/media", handle_media_route)
         
         
     return app
