@@ -1,6 +1,7 @@
 import os
 import aiohttp
 import json
+import base64
 import logging
 
 logger = logging.getLogger("zyko_ai")
@@ -9,13 +10,63 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 HUGGINGFACE_API_KEY = os.environ.get("HUGGINGFACE_API_KEY", "")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
 
+async def transcribe_audio_gemini(audio_bytes: bytes, mime_type: str = "audio/webm") -> str:
+    """
+    Transcribes voice recording bytes into clean, accurate prompt text using Gemini 2.5 Flash.
+    """
+    if not audio_bytes:
+        return ""
+    if not GEMINI_API_KEY:
+        logger.warning("No GEMINI_API_KEY available for voice transcription")
+        return ""
+
+    try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+        b64 = base64.b64encode(audio_bytes).decode("utf-8")
+        clean_mime = mime_type.split(";")[0].strip() or "audio/webm"
+        
+        prompt_instruction = (
+            "Transcribe this voice recording accurately verbatim in its original spoken language (primarily Russian or English). "
+            "Clean up stuttering and false starts, output only the clean transcript suitable as an AI generation prompt. "
+            "Do NOT include any explanations, labels, or introductory phrases. Return ONLY the transcribed text."
+        )
+
+        body = {
+            "contents": [{
+                "parts": [
+                    {"inline_data": {"mime_type": clean_mime, "data": b64}},
+                    {"text": prompt_instruction}
+                ]
+            }],
+            "generationConfig": {
+                "temperature": 0.2,
+                "maxOutputTokens": 2048
+            }
+        }
+
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=25)) as session:
+            async with session.post(url, json=body) as resp:
+                if resp.status == 200:
+                    data = await resp.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        return text.strip()
+                else:
+                    err_txt = await resp.text()
+                    logger.warning("Gemini transcription HTTP %s: %s", resp.status, err_txt)
+    except Exception as e:
+        logger.error("Gemini audio transcription error: %s", e)
+
+    return ""
+
 async def generate_prompt_expansion(user_prompt: str) -> dict:
     """
     Expands a raw prompt into a studio-grade visual prompt using Gemini or algorithmic fallback.
     """
     if GEMINI_API_KEY:
         try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
             sys_instruct = (
                 "You are an elite AI Prompt Architect. Expand the user's short idea into a rich, "
                 "photorealistic 8K prompt suitable for FLUX.1 Ultra and Kling 3.0. "

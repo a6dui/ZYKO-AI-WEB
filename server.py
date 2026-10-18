@@ -53,7 +53,7 @@ from payments import (
     STRIPE_PUBLISHABLE_KEY,
     PLANS
 )
-from ai_service import generate_prompt_expansion, generate_llm_chat
+from ai_service import generate_prompt_expansion, generate_llm_chat, transcribe_audio_gemini
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("zyko_server")
@@ -790,6 +790,46 @@ async def handle_expand_prompt(request: web.Request):
         logger.error("Expand prompt error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
+async def handle_ai_transcribe(request: web.Request):
+    """
+    High-accuracy neural voice-to-prompt transcription powered by Gemini 2.5 Flash.
+    Supports audio uploads (multipart/form-data) or JSON with base64 audio.
+    """
+    try:
+        content_type = request.content_type or ""
+        audio_bytes = b""
+        mime_type = "audio/webm"
+
+        if "multipart" in content_type:
+            reader = await request.multipart()
+            while True:
+                part = await reader.next()
+                if part is None:
+                    break
+                if part.name == "audio":
+                    audio_bytes = await part.read()
+                    if part.headers.get("Content-Type"):
+                        mime_type = part.headers.get("Content-Type")
+                elif part.name == "mime_type":
+                    mime_type = (await part.text()).strip()
+        else:
+            data = await request.json()
+            raw_b64 = data.get("audio", "")
+            mime_type = data.get("mime_type", "audio/webm")
+            if "," in raw_b64:
+                raw_b64 = raw_b64.split(",", 1)[1]
+            if raw_b64:
+                audio_bytes = base64.b64decode(raw_b64)
+
+        if not audio_bytes:
+            return web.json_response({"error": "No audio provided"}, status=400)
+
+        text = await transcribe_audio_gemini(audio_bytes, mime_type)
+        return web.json_response({"success": True, "text": text})
+    except Exception as e:
+        logger.error("Audio transcription handler error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
 async def handle_ai_chat(request: web.Request):
     try:
         data = await request.json()
@@ -1316,6 +1356,7 @@ def create_app():
     app.router.add_post("/api/webhook/cryptopay", handle_crypto_webhook)
     
     # AI Services & ElevenLabs Generations
+    app.router.add_post("/api/ai/transcribe", handle_ai_transcribe)
     app.router.add_post("/api/ai/expand-prompt", handle_expand_prompt)
     app.router.add_post("/api/ai/chat", handle_ai_chat)
     app.router.add_post("/api/generate/tts", handle_generate_tts)

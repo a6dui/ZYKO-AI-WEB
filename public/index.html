@@ -12067,35 +12067,70 @@
     }
 
     // =========================================================================
-    // FEATURE 4: VOICE-TO-PROMPT (REAL-TIME SPEECH RECOGNITION)
+    // FEATURE 4: BULLETPROOF VOICE-TO-PROMPT (STREAMING SPEECH + NEURAL FALLBACK)
     // =========================================================================
     let activeSpeechRecognition = null;
+    let activeMediaRecorder = null;
+    let activeMediaStream = null;
     let activeSpeechTarget = null;
     let activeSpeechBtn = null;
     let activeSpeechOrigHtml = '';
+    let speechSilenceTimer = null;
+    let isUserStoppingSpeech = false;
 
-    function handleVoiceInput(target) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        showToastNotification('Голосовой ввод не поддерживается вашим браузером. Пожалуйста, используйте Chrome или Safari.');
-        return;
+    function stopActiveVoiceInput(showFeedback = true) {
+      isUserStoppingSpeech = true;
+      if (speechSilenceTimer) {
+        clearTimeout(speechSilenceTimer);
+        speechSilenceTimer = null;
       }
 
-      // If already listening on this target, stop it cleanly
-      if (activeSpeechRecognition && activeSpeechTarget === target) {
-        try { activeSpeechRecognition.stop(); } catch (e) {}
-        return;
-      }
-
-      // If listening on another target, stop that first
       if (activeSpeechRecognition) {
         try { activeSpeechRecognition.stop(); } catch (e) {}
+        activeSpeechRecognition = null;
       }
+
+      if (activeMediaRecorder && activeMediaRecorder.state !== 'inactive') {
+        try { activeMediaRecorder.stop(); } catch (e) {}
+        activeMediaRecorder = null;
+      }
+
+      if (activeMediaStream) {
+        try { activeMediaStream.getTracks().forEach(t => t.stop()); } catch (e) {}
+        activeMediaStream = null;
+      }
+
+      if (activeSpeechBtn) {
+        activeSpeechBtn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+        activeSpeechBtn.innerHTML = activeSpeechOrigHtml || '🎙️';
+        activeSpeechBtn = null;
+      }
+
+      activeSpeechTarget = null;
+      if (showFeedback) {
+        showToastNotification('✓ Голосовой ввод завершён');
+      }
+    }
+
+    function handleVoiceInput(target) {
+      // 1. If currently recording on this target, stop it cleanly
+      if ((activeSpeechRecognition || activeMediaRecorder) && activeSpeechTarget === target) {
+        stopActiveVoiceInput(true);
+        return;
+      }
+
+      // 2. If recording on another target, stop that first
+      if (activeSpeechRecognition || activeMediaRecorder) {
+        stopActiveVoiceInput(false);
+      }
+
+      isUserStoppingSpeech = false;
 
       // Find trigger button
       const btn = event?.currentTarget || document.querySelector(`button[onclick*="handleVoiceInput('${target}')"]`);
       activeSpeechBtn = btn;
       activeSpeechOrigHtml = btn ? btn.innerHTML : '🎙️';
+      activeSpeechTarget = target;
 
       let inputEl = null;
       let countEl = null;
@@ -12117,66 +12152,207 @@
         inputEl = document.getElementById('agent-prompt-input');
       }
 
-      const existingText = inputEl ? inputEl.value : '';
+      const existingPrefix = inputEl ? inputEl.value.trim() : '';
+
+      // Determine language: prioritize Russian if Telegram user or browser language indicates Russian/CIS
+      let recLang = 'ru-RU';
+      const tgLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code;
+      const savedLang = localStorage.getItem('zyko_lang');
+      const navLang = navigator.language || '';
+      const hasCyrillicPrefix = /[а-яё]/i.test(existingPrefix);
+      if (hasCyrillicPrefix || currentLang === 'ru' || savedLang === 'ru' || tgLang?.startsWith('ru') || navLang.startsWith('ru') || tgLang === 'uk' || navLang.startsWith('uk')) {
+        recLang = 'ru-RU';
+      } else if (savedLang === 'en' || currentLang === 'en') {
+        recLang = 'en-US';
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      // Check if browser supports Web Speech API
+      if (SpeechRecognition) {
+        try {
+          const rec = new SpeechRecognition();
+          rec.lang = recLang;
+          rec.continuous = true; // Crucial: do not stop after one phrase
+          rec.interimResults = true;
+          rec.maxAlternatives = 1;
+
+          let finalAccumulated = '';
+
+          activeSpeechRecognition = rec;
+
+          if (btn) {
+            btn.classList.add('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+            btn.innerHTML = '🔴';
+          }
+
+          showToastNotification(`🎙️ Слушаю (${recLang === 'ru-RU' ? 'RU' : 'EN'})... Говорите! Нажмите 🔴 для остановки`);
+
+          function resetAutoSilence() {
+            if (speechSilenceTimer) clearTimeout(speechSilenceTimer);
+            speechSilenceTimer = setTimeout(() => {
+              if (activeSpeechRecognition && !isUserStoppingSpeech) {
+                stopActiveVoiceInput(true);
+              }
+            }, 4500);
+          }
+
+          rec.onresult = (e) => {
+            let interimText = '';
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              const res = e.results[i];
+              if (res.isFinal) {
+                finalAccumulated += res[0].transcript + ' ';
+              } else {
+                interimText += res[0].transcript;
+              }
+            }
+
+            const currentSpoken = (finalAccumulated + interimText).trim();
+            if (inputEl && currentSpoken) {
+              inputEl.value = existingPrefix ? (existingPrefix + ' ' + currentSpoken) : currentSpoken;
+              inputEl.dispatchEvent(new Event('input'));
+              if (countEl) countEl.textContent = `${inputEl.value.length} / ${maxLen}`;
+            }
+
+            resetAutoSilence();
+          };
+
+          rec.onerror = (e) => {
+            console.warn('SpeechRecognition error:', e.error);
+            // If permissions or network failed, fallback to neural recorder
+            if (e.error === 'not-allowed' || e.error === 'service-not-allowed' || e.error === 'audio-capture') {
+              if (activeSpeechRecognition) {
+                try { activeSpeechRecognition.stop(); } catch (err) {}
+                activeSpeechRecognition = null;
+              }
+              startNeuralMediaRecorder(target, inputEl, countEl, maxLen, btn, existingPrefix);
+              return;
+            }
+          };
+
+          rec.onend = () => {
+            // If stopped unintentionally while user was still speaking, auto-resume
+            if (!isUserStoppingSpeech && activeSpeechTarget === target) {
+              try {
+                rec.start();
+                return;
+              } catch (err) {}
+            }
+
+            if (btn) {
+              btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+              btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+            }
+            activeSpeechRecognition = null;
+            activeSpeechTarget = null;
+            if (speechSilenceTimer) clearTimeout(speechSilenceTimer);
+          };
+
+          resetAutoSilence();
+          rec.start();
+          return;
+        } catch (err) {
+          console.warn('SpeechRecognition start failed, switching to Neural Recorder fallback:', err);
+        }
+      }
+
+      // Fallback: Neural MediaRecorder + Gemini 2.5 Flash for iOS WKWebView, Telegram Mini App & Safari
+      startNeuralMediaRecorder(target, inputEl, countEl, maxLen, btn, existingPrefix);
+    }
+
+    async function startNeuralMediaRecorder(target, inputEl, countEl, maxLen, btn, existingPrefix) {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToastNotification('Голосовой ввод недоступен в этом браузере. Разрешите доступ к микрофону.');
+        if (btn) btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+        return;
+      }
 
       try {
-        const rec = new SpeechRecognition();
-        rec.lang = (currentLang === 'ru' || (navigator.language && navigator.language.startsWith('ru'))) ? 'ru-RU' : 'en-US';
-        rec.interimResults = true;
-        rec.continuous = false;
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeMediaStream = stream;
 
-        activeSpeechRecognition = rec;
-        activeSpeechTarget = target;
+        let mimeType = 'audio/webm';
+        if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported) {
+          if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType = 'audio/webm;codecs=opus';
+          else if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
+          else if (MediaRecorder.isTypeSupported('audio/aac')) mimeType = 'audio/aac';
+        }
+
+        const recorder = new MediaRecorder(stream);
+        activeMediaRecorder = recorder;
+        const chunks = [];
+
+        recorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) chunks.push(e.data);
+        };
 
         if (btn) {
           btn.classList.add('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
           btn.innerHTML = '🔴';
         }
 
-        showToastNotification('🎙️ Слушаю вас... Говорите!');
+        showToastNotification('🎙️ Запись голоса... Говорите! Нажмите 🔴 когда закончите');
 
-        rec.onresult = (e) => {
-          let transcript = '';
-          for (let i = 0; i < e.results.length; i++) {
-            transcript += e.results[i][0].transcript;
-          }
-          if (inputEl && transcript) {
-            inputEl.value = existingText ? (existingText.trim() + ' ' + transcript) : transcript;
-            inputEl.dispatchEvent(new Event('input'));
-            if (countEl) countEl.textContent = `${inputEl.value.length} / ${maxLen}`;
-          }
-        };
+        recorder.onstop = async () => {
+          try { stream.getTracks().forEach(t => t.stop()); } catch (e) {}
+          activeMediaStream = null;
+          activeMediaRecorder = null;
 
-        rec.onerror = (e) => {
-          console.warn('Speech recognition error:', e);
           if (btn) {
             btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
-            btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+            btn.innerHTML = '⏳';
           }
-          activeSpeechRecognition = null;
-          activeSpeechTarget = null;
+
+          if (chunks.length === 0) {
+            if (btn) btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+            return;
+          }
+
+          showToastNotification('⏳ Распознаю вашу речь нейросетью...');
+
+          const audioBlob = new Blob(chunks, { type: mimeType });
+          const formData = new FormData();
+          formData.append('audio', audioBlob, 'recording.webm');
+          formData.append('mime_type', mimeType);
+
+          try {
+            const resp = await fetch('/api/ai/transcribe', {
+              method: 'POST',
+              body: formData
+            });
+
+            if (resp.ok) {
+              const resData = await resp.json();
+              const recognizedText = resData.text ? resData.text.trim() : '';
+              if (recognizedText && inputEl) {
+                inputEl.value = existingPrefix ? (existingPrefix + ' ' + recognizedText) : recognizedText;
+                inputEl.dispatchEvent(new Event('input'));
+                if (countEl) countEl.textContent = `${inputEl.value.length} / ${maxLen}`;
+                showToastNotification('✓ Речь успешно распознана!');
+              } else {
+                showToastNotification('⚠️ Голос не распознан, попробуйте сказать громче');
+              }
+            } else {
+              showToastNotification('Ошибка распознавания речи на сервере');
+            }
+          } catch (fetchErr) {
+            console.error('Transcription network error:', fetchErr);
+            showToastNotification('Ошибка отправки аудио: ' + fetchErr.message);
+          } finally {
+            if (btn) btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+            activeSpeechTarget = null;
+          }
         };
 
-        rec.onend = () => {
-          if (btn) {
-            btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
-            btn.innerHTML = activeSpeechOrigHtml || '🎙️';
-          }
-          activeSpeechRecognition = null;
-          activeSpeechTarget = null;
-          if (inputEl && inputEl.value) {
-            showToastNotification('✓ Речь успешно распознана!');
-          }
-        };
-
-        rec.start();
+        recorder.start(250);
       } catch (err) {
-        console.warn('Speech start error:', err);
+        console.warn('getUserMedia error:', err);
+        showToastNotification('Пожалуйста, разрешите доступ к микрофону в настройках');
         if (btn) {
           btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
           btn.innerHTML = activeSpeechOrigHtml || '🎙️';
         }
-        activeSpeechRecognition = null;
         activeSpeechTarget = null;
       }
     }
