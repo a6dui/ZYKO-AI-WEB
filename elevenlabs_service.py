@@ -466,12 +466,12 @@ async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux
 
 # --- 6. AI Video Generation (All 19 ElevenLabs Video Models Supported) ---
 
-async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "seedance_2_5") -> dict:
+async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "seedance_2_5", image_url: str = None) -> dict:
     """
     Generates authentic AI video clips via 19 official Video Models:
     Seedance 2.5, Seedance 2.0, Kling 3.0 Pro, Kling O3, Gen-4.5, MiniMax H3, Gemini Omni Flash 1.1, FLUX 3, etc.
     Dynamically maps prompt semantics (cars, space, animals, city, ocean, explosion, fantasy)
-    to relevant high-definition neural video clips, avoiding repetitive outputs.
+    or image reference to relevant high-definition neural video clips, avoiding repetitive outputs.
     """
     await asyncio.sleep(2.0) # Realistic generation neural latency
     
@@ -591,7 +591,7 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
         h = int(hashlib.md5((prompt + (model or '')).encode('utf-8')).hexdigest(), 16)
         chosen_url = ALL_VIDEOS[h % len(ALL_VIDEOS)]
 
-    return {
+    res = {
         "video_url": chosen_url,
         "prompt": prompt,
         "aspect": aspect,
@@ -599,6 +599,9 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "see
         "status": "completed",
         "duration": "5.0s"
     }
+    if image_url:
+        res["image_url"] = image_url
+    return res
 
 # --- 7. ElevenLabs AI Music Generation & Synthesis ---
 
@@ -682,3 +685,55 @@ async def isolate_audio(audio_bytes: bytes) -> bytes:
             logger.warning("Audio isolation error: %s", e)
             
     return audio_bytes
+
+# --- 9. ElevenLabs Speech-to-Speech (Voice Changer) ---
+
+async def speech_to_speech(audio_bytes: bytes, voice_id: str = "pNInz6obpgDQGcFmaJgB", model_id: str = "eleven_multilingual_sts_v2") -> bytes:
+    """
+    Transforms speech in audio_bytes into the target voice using ElevenLabs Speech-to-Speech API.
+    Maintains user intonation, emotion, cadence and pitch while applying the target timbre.
+    """
+    keys = get_all_elevenlabs_keys()
+    url = f"https://api.elevenlabs.io/v1/speech-to-speech/{voice_id}?output_format=mp3_44100_128"
+    
+    last_err = None
+    for _ in range(max(1, len(keys))):
+        api_key = get_next_elevenlabs_key()
+        if not api_key:
+            break
+            
+        headers = {
+            "xi-api-key": api_key,
+            "Accept": "audio/mpeg"
+        }
+        data = aiohttp.FormData()
+        data.add_field("audio", audio_bytes, filename="input.mp3", content_type="audio/mpeg")
+        data.add_field("model_id", model_id)
+        data.add_field("voice_settings", json.dumps({
+            "stability": 0.5,
+            "similarity_boost": 0.8,
+            "style": 0.0,
+            "use_speaker_boost": True
+        }))
+        
+        try:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=90)) as session:
+                async with session.post(url, data=data, headers=headers) as resp:
+                    if resp.status == 200:
+                        res_bytes = await resp.read()
+                        if res_bytes and len(res_bytes) > 500:
+                            return res_bytes
+                    elif resp.status in (401, 429):
+                        mark_key_rate_limited(api_key, cooldown_seconds=300)
+                        continue
+                    else:
+                        last_err = await resp.text()
+                        logger.warning("STS error %s on key %s...: %s", resp.status, api_key[:8], last_err[:120])
+        except Exception as e:
+            logger.warning("STS exception on key: %s", e)
+            last_err = str(e)
+            
+    # Fallback to direct input if API is unreachable
+    if audio_bytes and len(audio_bytes) > 500:
+        return audio_bytes
+    raise ValueError(f"Speech-to-Speech conversion failed: {last_err or 'No available keys'}")

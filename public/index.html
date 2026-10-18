@@ -1646,11 +1646,85 @@
             <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
               Eleven v4 creates natural, emotionally expressive speech with authentic human cadence and realistic tones. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-5">
               <span class="text-stone-300">Key capabilities:</span>
               <span class="text-stone-400">ultra-realistic speech</span> •
               <span class="text-stone-400">accent-free voice</span> •
-              <span class="text-stone-400">long-form content</span>
+              <span class="text-stone-400">speech-to-speech changer</span>
+            </div>
+
+            <!-- Authentic Audio Subtabs Switcher: TTS vs Speech-to-Speech -->
+            <div class="flex items-center justify-center gap-2 mb-5">
+              <div class="inline-flex p-1 bg-white/5 border border-white/10 rounded-2xl shadow-inner">
+                <button type="button" id="subtab-audio-tts" onclick="switchAudioStudioSubtab('tts')" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg">
+                  🗣️ Текст в речь (TTS)
+                </button>
+                <button type="button" id="subtab-audio-sts" onclick="switchAudioStudioSubtab('sts')" class="px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white">
+                  🎙️ Speech-to-Speech (Voice Changer)
+                </button>
+              </div>
+            </div>
+
+            <!-- STS Interactive Voice Changer Workspace (Screenshot / Modern Luxury Card) -->
+            <div id="audio-sts-workspace" class="hidden max-w-xl mx-auto mb-6 p-4 sm:p-5 rounded-2xl bg-[#121615] border border-amber-500/30 shadow-2xl text-left space-y-4">
+              <!-- Header info -->
+              <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center text-lg">
+                    🎙️
+                  </div>
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-bold text-white">Превращение речи в персонажа</h3>
+                    <p class="text-[10px] text-stone-400">ElevenLabs STS • Сохраняет эмоции, акцент и темп</p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">15 ZK</span>
+              </div>
+
+              <!-- Selected Voice Preview -->
+              <div class="bg-black/40 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span id="sts-target-voice-avatar" class="text-2xl shrink-0">🎙️</span>
+                  <div class="min-w-0">
+                    <div class="text-[10px] text-stone-400 uppercase font-mono">Целевой персонаж:</div>
+                    <div id="sts-target-voice-name" class="text-xs font-bold text-white truncate">Rachel</div>
+                  </div>
+                </div>
+                <button type="button" onclick="openVoiceCatalogModal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-stone-200 hover:text-black text-xs font-bold border border-white/20 transition active:scale-95 shrink-0">
+                  🎭 Выбрать персонажа
+                </button>
+              </div>
+
+              <!-- Live Microphone Recorder Box -->
+              <div class="border-2 border-dashed border-white/15 hover:border-amber-400/50 rounded-2xl p-4 sm:p-5 text-center bg-black/30 transition">
+                <div class="flex flex-col items-center justify-center gap-3">
+                  <button type="button" id="btn-sts-record" onclick="toggleSTSRecording()" class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black flex items-center justify-center text-2xl shadow-xl transition active:scale-95 cursor-pointer">
+                    <span id="sts-record-icon">🎙️</span>
+                  </button>
+                  <div id="sts-record-status" class="text-xs font-bold text-stone-200">
+                    Нажмите на микрофон и скажите любую фразу
+                  </div>
+                  <div id="sts-record-timer" class="text-xs font-mono text-amber-400">00:00 / 00:30</div>
+
+                  <!-- Audio Preview Player once recorded -->
+                  <audio id="sts-recorded-audio" controls class="hidden w-full max-w-sm mt-1"></audio>
+
+                  <!-- Or File Upload Alternative -->
+                  <div class="pt-2 flex items-center justify-center gap-2 w-full border-t border-white/10 text-[11px] text-stone-400">
+                    <span>или</span>
+                    <label class="text-amber-400 hover:underline cursor-pointer font-semibold flex items-center gap-1">
+                      <span>📁 Загрузить файл аудио (MP3/WAV)</span>
+                      <input type="file" id="sts-file-upload-input" accept="audio/*" class="hidden" onchange="handleSTSUpload(this)">
+                    </label>
+                  </div>
+                  <div id="sts-upload-filename" class="hidden text-[11px] text-emerald-400 font-medium"></div>
+                </div>
+              </div>
+
+              <!-- Action Submit Button -->
+              <button type="button" id="btn-submit-sts" onclick="executeGenerateSTS()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs shadow-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
+                <span>✨</span> <span>Преобразовать голос (15 ZK)</span>
+              </button>
             </div>
 
             <!-- Audio Generation Live Gallery / Stream -->
@@ -2241,13 +2315,16 @@
               <button type="button" id="audio-tab-tts" onclick="setAudioMode('tts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-amber-500/20 border border-amber-500/40 shadow">
                 <span>🗣️</span> <span>Озвучка (TTS)</span>
               </button>
+              <button type="button" id="audio-tab-sts" onclick="setAudioMode('sts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
+                <span>🎙️</span> <span>Voice Changer</span>
+              </button>
               <button type="button" id="audio-tab-clone" onclick="setAudioMode('clone')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
                 <span>🧬</span> <span>Клонирование</span>
               </button>
               <button type="button" id="audio-tab-sfx" onclick="setAudioMode('sfx')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
                 <span>🔊</span> <span>Звуки (SFX)</span>
               </button>
-              <button type="button" id="audio-tab-isolate" onclick="setAudioMode('isolate')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
+              <button type="button" id="audio-tab-isolate" onclick="setAudioMode('isolate')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5 col-span-2">
                 <span>🧹</span> <span>Изолятор речи</span>
               </button>
             </div>
@@ -2435,6 +2512,43 @@
                 <span id="label-toggle-all-accordions">Open all ▴</span>
               </button>
             </div>
+          </div>
+
+          <!-- ================= MODE: SPEECH-TO-SPEECH (VOICE CHANGER) ================= -->
+          <div id="audio-mode-panel-sts" class="hidden space-y-3.5">
+            <div class="bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 rounded-2xl p-3.5">
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="text-base">🎙️</span>
+                <span class="font-bold text-white text-xs">Speech-to-Speech (Voice Changer)</span>
+              </div>
+              <p class="text-[11px] text-stone-400 leading-relaxed">
+                Запишите голос на микрофон или загрузите аудио, чтобы переозвучить его голосом персонажа (1 176 голосов) с сохранением эмоций!
+              </p>
+            </div>
+
+            <!-- Target Voice Card -->
+            <div class="bg-[#141b18] border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span id="sidebar-sts-voice-avatar" class="text-xl">🎙️</span>
+                <div class="min-w-0">
+                  <div class="text-[10px] text-stone-400 font-mono">Целевой голос:</div>
+                  <div id="sidebar-sts-voice-name" class="text-xs font-bold text-white truncate">Rachel</div>
+                </div>
+              </div>
+              <button type="button" onclick="openVoiceCatalogModal()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white text-stone-200 hover:text-black text-[11px] font-bold border border-white/20 transition active:scale-95 shrink-0">
+                Сменить ▾
+              </button>
+            </div>
+
+            <!-- Quick Record / Upload Trigger -->
+            <button type="button" onclick="switchAudioStudioSubtab('sts')" class="w-full py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center justify-center gap-2">
+              <span>🎙️</span> <span>Открыть панель записи речи</span>
+            </button>
+
+            <!-- Submit Button -->
+            <button type="button" onclick="executeGenerateSTS()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
+              <span>✨</span> <span>Преобразовать речь (15 ZK)</span>
+            </button>
           </div>
 
           <!-- ================= MODE 2: INSTANT VOICE CLONING ================= -->
@@ -4387,6 +4501,46 @@
     </div>
   </div>
 
+  <!-- ================= FLOATING AUDIO BAR (SPOTIFY / APPLE MUSIC STYLE) ================= -->
+  <div id="floating-audio-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[250] max-w-2xl w-[calc(100%-1.25rem)] bg-[#121615]/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-2.5 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex items-center justify-between gap-2.5 sm:gap-4 text-white transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none select-none">
+    <!-- Left: Avatar / Vinyl & Info -->
+    <div class="flex items-center gap-2.5 min-w-0 flex-1 sm:flex-initial sm:w-48">
+      <div id="float-bar-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/25 to-emerald-500/25 border border-white/15 flex items-center justify-center text-lg shrink-0 shadow-md transition-transform duration-500">
+        🎙️
+      </div>
+      <div class="min-w-0 pr-1">
+        <div id="float-bar-title" class="text-xs sm:text-sm font-bold text-white truncate">ElevenLabs Voice</div>
+        <div id="float-bar-subtitle" class="text-[10px] text-stone-400 truncate">Preview Sample</div>
+      </div>
+    </div>
+
+    <!-- Center: Play Controls & Scrubber -->
+    <div class="flex-1 max-w-sm flex flex-col items-center gap-1">
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="seekFloatingBar(-5)" class="text-stone-400 hover:text-white text-xs transition active:scale-90" title="-5 сек">⏮</button>
+        <button type="button" id="float-bar-play-btn" onclick="toggleFloatingBarPlayback()" class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black flex items-center justify-center text-xs font-black shadow-lg transition active:scale-95" title="Play/Pause">
+          ▶
+        </button>
+        <button type="button" onclick="seekFloatingBar(5)" class="text-stone-400 hover:text-white text-xs transition active:scale-90" title="+5 сек">⏭</button>
+      </div>
+      <div class="w-full flex items-center gap-2">
+        <span id="float-bar-current-time" class="text-[10px] font-mono text-stone-400 w-8 text-right shrink-0">00:00</span>
+        <input type="range" min="0" max="100" value="0" id="float-bar-scrubber" oninput="handleFloatingBarSeek(this.value)" class="zyko-slider slider-amber flex-1 h-1 cursor-pointer">
+        <span id="float-bar-duration" class="text-[10px] font-mono text-stone-400 w-8 shrink-0">00:15</span>
+      </div>
+    </div>
+
+    <!-- Right: Select Voice Button + Close -->
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <button type="button" id="float-bar-select-btn" onclick="applyFloatingBarVoice()" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black text-xs font-black transition active:scale-95 shadow">
+        Выбрать
+      </button>
+      <button type="button" onclick="closeFloatingBar()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-stone-400 hover:text-white flex items-center justify-center text-xs font-bold transition active:scale-95" title="Закрыть плеер">
+        ✕
+      </button>
+    </div>
+  </div>
+
   <!-- ================= 10. FULLSCREEN PHOTO LIGHTBOX MODAL ================= -->
   <div id="photo-lightbox-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/90 backdrop-blur-2xl transition-all duration-200" onclick="if(event.target === this) closePhotoLightbox()">
     <div class="relative max-w-5xl w-full max-h-[96vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
@@ -4411,13 +4565,19 @@
           <p id="photo-lightbox-prompt" class="text-xs text-stone-200 truncate select-all font-medium" title=""></p>
         </div>
         <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end flex-wrap sm:flex-nowrap">
-          <button type="button" onclick="copyPhotoLightboxPrompt()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs font-semibold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            📋 <span>Копировать</span>
+          <button type="button" onclick="copyPhotoLightboxPrompt()" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs font-semibold transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Скопировать промпт">
+            📋 <span class="hidden sm:inline">Копировать</span>
           </button>
-          <a id="photo-lightbox-download" href="#" download="zyko_4k_render.jpg" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-            ⬇️ <span>Скачать 4K</span>
+          <button type="button" onclick="animatePhotoToVideo()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-500/30 to-indigo-500/30 hover:from-purple-500 hover:to-indigo-500 text-purple-200 hover:text-white border border-purple-500/40 text-xs font-bold transition shadow-lg active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Анимировать фото в видеостудии">
+            🎬 <span>В видео</span>
+          </button>
+          <button type="button" onclick="shareCurrentLightboxToTelegram()" class="px-2.5 py-1.5 rounded-xl bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white border border-[#2AABEE]/30 text-xs font-bold transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Поделиться в Telegram">
+            ✈️ <span class="hidden sm:inline">Telegram</span>
+          </button>
+          <a id="photo-lightbox-download" href="#" download="zyko_4k_render.jpg" class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-bold transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Скачать в 4K">
+            ⬇️ <span class="hidden sm:inline">4K</span>
           </a>
-          <button type="button" onclick="recreateFromPhotoLightbox()" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black text-xs font-black transition shadow-lg active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <button type="button" onclick="recreateFromPhotoLightbox()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black text-xs font-black transition shadow-lg active:scale-95 flex items-center gap-1 cursor-pointer" title="Повторить генерацию">
             ⚡ <span>Recreate</span>
           </button>
         </div>
@@ -6681,10 +6841,11 @@
                   <span class="text-[9px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
                   <span class="text-[9px] bg-white/20 hover:bg-white/40 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">🔍 Открыть</span>
                 </div>
-                <div class="flex gap-1.5" onclick="event.stopPropagation()">
+                <div class="flex gap-1" onclick="event.stopPropagation()">
                   <button type="button" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Открыть</button>
-                  <a href="${imgUrl}" download="zyko_ai_render.jpg" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Download 4K</a>
-                  <button onclick="document.getElementById('image-prompt-input').value = '${escapeHtml(prompt)}'" class="px-2 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[10px] transition">Recreate</button>
+                  <button type="button" onclick="animatePhotoToVideo('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}')" class="px-2 py-1 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded text-[10px] transition shadow" title="Анимировать в видео (Image-to-Video)">🎬</button>
+                  <button type="button" onclick="shareToTelegram('image', '${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2 py-1 bg-[#2AABEE] hover:bg-[#229ed9] text-white font-bold rounded text-[10px] transition shadow" title="Поделиться в Telegram">✈️</button>
+                  <a href="${imgUrl}" download="zyko_ai_render.jpg" class="px-2 py-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold rounded text-[10px] transition" title="Скачать 4K">⬇️</a>
                 </div>
               </div>
             </div>
@@ -6785,15 +6946,20 @@
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
+        const bodyData = {
+          prompt: prompt,
+          aspect: aspect,
+          duration: duration,
+          model: modelToUse
+        };
+        if (typeof currentVideoReferenceImage !== 'undefined' && currentVideoReferenceImage) {
+          bodyData.image_url = currentVideoReferenceImage;
+        }
+
         const resp = await fetch('/api/generate/video', {
           method: 'POST',
           headers,
-          body: JSON.stringify({
-            prompt: prompt,
-            aspect: aspect,
-            duration: duration,
-            model: modelToUse
-          })
+          body: JSON.stringify(bodyData)
         });
 
         clearInterval(progressTimer);
@@ -6822,6 +6988,9 @@
                     <a href="${data.video_url}" download="zyko_video.mp4" target="_blank" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition">
                       Скачать MP4
                     </a>
+                    <button type="button" onclick="shareToTelegram('video', '${data.video_url}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
+                      ✈️
+                    </button>
                     <button onclick="document.getElementById('video-prompt-input').value = '${escapeHtml(prompt)}'" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
                       Повторить
                     </button>
@@ -7276,10 +7445,10 @@
       initZykoSliders();
     }
 
-    // Switch between the 4 ElevenLabs Studio Modes
+    // Switch between the 5 ElevenLabs Studio Modes
     function setAudioMode(mode) {
       currentAudioMode = mode;
-      const modes = ['tts', 'clone', 'sfx', 'isolate'];
+      const modes = ['tts', 'sts', 'clone', 'sfx', 'isolate'];
       
       modes.forEach(m => {
         const tabBtn = document.getElementById(`audio-tab-${m}`);
@@ -7298,6 +7467,13 @@
         }
       });
 
+      // Synchronize central workspace subtabs
+      if (mode === 'sts') {
+        switchAudioStudioSubtab('sts', false);
+      } else if (mode === 'tts') {
+        switchAudioStudioSubtab('tts', false);
+      }
+
       // Synchronize bottom prompt bar based on mode
       const input = document.getElementById('audio-text-input');
       const hint = document.getElementById('audio-input-hint-text');
@@ -7310,6 +7486,12 @@
         if (hint) hint.textContent = 'Type text to synthesize speech with the selected voice...';
         if (costBadge) costBadge.textContent = '10';
         if (sendBtn) { sendBtn.title = 'Generate Speech'; sendBtn.innerHTML = '➤'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'sts') {
+        if (input) input.placeholder = 'Speech-to-Speech: Record or upload speech in the panel above to convert voice...';
+        if (hint) hint.textContent = 'ElevenLabs Speech-to-Speech Voice Changer (15 ZK)...';
+        if (costBadge) costBadge.textContent = '15';
+        if (sendBtn) { sendBtn.title = 'Convert Voice'; sendBtn.innerHTML = '✨'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
       } else if (mode === 'clone') {
         if (input) input.placeholder = 'Enter voice clone name and upload clean audio sample (30s - 2min)...';
@@ -7329,6 +7511,35 @@
         if (costBadge) costBadge.textContent = '15';
         if (sendBtn) { sendBtn.title = 'Isolate Vocal'; sendBtn.innerHTML = '✨'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
+      }
+    }
+
+    function switchAudioStudioSubtab(tab, syncSidebar = true) {
+      const ttsBtn = document.getElementById('subtab-audio-tts');
+      const stsBtn = document.getElementById('subtab-audio-sts');
+      const stsWorkspace = document.getElementById('audio-sts-workspace');
+
+      if (tab === 'sts') {
+        if (stsBtn) {
+          stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg';
+        }
+        if (ttsBtn) {
+          ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
+        }
+        if (stsWorkspace) stsWorkspace.classList.remove('hidden');
+
+        // Update target voice labels
+        updateSelectedVoiceUI();
+        if (syncSidebar) setAudioMode('sts');
+      } else {
+        if (ttsBtn) {
+          ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg';
+        }
+        if (stsBtn) {
+          stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
+        }
+        if (stsWorkspace) stsWorkspace.classList.add('hidden');
+        if (syncSidebar) setAudioMode('tts');
       }
     }
 
@@ -7557,29 +7768,49 @@
 
       if (currentlyPlayingVoiceId === voiceId && !player.paused) {
         player.pause();
+        currentlyPlayingVoiceId = null;
         renderVoiceCatalogCards();
+        updateFloatingBarState(false);
         return;
       }
 
       currentlyPlayingVoiceId = voiceId;
-      player.src = previewUrl || `/api/voice/preview?voice_id=${voiceId}`;
+      const audioSrc = previewUrl || `/api/voice/preview?voice_id=${voiceId}`;
+      player.src = audioSrc;
       player.play().catch(e => console.warn('Preview error:', e));
 
+      // Trigger Luxury Spotify Floating Bar
+      const v = audioVoicesRegistry.find(item => item.id === voiceId) || { name: 'Voice Sample', desc: 'ElevenLabs Voice', avatar: '🎙️' };
+      showFloatingAudioBar(v.name || v.title, v.desc || 'ElevenLabs Voice Preview', v.avatar || '🎙️', audioSrc, voiceId);
+
       player.ontimeupdate = () => {
-        if (!currentlyPlayingVoiceId) return;
-        const curEl = document.getElementById(`player-cur-time-${currentlyPlayingVoiceId}`);
-        const scrubEl = document.getElementById(`player-scrubber-${currentlyPlayingVoiceId}`);
-        if (curEl) curEl.textContent = formatAudioTime(player.currentTime);
-        if (scrubEl && player.duration) {
-          const pct = (player.currentTime / player.duration) * 100;
-          scrubEl.value = pct;
-          updateSliderProgress(scrubEl);
+        // Sync catalog card scrubber
+        if (currentlyPlayingVoiceId) {
+          const curEl = document.getElementById(`player-cur-time-${currentlyPlayingVoiceId}`);
+          const scrubEl = document.getElementById(`player-scrubber-${currentlyPlayingVoiceId}`);
+          if (curEl) curEl.textContent = formatAudioTime(player.currentTime);
+          if (scrubEl && player.duration) {
+            const pct = (player.currentTime / player.duration) * 100;
+            scrubEl.value = pct;
+            updateSliderProgress(scrubEl);
+          }
+        }
+        // Sync Spotify Floating Bar scrubber
+        const floatCur = document.getElementById('float-bar-current-time');
+        const floatDur = document.getElementById('float-bar-duration');
+        const floatScrub = document.getElementById('float-bar-scrubber');
+        if (floatCur) floatCur.textContent = formatAudioTime(player.currentTime);
+        if (floatDur && player.duration) floatDur.textContent = formatAudioTime(player.duration);
+        if (floatScrub && player.duration) {
+          floatScrub.value = (player.currentTime / player.duration) * 100;
+          updateSliderProgress(floatScrub);
         }
       };
 
       player.onended = () => {
         currentlyPlayingVoiceId = null;
         renderVoiceCatalogCards();
+        updateFloatingBarState(false);
       };
 
       renderVoiceCatalogCards();
@@ -7608,7 +7839,6 @@
       closeVoiceCatalogModal();
       stopActivePreview();
 
-      // Subtle toast confirmation
       const name = v.title || v.name;
       console.log('Selected audio voice:', name);
     }
@@ -7637,6 +7867,311 @@
       }
       if (barAvatar) {
         barAvatar.textContent = selectedAudioVoice.avatar || '🎙️';
+      }
+
+      // Synchronize STS Voice labels
+      const stsName = document.getElementById('sts-target-voice-name');
+      const stsAvatar = document.getElementById('sts-target-voice-avatar');
+      if (stsName) stsName.textContent = selectedAudioVoice.name;
+      if (stsAvatar) stsAvatar.textContent = selectedAudioVoice.avatar || '🎙️';
+
+      const sideStsName = document.getElementById('sidebar-sts-voice-name');
+      const sideStsAvatar = document.getElementById('sidebar-sts-voice-avatar');
+      if (sideStsName) sideStsName.textContent = selectedAudioVoice.name;
+      if (sideStsAvatar) sideStsAvatar.textContent = selectedAudioVoice.avatar || '🎙️';
+    }
+
+    // =========================================================================
+    // SPOTIFY-STYLE FLOATING AUDIO BAR CONTROLLER
+    // =========================================================================
+    let floatingBarVoiceId = null;
+
+    function showFloatingAudioBar(title, subtitle, avatar, audioUrl, voiceId = null) {
+      floatingBarVoiceId = voiceId;
+      const bar = document.getElementById('floating-audio-bar');
+      const titleEl = document.getElementById('float-bar-title');
+      const subEl = document.getElementById('float-bar-subtitle');
+      const avatarEl = document.getElementById('float-bar-avatar');
+      const playBtn = document.getElementById('float-bar-play-btn');
+      const selectBtn = document.getElementById('float-bar-select-btn');
+
+      if (!bar) return;
+
+      if (titleEl) titleEl.textContent = title || 'Voice Sample';
+      if (subEl) subEl.textContent = subtitle || 'ElevenLabs Voice';
+      if (avatarEl) avatarEl.textContent = avatar || '🎙️';
+      if (playBtn) playBtn.innerHTML = '⏸';
+      if (selectBtn) {
+        if (voiceId) selectBtn.classList.remove('hidden');
+        else selectBtn.classList.add('hidden');
+      }
+
+      bar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
+      bar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    }
+
+    function updateFloatingBarState(isPlaying) {
+      const playBtn = document.getElementById('float-bar-play-btn');
+      if (playBtn) playBtn.innerHTML = isPlaying ? '⏸' : '▶';
+    }
+
+    function toggleFloatingBarPlayback() {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (!player) return;
+
+      if (player.paused) {
+        player.play().catch(e => console.warn(e));
+        updateFloatingBarState(true);
+      } else {
+        player.pause();
+        updateFloatingBarState(false);
+      }
+      renderVoiceCatalogCards();
+    }
+
+    function seekFloatingBar(deltaSeconds) {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player && player.duration) {
+        player.currentTime = Math.max(0, Math.min(player.duration, player.currentTime + deltaSeconds));
+      }
+    }
+
+    function handleFloatingBarSeek(pct) {
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player && player.duration) {
+        player.currentTime = (parseFloat(pct) / 100) * player.duration;
+      }
+    }
+
+    function applyFloatingBarVoice() {
+      if (floatingBarVoiceId) {
+        selectAudioVoice(floatingBarVoiceId);
+        showToastNotification(`Выбран голос: ${selectedAudioVoice?.name || 'Voice'}`);
+      }
+    }
+
+    function closeFloatingBar() {
+      const bar = document.getElementById('floating-audio-bar');
+      const player = document.getElementById('audio-voice-preview-player');
+      if (player && !player.paused) {
+        player.pause();
+      }
+      currentlyPlayingVoiceId = null;
+      renderVoiceCatalogCards();
+
+      if (bar) {
+        bar.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        bar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
+      }
+    }
+
+    // =========================================================================
+    // ELEVENLABS SPEECH-TO-SPEECH (VOICE CHANGER) CONTROLLER
+    // =========================================================================
+    let stsMediaRecorder = null;
+    let stsAudioChunks = [];
+    let stsRecordedBlob = null;
+    let stsRecordingTimer = null;
+    let stsRecordingSeconds = 0;
+    let stsUploadedFile = null;
+
+    async function toggleSTSRecording() {
+      if (stsMediaRecorder && stsMediaRecorder.state === 'recording') {
+        stsMediaRecorder.stop();
+        return;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToastNotification('Запись с микрофона не поддерживается вашим браузером');
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stsAudioChunks = [];
+        stsMediaRecorder = new MediaRecorder(stream);
+
+        const recordBtn = document.getElementById('btn-sts-record');
+        const icon = document.getElementById('sts-record-icon');
+        const statusEl = document.getElementById('sts-record-status');
+        const timerEl = document.getElementById('sts-record-timer');
+        const audioPrev = document.getElementById('sts-recorded-audio');
+
+        if (audioPrev) audioPrev.classList.add('hidden');
+
+        stsMediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) stsAudioChunks.push(e.data);
+        };
+
+        stsMediaRecorder.onstart = () => {
+          if (recordBtn) recordBtn.classList.add('animate-pulse', 'ring-4', 'ring-red-500/50', 'from-red-500', 'to-red-600');
+          if (icon) icon.textContent = '⏹';
+          if (statusEl) statusEl.textContent = '🔴 Идет запись голоса... Говорите фразу!';
+          stsRecordingSeconds = 0;
+          if (timerEl) timerEl.textContent = '00:00 / 00:30';
+
+          stsRecordingTimer = setInterval(() => {
+            stsRecordingSeconds++;
+            const s = stsRecordingSeconds < 10 ? '0' + stsRecordingSeconds : stsRecordingSeconds;
+            if (timerEl) timerEl.textContent = `00:${s} / 00:30`;
+            if (stsRecordingSeconds >= 30) {
+              if (stsMediaRecorder && stsMediaRecorder.state === 'recording') {
+                stsMediaRecorder.stop();
+              }
+            }
+          }, 1000);
+        };
+
+        stsMediaRecorder.onstop = () => {
+          clearInterval(stsRecordingTimer);
+          stream.getTracks().forEach(track => track.stop());
+
+          if (recordBtn) recordBtn.classList.remove('animate-pulse', 'ring-4', 'ring-red-500/50', 'from-red-500', 'to-red-600');
+          if (icon) icon.textContent = '🎙️';
+          if (statusEl) statusEl.textContent = '✓ Голос записан! Прослушайте ниже и нажмите Преобразовать:';
+
+          stsRecordedBlob = new Blob(stsAudioChunks, { type: 'audio/webm' });
+          stsUploadedFile = null;
+
+          if (audioPrev) {
+            audioPrev.src = URL.createObjectURL(stsRecordedBlob);
+            audioPrev.classList.remove('hidden');
+          }
+          const uploadName = document.getElementById('sts-upload-filename');
+          if (uploadName) uploadName.classList.add('hidden');
+        };
+
+        stsMediaRecorder.start();
+      } catch (err) {
+        console.warn('Microphone error:', err);
+        showToastNotification('Не удалось получить доступ к микрофону: ' + err.message);
+      }
+    }
+
+    function handleSTSUpload(input) {
+      if (input.files && input.files[0]) {
+        stsUploadedFile = input.files[0];
+        stsRecordedBlob = null;
+        const uploadName = document.getElementById('sts-upload-filename');
+        const statusEl = document.getElementById('sts-record-status');
+        const audioPrev = document.getElementById('sts-recorded-audio');
+
+        if (uploadName) {
+          uploadName.classList.remove('hidden');
+          uploadName.textContent = `✓ Загружен файл: ${stsUploadedFile.name} (${(stsUploadedFile.size / (1024*1024)).toFixed(2)} MB)`;
+        }
+        if (statusEl) {
+          statusEl.textContent = '✓ Файл готов к преобразованию!';
+        }
+        if (audioPrev) {
+          audioPrev.src = URL.createObjectURL(stsUploadedFile);
+          audioPrev.classList.remove('hidden');
+        }
+      }
+    }
+
+    async function executeGenerateSTS() {
+      const audioToConvert = stsRecordedBlob || stsUploadedFile;
+      if (!audioToConvert) {
+        showToastNotification('Пожалуйста, запишите голос на микрофон или загрузите аудиофайл!');
+        return;
+      }
+
+      const voice = selectedAudioVoice || audioVoicesRegistry[0];
+      const voiceId = voice.id;
+      const voiceName = voice.name || voice.title || 'Target Voice';
+      const voiceAvatar = voice.avatar || '🎙️';
+
+      const btn = document.getElementById('btn-submit-sts');
+      const origText = btn ? btn.innerHTML : 'Преобразовать голос';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-spin">⏳</span> <span>Нейросеть ElevenLabs переозвучивает речь...</span>`;
+      }
+
+      const gallery = document.getElementById('audio-generation-gallery');
+      const emptyState = document.getElementById('audio-empty-placeholder');
+      if (emptyState) emptyState.remove();
+
+      const loadId = 'sts-load-' + Date.now();
+      if (gallery) {
+        gallery.insertAdjacentHTML('afterbegin', `
+          <div id="${loadId}" class="border border-amber-500/40 bg-[#121615] rounded-2xl p-4 shadow-2xl text-left animate-pulse">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">${voiceAvatar}</span>
+                <span class="font-bold text-white text-xs">Превращение речи в персонажа: ${escapeHtml(voiceName)}</span>
+              </div>
+              <span class="text-xs text-amber-400 font-mono font-bold">15 ZK</span>
+            </div>
+            <p class="text-[11px] text-stone-400 mb-2">ElevenLabs Multilingual STS v2 • Преобразование тембра с сохранением эмоций...</p>
+            <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-gradient-to-r from-amber-400 to-amber-500 h-full rounded-full animate-indeterminate"></div>
+            </div>
+          </div>
+        `);
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('audio', audioToConvert, 'input_speech.webm');
+        formData.append('voice_id', voiceId);
+
+        const token = localStorage.getItem('zyko_token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/generate/sts', {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+
+        document.getElementById(loadId)?.remove();
+
+        if (resp.ok) {
+          const serverUrl = resp.headers.get('x-result-url');
+          const blob = await resp.blob();
+          const resultAudioUrl = serverUrl || URL.createObjectURL(blob);
+
+          renderAudioGenerationCard({
+            type: 'SPEECH-TO-SPEECH',
+            voiceName: voiceName + ' (Voice Changer)',
+            avatar: voiceAvatar,
+            model: 'Eleven Multilingual STS v2',
+            text: `Превращение речи в персонажа ${voiceName} с сохранением эмоций и интонаций`,
+            audioUrl: resultAudioUrl,
+            cost: 15
+          });
+
+          showFloatingAudioBar(voiceName + ' (Voice Changer)', 'ElevenLabs Speech-to-Speech Result', voiceAvatar, resultAudioUrl, voiceId);
+
+          deductTokensUI(15, `Speech-to-Speech • ${voiceName}`);
+          saveToHistory('projects', `Voice Changer: ${voiceName}`, serverUrl || resultAudioUrl);
+          if (typeof saveToFeed === 'function') {
+            saveToFeed({
+              type: 'audio',
+              model: voiceName + ' (STS)',
+              prompt: `Speech-to-Speech Voice Changer: ${voiceName}`,
+              resultUrl: serverUrl || resultAudioUrl,
+              tokensCost: 15
+            });
+          }
+
+          showToastNotification(`✓ Речь успешно переозвучена голосом ${voiceName}! 🎭`);
+        } else {
+          const errData = await resp.json().catch(() => ({}));
+          throw new Error(errData.error || `HTTP error ${resp.status}`);
+        }
+      } catch (err) {
+        document.getElementById(loadId)?.remove();
+        console.error('STS error:', err);
+        showToastNotification('Ошибка Speech-to-Speech: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origText;
+        }
       }
     }
 
@@ -7745,6 +8280,8 @@
     async function sendGenerateAudioAction() {
       if (currentAudioMode === 'tts') {
         await executeGenerateTTS();
+      } else if (currentAudioMode === 'sts') {
+        await executeGenerateSTS();
       } else if (currentAudioMode === 'sfx') {
         await executeGenerateSFX();
       } else if (currentAudioMode === 'clone') {
@@ -8188,7 +8725,7 @@
         }
         alert('Ошибка изоляции голоса: ' + e.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span>✨</span> <span>Изолировать речь (12 Credits)</span>'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>✨</span> <span>Изолировать речь (12 ZK)</span>'; }
       }
     }
 
@@ -8219,10 +8756,13 @@
             </div>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="shareToTelegram('audio', '${audioUrl}', '${escapeHtml(text).replace(/'/g, "\\'")}', '${escapeHtml(voiceName)}')" class="w-7 h-7 rounded-lg bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white border border-[#2AABEE]/30 flex items-center justify-center text-xs transition active:scale-95" title="Поделиться в Telegram">
+              ✈️
+            </button>
             <a href="${audioUrl}" download="${type.toLowerCase()}_${Date.now()}.mp3" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Download MP3">
               📥
             </a>
-            <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); alert('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Copy Text">
+            <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); showToastNotification('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Copy Text">
               📋
             </button>
           </div>
@@ -8747,6 +9287,85 @@
       if (input && currentLightboxPhoto.prompt) {
         input.value = currentLightboxPhoto.prompt;
         input.focus();
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 1: IMAGE-TO-VIDEO ANIMATOR
+    // =========================================================================
+    let currentVideoReferenceImage = null;
+
+    function animatePhotoToVideo(imgUrl, prompt) {
+      const urlToUse = imgUrl || currentLightboxPhoto?.url;
+      const promptToUse = prompt || currentLightboxPhoto?.prompt || '';
+
+      if (!urlToUse) {
+        showToastNotification('Выберите изображение для анимации');
+        return;
+      }
+
+      closePhotoLightbox();
+      if (typeof switchTab === 'function') switchTab('video');
+
+      currentVideoReferenceImage = urlToUse;
+
+      const input = document.getElementById('video-prompt-input');
+      if (input) {
+        input.value = promptToUse ? `Cinematic lifelike motion, 8K dynamic camera angle: ${promptToUse}` : 'Cinematic 8K smooth motion camera tracking shot';
+        input.dispatchEvent(new Event('input'));
+        input.focus();
+      }
+
+      const previewChip = document.getElementById('video-file-preview');
+      if (previewChip) {
+        previewChip.classList.remove('hidden');
+        previewChip.innerHTML = `
+          <img src="${urlToUse}" class="w-8 h-8 object-cover rounded-lg border border-purple-400/70 shadow shrink-0">
+          <div class="min-w-0 pr-2">
+            <div class="text-[10px] text-purple-400 uppercase font-mono font-bold">Image-to-Video Референс</div>
+            <div class="truncate max-w-[200px] text-[11px] font-bold text-white">${escapeHtml(promptToUse.slice(0, 30) || 'Фото референс')}...</div>
+          </div>
+          <button type="button" onclick="clearVideoReference()" class="text-stone-400 hover:text-white ml-auto text-xs px-1.5 py-0.5 rounded hover:bg-white/10" title="Удалить">✕</button>
+        `;
+      }
+
+      showToastNotification('🎬 Фото перенесено в Видеостудию! Нажмите ➤ для генерации ролика.');
+    }
+
+    function clearVideoReference() {
+      currentVideoReferenceImage = null;
+      const previewChip = document.getElementById('video-file-preview');
+      if (previewChip) previewChip.classList.add('hidden');
+    }
+
+    // =========================================================================
+    // FEATURE 5: TELEGRAM 1-CLICK SHARE
+    // =========================================================================
+    function shareToTelegram(type, url, prompt = '', model = '') {
+      let finalUrl = url || window.location.href;
+      if (finalUrl.startsWith('/')) {
+        finalUrl = window.location.origin + finalUrl;
+      }
+
+      let typeEmoji = '✨';
+      let typeLabel = 'Шедевр ИИ';
+      if (type === 'image') { typeEmoji = '🎨'; typeLabel = 'AI Фотография'; }
+      else if (type === 'video') { typeEmoji = '🎬'; typeLabel = 'AI Видеоролик'; }
+      else if (type === 'audio' || type === 'sts') { typeEmoji = '🎙️'; typeLabel = 'AI Озвучка / Голос персонажа'; }
+
+      const promptStr = prompt ? `\n\n💭 «${prompt.slice(0, 120)}${prompt.length > 120 ? '...' : ''}»` : '';
+      const modelStr = model ? `\n⚡ Нейросеть: ${model.toUpperCase()}` : '';
+
+      const text = `${typeEmoji} ${typeLabel} создано на платформе ZYKO.AI${promptStr}${modelStr}\n\n🚀 Создавай крутые арты, кинематографичные видео и говори голосами любых персонажей:\nhttps://zyko.study • @ZykoAi_bot`;
+
+      const shareLink = `https://t.me/share/url?url=${encodeURIComponent(finalUrl)}&text=${encodeURIComponent(text)}`;
+      window.open(shareLink, '_blank');
+      showToastNotification('Открываем Telegram для репоста ✈️');
+    }
+
+    function shareCurrentLightboxToTelegram() {
+      if (currentLightboxPhoto && currentLightboxPhoto.url) {
+        shareToTelegram('image', currentLightboxPhoto.url, currentLightboxPhoto.prompt, currentLightboxPhoto.model);
       }
     }
 
@@ -11186,21 +11805,119 @@
         .replace(/`([^`]+)`/g, '<code class="bg-black/60 px-1 py-0.5 rounded text-emerald-300 text-[11px] font-mono">$1</code>');
     }
 
+    // =========================================================================
+    // FEATURE 4: VOICE-TO-PROMPT (REAL-TIME SPEECH RECOGNITION)
+    // =========================================================================
+    let activeSpeechRecognition = null;
+    let activeSpeechTarget = null;
+    let activeSpeechBtn = null;
+    let activeSpeechOrigHtml = '';
+
     function handleVoiceInput(target) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert('Voice speech recognition not supported in this browser. Please use Chrome or Safari.');
+        showToastNotification('Голосовой ввод не поддерживается вашим браузером. Пожалуйста, используйте Chrome или Safari.');
         return;
       }
-      const rec = new SpeechRecognition();
-      rec.lang = currentLang === 'ru' ? 'ru-RU' : 'en-US';
-      rec.start();
-      rec.onresult = (e) => {
-        const text = e.results[0][0].transcript;
-        if (target === 'agent') document.getElementById('agent-prompt-input').value = text;
-        else if (target === 'llm') document.getElementById('llm-prompt-input').value = text;
-        else if (target === 'image') document.getElementById('image-prompt-input').value = text;
-      };
+
+      // If already listening on this target, stop it cleanly
+      if (activeSpeechRecognition && activeSpeechTarget === target) {
+        try { activeSpeechRecognition.stop(); } catch (e) {}
+        return;
+      }
+
+      // If listening on another target, stop that first
+      if (activeSpeechRecognition) {
+        try { activeSpeechRecognition.stop(); } catch (e) {}
+      }
+
+      // Find trigger button
+      const btn = event?.currentTarget || document.querySelector(`button[onclick*="handleVoiceInput('${target}')"]`);
+      activeSpeechBtn = btn;
+      activeSpeechOrigHtml = btn ? btn.innerHTML : '🎙️';
+
+      let inputEl = null;
+      let countEl = null;
+      let maxLen = 24000;
+
+      if (target === 'image') {
+        inputEl = document.getElementById('image-prompt-input');
+        countEl = document.getElementById('image-char-count');
+      } else if (target === 'video') {
+        inputEl = document.getElementById('video-prompt-input');
+        countEl = document.getElementById('video-char-count');
+      } else if (target === 'audio') {
+        inputEl = document.getElementById('audio-text-input');
+        countEl = document.getElementById('audio-char-count');
+        maxLen = 10000;
+      } else if (target === 'llm') {
+        inputEl = document.getElementById('llm-prompt-input');
+      } else if (target === 'agent') {
+        inputEl = document.getElementById('agent-prompt-input');
+      }
+
+      const existingText = inputEl ? inputEl.value : '';
+
+      try {
+        const rec = new SpeechRecognition();
+        rec.lang = (currentLang === 'ru' || (navigator.language && navigator.language.startsWith('ru'))) ? 'ru-RU' : 'en-US';
+        rec.interimResults = true;
+        rec.continuous = false;
+
+        activeSpeechRecognition = rec;
+        activeSpeechTarget = target;
+
+        if (btn) {
+          btn.classList.add('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+          btn.innerHTML = '🔴';
+        }
+
+        showToastNotification('🎙️ Слушаю вас... Говорите!');
+
+        rec.onresult = (e) => {
+          let transcript = '';
+          for (let i = 0; i < e.results.length; i++) {
+            transcript += e.results[i][0].transcript;
+          }
+          if (inputEl && transcript) {
+            inputEl.value = existingText ? (existingText.trim() + ' ' + transcript) : transcript;
+            inputEl.dispatchEvent(new Event('input'));
+            if (countEl) countEl.textContent = `${inputEl.value.length} / ${maxLen}`;
+          }
+        };
+
+        rec.onerror = (e) => {
+          console.warn('Speech recognition error:', e);
+          if (btn) {
+            btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+            btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+          }
+          activeSpeechRecognition = null;
+          activeSpeechTarget = null;
+        };
+
+        rec.onend = () => {
+          if (btn) {
+            btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+            btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+          }
+          activeSpeechRecognition = null;
+          activeSpeechTarget = null;
+          if (inputEl && inputEl.value) {
+            showToastNotification('✓ Речь успешно распознана!');
+          }
+        };
+
+        rec.start();
+      } catch (err) {
+        console.warn('Speech start error:', err);
+        if (btn) {
+          btn.classList.remove('ring-2', 'ring-red-500', 'bg-red-500/30', 'text-red-400', 'animate-pulse');
+          btn.innerHTML = activeSpeechOrigHtml || '🎙️';
+        }
+        activeSpeechRecognition = null;
+        activeSpeechTarget = null;
+      }
     }
 
 

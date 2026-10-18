@@ -759,6 +759,7 @@ from elevenlabs_service import (
     generate_sfx,
     clone_voice,
     isolate_audio,
+    speech_to_speech,
     get_all_character_voices,
     generate_ai_image,
     generate_ai_video,
@@ -945,6 +946,42 @@ async def handle_generate_isolate(request: web.Request):
         logger.error("Audio isolation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
+async def handle_generate_sts(request: web.Request):
+    try:
+        reader = await request.multipart()
+        audio_bytes = b""
+        voice_id = "pNInz6obpgDQGcFmaJgB"
+        while True:
+            part = await reader.next()
+            if part is None:
+                break
+            if part.name in ("audio", "file"):
+                audio_bytes = await part.read()
+            elif part.name == "voice_id":
+                val = await part.text()
+                if val and val.strip():
+                    voice_id = val.strip()
+
+        if not audio_bytes:
+            return web.json_response({"error": "Audio recording or file required for Speech-to-Speech"}, status=400)
+
+        user = await get_current_user(request) or await get_or_create_demo_user()
+        if not await deduct_tokens(user["id"], 15):
+            return web.json_response({"error": "Insufficient tokens (requires 15 ZK)"}, status=400)
+
+        changed_bytes = await speech_to_speech(audio_bytes, voice_id=voice_id)
+        result_url = save_generated_media(changed_bytes, "sts", "mp3")
+        await log_generation(user["id"], "speech_to_speech", f"Voice Changer: {voice_id}", result_url or "sts_audio", 15)
+
+        resp = web.Response(body=changed_bytes, content_type="audio/mpeg")
+        if result_url:
+            resp.headers["X-Result-URL"] = result_url
+            resp.headers["Access-Control-Expose-Headers"] = "X-Result-URL"
+        return resp
+    except Exception as e:
+        logger.error("Speech-to-Speech error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
 async def handle_generate_image(request: web.Request):
     try:
         data = await request.json()
@@ -978,15 +1015,16 @@ async def handle_generate_video(request: web.Request):
         prompt = data.get("prompt", "").strip()
         aspect = data.get("aspect", "9:16")
         model = data.get("model", "kling")
+        image_url = data.get("image_url") or data.get("image") or ""
         
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
         user = await get_current_user(request) or await get_or_create_demo_user()
         if not await deduct_tokens(user["id"], 25):
-            return web.json_response({"error": "Insufficient tokens (requires 25 Credits)"}, status=400)
+            return web.json_response({"error": "Insufficient tokens (requires 25 ZK)"}, status=400)
             
-        res = await generate_ai_video(prompt, aspect, model)
+        res = await generate_ai_video(prompt, aspect, model, image_url=image_url)
         video_url = res.get("video_url", "") if isinstance(res, dict) else ""
         await log_generation(user["id"], f"video_{model}", prompt, video_url, 25)
             
@@ -1175,6 +1213,7 @@ def create_app():
     app.router.add_post("/api/generate/sfx", handle_generate_sfx)
     app.router.add_post("/api/generate/clone", handle_generate_clone)
     app.router.add_post("/api/generate/isolate", handle_generate_isolate)
+    app.router.add_post("/api/generate/sts", handle_generate_sts)
     app.router.add_get("/api/voices", handle_get_voices)
     app.router.add_get("/api/voice/preview", handle_api_voice_preview)
     app.router.add_post("/api/generate/image", handle_generate_image)
