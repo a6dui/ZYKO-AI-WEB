@@ -4603,46 +4603,6 @@
     </div>
   </div>
 
-  <!-- ================= FLOATING AUDIO BAR (SPOTIFY / APPLE MUSIC STYLE) ================= -->
-  <div id="floating-audio-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[250] max-w-2xl w-[calc(100%-1.25rem)] bg-[#121615]/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-2.5 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex items-center justify-between gap-2.5 sm:gap-4 text-white transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none select-none">
-    <!-- Left: Avatar / Vinyl & Info -->
-    <div class="flex items-center gap-2.5 min-w-0 flex-1 sm:flex-initial sm:w-48">
-      <div id="float-bar-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/25 to-emerald-500/25 border border-white/15 flex items-center justify-center text-lg shrink-0 shadow-md transition-transform duration-500">
-        🎙️
-      </div>
-      <div class="min-w-0 pr-1">
-        <div id="float-bar-title" class="text-xs sm:text-sm font-bold text-white truncate">ElevenLabs Voice</div>
-        <div id="float-bar-subtitle" class="text-[10px] text-stone-400 truncate">Preview Sample</div>
-      </div>
-    </div>
-
-    <!-- Center: Play Controls & Scrubber -->
-    <div class="flex-1 max-w-sm flex flex-col items-center gap-1">
-      <div class="flex items-center gap-3">
-        <button type="button" onclick="seekFloatingBar(-5)" class="text-stone-400 hover:text-white text-xs transition active:scale-90" title="-5 сек">⏮</button>
-        <button type="button" id="float-bar-play-btn" onclick="toggleFloatingBarPlayback()" class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black flex items-center justify-center text-xs font-black shadow-lg transition active:scale-95" title="Play/Pause">
-          ▶
-        </button>
-        <button type="button" onclick="seekFloatingBar(5)" class="text-stone-400 hover:text-white text-xs transition active:scale-90" title="+5 сек">⏭</button>
-      </div>
-      <div class="w-full flex items-center gap-2">
-        <span id="float-bar-current-time" class="text-[10px] font-mono text-stone-400 w-8 text-right shrink-0">00:00</span>
-        <input type="range" min="0" max="100" value="0" id="float-bar-scrubber" oninput="handleFloatingBarSeek(this.value)" class="zyko-slider slider-amber flex-1 h-1 cursor-pointer">
-        <span id="float-bar-duration" class="text-[10px] font-mono text-stone-400 w-8 shrink-0">00:15</span>
-      </div>
-    </div>
-
-    <!-- Right: Select Voice Button + Close -->
-    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-      <button type="button" id="float-bar-select-btn" onclick="applyFloatingBarVoice()" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black text-xs font-black transition active:scale-95 shadow">
-        Выбрать
-      </button>
-      <button type="button" onclick="closeFloatingBar()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-stone-400 hover:text-white flex items-center justify-center text-xs font-bold transition active:scale-95" title="Закрыть плеер">
-        ✕
-      </button>
-    </div>
-  </div>
-
   <!-- ================= 10. FULLSCREEN PHOTO LIGHTBOX MODAL ================= -->
   <div id="photo-lightbox-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/90 backdrop-blur-2xl transition-all duration-200" onclick="if(event.target === this) closePhotoLightbox()">
     <div class="relative max-w-5xl w-full max-h-[96vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
@@ -7960,7 +7920,6 @@
         player.pause();
         currentlyPlayingVoiceId = null;
         renderVoiceCatalogCards();
-        updateFloatingBarState(false);
         return;
       }
 
@@ -7968,10 +7927,6 @@
       const audioSrc = previewUrl || `/api/voice/preview?voice_id=${voiceId}`;
       player.src = audioSrc;
       player.play().catch(e => console.warn('Preview error:', e));
-
-      // Trigger Luxury Spotify Floating Bar
-      const v = audioVoicesRegistry.find(item => item.id === voiceId) || { name: 'Voice Sample', desc: 'ElevenLabs Voice', avatar: '🎙️' };
-      showFloatingAudioBar(v.name || v.title, v.desc || 'ElevenLabs Voice Preview', v.avatar || '🎙️', audioSrc, voiceId);
 
       player.ontimeupdate = () => {
         // Sync catalog card scrubber
@@ -7985,22 +7940,11 @@
             updateSliderProgress(scrubEl);
           }
         }
-        // Sync Spotify Floating Bar scrubber
-        const floatCur = document.getElementById('float-bar-current-time');
-        const floatDur = document.getElementById('float-bar-duration');
-        const floatScrub = document.getElementById('float-bar-scrubber');
-        if (floatCur) floatCur.textContent = formatAudioTime(player.currentTime);
-        if (floatDur && player.duration) floatDur.textContent = formatAudioTime(player.duration);
-        if (floatScrub && player.duration) {
-          floatScrub.value = (player.currentTime / player.duration) * 100;
-          updateSliderProgress(floatScrub);
-        }
       };
 
       player.onended = () => {
         currentlyPlayingVoiceId = null;
         renderVoiceCatalogCards();
-        updateFloatingBarState(false);
       };
 
       renderVoiceCatalogCards();
@@ -8071,89 +8015,6 @@
       if (sideStsAvatar) sideStsAvatar.textContent = selectedAudioVoice.avatar || '🎙️';
     }
 
-    // =========================================================================
-    // SPOTIFY-STYLE FLOATING AUDIO BAR CONTROLLER
-    // =========================================================================
-    let floatingBarVoiceId = null;
-
-    function showFloatingAudioBar(title, subtitle, avatar, audioUrl, voiceId = null) {
-      floatingBarVoiceId = voiceId;
-      const bar = document.getElementById('floating-audio-bar');
-      const titleEl = document.getElementById('float-bar-title');
-      const subEl = document.getElementById('float-bar-subtitle');
-      const avatarEl = document.getElementById('float-bar-avatar');
-      const playBtn = document.getElementById('float-bar-play-btn');
-      const selectBtn = document.getElementById('float-bar-select-btn');
-
-      if (!bar) return;
-
-      if (titleEl) titleEl.textContent = title || 'Voice Sample';
-      if (subEl) subEl.textContent = subtitle || 'ElevenLabs Voice';
-      if (avatarEl) avatarEl.textContent = avatar || '🎙️';
-      if (playBtn) playBtn.innerHTML = '⏸';
-      if (selectBtn) {
-        if (voiceId) selectBtn.classList.remove('hidden');
-        else selectBtn.classList.add('hidden');
-      }
-
-      bar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
-      bar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
-    }
-
-    function updateFloatingBarState(isPlaying) {
-      const playBtn = document.getElementById('float-bar-play-btn');
-      if (playBtn) playBtn.innerHTML = isPlaying ? '⏸' : '▶';
-    }
-
-    function toggleFloatingBarPlayback() {
-      const player = document.getElementById('audio-voice-preview-player');
-      if (!player) return;
-
-      if (player.paused) {
-        player.play().catch(e => console.warn(e));
-        updateFloatingBarState(true);
-      } else {
-        player.pause();
-        updateFloatingBarState(false);
-      }
-      renderVoiceCatalogCards();
-    }
-
-    function seekFloatingBar(deltaSeconds) {
-      const player = document.getElementById('audio-voice-preview-player');
-      if (player && player.duration) {
-        player.currentTime = Math.max(0, Math.min(player.duration, player.currentTime + deltaSeconds));
-      }
-    }
-
-    function handleFloatingBarSeek(pct) {
-      const player = document.getElementById('audio-voice-preview-player');
-      if (player && player.duration) {
-        player.currentTime = (parseFloat(pct) / 100) * player.duration;
-      }
-    }
-
-    function applyFloatingBarVoice() {
-      if (floatingBarVoiceId) {
-        selectAudioVoice(floatingBarVoiceId);
-        showToastNotification(`Выбран голос: ${selectedAudioVoice?.name || 'Voice'}`);
-      }
-    }
-
-    function closeFloatingBar() {
-      const bar = document.getElementById('floating-audio-bar');
-      const player = document.getElementById('audio-voice-preview-player');
-      if (player && !player.paused) {
-        player.pause();
-      }
-      currentlyPlayingVoiceId = null;
-      renderVoiceCatalogCards();
-
-      if (bar) {
-        bar.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-        bar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
-      }
-    }
 
     // =========================================================================
     // ELEVENLABS SPEECH-TO-SPEECH (VOICE CHANGER) CONTROLLER
@@ -8340,8 +8201,6 @@
             audioUrl: resultAudioUrl,
             cost: 15
           });
-
-          showFloatingAudioBar(voiceName + ' (Voice Changer)', 'ElevenLabs Speech-to-Speech Result', voiceAvatar, resultAudioUrl, voiceId);
 
           deductTokensUI(15, `Speech-to-Speech • ${voiceName}`);
           saveToHistory('projects', `Voice Changer: ${voiceName}`, serverUrl || resultAudioUrl);
