@@ -1797,9 +1797,10 @@
                     <option value="1080">1080</option>
                     <option value="4K">4K</option>
                   </select>
-                  <select id="video-duration-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
-                    <option value="5.0s" selected>5.0s</option>
-                    <option value="10.0s">10.0s</option>
+                  <select id="video-duration-pill" onchange="syncVideoDuration(this.value)" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                    <option value="5.0s">5.0s</option>
+                    <option value="10.0s" selected>10.0s</option>
+                    <option value="15.0s">15.0s</option>
                   </select>
                   <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Generation Settings">
                     <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -2518,6 +2519,17 @@
                 <option value="16:9" selected>16:9 (Cinema / Wide)</option>
                 <option value="9:16">9:16 (Story / Reels)</option>
                 <option value="1:1">1:1 (Square)</option>
+              </select>
+            </div>
+            <div class="space-y-1.5 mt-3">
+              <div class="flex items-center justify-between text-[11px] text-stone-400">
+                <span data-i18n="video_duration_label">Duration</span>
+                <span id="video-panel-dur-badge" class="text-emerald-400 font-mono text-[10px] font-bold">10.0s</span>
+              </div>
+              <select id="video-panel-duration" onchange="syncVideoDuration(this.value)" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
+                <option value="5.0s">5.0s (Quick Clip)</option>
+                <option value="10.0s" selected>10.0s (Standard Studio)</option>
+                <option value="15.0s">15.0s (Extended Cinema)</option>
               </select>
             </div>
           </div>
@@ -5965,7 +5977,11 @@
         promo_card_title: "Promo code activation",
         promo_card_desc: "Enter a promo code for instant ZK tokens credit or tier activation.",
         promo_card_placeholder: "e.g. ZYKO2026",
-        promo_card_btn: "Activate"
+        promo_card_btn: "Activate",
+        download_mp4: "Download MP4",
+        downloading: "Downloading...",
+        downloaded: "Downloaded",
+        video_duration_label: "Duration"
       },
       ru: {
         nav_trends: "Тренды",
@@ -6203,7 +6219,11 @@
         promo_card_title: "Активация промокода",
         promo_card_desc: "Введите промокод для мгновенного зачисления ZK токенов или активации тарифа.",
         promo_card_placeholder: "Например: ZYKO2026",
-        promo_card_btn: "Активировать"
+        promo_card_btn: "Активировать",
+        download_mp4: "Скачать MP4",
+        downloading: "Скачивание...",
+        downloaded: "Скачано",
+        video_duration_label: "Длительность"
       },
       es: {
         nav_trends: "Tendencias",
@@ -6316,7 +6336,11 @@
         promo_card_desc: "Introduce un código promocional para obtener tokens ZK al instante o activar un plan.",
         promo_card_placeholder: "p. ej. ZYKO2026",
         promo_card_btn: "Activar",
-        pricing_select_ultra: "Seleccionar Ultra"
+        pricing_select_ultra: "Seleccionar Ultra",
+        download_mp4: "Descargar MP4",
+        downloading: "Descargando...",
+        downloaded: "Descargado",
+        video_duration_label: "Duración"
       },
       pt: {
         nav_trends: "Tendências",
@@ -6429,7 +6453,11 @@
         promo_card_desc: "Digite um código promocional para crédito instantâneo de tokens ZK ou ativação de plano.",
         promo_card_placeholder: "ex.: ZYKO2026",
         promo_card_btn: "Ativar",
-        pricing_select_ultra: "Selecionar Ultra"
+        pricing_select_ultra: "Selecionar Ultra",
+        download_mp4: "Baixar MP4",
+        downloading: "Baixando...",
+        downloaded: "Baixado",
+        video_duration_label: "Duração"
       },
       de: {
         nav_trends: "Trends",
@@ -6542,7 +6570,11 @@
         promo_card_desc: "Geben Sie einen Gutscheincode ein, um ZK-Token sofort gutgeschrieben zu bekommen oder einen Tarif zu aktivieren.",
         promo_card_placeholder: "z. B. ZYKO2026",
         promo_card_btn: "Aktivieren",
-        pricing_select_ultra: "Ultra wählen"
+        pricing_select_ultra: "Ultra wählen",
+        download_mp4: "MP4 herunterladen",
+        downloading: "Wird heruntergeladen...",
+        downloaded: "Heruntergeladen",
+        video_duration_label: "Dauer"
       }
     };
 
@@ -8199,7 +8231,7 @@
                   <button type="button" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Открыть</button>
                   <button type="button" onclick="animatePhotoToVideo('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}')" class="px-2 py-1 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded text-[10px] transition shadow" title="Анимировать в видео (Image-to-Video)">🎬</button>
                   <button type="button" onclick="shareToTelegram('image', '${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2 py-1 bg-[#2AABEE] hover:bg-[#229ed9] text-white font-bold rounded text-[10px] transition shadow" title="Поделиться в Telegram">✈️</button>
-                  <a href="${imgUrl}" download="zyko_ai_render.jpg" class="px-2 py-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold rounded text-[10px] transition" title="Скачать 4K">⬇️</a>
+                  <button type="button" onclick="downloadMediaFile('${serverUrl || imgUrl}', 'zyko_ai_render.jpg', this)" class="px-2 py-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold rounded text-[10px] transition" title="Скачать 4K">⬇️</button>
                 </div>
               </div>
             </div>
@@ -8249,6 +8281,57 @@
       }
     }
 
+    // Synchronization helper for video durations across top pills and right parameter drawer
+    function syncVideoDuration(val) {
+      if (!val) return;
+      const p1 = document.getElementById('video-duration-pill');
+      const p2 = document.getElementById('video-panel-duration');
+      const badge = document.getElementById('video-panel-dur-badge');
+      if (p1 && p1.value !== val) p1.value = val;
+      if (p2 && p2.value !== val) p2.value = val;
+      if (badge) badge.textContent = val;
+    }
+
+    // Universal Cross-Origin Safe Media Downloader
+    async function downloadMediaFile(url, defaultFilename = 'zyko_video.mp4', btn = null) {
+      if (!url) return;
+      const originalHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
+        const dlText = (i18n[currentLangVal] && i18n[currentLangVal].downloading) || 'Скачивание...';
+        btn.innerHTML = `<span class="animate-spin text-xs">⏳</span> <span>${dlText}</span>`;
+      }
+      try {
+        const dlUrl = `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(defaultFilename)}`;
+        const link = document.createElement('a');
+        link.href = dlUrl;
+        link.setAttribute('download', defaultFilename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        if (btn) {
+          const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
+          const doneText = (i18n[currentLangVal] && i18n[currentLangVal].downloaded) || 'Скачано';
+          btn.innerHTML = `✓ <span>${doneText}</span>`;
+          setTimeout(() => {
+            if (btn) {
+              btn.innerHTML = originalHtml;
+              btn.disabled = false;
+            }
+          }, 2200);
+        }
+      } catch (err) {
+        console.warn('downloadMediaFile error:', err);
+        if (btn) {
+          btn.innerHTML = originalHtml;
+          btn.disabled = false;
+        }
+        window.open(url, '_blank');
+      }
+    }
+
     // 9. Video Studio Interaction (Real Async API + Animated Progress + Interactive Video Player)
     async function sendGenerateVideo() {
       const input = document.getElementById('video-prompt-input');
@@ -8256,7 +8339,7 @@
       if (!prompt) return;
 
       const aspect = document.getElementById('video-aspect-pill')?.value || '16:9';
-      const duration = document.getElementById('video-duration-pill')?.value || '5.0s';
+      const duration = document.getElementById('video-duration-pill')?.value || '10.0s';
       const gallery = document.getElementById('video-generation-gallery');
       const btn = document.getElementById('btn-generate-video');
       const modelToUse = activeVideoModelKey || 'kling';
@@ -8343,6 +8426,8 @@
           setTimeout(() => {
             const card = document.getElementById(loadCardId);
             if (card) {
+              const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
+              const dlLabel = (i18n[currentLangVal] && i18n[currentLangVal].download_mp4) || 'Скачать MP4';
               card.outerHTML = `
                 <div class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3 text-left shadow-2xl transition hover:border-emerald-400/50">
                   <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
@@ -8354,9 +8439,10 @@
                   </div>
                   <p class="text-xs text-stone-300 mb-2.5 line-clamp-2">${escapeHtml(prompt)}</p>
                   <div class="flex items-center gap-2">
-                    <a href="${data.video_url}" download="zyko_video.mp4" target="_blank" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition">
-                      Скачать MP4
-                    </a>
+                    <button type="button" onclick="downloadMediaFile('${data.video_url}', 'zyko_video_${Date.now()}.mp4', this)" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 active:scale-95">
+                      <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                      <span data-i18n="download_mp4">${dlLabel}</span>
+                    </button>
                     <button type="button" onclick="shareToTelegram('video', '${data.video_url}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
                       ✈️
                     </button>
@@ -10265,9 +10351,9 @@
             <button type="button" onclick="shareToTelegram('audio', '${audioUrl}', '${escapeHtml(text).replace(/'/g, "\\'")}', '${escapeHtml(voiceName)}')" class="w-7 h-7 rounded-lg bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white border border-[#2AABEE]/30 flex items-center justify-center text-xs transition active:scale-95" title="Поделиться в Telegram">
               ✈️
             </button>
-            <a href="${audioUrl}" download="${type.toLowerCase()}_${Date.now()}.mp3" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Download MP3">
+            <button type="button" onclick="downloadMediaFile('${audioUrl}', '${type.toLowerCase()}_${Date.now()}.mp3', this)" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 border border-white/10 flex items-center justify-center text-xs transition" title="Download MP3">
               📥
-            </a>
+            </button>
             <button type="button" onclick="navigator.clipboard.writeText('${escapeHtml(text)}'); showToastNotification('Текст скопирован!');" class="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition" title="Copy Text">
               📋
             </button>
@@ -10760,8 +10846,10 @@
       if (modelEl) modelEl.textContent = (model || 'IMAGE').toUpperCase();
       if (aspectEl) aspectEl.textContent = aspect || '1:1';
       if (downloadLink) {
-        downloadLink.href = url;
-        downloadLink.setAttribute('download', `zyko_${(model || 'render').toLowerCase()}_4k.jpg`);
+        downloadLink.onclick = (e) => {
+          e.preventDefault();
+          downloadMediaFile(url, `zyko_${(model || 'render').toLowerCase()}_4k.jpg`, downloadLink);
+        };
       }
 
       modal.classList.remove('hidden');
@@ -14001,9 +14089,10 @@
     }
 
     function resetVideoFormat() {
-      document.getElementById('video-aspect-pill').value = '16:9';
-      document.getElementById('video-duration-pill').value = '5.0s';
-      document.getElementById('video-res-pill').value = '720';
+      if (document.getElementById('video-aspect-pill')) document.getElementById('video-aspect-pill').value = '16:9';
+      if (document.getElementById('video-panel-aspect')) document.getElementById('video-panel-aspect').value = '16:9';
+      syncVideoDuration('10.0s');
+      if (document.getElementById('video-res-pill')) document.getElementById('video-res-pill').value = '1080';
     }
 
     function expandVideoPrompt() {
@@ -14489,7 +14578,7 @@
                   </div>
                   <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
                     <button type="button" onclick="openPhotoLightbox(document.getElementById('${imgDomId}')?.src || '${initialUrl}', '${safePrompt}', '${escapeHtml(model || "IMAGE")}')" class="flex-1 py-1.5 px-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-[11px] rounded-lg text-center transition">Открыть</button>
-                    <a href="${initialUrl}" id="${imgDomId}-dl" target="_blank" download="zyko_image.jpg" class="py-1.5 px-2 bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold text-[11px] rounded-lg text-center transition">⬇️</a>
+                    <button type="button" onclick="downloadMediaFile(document.getElementById('${imgDomId}')?.src || '${initialUrl}', 'zyko_image.jpg', this)" class="py-1.5 px-2 bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold text-[11px] rounded-lg text-center transition" title="Скачать">⬇️</button>
                     <button onclick="navigator.clipboard.writeText('${safePrompt}'); if(typeof showToast==='function') showToast('Промпт скопирован!'); else alert('Prompt copied!');" class="p-1.5 bg-black/60 hover:bg-black text-white rounded-lg text-xs" title="Copy Prompt">📋</button>
                   </div>
                 </div>
@@ -14515,7 +14604,7 @@
                 <div class="flex items-center justify-between text-[10px] text-stone-500 pt-1 border-t border-white/5">
                   <span>${dateStr}</span>
                   <div class="flex items-center gap-2">
-                    <a href="${it.result_url}" download="zyko_video.mp4" target="_blank" class="hover:text-white transition" title="Download">⬇️</a>
+                    <button type="button" onclick="downloadMediaFile('${it.result_url}', 'zyko_video.mp4', this)" class="hover:text-white transition" title="Скачать MP4">⬇️</button>
                     <span class="text-amber-400 font-semibold">${tokensCost} ZK</span>
                   </div>
                 </div>
@@ -14539,7 +14628,7 @@
               ${renderZykoAudioPlayerMarkup(it.result_url, 'feed-' + (it.id || idx), { type: 'AUDIO', voiceName: model || 'Audio AI' })}
               <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
                 <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); alert('Text copied!');" class="text-stone-400 hover:text-white transition flex items-center gap-1">📋 <span>Copy text</span></button>
-                <a href="${it.result_url}" download="zyko_audio.mp3" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">⬇️ <span>Download</span></a>
+                <button type="button" onclick="downloadMediaFile('${it.result_url}', 'zyko_audio.mp3', this)" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">⬇️ <span>Download</span></button>
               </div>
             </div>
           `;
