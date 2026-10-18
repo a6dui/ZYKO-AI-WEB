@@ -124,22 +124,34 @@ async def init_db():
             )
         """)
 
-        # Ensure owner / superadmin 755843448 is superadmin with Max tier, but NEVER overwrite their existing balance
+        # Ensure owner / superadmin 755843448 and any ADMIN_TELEGRAM_IDS is superadmin with Max tier and at least 500,000 tokens
         try:
-            async with db.execute(
-                "SELECT * FROM users WHERE telegram_id = 755843448 OR CAST(telegram_id AS TEXT) = '755843448'"
-            ) as c_admin:
-                admin_row = await c_admin.fetchone()
-                if not admin_row:
-                    await db.execute("""
-                        INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
-                        VALUES (755843448, 'Zykolandstore', 'Zykolandstore', 10000, 'Max', 1)
-                    """)
-                else:
-                    await db.execute("""
-                        UPDATE users SET is_superadmin = 1, tier = 'Max', telegram_username = 'Zykolandstore', name = 'Zykolandstore'
-                        WHERE telegram_id = 755843448
-                    """)
+            for admin_tg_id in ADMIN_TELEGRAM_IDS:
+                async with db.execute(
+                    "SELECT * FROM users WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?",
+                    (admin_tg_id, str(admin_tg_id))
+                ) as c_admin:
+                    admin_row = await c_admin.fetchone()
+                    if not admin_row:
+                        await db.execute("""
+                            INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
+                            VALUES (?, 'Zykolandstore', 'Zykolandstore', 500000, 'Max', 1)
+                        """, (admin_tg_id,))
+                    else:
+                        await db.execute("""
+                            UPDATE users SET is_superadmin = 1, tier = 'Max',
+                                tokens = CASE WHEN tokens < 500000 THEN 500000 ELSE tokens END,
+                                telegram_username = COALESCE(telegram_username, 'Zykolandstore'),
+                                name = COALESCE(name, 'Zykolandstore')
+                            WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?
+                        """, (admin_tg_id, str(admin_tg_id)))
+
+            # Also ensure all superadmins and demo accounts have at least 500,000 tokens and Max tier
+            await db.execute("""
+                UPDATE users SET tokens = CASE WHEN tokens < 500000 THEN 500000 ELSE tokens END,
+                    tier = 'Max', is_superadmin = 1
+                WHERE is_superadmin = 1 OR email IN ('foryafrom@gmail.com', 'demo@zyko.ai')
+            """)
         except Exception as e:
             logger.warning("Admin seeding warning: %s", e)
 
@@ -228,8 +240,9 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                     params.append(clean_username)
                 if is_admin:
                     updates.append("is_superadmin = 1")
-                    if user.get("tier") in ("Free", None, ""):
-                        updates.append("tier = 'Max'")
+                    updates.append("tier = 'Max'")
+                    if (user.get("tokens") or 0) < 500000:
+                        updates.append("tokens = 500000")
                 
                 query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
                 params.append(user["id"])
@@ -240,7 +253,7 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                     return dict(await c2.fetchone())
             else:
                 initial_tier = "Max" if is_admin else "Free"
-                initial_tokens = 10000 if is_admin else 1000
+                initial_tokens = 500000 if is_admin else 1000
                 cursor_ins = await db.execute(
                     """
                     INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
@@ -259,9 +272,16 @@ async def get_or_create_demo_user() -> dict:
         async with db.execute("SELECT * FROM users WHERE email = 'foryafrom@gmail.com' OR email = 'demo@zyko.ai'") as cursor:
             row = await cursor.fetchone()
             if row:
-                return dict(row)
+                user = dict(row)
+                if (user.get("tokens") or 0) < 500000 or user.get("tier") != "Max":
+                    await db.execute("UPDATE users SET tokens = 500000, tier = 'Max', is_superadmin = 1 WHERE id = ?", (user["id"],))
+                    await db.commit()
+                    user["tokens"] = 500000
+                    user["tier"] = "Max"
+                    user["is_superadmin"] = 1
+                return user
         cursor_ins = await db.execute(
-            "INSERT INTO users (email, name, tokens, tier) VALUES ('foryafrom@gmail.com', 'Дима', 1000, 'Free')"
+            "INSERT INTO users (email, name, tokens, tier, is_superadmin) VALUES ('foryafrom@gmail.com', 'Дима', 500000, 'Max', 1)"
         )
         await db.commit()
         user_id = cursor_ins.lastrowid
@@ -273,7 +293,18 @@ async def get_user_by_id(user_id: int) -> dict:
         db.row_factory = aiosqlite.Row
         async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as cursor:
             row = await cursor.fetchone()
-            return dict(row) if row else None
+            if not row:
+                return None
+            user = dict(row)
+            tg_id = user.get("telegram_id")
+            is_admin = bool(user.get("is_superadmin") or (tg_id and int(tg_id) in ADMIN_TELEGRAM_IDS))
+            if is_admin and (user.get("tokens") or 0) < 500000:
+                await db.execute("UPDATE users SET tokens = 500000, tier = 'Max', is_superadmin = 1 WHERE id = ?", (user_id,))
+                await db.commit()
+                user["tokens"] = 500000
+                user["tier"] = "Max"
+                user["is_superadmin"] = 1
+            return user
 
 async def add_tokens_and_tier(user_id: int, tokens_to_add: int, tier: str = None) -> dict:
     async with aiosqlite.connect(DB_PATH) as db:
@@ -519,8 +550,8 @@ TIER_LIMITS = {
     "VIP": {"session": 3000, "weekly": 12000},
     "Elite": {"session": 5000, "weekly": 20000},
     "Ultra Elite": {"session": 8000, "weekly": 30000},
-    "Max": {"session": 10000, "weekly": 50000},
-    "MAX": {"session": 10000, "weekly": 50000},
+    "Max": {"session": 500000, "weekly": 2000000},
+    "MAX": {"session": 500000, "weekly": 2000000},
 }
 
 async def get_user_usage_stats(user_id: int) -> dict:
