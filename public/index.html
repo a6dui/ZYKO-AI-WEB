@@ -81,6 +81,18 @@
     .animate-tilt {
       animation: floatSlow 5s ease-in-out infinite;
     }
+    @keyframes zykoWave {
+      0%, 100% { height: 3px; }
+      50% { height: 13px; }
+    }
+    .zyko-wave-bar {
+      width: 2.5px;
+      height: 3px;
+      background: #f59e0b;
+      border-radius: 9999px;
+      display: inline-block;
+      animation: zykoWave 0.8s ease-in-out infinite;
+    }
     .modal-backdrop {
       background: rgba(3, 7, 5, 0.88);
       backdrop-filter: blur(14px);
@@ -1707,7 +1719,58 @@
                   <div id="sts-record-timer" class="text-xs font-mono text-amber-400">00:00 / 00:30</div>
 
                   <!-- Audio Preview Player once recorded -->
-                  <audio id="sts-recorded-audio" controls class="hidden w-full max-w-sm mt-1"></audio>
+                  <audio id="sts-recorded-audio" preload="metadata" class="hidden"></audio>
+                  <div id="sts-recorded-player-wrap" class="hidden w-full max-w-sm mt-1">
+                    <div class="zyko-audio-player-box relative bg-[#0a0f0d] border border-white/10 hover:border-amber-400/40 rounded-xl p-2.5 sm:p-3 shadow-lg transition-all group/zplayer select-none" id="zplayer-box-sts-record">
+                      <audio id="zplayer-audio-sts-record" preload="metadata" class="hidden"></audio>
+
+                      <div class="flex items-center gap-2.5 sm:gap-3">
+                        <button type="button" onclick="event.stopPropagation(); toggleZykoPlayer('sts-record')" id="zplayer-btn-play-sts-record"
+                          class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-black flex items-center justify-center font-black text-xs shadow-[0_0_16px_rgba(245,158,11,0.35)] hover:shadow-[0_0_24px_rgba(245,158,11,0.6)] transition-all active:scale-90 shrink-0 cursor-pointer"
+                          title="Воспроизвести / Пауза">
+                          <span id="zplayer-icon-sts-record" class="ml-0.5 select-none">▶</span>
+                        </button>
+
+                        <div class="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
+                          <div class="flex items-center justify-between text-[11px] font-mono text-stone-400">
+                            <div class="flex items-center gap-2">
+                              <span id="zplayer-cur-sts-record" class="text-amber-400 font-bold tracking-wider">00:00</span>
+                              <div id="zplayer-wave-sts-record" class="hidden items-center gap-0.5 h-3 opacity-90">
+                                <span class="zyko-wave-bar" style="animation-delay: 0s;"></span>
+                                <span class="zyko-wave-bar" style="animation-delay: 0.2s;"></span>
+                                <span class="zyko-wave-bar" style="animation-delay: 0.4s;"></span>
+                                <span class="zyko-wave-bar" style="animation-delay: 0.15s;"></span>
+                              </div>
+                            </div>
+
+                            <div class="flex items-center gap-1.5">
+                              <button type="button" onclick="event.stopPropagation(); cycleZykoPlayerSpeed('sts-record')" id="zplayer-speed-sts-record"
+                                class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/15 text-stone-300 hover:text-white border border-white/10 transition active:scale-95 cursor-pointer"
+                                title="Скорость">
+                                1.0x
+                              </button>
+                              <span id="zplayer-dur-sts-record" class="text-stone-400">00:00</span>
+                            </div>
+                          </div>
+
+                          <div class="relative flex items-center w-full">
+                            <input type="range" min="0" max="100" value="0" step="0.1" id="zplayer-scrub-sts-record"
+                              onclick="event.stopPropagation()"
+                              oninput="event.stopPropagation(); seekZykoPlayer('sts-record', this.value)"
+                              class="zyko-slider slider-amber w-full h-2 cursor-pointer">
+                          </div>
+                        </div>
+
+                        <div class="flex items-center gap-1 shrink-0 pl-1 border-l border-white/10">
+                          <button type="button" onclick="event.stopPropagation(); toggleZykoPlayerMute('sts-record')" id="zplayer-mute-sts-record"
+                            class="w-7 h-7 rounded-lg hover:bg-white/10 text-stone-400 hover:text-white flex items-center justify-center text-xs transition active:scale-90 cursor-pointer"
+                            title="Звук">
+                            🔊
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <!-- Or File Upload Alternative -->
                   <div class="pt-2 flex items-center justify-center gap-2 w-full border-t border-white/10 text-[11px] text-stone-400">
@@ -8048,8 +8111,12 @@
         const statusEl = document.getElementById('sts-record-status');
         const timerEl = document.getElementById('sts-record-timer');
         const audioPrev = document.getElementById('sts-recorded-audio');
+        const audioPrevWrap = document.getElementById('sts-recorded-player-wrap');
 
-        if (audioPrev) audioPrev.classList.add('hidden');
+        if (audioPrev) { audioPrev.pause(); audioPrev.classList.add('hidden'); }
+        if (audioPrevWrap) audioPrevWrap.classList.add('hidden');
+        const zStsAudio = document.getElementById('zplayer-audio-sts-record');
+        if (zStsAudio) { zStsAudio.pause(); zStsAudio.currentTime = 0; }
 
         stsMediaRecorder.ondataavailable = (e) => {
           if (e.data.size > 0) stsAudioChunks.push(e.data);
@@ -8085,10 +8152,16 @@
           stsRecordedBlob = new Blob(stsAudioChunks, { type: 'audio/webm' });
           stsUploadedFile = null;
 
+          const audioUrl = URL.createObjectURL(stsRecordedBlob);
           if (audioPrev) {
-            audioPrev.src = URL.createObjectURL(stsRecordedBlob);
-            audioPrev.classList.remove('hidden');
+            audioPrev.src = audioUrl;
           }
+          if (zStsAudio) {
+            zStsAudio.src = audioUrl;
+            initZykoAudioPlayer('sts-record');
+          }
+          if (audioPrevWrap) audioPrevWrap.classList.remove('hidden');
+
           const uploadName = document.getElementById('sts-upload-filename');
           if (uploadName) uploadName.classList.add('hidden');
         };
@@ -8107,6 +8180,7 @@
         const uploadName = document.getElementById('sts-upload-filename');
         const statusEl = document.getElementById('sts-record-status');
         const audioPrev = document.getElementById('sts-recorded-audio');
+        const audioPrevWrap = document.getElementById('sts-recorded-player-wrap');
         const isRu = (currentLang === 'ru');
 
         if (uploadName) {
@@ -8118,10 +8192,16 @@
         if (statusEl) {
           statusEl.textContent = isRu ? '✓ Файл готов к преобразованию!' : '✓ File ready for voice conversion!';
         }
+        const audioUrl = URL.createObjectURL(stsUploadedFile);
         if (audioPrev) {
-          audioPrev.src = URL.createObjectURL(stsUploadedFile);
-          audioPrev.classList.remove('hidden');
+          audioPrev.src = audioUrl;
         }
+        const zStsAudio = document.getElementById('zplayer-audio-sts-record');
+        if (zStsAudio) {
+          zStsAudio.src = audioUrl;
+          initZykoAudioPlayer('sts-record');
+        }
+        if (audioPrevWrap) audioPrevWrap.classList.remove('hidden');
       }
     }
 
@@ -8785,12 +8865,222 @@
       }
     }
 
+    // =========================================================================
+    // ZYKO STUDIO LUXURY CUSTOM AUDIO PLAYER CONTROLLER
+    // =========================================================================
+    function renderZykoAudioPlayerMarkup(audioUrl, uid, opts = {}) {
+      const type = opts.type || 'AUDIO';
+      const safeUrl = (audioUrl || '').replace(/"/g, '&quot;');
+
+      return `
+        <div class="zyko-audio-player-box relative bg-[#0a0f0d] border border-white/10 hover:border-amber-400/40 rounded-xl p-3 shadow-lg transition-all group/zplayer select-none" id="zplayer-box-${uid}">
+          <audio id="zplayer-audio-${uid}" src="${safeUrl}" preload="metadata" class="hidden"></audio>
+
+          <div class="flex items-center gap-2.5 sm:gap-3">
+            <!-- Big Glowing Play/Pause Button -->
+            <button type="button" onclick="event.stopPropagation(); toggleZykoPlayer('${uid}')" id="zplayer-btn-play-${uid}"
+              class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-black flex items-center justify-center font-black text-sm shadow-[0_0_16px_rgba(245,158,11,0.35)] hover:shadow-[0_0_24px_rgba(245,158,11,0.6)] transition-all active:scale-90 shrink-0 cursor-pointer"
+              title="Воспроизвести / Пауза">
+              <span id="zplayer-icon-${uid}" class="ml-0.5 select-none">▶</span>
+            </button>
+
+            <!-- Center: Times, Soundwave & Scrubber -->
+            <div class="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
+              <!-- Times Row -->
+              <div class="flex items-center justify-between text-[11px] font-mono text-stone-400">
+                <div class="flex items-center gap-2">
+                  <span id="zplayer-cur-${uid}" class="text-amber-400 font-bold tracking-wider">00:00</span>
+                  <!-- Soundwave visualizer bars -->
+                  <div id="zplayer-wave-${uid}" class="hidden items-center gap-0.5 h-3.5 opacity-90">
+                    <span class="zyko-wave-bar" style="animation-delay: 0s;"></span>
+                    <span class="zyko-wave-bar" style="animation-delay: 0.2s;"></span>
+                    <span class="zyko-wave-bar" style="animation-delay: 0.4s;"></span>
+                    <span class="zyko-wave-bar" style="animation-delay: 0.15s;"></span>
+                    <span class="zyko-wave-bar" style="animation-delay: 0.3s;"></span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <!-- Speed Chip -->
+                  <button type="button" onclick="event.stopPropagation(); cycleZykoPlayerSpeed('${uid}')" id="zplayer-speed-${uid}"
+                    class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-stone-300 hover:text-white border border-white/10 transition active:scale-95 cursor-pointer"
+                    title="Скорость воспроизведения">
+                    1.0x
+                  </button>
+                  <span id="zplayer-dur-${uid}" class="text-stone-400">00:00</span>
+                </div>
+              </div>
+
+              <!-- Interactive Scrubber -->
+              <div class="relative flex items-center w-full">
+                <input type="range" min="0" max="100" value="0" step="0.1" id="zplayer-scrub-${uid}"
+                  onclick="event.stopPropagation()"
+                  oninput="event.stopPropagation(); seekZykoPlayer('${uid}', this.value)"
+                  class="zyko-slider slider-amber w-full h-2 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- Quick Controls: -5s, +5s, Mute -->
+            <div class="flex items-center gap-1 shrink-0 pl-1 border-l border-white/10">
+              <button type="button" onclick="event.stopPropagation(); skipZykoPlayer('${uid}', -5)"
+                class="w-7 h-7 rounded-lg hover:bg-white/10 text-stone-400 hover:text-amber-400 flex items-center justify-center text-[10px] font-mono font-bold transition active:scale-90 cursor-pointer"
+                title="Назад на 5 секунд">
+                -5s
+              </button>
+              <button type="button" onclick="event.stopPropagation(); skipZykoPlayer('${uid}', 5)"
+                class="w-7 h-7 rounded-lg hover:bg-white/10 text-stone-400 hover:text-amber-400 flex items-center justify-center text-[10px] font-mono font-bold transition active:scale-90 cursor-pointer"
+                title="Вперед на 5 секунд">
+                +5s
+              </button>
+              <button type="button" onclick="event.stopPropagation(); toggleZykoPlayerMute('${uid}')" id="zplayer-mute-${uid}"
+                class="w-7 h-7 rounded-lg hover:bg-white/10 text-stone-400 hover:text-white flex items-center justify-center text-xs transition active:scale-90 cursor-pointer"
+                title="Звук">
+                🔊
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function initZykoAudioPlayer(uid, opts = {}) {
+      const audio = document.getElementById(`zplayer-audio-${uid}`);
+      if (!audio) return;
+      audio.__zykoInitialized = true;
+
+      const btn = document.getElementById(`zplayer-btn-play-${uid}`);
+      const icon = document.getElementById(`zplayer-icon-${uid}`);
+      const curEl = document.getElementById(`zplayer-cur-${uid}`);
+      const durEl = document.getElementById(`zplayer-dur-${uid}`);
+      const scrub = document.getElementById(`zplayer-scrub-${uid}`);
+      const wave = document.getElementById(`zplayer-wave-${uid}`);
+
+      audio.onplay = () => {
+        if (icon) icon.textContent = '⏸';
+        if (btn) btn.classList.add('ring-2', 'ring-amber-400/60');
+        if (wave) { wave.classList.remove('hidden'); wave.classList.add('flex'); }
+      };
+
+      audio.onpause = () => {
+        if (icon) icon.textContent = '▶';
+        if (btn) btn.classList.remove('ring-2', 'ring-amber-400/60');
+        if (wave) { wave.classList.add('hidden'); wave.classList.remove('flex'); }
+      };
+
+      audio.onended = () => {
+        if (icon) icon.textContent = '▶';
+        if (btn) btn.classList.remove('ring-2', 'ring-amber-400/60');
+        if (wave) { wave.classList.add('hidden'); wave.classList.remove('flex'); }
+        if (scrub) { scrub.value = 0; updateSliderProgress(scrub); }
+        if (curEl) curEl.textContent = '00:00';
+      };
+
+      audio.ontimeupdate = () => {
+        if (curEl) curEl.textContent = formatAudioTime(audio.currentTime);
+        if (scrub && audio.duration && isFinite(audio.duration)) {
+          const pct = (audio.currentTime / audio.duration) * 100;
+          scrub.value = pct;
+          updateSliderProgress(scrub);
+        }
+      };
+
+      const setDur = () => {
+        if (durEl && audio.duration && isFinite(audio.duration) && !isNaN(audio.duration)) {
+          durEl.textContent = formatAudioTime(audio.duration);
+        }
+      };
+      audio.onloadedmetadata = setDur;
+      audio.ondurationchange = setDur;
+      if (audio.duration && isFinite(audio.duration)) setDur();
+
+      if (scrub) updateSliderProgress(scrub);
+
+      if (opts.autoplay) {
+        audio.play().catch(() => {});
+      }
+    }
+
+    function getOrInitZykoPlayer(uid) {
+      const audio = document.getElementById(`zplayer-audio-${uid}`);
+      if (!audio) return null;
+      if (!audio.__zykoInitialized) {
+        initZykoAudioPlayer(uid);
+      }
+      return audio;
+    }
+
+    function toggleZykoPlayer(uid) {
+      const audio = getOrInitZykoPlayer(uid);
+      if (!audio) return;
+
+      if (!audio.paused) {
+        audio.pause();
+      } else {
+        // Pause all other audio players on page
+        document.querySelectorAll('audio').forEach(other => {
+          if (other !== audio && !other.paused) {
+            other.pause();
+          }
+        });
+        audio.play().catch(e => console.warn('Zyko audio play error:', e));
+      }
+    }
+
+    function seekZykoPlayer(uid, pct) {
+      const audio = getOrInitZykoPlayer(uid);
+      const curEl = document.getElementById(`zplayer-cur-${uid}`);
+      const scrub = document.getElementById(`zplayer-scrub-${uid}`);
+      if (!audio) return;
+
+      if (audio.duration && isFinite(audio.duration)) {
+        audio.currentTime = (parseFloat(pct) / 100) * audio.duration;
+        if (curEl) curEl.textContent = formatAudioTime(audio.currentTime);
+      }
+      if (scrub) updateSliderProgress(scrub);
+    }
+
+    function skipZykoPlayer(uid, deltaSeconds) {
+      const audio = getOrInitZykoPlayer(uid);
+      if (!audio) return;
+      const target = Math.max(0, Math.min(audio.duration || 9999, audio.currentTime + deltaSeconds));
+      audio.currentTime = target;
+    }
+
+    const ZYKO_PLAYBACK_RATES = [1.0, 1.25, 1.5, 2.0];
+    function cycleZykoPlayerSpeed(uid) {
+      const audio = getOrInitZykoPlayer(uid);
+      const btn = document.getElementById(`zplayer-speed-${uid}`);
+      if (!audio) return;
+
+      const currentRate = audio.playbackRate || 1.0;
+      let nextIndex = ZYKO_PLAYBACK_RATES.findIndex(r => Math.abs(r - currentRate) < 0.05);
+      if (nextIndex === -1 || nextIndex >= ZYKO_PLAYBACK_RATES.length - 1) {
+        nextIndex = 0;
+      } else {
+        nextIndex += 1;
+      }
+
+      const nextRate = ZYKO_PLAYBACK_RATES[nextIndex];
+      audio.playbackRate = nextRate;
+      if (btn) btn.textContent = nextRate.toFixed(1).replace('.0', '') + 'x';
+    }
+
+    function toggleZykoPlayerMute(uid) {
+      const audio = getOrInitZykoPlayer(uid);
+      const btn = document.getElementById(`zplayer-mute-${uid}`);
+      if (!audio) return;
+
+      audio.muted = !audio.muted;
+      if (btn) btn.textContent = audio.muted ? '🔇' : '🔊';
+    }
+
     // Render Polished Audio Generation Result Card in Center Canvas
     function renderAudioGenerationCard({ type, voiceName, avatar, model, text, audioUrl, cost }) {
       const gallery = document.getElementById('audio-generation-gallery');
       if (!gallery) return;
 
       const cardId = 'audio-card-' + Date.now();
+      const cardUid = 'card-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
       const card = document.createElement('div');
       card.id = cardId;
       card.className = 'border border-white/10 hover:border-emerald-500/40 bg-[#121615] rounded-2xl p-4 shadow-xl text-left transition space-y-3';
@@ -8828,13 +9118,12 @@
           "${escapeHtml(text)}"
         </div>
 
-        <!-- Audio Player -->
-        <div class="bg-black/60 border border-white/10 rounded-xl p-2.5 flex items-center gap-3">
-          <audio controls autoplay class="w-full h-8 accent-emerald-500" src="${audioUrl}"></audio>
-        </div>
+        <!-- ZYKO Studio Luxury Custom Audio Player -->
+        ${renderZykoAudioPlayerMarkup(audioUrl, cardUid, { type, voiceName })}
       `;
 
       gallery.prepend(card);
+      initZykoAudioPlayer(cardUid, { autoplay: false });
     }
 
     // 11. History Storage (Chats & Projects: Screenshot 1 & 3)
@@ -12789,7 +13078,7 @@
         grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
       }
 
-      grid.innerHTML = filtered.map(it => {
+      grid.innerHTML = filtered.map((it, idx) => {
         const type = it.type || 'image';
         const model = it.model || '';
         const prompt = it.prompt || '';
@@ -12855,7 +13144,7 @@
                 <span class="text-xs text-amber-400 font-semibold">${tokensCost} ZK</span>
               </div>
               <p class="text-xs text-stone-300 line-clamp-2 leading-relaxed" title="${escapeHtml(prompt)}">"${escapeHtml(prompt)}"</p>
-              <audio src="${it.result_url}" controls class="w-full h-8 rounded-lg bg-black/40"></audio>
+              ${renderZykoAudioPlayerMarkup(it.result_url, 'feed-' + (it.id || idx), { type: 'AUDIO', voiceName: model || 'Audio AI' })}
               <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
                 <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); alert('Text copied!');" class="text-stone-400 hover:text-white transition flex items-center gap-1">📋 <span>Copy text</span></button>
                 <a href="${it.result_url}" download="zyko_audio.mp3" class="text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">⬇️ <span>Download</span></a>
