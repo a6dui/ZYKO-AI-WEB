@@ -356,6 +356,17 @@
 </head>
 <body class="selection:bg-emerald-400 selection:text-black notranslate">
 
+  <!-- Global KZ Token Coin SVG Defs -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <linearGradient id="kzCoinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#f59e0b"/>
+        <stop offset="45%" stop-color="#fbbf24"/>
+        <stop offset="100%" stop-color="#fef08a"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
   <!-- Payment Status Banner -->
   <div id="payment-alert" class="hidden bg-emerald-500 text-black py-2.5 px-4 text-center text-xs font-black tracking-wide flex items-center justify-center gap-2 shadow-lg">
     <span data-i18n="payment_success">🎉 Payment successfully confirmed! Tokens added to your balance.</span>
@@ -374,7 +385,7 @@
   </div>
 
   <!-- STICKY GLOBAL HEADER -->
-  <header class="sticky top-0 z-50 bg-[#0c1110]/90 backdrop-blur-xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200">
+  <header class="sticky top-0 z-[60] bg-[#0c1110]/95 backdrop-blur-xl border-b border-white/10 px-4 md:px-6 py-2.5 transition-all duration-200">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
       <!-- Left: Logo + Floating Hamburger Dropdown (Screenshot 5) -->
@@ -389,6 +400,9 @@
             <div class="space-y-0.5 text-xs font-semibold text-stone-300">
               <button onclick="switchTab('trends'); closeBurgerDropdown(); window.scrollTo({top: 0, behavior: 'smooth'});" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                 <span>🏠</span> <span data-i18n="drawer_home">Home</span>
+              </button>
+              <button onclick="switchTab('profile'); switchUserSubtab('profile'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
+                <span>👤</span> <span data-i18n="profile_title">Profile</span>
               </button>
               <button onclick="switchTab('trends'); setTimeout(() => document.getElementById('faq')?.scrollIntoView({behavior: 'smooth'}), 200); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                 <span>❓</span> <span data-i18n="drawer_faq">FAQ</span>
@@ -578,12 +592,12 @@
 
             <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs" id="notification-items-list">
               <div class="notification-item p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer group" onclick="handleNotificationClick('profile')">
-                <span class="text-lg shrink-0">⚡</span>
+                <svg class="w-5 h-5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)] mt-0.5" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between gap-1">
                     <div class="flex items-center gap-1.5 min-w-0">
                       <span class="notif-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_1_title">+5.5 ZK tokens credited</span>
+                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_1_title">+5.5 KZ tokens credited</span>
                     </div>
                     <span class="text-[9px] text-stone-500 shrink-0" data-i18n="notif_1_time">Just now</span>
                   </div>
@@ -643,8 +657,12 @@
         <!-- Logged In State (Initially hidden) -->
         <div id="user-profile-header" class="hidden flex items-center gap-3">
           <!-- Token balance pill -->
-          <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition">
-            <span class="text-amber-400 font-black text-xs">⚡</span>
+          <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm">
+            <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_6px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
+              <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
+              <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
+            </svg>
             <span id="header-user-tokens" class="text-xs font-black text-white">500 000</span>
             <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">MAX</span>
           </div>
@@ -657,13 +675,18 @@
             </button>
 
             <!-- Dropdown Menu (Screenshot 4) -->
-            <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-11 w-56 bg-[#1a1615] border border-white/15 rounded-2xl shadow-2xl p-2.5 z-50">
+            <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-12 w-60 bg-[#161a18]/98 border border-white/20 rounded-2xl shadow-2xl p-2.5 z-[100] backdrop-blur-2xl">
               <div class="px-2.5 py-1.5">
                 <div id="dropdown-user-handle" class="text-xs font-semibold text-stone-200 truncate">@foryafrom-em</div>
                 <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">MAX</div>
                 <div class="text-sm font-extrabold text-white flex items-center gap-1.5 mt-1.5">
-                  <span class="text-amber-400">⚡</span>
+                  <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_6px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
+                    <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
+                    <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
+                  </svg>
                   <span id="dropdown-user-tokens">500 000</span>
+                  <span class="text-[11px] font-black text-amber-400 font-mono">KZ</span>
                 </div>
               </div>
               <div class="border-t border-white/10 my-2"></div>
@@ -815,7 +838,11 @@
                 <span class="text-2xl font-black text-white price-val">€7.56</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">3,120 ⚡</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
+                <span>3,120</span>
+                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+              </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Essential neural network starter with Kling & Nano Banana.</p>
             </div>
             <button onclick="openPaymentModal('Basic')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_basic">Select Basic</button>
@@ -830,7 +857,11 @@
                 <span class="text-3xl font-black text-white price-val">€14.36</span>
                 <span class="text-[10px] text-stone-400">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-extrabold mb-4">8,160 ⚡</div>
+              <div class="text-[11px] text-emerald-400 font-extrabold mb-4 flex items-center gap-1.5">
+                <span>8,160</span>
+                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+              </div>
               <p class="text-xs text-stone-300 mb-4 leading-relaxed">Full package: Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs.</p>
             </div>
             <button onclick="openPaymentModal('Pro')" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition shadow-lg shadow-emerald-500/25" data-i18n="pricing_select_pro">Select Pro</button>
@@ -844,7 +875,11 @@
                 <span class="text-2xl font-black text-white price-val">€33.90</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">20,400 ⚡</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
+                <span>20,400</span>
+                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+              </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Full package + Topaz 4K + 6x more requests for high-volume creators.</p>
             </div>
             <button onclick="openPaymentModal('VIP')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_vip">Select VIP</button>
@@ -858,7 +893,11 @@
                 <span class="text-2xl font-black text-white price-val">€50.91</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-emerald-400 font-bold mb-4">31,200 ⚡</div>
+              <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
+                <span>31,200</span>
+                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+              </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited generations in Veo 3.1 Lite, Runway, and Topaz upscaler.</p>
             </div>
             <button onclick="openPaymentModal('Elite')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition" data-i18n="pricing_select_elite">Select Elite</button>
@@ -872,7 +911,11 @@
                 <span class="text-2xl font-black text-white price-val">€101.15</span>
                 <span class="text-[10px] text-stone-500">/mo</span>
               </div>
-              <div class="text-[11px] text-cyan-400 font-bold mb-4">36,000 ⚡</div>
+              <div class="text-[11px] text-cyan-400 font-bold mb-4 flex items-center gap-1.5">
+                <span>36,000</span>
+                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+              </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API.</p>
             </div>
             <button onclick="openPaymentModal('Ultra Elite')" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs transition" data-i18n="pricing_select_ultra">Select Ultra</button>
@@ -923,7 +966,7 @@
                 <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
               </button>
               <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a1">
-                Yes! Every new user receives complimentary trial tokens (5.5 ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.
+                Yes! Every new user receives complimentary trial tokens (5.5 KZ) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.
               </div>
             </div>
 
@@ -949,11 +992,11 @@
 
             <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
               <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
-                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q4">What are ZK tokens and how are they spent?</span>
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q4">What are KZ tokens and how are they spent?</span>
                 <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
               </button>
               <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a4">
-                Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 ZK, photorealistic images = 12 ZK, voice synthesis & SFX = 10 ZK, AI Music = 20 ZK, and cinematic video (Kling, Seedance, Veo) = 25 ZK.
+                Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 KZ, photorealistic images = 12 KZ, voice synthesis & SFX = 10 KZ, AI Music = 20 KZ, and cinematic video (Kling, Seedance, Veo) = 25 KZ.
               </div>
             </div>
 
@@ -1085,52 +1128,85 @@
     <!-- ================= WORKSPACE SHELL (SHARED BY AGENTS, LLM, IMAGE, VIDEO, AUDIO) ================= -->
     <div id="workspace-shell" class="hidden flex h-[calc(100vh-53px)] overflow-hidden relative">
 
-      <!-- 1. LEFT MINI RAIL DOCK (Visible on desktop) -->
+      <!-- 1. LEFT MINI RAIL DOCK (Visible on desktop: Screenshot 1 & 4) -->
       <div class="hidden md:flex w-14 bg-[#0a0e0d] border-r border-white/10 flex-col justify-between items-center py-4 z-20 shrink-0">
-        <div class="flex flex-col items-center gap-4">
-          <button onclick="toggleHistoryDrawer()" class="p-2.5 rounded-xl hover:bg-white/10 text-stone-400 hover:text-white transition" title="Chats & Projects">
+        <div class="flex flex-col items-center gap-3">
+          <!-- Chat / Projects Drawer Toggle -->
+          <button id="dock-btn-drawer" onclick="toggleHistoryDrawer()" class="p-2.5 rounded-xl hover:bg-white/10 text-stone-400 hover:text-white transition" title="Chats & Projects">
             <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
           </button>
+
+          <!-- Robot Agent Dock Button with Hover Flyout (Screenshot 4) -->
+          <div class="relative group/agent-dock" id="dock-agent-container" onmouseenter="showDockAgentFlyout()" onmouseleave="hideDockAgentFlyout(false)">
+            <button id="dock-btn-agent" onclick="switchTab('agents')" class="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition relative" title="Agents">
+              <svg class="w-5 h-5" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="32" y1="16" x2="32" y2="8" stroke-width="4.5" />
+                <circle cx="32" cy="7" r="2.8" fill="currentColor" stroke="none" />
+                <rect x="7" y="27" width="6" height="18" rx="3" fill="currentColor" stroke="none" />
+                <rect x="51" y="27" width="6" height="18" rx="3" fill="currentColor" stroke="none" />
+                <rect x="13" y="16" width="38" height="36" rx="10" stroke-width="4.5" />
+                <circle cx="25.5" cy="34" r="3.2" fill="currentColor" stroke="none" />
+                <circle cx="38.5" cy="34" r="3.2" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+
+            <!-- Dock Agent Flyout (Screenshot 4) -->
+            <div id="dock-agent-flyout" class="hidden absolute left-full top-0 ml-2.5 z-50 flex flex-col items-start select-none drop-shadow-2xl">
+              <!-- Top tooltip -->
+              <div class="bg-[#181311] border border-white/15 text-[11px] text-stone-300 font-medium px-2.5 py-1 rounded-lg whitespace-nowrap shadow-xl mb-1.5">
+                The maximum number of agents: <span id="dock-agent-max-count">0</span>
+              </div>
+              <!-- Horizontal action pill with + and x -->
+              <div class="flex items-center gap-2 bg-[#181311] border border-white/15 px-3 py-1.5 rounded-2xl shadow-2xl backdrop-blur-md">
+                <button onclick="openCreateAgentModal()" class="text-stone-300 hover:text-white text-base font-bold w-6 h-6 rounded-lg hover:bg-white/10 flex items-center justify-center transition" title="Create Agent">+</button>
+                <button onclick="hideDockAgentFlyout(true)" class="text-stone-400 hover:text-white text-xs w-6 h-6 rounded-lg hover:bg-white/10 flex items-center justify-center transition" title="Close">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Session (+) -->
           <button onclick="startNewSession()" class="p-2.5 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-emerald-400 border border-white/10 hover:border-emerald-500/40 transition" title="New Session (+)">
             <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           </button>
+
+          <!-- Starred / Favorites -->
           <button onclick="toggleFavorites()" class="p-2.5 rounded-xl hover:bg-white/10 text-stone-400 hover:text-amber-400 transition" title="Starred / Favorites">
             <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
         </div>
         <div class="flex flex-col items-center gap-3 text-stone-500 text-xs">
-          <span title="Tokens Balance" class="text-[10px] font-bold text-emerald-400 cursor-pointer" onclick="openPaymentModal('Pro')">ZK</span>
+          <span title="Tokens Balance" class="text-[10px] font-bold text-amber-400 cursor-pointer" onclick="openPaymentModal('Pro')">KZ</span>
         </div>
       </div>
 
       <!-- Backdrop for mobile history drawer -->
-      <div id="history-backdrop" onclick="toggleHistoryDrawer(false)" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"></div>
+      <div id="history-backdrop" onclick="toggleHistoryDrawer(false)" class="hidden fixed top-[53px] inset-x-0 bottom-0 bg-black/70 backdrop-blur-sm z-30 md:hidden"></div>
 
-      <!-- 2. EXPANDABLE SECONDARY DRAWER (CHATS / PROJECTS) -->
-      <aside id="workspace-history-drawer" class="hidden md:hidden fixed md:static inset-y-0 left-0 w-72 md:w-64 bg-[#0d1211] border-r border-white/10 flex flex-col justify-between z-50 transition-all duration-300 shadow-2xl shrink-0">
-        <div>
-          <!-- Search & Close -->
+      <!-- 2. EXPANDABLE SECONDARY DRAWER (CHATS / PROJECTS: Screenshot 1 & 3) -->
+      <aside id="workspace-history-drawer" class="hidden fixed md:static top-[53px] bottom-0 left-0 w-72 md:w-64 bg-[#0d1211] border-r border-white/10 flex flex-col justify-between z-40 transition-all duration-300 shadow-2xl shrink-0">
+        <div class="flex-1 flex flex-col min-h-0">
+          <!-- Search & Close (Screenshot 3) -->
           <div class="p-3 border-b border-white/10 flex items-center gap-2">
             <div class="relative flex-1">
-              <input id="history-search-input" oninput="filterHistoryList(this.value)" type="text" placeholder="Search..." class="w-full bg-black/50 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400">
+              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-stone-500 text-xs">
+                <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </span>
+              <input id="history-search-input" oninput="filterHistoryList(this.value)" type="text" placeholder="Search" class="w-full bg-[#14100f] border border-white/10 rounded-xl pl-8 pr-2.5 py-1.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition">
             </div>
-            <button onclick="toggleHistoryDrawer(false)" class="text-stone-400 hover:text-white p-1 rounded hover:bg-white/10">✕</button>
+            <button onclick="toggleHistoryDrawer(false)" class="text-stone-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition" title="Close">
+              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
           </div>
 
-          <!-- Tabs: Chats / Projects -->
+          <!-- Tabs: Chats / Projects (Orange underline for active) -->
           <div class="flex border-b border-white/10 text-xs font-semibold">
-            <button onclick="switchHistoryTab('chats')" id="btn-hist-chats" class="flex-1 py-2 text-center text-emerald-400 border-b-2 border-emerald-400">Chats</button>
-            <button onclick="switchHistoryTab('projects')" id="btn-hist-projects" class="flex-1 py-2 text-center text-stone-400 hover:text-white">Projects</button>
+            <button onclick="switchHistoryTab('chats')" id="btn-hist-chats" class="flex-1 py-2.5 text-center text-white border-b-2 border-[#ea580c] transition">Chats</button>
+            <button onclick="switchHistoryTab('projects')" id="btn-hist-projects" class="flex-1 py-2.5 text-center text-stone-400 hover:text-white border-b-2 border-transparent transition">Projects</button>
           </div>
 
-          <!-- History Item List -->
-          <div id="history-item-list" class="p-2 space-y-1 overflow-y-auto max-h-[calc(100vh-170px)]">
-            <!-- Populated via JS -->
-            <div class="text-center py-12 px-4 text-stone-500 text-xs">
-              <div class="text-2xl mb-2">✨</div>
-              <div class="font-medium text-stone-400 mb-1">Nothing's happening yet</div>
-              <div class="text-[11px]">Send your first message or generate an image to start!</div>
-            </div>
+          <!-- History Item List & Empty States -->
+          <div id="history-item-list" class="p-3 space-y-1 overflow-y-auto flex-1">
+            <!-- Dynamically populated via renderHistoryList() -->
           </div>
         </div>
       </aside>
@@ -1163,50 +1239,119 @@
           </div>
         </div>
         
-        <!-- ================= VIEW 2: AGENTS STUDIO (SCREENSHOT 1) ================= -->
-        <div id="view-agents" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
-          <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-8">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-4 sm:mb-6 shadow-2xl">
-              🤖
+        <!-- ================= VIEW 2: AGENTS STUDIO (SCREENSHOT 1 & 2) ================= -->
+        <div id="view-agents" class="hidden flex-1 flex flex-col justify-between bg-[#080707] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
+          <!-- Hidden fallback select for backward compatibility -->
+          <input type="hidden" id="agent-persona-select" value="agent_creative">
+
+          <!-- Center Stage Hero -->
+          <div id="agent-hero-container" class="max-w-2xl w-full mx-auto my-auto text-center py-6 sm:py-10 transition-all duration-300">
+            <!-- Exact Syntx Vector Robot Icon -->
+            <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-5 text-[#dcd6ce] flex items-center justify-center transition-transform hover:scale-105 select-none drop-shadow-md">
+              <svg class="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="32" y1="16" x2="32" y2="8" stroke-width="4.5" />
+                <circle cx="32" cy="7" r="2.8" fill="currentColor" stroke="none" />
+                <rect x="7" y="27" width="6" height="18" rx="3" fill="currentColor" stroke="none" />
+                <rect x="51" y="27" width="6" height="18" rx="3" fill="currentColor" stroke="none" />
+                <rect x="13" y="16" width="38" height="36" rx="10" stroke-width="4.5" />
+                <circle cx="25.5" cy="34" r="3.2" fill="currentColor" stroke="none" />
+                <circle cx="38.5" cy="34" r="3.2" fill="currentColor" stroke="none" />
+              </svg>
             </div>
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3" data-i18n="agent_title">
+
+            <!-- Title -->
+            <h2 class="text-xl sm:text-2xl md:text-[26px] font-bold text-white mb-3 tracking-tight" data-i18n="agent_title">
               Create and communicate with your personal agent
             </h2>
-            <p class="text-xs md:text-sm text-stone-400 max-w-xl mx-auto mb-4 sm:mb-8 leading-relaxed" data-i18n="agent_desc">
+
+            <!-- Subtitle -->
+            <p class="text-xs sm:text-[13px] text-stone-400 max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed font-normal" data-i18n="agent_desc">
               Agents memorize instructions, speech manner, study on your data, know how to look on the Internet, issue files, launch code, work in the neural networks GPT Image, Veo 3.1, Suno.
             </p>
 
-            <!-- Agent Selector Dropdown -->
-            <div class="max-w-md mx-auto mb-4 sm:mb-8">
-              <div class="relative">
-                <select id="agent-persona-select" onchange="onSelectAgentPersona(this.value)" class="w-full bg-[#111614] border border-white/15 hover:border-emerald-400 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white appearance-none focus:outline-none cursor-pointer transition shadow-lg">
-                  <option value="agent_creative">🧠 Creative & Media Director (Veo, Kling, Nano Banana)</option>
-                  <option value="agent_code">💻 Full-Stack & Neural Architect (Python, API, Code)</option>
-                  <option value="agent_voice">🎙️ Voice & Audio Director (ElevenLabs, RVC, Suno)</option>
-                  <option value="agent_smm">📈 Growth & Viral Marketer (Hooks, Shorts, SMM)</option>
-                  <option value="agent_research">🔍 Deep Research Analyst (Citations, Web search)</option>
-                </select>
-                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400 text-xs">▾</div>
+            <!-- Custom Dropdown Button & Floating Menu (Screenshot 1 & 2) -->
+            <div class="relative max-w-sm mx-auto" id="agent-selector-wrapper">
+              <button type="button" onclick="toggleAgentDropdown(event)" id="agent-dropdown-trigger" class="w-full flex items-center justify-between bg-[#161312] hover:bg-[#201a18] border border-white/15 hover:border-white/30 rounded-2xl px-5 py-3 text-xs sm:text-sm text-stone-200 font-medium transition shadow-xl active:scale-[0.99]">
+                <span id="agent-selected-name" class="truncate">Select an agent from the list</span>
+                <svg class="w-4 h-4 text-stone-400 shrink-0 ml-2 transition-transform duration-200" id="agent-dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+
+              <!-- Floating Dropdown Menu (Screenshot 2) -->
+              <div id="agent-dropdown-menu" class="hidden absolute left-0 right-0 top-full mt-2 bg-[#171312] border border-white/15 rounded-2xl p-1.5 shadow-2xl z-50 space-y-1 backdrop-blur-xl text-left max-h-80 overflow-y-auto">
+                <!-- Persona 1 -->
+                <button type="button" onclick="chooseAgentPersona('agent_creative', '🧠 Creative & Media Director', 'Specialized in cinematic video prompts, Veo 3.1, Kling, Midjourney, and visual aesthetics.')" class="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/10 text-left transition group">
+                  <span class="text-xl shrink-0 p-1 bg-white/5 rounded-lg">🧠</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs sm:text-sm font-semibold text-white group-hover:text-orange-400 transition truncate">Creative & Media Director</div>
+                    <div class="text-[11px] text-stone-400 line-clamp-1">Cinematic prompts, Veo 3.1, Kling, visual aesthetics</div>
+                  </div>
+                </button>
+                <!-- Persona 2 -->
+                <button type="button" onclick="chooseAgentPersona('agent_code', '💻 Full-Stack & Neural Architect', 'Specialized in Python, TypeScript, API integrations, debugging, and system architectures.')" class="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/10 text-left transition group">
+                  <span class="text-xl shrink-0 p-1 bg-white/5 rounded-lg">💻</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs sm:text-sm font-semibold text-white group-hover:text-orange-400 transition truncate">Full-Stack & Neural Architect</div>
+                    <div class="text-[11px] text-stone-400 line-clamp-1">Python, TypeScript, API, debugging, code generation</div>
+                  </div>
+                </button>
+                <!-- Persona 3 -->
+                <button type="button" onclick="chooseAgentPersona('agent_voice', '🎙️ Voice & Audio Director', 'Specialized in ElevenLabs emotion tags, voice cloning, audio post-production, and Suno soundscapes.')" class="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/10 text-left transition group">
+                  <span class="text-xl shrink-0 p-1 bg-white/5 rounded-lg">🎙️</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs sm:text-sm font-semibold text-white group-hover:text-orange-400 transition truncate">Voice & Audio Director</div>
+                    <div class="text-[11px] text-stone-400 line-clamp-1">ElevenLabs voice cloning, Suno music, audio production</div>
+                  </div>
+                </button>
+                <!-- Persona 4 -->
+                <button type="button" onclick="chooseAgentPersona('agent_smm', '📈 Growth & Viral Marketer', 'Creates viral hooks, TikTok/Reels video concepts, multi-platform copy, and engagement strategies.')" class="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/10 text-left transition group">
+                  <span class="text-xl shrink-0 p-1 bg-white/5 rounded-lg">📈</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs sm:text-sm font-semibold text-white group-hover:text-orange-400 transition truncate">Growth & Viral Marketer</div>
+                    <div class="text-[11px] text-stone-400 line-clamp-1">Hooks, Reels/Shorts viral concepts, SMM campaigns</div>
+                  </div>
+                </button>
+                <!-- Persona 5 -->
+                <button type="button" onclick="chooseAgentPersona('agent_research', '🔍 Deep Research Analyst', 'Conducts deep multi-source research, synthesizes data, checks citations, and compiles reports.')" class="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/10 text-left transition group">
+                  <span class="text-xl shrink-0 p-1 bg-white/5 rounded-lg">🔍</span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs sm:text-sm font-semibold text-white group-hover:text-orange-400 transition truncate">Deep Research Analyst</div>
+                    <div class="text-[11px] text-stone-400 line-clamp-1">Multi-source web search, data synthesis, citations</div>
+                  </div>
+                </button>
+
+                <div class="border-t border-white/10 my-1"></div>
+
+                <!-- Create Custom Agent Option -->
+                <button type="button" onclick="openCreateAgentModal()" class="w-full flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-orange-500/15 text-orange-400 hover:text-orange-300 text-left transition font-semibold text-xs">
+                  <span class="w-6 h-6 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold shrink-0">+</span>
+                  <span>Create personal custom agent</span>
+                </button>
               </div>
             </div>
 
             <!-- Agent Chat Messages Stream -->
-            <div id="agent-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
+            <div id="agent-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mt-6 mb-4 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Box (Agents Studio: Screenshot 1 style) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
-            <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
-              <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
-                <span class="flex items-center gap-1.5 text-stone-400">
-                  <span>🔒</span> <span class="truncate">Write your prompt or instructions for the agent...</span>
+          <!-- Bottom Prompt Box (Appears smoothly when an agent is selected) -->
+          <div id="agent-prompt-box" class="hidden max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0 transition-all duration-300">
+            <div class="bg-[#141211] border border-white/15 focus-within:border-orange-500/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
+              <!-- Active Agent Indicator Bar -->
+              <div class="flex items-center justify-between pb-2 text-[11px] text-stone-400 border-b border-white/5 mb-2">
+                <span class="flex items-center gap-1.5 truncate">
+                  <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                  <span>Active agent:</span>
+                  <strong id="agent-active-badge-name" class="text-white font-semibold truncate">Creative & Media Director</strong>
                 </span>
-                <span id="agent-char-count" class="text-stone-400 font-mono text-[10px] shrink-0">0 / 24000</span>
+                <div class="flex items-center gap-3 shrink-0">
+                  <span id="agent-char-count" class="font-mono text-[10px] text-stone-500">0 / 24000</span>
+                  <button type="button" onclick="resetAgentToLanding()" class="text-stone-500 hover:text-stone-300 text-[10px] hover:underline" title="Return to initial screen">✕ Reset</button>
+                </div>
               </div>
 
               <!-- Attached file chip preview -->
               <div id="agents-file-preview" class="hidden mb-2 flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-stone-200">
-                <span class="text-emerald-400">📎</span>
+                <span class="text-orange-400">📎</span>
                 <span id="agents-file-name" class="truncate max-w-[200px] text-[11px] font-medium">file.txt</span>
                 <button onclick="removeAttachedFile('agents')" class="text-stone-400 hover:text-white ml-auto text-xs">✕</button>
               </div>
@@ -1221,8 +1366,8 @@
                   <button type="button" onclick="triggerStudioAttachment('agents')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-sm transition shrink-0 active:scale-95" title="Attach File">
                     📎
                   </button>
-                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-emerald-400/40 px-2.5 py-1 rounded-lg transition select-none">
-                    <input type="checkbox" id="agent-deep-research" class="rounded bg-black/50 border-white/20 text-emerald-500">
+                  <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-stone-300 bg-white/5 border border-white/10 hover:border-orange-500/40 px-2.5 py-1 rounded-lg transition select-none">
+                    <input type="checkbox" id="agent-deep-research" class="rounded bg-black/50 border-white/20 text-orange-500">
                     <span>Deep research</span>
                   </label>
                   <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Settings">
@@ -1230,14 +1375,14 @@
                   </button>
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <button type="button" onclick="handleVoiceInput('agent')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
+                  <button type="button" onclick="handleVoiceInput('agent')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-orange-500/20 text-stone-300 hover:text-orange-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span>10</span>
-                    <span class="text-amber-400">⚡</span>
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span id="agent-token-cost">10</span>
+                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                   </div>
-                  <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
+                  <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-[#ea580c] hover:bg-orange-500 text-white font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
                   </button>
                 </div>
@@ -1270,7 +1415,7 @@
             <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Box (LLM Studio: Screenshot 1 style: 0/25000, ⬡, 🎙️, 1 ⚡) -->
+          <!-- Bottom Prompt Box (LLM Studio: Screenshot 1 style: 0/25000, ⬡, 🎙️, 1 KZ) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1309,9 +1454,9 @@
                   <button type="button" onclick="handleVoiceInput('llm')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                    <span>10</span>
-                    <span class="text-amber-400">⚡</span>
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                    <span id="llm-token-cost">10</span>
+                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                   </div>
                   <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
@@ -1349,7 +1494,7 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 3 & Screenshot 1 style: 0/24000, 9:16, 2K, ⬡, ✦, 🎙️, 2 ⚡) -->
+          <!-- Bottom Prompt Box (Screenshot 3 & Screenshot 1 style: 0/24000, 9:16, 2K, ⬡, ✦, 🎙️, 2 KZ) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1398,9 +1543,9 @@
                   <button type="button" onclick="handleVoiceInput('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="image-token-cost">12</span>
-                    <span class="text-amber-400">⚡</span>
+                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                   </div>
                   <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Image">
                     ➤
@@ -1432,7 +1577,7 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 ⚡) -->
+          <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 KZ) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1489,9 +1634,9 @@
                   <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="video-token-cost">25</span>
-                    <span class="text-amber-400">⚡</span>
+                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                   </div>
                   <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Video">
                     ➤
@@ -1515,16 +1660,11 @@
             <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
               Eleven v4 creates natural, emotionally expressive speech with authentic human cadence and realistic tones. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
             </p>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-3 sm:mb-4">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
               <span class="text-stone-300">Key capabilities:</span>
               <span class="text-stone-400">ultra-realistic speech</span> •
               <span class="text-stone-400">accent-free voice</span> •
               <span class="text-stone-400">long-form content</span>
-            </div>
-            <div class="mb-5 flex items-center justify-center gap-2">
-              <button type="button" onclick="openVoiceCatalogModal()" class="inline-flex items-center gap-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 px-4 py-2 rounded-full text-xs font-semibold transition shadow active:scale-95">
-                <span class="text-amber-400">🎙️</span> <span>Каталог голосов (All presets & Favorites)</span> <span class="text-[10px] text-stone-500">▾</span>
-              </button>
             </div>
 
             <!-- Audio Generation Live Gallery / Stream -->
@@ -1586,9 +1726,9 @@
                   <button type="button" onclick="handleVoiceInput('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     🎙️
                   </button>
-                  <div class="flex items-center gap-1 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="audio-token-cost-val">10</span>
-                    <span class="text-amber-400">⚡</span>
+                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                   </div>
                   <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Speech">
                     ➤
@@ -1643,7 +1783,7 @@
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
                 <button onclick="sendToolkitInpaint()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg active:scale-95">
-                  <span>Send</span> <span class="bg-black/20 text-black px-1.5 py-0.2 rounded text-[10px]">15 ⚡</span>
+                  <span>Send</span> <span class="bg-black/25 text-black px-1.5 py-0.5 rounded text-[10px] font-mono font-black flex items-center gap-1">15 <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_3px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg></span>
                 </button>
               </div>
             </div>
@@ -1653,10 +1793,10 @@
       </div>
 
       <!-- Backdrop for mobile control panel -->
-      <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-40 md:hidden"></div>
+      <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" class="hidden fixed top-[53px] inset-x-0 bottom-0 bg-black/75 backdrop-blur-sm z-30 md:hidden"></div>
 
       <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
-      <aside id="workspace-control-panel" class="hidden md:block md:w-80 fixed md:static inset-y-0 right-0 w-80 max-w-[85vw] bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-50 shadow-2xl transition-all duration-300 shrink-0">
+      <aside id="workspace-control-panel" class="hidden md:block md:w-80 fixed md:static top-[53px] bottom-0 right-0 w-80 max-w-[85vw] bg-[#0c1110] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs z-40 shadow-2xl transition-all duration-300 shrink-0">
         
         <!-- Mobile Drawer Header (Visible only on < md) -->
         <div class="md:hidden flex items-center justify-between pb-3 border-b border-white/10 mb-2">
@@ -1776,7 +1916,7 @@
 
               <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
                 <button onclick="openImageModelsModal(); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 text-xs transition mb-1">
-                  <span class="flex items-center gap-1.5">⚡ Все 25 моделей...</span>
+                  <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> Все 25 моделей...</span>
                   <span class="text-[10px]">Каталог ↗</span>
                 </button>
                 <div class="px-2 py-1 text-[10px] font-bold text-stone-500 uppercase tracking-wider">Каталог моделей</div>
@@ -1785,63 +1925,63 @@
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
                     <span>Nano Banana Pro</span>
                   </span>
-                  <span class="text-[10px] text-amber-400 font-mono">24⚡</span>
+                  <span class="text-[10px] text-amber-400 font-mono">24 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('seedream_5_pro'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
                     <span>Seedream 5 Pro</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">20⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">20 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('flux_3_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>
                     <span>FLUX 3 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">14⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">14 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('gpt_image_2_5_sunburst'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08z"/></svg>
                     <span>GPT Image 2.5 Sunburst</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">11⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">11 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('recraft_v4'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
                     <span>Recraft V4</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">12⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">12 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('krea_2_large'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4v16M6 14c2-2 5-2 6 0s-1 4-3 4M6 10c2-2 5-2 6 0s-1 4-3 4"/></svg>
                     <span>Krea 2 Large</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">15⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">15 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('gen_4_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
                     <span>Gen-4 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">12⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">12 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('kling_o1_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>
                     <span>Kling O1 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">10⚡</span>
+                  <span class="text-[10px] text-emerald-400 font-mono">10 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('recraft_4_1_flash'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
                     <span>Recraft 4.1 Flash</span>
                   </span>
-                  <span class="text-[10px] text-amber-400 font-mono">5⚡</span>
+                  <span class="text-[10px] text-amber-400 font-mono">5 KZ</span>
                 </button>
               </div>
             </div>
@@ -1932,120 +2072,120 @@
 
               <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
                 <button onclick="openVideoModelsModal(); toggleModelDropdown('video');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-left text-xs font-bold text-emerald-300 transition mb-1 shadow">
-                  <span class="flex items-center gap-1.5"><span>⚡</span> <span>Все 28 моделей видео</span></span>
+                  <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> <span>Все 28 моделей видео</span></span>
                   <span class="text-[10px]">➔</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-300">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg> <span>Seedance 2.5</span></span>
-                  <span class="text-[10px] text-stone-400">25 ⚡</span>
+                  <span class="text-[10px] text-stone-400">25 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5_extend')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><path d="M17 11l4 3-4 3v-6z"/></svg> <span>Seedance 2.5 Extend</span></span>
-                  <span class="text-[10px] text-stone-400">25 ⚡</span>
+                  <span class="text-[10px] text-stone-400">25 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><path d="M19 4l2 2-7 7H12v-2l7-7z"/></svg> <span>Seedance 2.5 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">25 ⚡</span>
+                  <span class="text-[10px] text-stone-400">25 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg> <span>Seedance 2.0</span></span>
-                  <span class="text-[10px] text-stone-400">20 ⚡</span>
+                  <span class="text-[10px] text-stone-400">20 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0_fast')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-300 fill-current" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z"/></svg> <span>Seedance 2.0 Fast</span></span>
-                  <span class="text-[10px] text-stone-400">18 ⚡</span>
+                  <span class="text-[10px] text-stone-400">18 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0_mini')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-sky-400 fill-current" viewBox="0 0 24 24"><rect x="5" y="8" width="3" height="11" rx="1.5"/><rect x="10" y="5" width="3" height="14" rx="1.5"/><rect x="15" y="9" width="3" height="10" rx="1.5"/></svg> <span>Seedance 2.0 Mini</span></span>
-                  <span class="text-[10px] text-stone-400">15 ⚡</span>
+                  <span class="text-[10px] text-stone-400">15 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_3_pro')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 3.0 Pro</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_2_6_pro')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 2.6 Pro</span></span>
-                  <span class="text-[10px] text-stone-400">20 ⚡</span>
+                  <span class="text-[10px] text-stone-400">20 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O3</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o3_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O3 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">18 ⚡</span>
+                  <span class="text-[10px] text-stone-400">18 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O1</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o1_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O1 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">18 ⚡</span>
+                  <span class="text-[10px] text-stone-400">18 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('veo_3_1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><span class="font-black text-white text-xs w-4 text-center leading-none">G</span> <span>Veo 3.1</span></span>
-                  <span class="text-[10px] text-stone-400">26 ⚡</span>
+                  <span class="text-[10px] text-stone-400">26 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gen_4_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg> <span>Gen-4.5</span></span>
-                  <span class="text-[10px] text-stone-400">24 ⚡</span>
+                  <span class="text-[10px] text-stone-400">24 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('wan_2_6')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.6</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('wan_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.5 Video</span></span>
-                  <span class="text-[10px] text-stone-400">16 ⚡</span>
+                  <span class="text-[10px] text-stone-400">16 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('ltx_video')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-teal-400 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg> <span>LTX Audio-to-Video</span></span>
-                  <span class="text-[10px] text-stone-400">16 ⚡</span>
+                  <span class="text-[10px] text-stone-400">16 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3_max')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> <span>MiniMax H3 Max</span></span>
-                  <span class="text-[10px] text-stone-400">20 ⚡</span>
+                  <span class="text-[10px] text-stone-400">20 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-500 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> <span>MiniMax H3</span></span>
-                  <span class="text-[10px] text-stone-400">25 ⚡</span>
+                  <span class="text-[10px] text-stone-400">25 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3_recast')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11l4 3-4 3"/></svg> <span>MiniMax H3 Recast</span></span>
-                  <span class="text-[10px] text-stone-400">20 ⚡</span>
+                  <span class="text-[10px] text-stone-400">20 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gemini_omni_flash_1_1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> <span>Gemini Omni Flash 1.1</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gemini_omni_flash_extend')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> <span>Gemini Omni Extend</span></span>
-                  <span class="text-[10px] text-stone-400">22 ⚡</span>
+                  <span class="text-[10px] text-stone-400">22 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('flux_3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg> <span>FLUX 3</span></span>
-                  <span class="text-[10px] text-stone-400">28 ⚡</span>
+                  <span class="text-[10px] text-stone-400">28 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('flux_3_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg> <span>FLUX 3 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">15 ⚡</span>
+                  <span class="text-[10px] text-stone-400">15 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('aleph_2')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5h-2v-5h2zm0-7h-2V7h2z"/></svg> <span>Aleph 2.0</span></span>
-                  <span class="text-[10px] text-stone-400">18 ⚡</span>
+                  <span class="text-[10px] text-stone-400">18 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('topaz_video_upscale')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="4" y="14" width="4" height="4" rx="1"/><rect x="10" y="9" width="4" height="4" rx="1"/><rect x="16" y="4" width="4" height="4" rx="1"/></svg> <span>Topaz Video Upscale</span></span>
-                  <span class="text-[10px] text-stone-400">15 ⚡</span>
+                  <span class="text-[10px] text-stone-400">15 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('ruby')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 20V4h6a5 5 0 0 1 5 5c0 3-2 5-5 5H7m6 0l5 6"/></svg> <span>Ruby HDR</span></span>
-                  <span class="text-[10px] text-stone-400">16 ⚡</span>
+                  <span class="text-[10px] text-stone-400">16 KZ</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('video_background_removal')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><span class="font-black tracking-tighter text-white text-[10px] uppercase leading-none">VEED</span> <span>BG Removal</span></span>
-                  <span class="text-[10px] text-stone-400">10 ⚡</span>
+                  <span class="text-[10px] text-stone-400">10 KZ</span>
                 </button>
               </div>
               </div>
@@ -2160,27 +2300,27 @@
                   <div id="dropdown-menu-audio-model" class="hidden absolute left-0 right-0 top-full mt-1.5 z-40 bg-[#0e1311] border border-white/20 rounded-xl p-1.5 shadow-2xl space-y-1 backdrop-blur-xl">
                     <div onclick="selectAudioModelVersion('eleven_v4', 'Eleven v4')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs transition">
                       <span>Eleven v4</span>
-                      <span class="text-[10px] text-amber-400/80 font-mono">10 ZK</span>
+                      <span class="text-[10px] text-amber-400/80 font-mono">10 KZ</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_turbo_v2_5', 'Eleven v4 Turbo')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v4 Turbo</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_v3_5', 'Eleven v3')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v3</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_multilingual_v2', 'Eleven v2')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v2</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
                     </div>
                     <div onclick="selectAudioModelVersion('music_2_5', 'Elevenlabs Music 2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Elevenlabs Music 2.5</span>
-                      <span class="text-[10px] text-emerald-400 font-mono">20 ZK</span>
+                      <span class="text-[10px] text-emerald-400 font-mono">20 KZ</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_flash_v2_5', 'Eleven Flash v2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven Flash v2.5</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 ZK</span>
+                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
                     </div>
                   </div>
                 </div>
@@ -2352,7 +2492,7 @@
             <div id="clone-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-clone" onclick="submitVoiceClone()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>⚡</span> <span>Создать клон голоса (25 Credits)</span>
+              <span>🎙️</span> <span>Создать клон голоса (25 KZ)</span>
             </button>
           </div>
 
@@ -2394,7 +2534,7 @@
             </div>
 
             <button type="button" onclick="sendGenerateAudioAction()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🔊</span> <span>Сгенерировать SFX (10 Credits)</span>
+              <span>🔊</span> <span>Сгенерировать SFX (10 KZ)</span>
             </button>
           </div>
 
@@ -2526,7 +2666,7 @@
                 <span>Pricing</span>
               </button>
               <button onclick="switchUserSubtab('tokens')" id="user-nav-btn-tokens" class="whitespace-nowrap shrink-0 md:w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
-                <span class="text-sm">⚡</span>
+                <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
                 <span>Purchase Tokens</span>
               </button>
               <button onclick="switchUserSubtab('history')" id="user-nav-btn-history" class="whitespace-nowrap shrink-0 md:w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
@@ -2655,9 +2795,13 @@
                 <div class="text-xs text-stone-400 font-medium flex items-center gap-1">
                   <span>Purchase Tokens</span> <span class="cursor-pointer text-stone-500">ⓘ</span>
                 </div>
-                <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2">
+                <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2.5">
                   <span id="profile-card-tokens">500 000</span>
-                  <span class="text-amber-400">⚡</span>
+                  <svg class="w-8 h-8 shrink-0 inline-block drop-shadow-[0_0_10px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
+                    <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
+                    <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -2718,7 +2862,7 @@
                 <div class="space-y-2 text-xs">
                   <div class="flex items-center justify-between">
                     <span class="text-stone-400 flex items-center gap-1.5">👥 PARTNER TOKENS</span>
-                    <span class="font-bold text-white">⚡ 0</span>
+                    <span class="font-bold text-white flex items-center gap-1.5">0 <span class="text-[10px] text-amber-400 font-mono font-bold">KZ</span></span>
                   </div>
                   <div class="flex items-center justify-between">
                     <span class="text-stone-400 flex items-center gap-1.5">💵 AVAILABLE FUNDS</span>
@@ -3127,7 +3271,7 @@
                   <span class="text-stone-400 flex items-center gap-2 font-medium">
                     <span>👥</span> <span>PARTNER TOKENS</span>
                   </span>
-                  <span class="font-extrabold text-white text-sm">⚡ 0</span>
+                  <span class="font-extrabold text-white text-sm flex items-center gap-1.5">0 <span class="text-xs text-amber-400 font-mono font-bold">KZ</span></span>
                 </div>
                 <div class="flex items-center justify-between text-xs">
                   <span class="text-stone-400 flex items-center gap-2 font-medium">
@@ -3215,7 +3359,7 @@
 
 
   <!-- ================= ADMIN PANEL MODAL (FULL CONTROL SUITE) ================= -->
-  <div id="admin-panel-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop" onclick="closeAdminPanel()">
+  <div id="admin-panel-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop" onclick="closeAdminPanel()">
     <div class="bg-[#0b0f0e] border border-emerald-500/40 rounded-3xl overflow-hidden max-w-6xl w-full h-[92vh] flex flex-col shadow-2xl relative" onclick="event.stopPropagation()">
       
       <!-- Admin Header -->
@@ -3283,7 +3427,7 @@
             </div>
             <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
               <div class="text-[11px] font-medium text-stone-400">Токенов в обороте</div>
-              <div id="admin-stat-tokens" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">... ⚡</div>
+              <div id="admin-stat-tokens" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">... KZ</div>
               <div class="text-[10px] text-stone-400 mt-1">На балансах пользователей</div>
             </div>
             <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
@@ -3314,10 +3458,10 @@
                 <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
                   <div>
                     <div class="text-xs font-bold text-white">Подарок всем пользователям</div>
-                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по 500 ZK токенов</div>
+                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по 500 KZ токенов</div>
                   </div>
                   <button onclick="adminGiftAll(500)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs px-3.5 py-2 rounded-xl transition shrink-0">
-                    🎁 Подарить 500 ⚡
+                    🎁 Подарить 500 KZ
                   </button>
                 </div>
 
@@ -3513,7 +3657,7 @@
   </div>
 
   <!-- User Edit Sub-Modal -->
-  <div id="admin-user-edit-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAdminUserEditModal()">
+  <div id="admin-user-edit-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAdminUserEditModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl relative" onclick="event.stopPropagation()">
       <button onclick="closeAdminUserEditModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white">✕</button>
       <h3 class="text-base font-bold text-white mb-1 flex items-center gap-2">
@@ -3524,18 +3668,18 @@
       <input type="hidden" id="admin-edit-user-id">
       <div class="space-y-3">
         <div>
-          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Баланс токенов (ZK)</label>
+          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Баланс токенов (KZ)</label>
           <input id="admin-edit-user-tokens" type="number" step="any" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
         </div>
         <div>
           <label class="block text-[11px] text-stone-300 font-semibold mb-1">Тарифный план</label>
           <select id="admin-edit-user-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
             <option value="Free">Free</option>
-            <option value="Basic">Basic (3,120 ZK)</option>
-            <option value="Pro">Pro (8,160 ZK)</option>
-            <option value="VIP">VIP (20,400 ZK)</option>
-            <option value="Elite">Elite (31,200 ZK)</option>
-            <option value="Ultra Elite">Ultra Elite (36,000 ZK)</option>
+            <option value="Basic">Basic (3,120 KZ)</option>
+            <option value="Pro">Pro (8,160 KZ)</option>
+            <option value="VIP">VIP (20,400 KZ)</option>
+            <option value="Elite">Elite (31,200 KZ)</option>
+            <option value="Ultra Elite">Ultra Elite (36,000 KZ)</option>
           </select>
         </div>
         <div class="pt-2 flex gap-2">
@@ -3551,7 +3695,7 @@
   </div>
 
   <!-- 1. AUTH / SIGN IN MODAL (GOOGLE + TELEGRAM) -->
-  <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeAuthModal()">
+  <div id="auth-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 modal-backdrop" style="display: none;" onclick="closeAuthModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-8 max-w-md w-full relative shadow-2xl" onclick="event.stopPropagation()">
       <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center text-xl font-black mb-5 shadow-lg shadow-emerald-500/30">
@@ -3621,7 +3765,7 @@
   </div>
 
   <!-- 2. PAYMENT CHECKOUT MODAL (STRIPE / PLATEGA / CRYPTO) -->
-  <div id="payment-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePaymentModal()">
+  <div id="payment-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePaymentModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-7 max-w-lg w-full relative shadow-2xl" onclick="event.stopPropagation()">
       <button onclick="closePaymentModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
       
@@ -3634,7 +3778,7 @@
       <div class="bg-black/40 border border-white/10 rounded-2xl p-4 mb-5 flex justify-between items-center">
         <div>
           <div class="text-[11px] text-stone-400">Package Included:</div>
-          <div class="text-sm font-bold text-white"><span id="checkout-tokens-count">8,160</span> ZK Tokens</div>
+          <div class="text-sm font-bold text-white"><span id="checkout-tokens-count">8,160</span> KZ Tokens</div>
         </div>
         <div class="text-right">
           <div class="text-[11px] text-stone-400">Amount:</div>
@@ -3687,7 +3831,7 @@
   </div>
 
   <!-- 3. QUICK PROMPT WAND MODAL (🪄) -->
-  <div id="prompt-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePromptModal()">
+  <div id="prompt-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closePromptModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-7 max-w-lg w-full relative shadow-2xl" onclick="event.stopPropagation()">
       <button onclick="closePromptModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
       <div class="flex items-center gap-2 mb-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
@@ -3722,7 +3866,7 @@
   </div>
 
   <!-- 4. TREND PREVIEW CINEMA MODAL (Real AI Video Player & Prompt Inspector) -->
-  <div id="trend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop backdrop-blur-xl" onclick="closeTrendModal()">
+  <div id="trend-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop backdrop-blur-xl" onclick="closeTrendModal()">
     <div class="bg-[#0f1412] border border-white/20 rounded-3xl overflow-hidden max-w-5xl w-full relative shadow-2xl flex flex-col md:flex-row max-h-[92vh]" onclick="event.stopPropagation()">
       <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition active:scale-95" title="Close">✕</button>
       
@@ -3787,7 +3931,7 @@
   </div>
 
   <!-- ELEVENLABS VIDEO & IMAGE MODEL SELECTOR MODAL (2026 ELEVENLABS REPLICA) -->
-  <div id="video-models-modal" class="fixed inset-0 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop backdrop-blur-md" onclick="if(event.target === this) closeVideoModelsModal()">
+  <div id="video-models-modal" class="fixed inset-0 z-[200] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop backdrop-blur-md" onclick="if(event.target === this) closeVideoModelsModal()">
     <div class="bg-[#121615] border border-white/15 sm:rounded-3xl rounded-t-3xl p-4 sm:p-6 max-w-xl w-full max-h-[88vh] flex flex-col shadow-2xl relative overflow-hidden" onclick="event.stopPropagation()">
       <!-- iOS Drag handle for mobile -->
       <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-3 sm:hidden"></div>
@@ -3835,7 +3979,7 @@
   </div>
 
   <!-- ELEVENLABS IMAGE MODEL SELECTOR MODAL (2026 ELEVENLABS REPLICA) -->
-  <div id="image-models-modal" class="fixed inset-0 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop backdrop-blur-md" onclick="if(event.target === this) closeImageModelsModal()">
+  <div id="image-models-modal" class="fixed inset-0 z-[200] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop backdrop-blur-md" onclick="if(event.target === this) closeImageModelsModal()">
     <div class="bg-[#121615] border border-white/15 sm:rounded-3xl rounded-t-3xl p-4 sm:p-6 max-w-xl w-full max-h-[88vh] flex flex-col shadow-2xl relative overflow-hidden" onclick="event.stopPropagation()">
       <!-- iOS Drag handle for mobile -->
       <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-3 sm:hidden"></div>
@@ -3882,7 +4026,7 @@
   </div>
 
   <!-- ================= ELEVENLABS LUXURY VOICE CATALOG MODAL (SCREENSHOT 2 REPLICA) ================= -->
-  <div id="voice-catalog-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 modal-backdrop backdrop-blur-xl" onclick="if(event.target === this) closeVoiceCatalogModal()">
+  <div id="voice-catalog-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-2 sm:p-4 modal-backdrop backdrop-blur-xl" onclick="if(event.target === this) closeVoiceCatalogModal()">
     <div class="bg-[#0e1311] border border-white/15 rounded-3xl p-4 sm:p-6 max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden" onclick="event.stopPropagation()">
       <!-- iOS Drag handle for mobile -->
       <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-3 sm:hidden"></div>
@@ -3921,46 +4065,60 @@
         <span class="text-stone-400 font-semibold text-[11px] mr-1">Filter</span>
         
         <!-- Gender Filter -->
-        <select id="filter-voice-gender" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+        <select id="filter-voice-gender" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg bg-[#161d1a] border border-white/10 text-stone-200">
           <option value="all">Gender ▾</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
 
         <!-- Age Filter -->
-        <select id="filter-voice-age" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+        <select id="filter-voice-age" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg bg-[#161d1a] border border-white/10 text-stone-200">
           <option value="all">Age ▾</option>
           <option value="young">Young</option>
           <option value="middle_aged">Middle-aged</option>
-          <option value="senior">Senior</option>
+          <option value="old">Senior / Old</option>
         </select>
 
         <!-- Use case Filter -->
-        <select id="filter-voice-usecase" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+        <select id="filter-voice-usecase" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg bg-[#161d1a] border border-white/10 text-stone-200">
           <option value="all">Use case ▾</option>
-          <option value="narration">Narration</option>
-          <option value="characters">Characters</option>
+          <option value="narration">Narration & Story</option>
+          <option value="characters">Characters & Animation</option>
           <option value="conversational">Conversational</option>
-          <option value="news">News</option>
+          <option value="news">News & Editorial</option>
           <option value="audiobooks">Audiobooks</option>
+          <option value="advertisement">Commercial & Ads</option>
+          <option value="meditation">Meditation & Calm</option>
+          <option value="gaming">Gaming & Trailer</option>
         </select>
 
         <!-- Language Filter -->
-        <select id="filter-voice-lang" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+        <select id="filter-voice-lang" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg bg-[#161d1a] border border-white/10 text-stone-200">
           <option value="all">Language ▾</option>
+          <option value="en">English (US/UK)</option>
+          <option value="ru">Russian (Русский)</option>
+          <option value="es">Spanish (Español)</option>
+          <option value="fr">French (Français)</option>
+          <option value="de">German (Deutsch)</option>
+          <option value="it">Italian (Italiano)</option>
+          <option value="pl">Polish (Polski)</option>
+          <option value="ja">Japanese (日本語)</option>
+          <option value="zh">Chinese (中文)</option>
           <option value="multilingual">Multilingual</option>
-          <option value="en">English</option>
-          <option value="ru">Russian</option>
         </select>
 
         <!-- Accent Filter -->
-        <select id="filter-voice-accent" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg">
+        <select id="filter-voice-accent" onchange="applyVoiceCatalogFilters()" class="text-[11px] py-1 px-2.5 rounded-lg bg-[#161d1a] border border-white/10 text-stone-200">
           <option value="all">Accent ▾</option>
           <option value="american">American</option>
           <option value="british">British</option>
-          <option value="neutral">Neutral</option>
-          <option value="slavic">Slavic</option>
           <option value="australian">Australian</option>
+          <option value="slavic">Slavic / East Europe</option>
+          <option value="latin">Latin American</option>
+          <option value="african">African</option>
+          <option value="asian">Asian</option>
+          <option value="indian">Indian</option>
+          <option value="neutral">Neutral</option>
         </select>
 
         <!-- Clear all filters button -->
@@ -3977,7 +4135,7 @@
   </div>
 
   <!-- 5. COMPARE PLANS MODAL -->
-  <div id="compare-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeCompareModal()">
+  <div id="compare-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeCompareModal()">
     <div class="bg-[#111514] border border-emerald-500/30 rounded-3xl p-6 md:p-8 max-w-4xl w-full relative shadow-2xl max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
       <button onclick="closeCompareModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
       <h3 class="text-2xl font-bold text-white mb-1">Detailed Plan Comparison</h3>
@@ -3998,11 +4156,11 @@
           <tbody class="divide-y divide-white/5 text-stone-300">
             <tr>
               <td class="py-3 px-3 font-medium">Monthly Tokens</td>
-              <td class="py-3 px-3">3,120 ZK</td>
-              <td class="py-3 px-3 font-bold text-emerald-300">8,160 ZK</td>
-              <td class="py-3 px-3">20,400 ZK</td>
-              <td class="py-3 px-3">31,200 ZK</td>
-              <td class="py-3 px-3 font-bold text-cyan-300">36,000 ZK</td>
+              <td class="py-3 px-3">3,120 KZ</td>
+              <td class="py-3 px-3 font-bold text-emerald-300">8,160 KZ</td>
+              <td class="py-3 px-3">20,400 KZ</td>
+              <td class="py-3 px-3">31,200 KZ</td>
+              <td class="py-3 px-3 font-bold text-cyan-300">36,000 KZ</td>
             </tr>
             <tr>
               <td class="py-3 px-3 font-medium">Kling 1.5 & Nano Banana</td>
@@ -4035,7 +4193,7 @@
   </div>
 
   <!-- 6. ACADEMY / CONTEST / STATUS / LEGAL READER MODAL -->
-  <div id="info-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 modal-backdrop" onclick="closeInfoModal()">
+  <div id="info-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-3 sm:p-6 modal-backdrop" onclick="closeInfoModal()">
     <div id="info-modal-box" class="bg-[#111514] border border-white/15 rounded-3xl p-5 sm:p-7 max-w-4xl w-full max-h-[90vh] flex flex-col relative shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4 shrink-0">
         <div class="flex items-center gap-3">
@@ -4059,7 +4217,7 @@
   </div>
 
   <!-- ================= 7. DEDICATED MODEL STATUS DASHBOARD MODAL (SYNTAX STYLE) ================= -->
-  <div id="status-page-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto" onclick="if(event.target === this) closeStatusModal()">
+  <div id="status-page-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto" onclick="if(event.target === this) closeStatusModal()">
     <div class="relative w-full max-w-4xl bg-[#141719] border border-white/10 rounded-2xl shadow-2xl p-4 sm:p-6 my-auto text-stone-200 overflow-hidden" onclick="event.stopPropagation()">
       <!-- Close Button -->
       <button onclick="closeStatusModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition z-10" title="Close">
@@ -4140,6 +4298,113 @@
     </div>
   </div>
 
+  <!-- ================= 8. NEW PROJECT MODAL (SYNTAX STYLE SCREENSHOT 5) ================= -->
+  <div id="new-project-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onclick="if(event.target === this) closeNewProjectModal()">
+    <div class="relative w-full max-w-[420px] bg-[#171312] border border-white/15 rounded-2xl shadow-2xl p-5 sm:p-6 text-stone-200" onclick="event.stopPropagation()">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3.5 border-b border-white/10 mb-4">
+        <h3 class="text-base font-bold text-white tracking-tight">New project</h3>
+        <button type="button" onclick="closeNewProjectModal()" class="text-stone-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition" title="Close">
+          <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Field 1: Name -->
+      <div class="mb-4">
+        <label class="block text-xs font-medium text-stone-300 mb-1.5">
+          <span class="text-rose-500 font-bold">*</span> Name
+        </label>
+        <div class="relative">
+          <input type="text" id="new-project-name" maxlength="50" oninput="onProjectNameInput(this.value)" placeholder="Enter project name..." class="w-full bg-[#120f0e] border border-white/15 focus:border-[#ea580c] rounded-xl pl-3.5 pr-16 py-2.5 text-xs sm:text-sm text-white placeholder-stone-500 focus:outline-none transition">
+          <span id="new-project-char-count" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[11px] font-mono text-stone-500 select-none pointer-events-none">0 / 50</span>
+        </div>
+      </div>
+
+      <!-- Field 2: Color -->
+      <div class="mb-5">
+        <label class="block text-xs font-medium text-stone-300 mb-2">
+          <span class="text-rose-500 font-bold">*</span> Color
+        </label>
+        <!-- 10 Color Swatches from Screenshot 5 -->
+        <div class="flex flex-wrap items-center gap-2 mb-3.5" id="new-project-swatches">
+          <!-- Populated dynamically via renderProjectSwatches() -->
+        </div>
+        <!-- Hex input + Live Preview box -->
+        <div class="flex items-center gap-2.5">
+          <input type="text" id="new-project-hex" maxlength="7" oninput="onProjectHexInput(this.value)" value="#9C9C9C" class="w-32 bg-[#120f0e] border border-white/15 focus:border-[#ea580c] rounded-xl px-3 py-2 text-xs font-mono uppercase text-white focus:outline-none transition">
+          <div id="new-project-color-preview" class="w-8 h-8 rounded-lg border border-white/20 shadow-inner transition-colors duration-150" style="background-color: #9C9C9C;"></div>
+        </div>
+      </div>
+
+      <!-- Footer Buttons (Screenshot 5: Cancel / Add) -->
+      <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+        <button type="button" onclick="closeNewProjectModal()" class="text-stone-300 hover:text-white text-xs font-medium px-4 py-2 rounded-xl hover:bg-white/5 transition">
+          Cancel
+        </button>
+        <button type="button" onclick="submitNewProject()" id="btn-submit-new-project" class="bg-white/10 hover:bg-[#ea580c] hover:text-white border border-white/15 text-stone-200 text-xs font-bold px-6 py-2 rounded-xl transition shadow-lg active:scale-95">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 9. CREATE AGENT MODAL ================= -->
+  <div id="create-agent-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onclick="if(event.target === this) closeCreateAgentModal()">
+    <div class="relative w-full max-w-md bg-[#171312] border border-white/15 rounded-2xl shadow-2xl p-5 sm:p-6 text-stone-200" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-3.5 border-b border-white/10 mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">
+            🤖
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white tracking-tight">Create AI Agent</h3>
+            <div class="text-[10px] text-stone-400">Custom persona with persistent instructions</div>
+          </div>
+        </div>
+        <button type="button" onclick="closeCreateAgentModal()" class="text-stone-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition" title="Close">
+          <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 mb-5 text-left">
+        <div>
+          <label class="block text-xs font-medium text-stone-300 mb-1.5"><span class="text-rose-500 font-bold">*</span> Agent Name</label>
+          <input type="text" id="create-agent-name" placeholder="e.g. Cinema Scriptwriter, Code Auditor..." class="w-full bg-[#120f0e] border border-white/15 focus:border-[#ea580c] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-stone-500 focus:outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-stone-300 mb-1.5"><span class="text-rose-500 font-bold">*</span> Role & Instructions</label>
+          <textarea id="create-agent-instructions" rows="3" placeholder="Describe instructions, speech manner, task focus..." class="w-full bg-[#120f0e] border border-white/15 focus:border-[#ea580c] rounded-xl px-3.5 py-2 text-xs text-white placeholder-stone-500 focus:outline-none resize-none transition leading-relaxed"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-stone-300 mb-1.5">Capabilities</label>
+          <div class="grid grid-cols-2 gap-2 text-[11px] text-stone-300">
+            <label class="flex items-center gap-2 bg-white/5 border border-white/10 p-2 rounded-xl cursor-pointer hover:border-white/20 select-none">
+              <input type="checkbox" id="cap-web" checked class="accent-orange-500 rounded">
+              <span>Web Search</span>
+            </label>
+            <label class="flex items-center gap-2 bg-white/5 border border-white/10 p-2 rounded-xl cursor-pointer hover:border-white/20 select-none">
+              <input type="checkbox" id="cap-code" checked class="accent-orange-500 rounded">
+              <span>Python & Code</span>
+            </label>
+            <label class="flex items-center gap-2 bg-white/5 border border-white/10 p-2 rounded-xl cursor-pointer hover:border-white/20 select-none">
+              <input type="checkbox" id="cap-files" checked class="accent-orange-500 rounded">
+              <span>File Parsing</span>
+            </label>
+            <label class="flex items-center gap-2 bg-white/5 border border-white/10 p-2 rounded-xl cursor-pointer hover:border-white/20 select-none">
+              <input type="checkbox" id="cap-media" checked class="accent-orange-500 rounded">
+              <span>Media Engine</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3.5 border-t border-white/10">
+        <button type="button" onclick="closeCreateAgentModal()" class="text-stone-300 hover:text-white text-xs font-medium px-4 py-2 rounded-xl hover:bg-white/5 transition">Cancel</button>
+        <button type="button" onclick="saveCustomAgent()" class="bg-[#ea580c] hover:bg-orange-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-lg active:scale-95">Create Agent</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
     // Global State
@@ -4178,7 +4443,7 @@
 
         nav_toolkit: "Toolkit",
         sign_in: "Sign in",
-        topup: "Top up ZK",
+        topup: "Top up KZ",
         logout: "Log out",
         drawer_home: "Home",
         drawer_academy: "Academy",
@@ -4191,7 +4456,7 @@
 
         notif_title: "Notifications",
         notif_mark_read: "Mark all read",
-        notif_1_title: "+5.5 ZK tokens credited",
+        notif_1_title: "+5.5 KZ tokens credited",
         notif_1_time: "Just now",
         notif_1_text: "Starter token balance granted for trial generations across all models.",
         notif_2_title: "Wan 3.0 & Veo 3.1 available",
@@ -4271,13 +4536,13 @@
         faq_support_btn: "Contact Support",
 
         faq_q1: "Can I try ZYKO.AI tools for free?",
-        faq_a1: "Yes! Every new user receives complimentary trial tokens (5.5 ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.",
+        faq_a1: "Yes! Every new user receives complimentary trial tokens (5.5 KZ) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.",
         faq_q2: "Does one subscription give access to all 100+ AI tools?",
         faq_a2: "Absolutely. Instead of paying for separate subscriptions to ChatGPT, Midjourney, Kling, Runway, and ElevenLabs (which would cost over $250/mo combined), ZYKO.AI gives you universal access to all leading models from a single token balance.",
         faq_q3: "What neural networks and models are included in ZYKO.AI?",
         faq_a3: "You get instant access to ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD voices with voice cloning, cinematic sound effects (SFX), and autonomous AI Agents.",
-        faq_q4: "What are ZK tokens and how are they spent?",
-        faq_a4: "Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 ZK, photorealistic images = 12 ZK, voice synthesis & SFX = 10 ZK, AI Music = 20 ZK, and cinematic video (Kling, Seedance, Veo) = 25 ZK.",
+        faq_q4: "What are KZ tokens and how are they spent?",
+        faq_a4: "Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 KZ, photorealistic images = 12 KZ, voice synthesis & SFX = 10 KZ, AI Music = 20 KZ, and cinematic video (Kling, Seedance, Veo) = 25 KZ.",
         faq_q5: "Can I use generated media for commercial purposes?",
         faq_a5: "Yes! All images, videos, audio voiceovers, musical tracks, and text generated on paid subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full unrestricted commercial license and rights.",
         faq_q6: "Does my account and balance synchronize between Web and Telegram?",
@@ -4348,7 +4613,7 @@
 
         nav_toolkit: "Инструменты",
         sign_in: "Войти",
-        topup: "Пополнить ZK",
+        topup: "Пополнить KZ",
         logout: "Выйти",
         drawer_home: "Главная",
         drawer_academy: "Академия",
@@ -4361,7 +4626,7 @@
 
         notif_title: "Уведомления",
         notif_mark_read: "Прочитать все",
-        notif_1_title: "+5.5 ZK токенов начислено",
+        notif_1_title: "+5.5 KZ токенов начислено",
         notif_1_time: "Только что",
         notif_1_text: "Вам начислен стартовый баланс токенов для тестовых генераций во всех моделях.",
         notif_2_title: "Wan 3.0 & Veo 3.1 доступны",
@@ -4441,13 +4706,13 @@
         faq_support_btn: "Написать в поддержку",
 
         faq_q1: "Могу ли я попробовать инструменты ZYKO.AI бесплатно?",
-        faq_a1: "Да! Каждый новый пользователь получает приветственные пробные токены (5.5 ZK) сразу после регистрации, чтобы протестировать генерацию текста, создание реалистичных фото и нейросетевой голос перед выбором тарифа.",
+        faq_a1: "Да! Каждый новый пользователь получает приветственные пробные токены (5.5 KZ) сразу после регистрации, чтобы протестировать генерацию текста, создание реалистичных фото и нейросетевой голос перед выбором тарифа.",
         faq_q2: "Дает ли одна подписка доступ ко всем 100+ нейросетям?",
         faq_a2: "Да, абсолютно. Вместо оплаты отдельных подписок на ChatGPT, Midjourney, Kling, Runway и ElevenLabs (что стоило бы более $250 в месяц), ZYKO.AI открывает универсальный доступ ко всем передовым моделям из единого баланса токенов.",
         faq_q3: "Какие нейросети и модели входят в ZYKO.AI?",
         faq_a3: "Вы получаете мгновенный доступ к ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD голосам с клонированием речи, кинематографичным звуковым эффектам (SFX) и автономным AI-агентам.",
-        faq_q4: "Что такое токены ZK и как они расходуются?",
-        faq_a4: "Токены — это универсальная внутренняя валюта на сайте и в Telegram. Списания происходят строго за запрос: запросы к LLM = 10 ZK, генерация фото = 12 ZK, синтез речи и SFX = 10 ZK, AI-музыка = 20 ZK, а кинематографичное видео (Kling, Seedance, Veo) = 25 ZK.",
+        faq_q4: "Что такое токены KZ и как они расходуются?",
+        faq_a4: "Токены — это универсальная внутренняя валюта на сайте и в Telegram. Списания происходят строго за запрос: запросы к LLM = 10 KZ, генерация фото = 12 KZ, синтез речи и SFX = 10 KZ, AI-музыка = 20 KZ, а кинематографичное видео (Kling, Seedance, Veo) = 25 KZ.",
         faq_q5: "Могу ли я использовать созданный контент в коммерческих целях?",
         faq_a5: "Да! Все изображения, видео, аудио озвучки, музыкальные треки и тексты, созданные на платных подписках (Basic, Pro, VIP, Elite, Ultra Elite), имеют полную бессрочную коммерческую лицензию и права.",
         faq_q6: "Синхронизируются ли мой аккаунт и баланс между Вебом и Telegram?",
@@ -4504,7 +4769,7 @@
         nav_audio: "Audio",
         nav_toolkit: "Herramientas",
         sign_in: "Iniciar sesión",
-        topup: "Recargar ZK",
+        topup: "Recargar KZ",
         logout: "Cerrar sesión",
         drawer_home: "Inicio",
         drawer_academy: "Academia",
@@ -4575,13 +4840,13 @@
         faq_support_btn: "Contactar soporte",
 
         faq_q1: "¿Puedo probar las herramientas de ZYKO.AI gratis?",
-        faq_a1: "¡Sí! Cada nuevo usuario recibe tokens de prueba (5.5 ZK) al registrarse para probar texto, imágenes fotorrealistas y síntesis de voz.",
+        faq_a1: "¡Sí! Cada nuevo usuario recibe tokens de prueba (5.5 KZ) al registrarse para probar texto, imágenes fotorrealistas y síntesis de voz.",
         faq_q2: "¿Una sola suscripción da acceso a más de 100 herramientas?",
         faq_a2: "Totalmente. En lugar de pagar suscripciones separadas para ChatGPT, Midjourney, Kling y ElevenLabs (más de $250/mes), ZYKO.AI te ofrece acceso unificado desde un solo saldo.",
         faq_q3: "¿Qué redes neuronales y modelos están incluidos?",
         faq_a3: "Acceso instantáneo a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, voces ElevenLabs HD y agentes IA autónomos.",
-        faq_q4: "¿Qué son los tokens ZK y cómo se consumen?",
-        faq_a4: "Son nuestra moneda interna unificada: consultas LLM = 10 ZK, imágenes = 12 ZK, voces y SFX = 10 ZK, música = 20 ZK, y vídeo cinemático = 25 ZK.",
+        faq_q4: "¿Qué son los tokens KZ y cómo se consumen?",
+        faq_a4: "Son nuestra moneda interna unificada: consultas LLM = 10 KZ, imágenes = 12 KZ, voces y SFX = 10 KZ, música = 20 KZ, y vídeo cinemático = 25 KZ.",
         faq_q5: "¿Puedo usar el contenido generado para fines comerciales?",
         faq_a5: "¡Sí! Todo el contenido generado en suscripciones de pago cuenta con licencia comercial completa e irrestricta.",
         faq_q6: "¿Se sincroniza mi cuenta entre la Web y Telegram?",
@@ -4608,7 +4873,7 @@
         nav_audio: "Áudio",
         nav_toolkit: "Ferramentas",
         sign_in: "Entrar",
-        topup: "Recarregar ZK",
+        topup: "Recarregar KZ",
         logout: "Sair",
         drawer_home: "Início",
         drawer_academy: "Academia",
@@ -4664,7 +4929,7 @@
         pricing_badge: "✦ Assinatura flexível",
         pricing_title: "Escolha seu plano",
         pricing_desc: "Pool universal de tokens.",
-        billing_monthly: "Mensal",
+        billing_monthly: "Mensual",
         billing_annual: "Anual (15% de desconto)",
         pricing_most_popular: "Mais popular",
         pricing_select_basic: "Escolher Basic",
@@ -4679,13 +4944,13 @@
         faq_support_btn: "Falar com suporte",
 
         faq_q1: "Posso testar as ferramentas do ZYKO.AI de graça?",
-        faq_a1: "Sim! Novos usuários recebem tokens de teste (5.5 ZK) ao se registrar para experimentar texto, imagens fotorrealistas e voz neural.",
+        faq_a1: "Sim! Novos usuários recebem tokens de teste (5.5 KZ) ao se registrar para experimentar texto, imagens fotorrealistas e voz neural.",
         faq_q2: "Uma assinatura dá acesso a mais de 100 ferramentas de IA?",
         faq_a2: "Com certeza. Em vez de pagar por ChatGPT, Midjourney, Kling e ElevenLabs separadamente, você tem acesso universal em um só saldo.",
         faq_q3: "Quais redes neurais e modelos estão inclusos?",
         faq_a3: "Acesso a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Google Veo 3.1, vozes ElevenLabs HD e agentes IA.",
-        faq_q4: "O que são tokens ZK e como são consumidos?",
-        faq_a4: "Nossa moeda unificada: consultas LLM = 10 ZK, imagens = 12 ZK, vozes e SFX = 10 ZK, música = 20 ZK e vídeos = 25 ZK.",
+        faq_q4: "O que são tokens KZ e como são consumidos?",
+        faq_a4: "Nossa moeda unificada: consultas LLM = 10 KZ, imagens = 12 KZ, vozes e SFX = 10 KZ, música = 20 KZ e vídeos = 25 KZ.",
         faq_q5: "Posso usar as mídias geradas comercialmente?",
         faq_a5: "Sim! Todas as mídias geradas em assinaturas ativas contam com direitos e licença comercial completa.",
         faq_q6: "Minha conta e saldo sincronizam entre Web e Telegram?",
@@ -4712,7 +4977,7 @@
         nav_audio: "Audio",
         nav_toolkit: "Werkzeuge",
         sign_in: "Anmelden",
-        topup: "ZK aufladen",
+        topup: "KZ aufladen",
         logout: "Abmelden",
         drawer_home: "Startseite",
         drawer_academy: "Akademie",
@@ -4783,13 +5048,13 @@
         faq_support_btn: "Support kontaktieren",
 
         faq_q1: "Kann ich ZYKO.AI kostenlos testen?",
-        faq_a1: "Ja! Jeder neue Nutzer erhält bei der Registrierung Test-Token (5.5 ZK), um Text, Bilder und KI-Stimmen auszuprobieren.",
+        faq_a1: "Ja! Jeder neue Nutzer erhält bei der Registrierung Test-Token (5.5 KZ), um Text, Bilder und KI-Stimmen auszuprobieren.",
         faq_q2: "Bietet ein einziges Abo Zugriff auf alle 100+ KI-Tools?",
         faq_a2: "Absolut. Statt separate Abos für ChatGPT, Midjourney, Kling und ElevenLabs zu zahlen, haben Sie universellen Zugriff aus einem Token-Guthaben.",
         faq_q3: "Welche neuronalen Netze sind in ZYKO.AI enthalten?",
         faq_a3: "Sofortiger Zugriff auf ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, ElevenLabs HD und KI-Agenten.",
-        faq_q4: "Was sind ZK-Token und wie werden sie verbraucht?",
-        faq_a4: "Unsere universelle Währung: LLM = 10 ZK, Fotos = 12 ZK, Stimmen & SFX = 10 ZK, Musik = 20 ZK und Videos = 25 ZK.",
+        faq_q4: "Was sind KZ-Token und wie werden sie verbraucht?",
+        faq_a4: "Unsere universelle Währung: LLM = 10 KZ, Fotos = 12 KZ, Stimmen & SFX = 10 KZ, Musik = 20 KZ und Videos = 25 KZ.",
         faq_q5: "Darf ich generierte Medien kommerziell nutzen?",
         faq_a5: "Ja! Alle bei aktiven Abonnements erstellten Medien beinhalten vollständige kommerzielle Nutzungsrechte.",
         faq_q6: "Synchronisieren sich Konto und Guthaben zwischen Web und Telegram?",
@@ -6054,6 +6319,16 @@
         });
         window.scrollTo({ top: 0, behavior: 'instant' });
 
+        // Highlight dock-btn-agent on agents studio (Screenshot 4)
+        const dockAgentBtn = document.getElementById('dock-btn-agent');
+        if (dockAgentBtn) {
+          if (tabId === 'agents') {
+            dockAgentBtn.className = 'p-2 rounded-xl text-orange-400 bg-orange-500/15 border border-orange-500/80 transition relative shadow-lg';
+          } else {
+            dockAgentBtn.className = 'p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition relative';
+          }
+        }
+
         // Update mobile top bar model info
         const mobModelIcon = document.getElementById('mobile-bar-model-icon');
         const mobModelName = document.getElementById('mobile-bar-model-name');
@@ -6919,7 +7194,7 @@
       const countFavsEl = document.getElementById('count-voice-favs');
       const countAllEl = document.getElementById('count-voice-all');
       if (countFavsEl) countFavsEl.textContent = `(${favs.length})`;
-      if (countAllEl) countAllEl.textContent = `(${audioVoicesRegistry.length})`;
+      if (countAllEl) countAllEl.textContent = `(${audioVoicesRegistry.length.toLocaleString()})`;
     }
 
     // Initialize Audio Studio on Startup
@@ -6944,35 +7219,32 @@
         }
       } catch (e) {}
 
-      // 2. Fetch server voices from characters_registry
+      // 2. Fetch comprehensive 1,176+ voices catalog from server / voices_library.json
       fetch('/api/voices')
         .then(r => r.json())
         .then(data => {
-          if (data && Array.isArray(data.voices)) {
-            data.voices.forEach(sv => {
-              if (!audioVoicesRegistry.some(v => v.id === sv.id)) {
-                audioVoicesRegistry.push({
-                  id: sv.id,
-                  name: sv.name,
-                  title: sv.name,
-                  desc: sv.desc || 'Персонаж Zyko Studio',
-                  category: sv.category === 'actors' ? 'actors' : 'characters',
-                  gender: sv.gender || 'male',
-                  age: 'middle_aged',
-                  use_case: 'characters',
-                  language: 'ru',
-                  accent: 'neutral',
-                  avatar: sv.gender === 'female' ? '🌸' : '🎙️',
-                  duration: '00:08',
-                  preview: sv.preview || `/api/voice/preview?voice_id=${sv.id}`
-                });
-              }
-            });
+          if (data && Array.isArray(data.voices) && data.voices.length > 50) {
+            const clones = audioVoicesRegistry.filter(v => v.id && String(v.id).startsWith('cloned_'));
+            audioVoicesRegistry = clones.concat(data.voices);
             updateVoiceCatalogCounts();
             renderVoiceCatalogCards();
+            updateSelectedVoiceUI();
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          fetch('/voices_library.json')
+            .then(r => r.json())
+            .then(vList => {
+              if (Array.isArray(vList) && vList.length > 0) {
+                const clones = audioVoicesRegistry.filter(v => v.id && String(v.id).startsWith('cloned_'));
+                audioVoicesRegistry = clones.concat(vList);
+                updateVoiceCatalogCounts();
+                renderVoiceCatalogCards();
+                updateSelectedVoiceUI();
+              }
+            })
+            .catch(() => {});
+        });
 
       // 3. Render initial Selected Voice UI & Sliders
       updateSelectedVoiceUI();
@@ -7019,7 +7291,7 @@
         if (input) input.placeholder = 'Enter voice clone name and upload clean audio sample (30s - 2min)...';
         if (hint) hint.textContent = 'Instant voice cloning from clean speech audio...';
         if (costBadge) costBadge.textContent = '25';
-        if (sendBtn) { sendBtn.title = 'Clone Voice'; sendBtn.innerHTML = '⚡'; }
+        if (sendBtn) { sendBtn.title = 'Clone Voice'; sendBtn.innerHTML = '🎙️'; }
         if (tagsHelp) tagsHelp.classList.add('hidden');
       } else if (mode === 'sfx') {
         if (input) input.placeholder = 'Describe sound effect (e.g. cinematic laser blast, thunderstorm, explosion)...';
@@ -7058,6 +7330,7 @@
 
     function setVoiceCatalogTab(tab) {
       voiceCatalogTab = tab;
+      window.voiceCatalogDisplayLimit = 60;
       const tabAll = document.getElementById('tab-voice-all');
       const tabFavs = document.getElementById('tab-voice-favs');
       if (tab === 'all') {
@@ -7086,6 +7359,7 @@
 
     function onVoiceSearchChange(val) {
       voiceCatalogSearchQuery = val;
+      window.voiceCatalogDisplayLimit = 60;
       const clearBtn = document.getElementById('btn-clear-voice-search');
       if (clearBtn) {
         if (val.trim()) clearBtn.classList.remove('hidden');
@@ -7097,19 +7371,27 @@
     function clearVoiceCatalogSearch() {
       const inp = document.getElementById('voice-modal-search');
       if (inp) inp.value = '';
+      window.voiceCatalogDisplayLimit = 60;
       onVoiceSearchChange('');
     }
 
     function applyVoiceCatalogFilters() {
+      window.voiceCatalogDisplayLimit = 60;
       renderVoiceCatalogCards();
     }
 
     function resetVoiceCatalogFilters() {
       clearVoiceCatalogSearch();
+      window.voiceCatalogDisplayLimit = 60;
       ['filter-voice-gender', 'filter-voice-age', 'filter-voice-usecase', 'filter-voice-lang', 'filter-voice-accent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = 'all';
       });
+      renderVoiceCatalogCards();
+    }
+
+    function loadMoreVoiceCards() {
+      window.voiceCatalogDisplayLimit = (window.voiceCatalogDisplayLimit || 60) + 60;
       renderVoiceCatalogCards();
     }
 
@@ -7120,11 +7402,11 @@
       const q = (voiceCatalogSearchQuery || '').trim().toLowerCase();
       const favs = getFavoriteVoiceIds();
 
-      const gender = document.getElementById('filter-voice-gender')?.value || 'all';
-      const age = document.getElementById('filter-voice-age')?.value || 'all';
-      const usecase = document.getElementById('filter-voice-usecase')?.value || 'all';
-      const lang = document.getElementById('filter-voice-lang')?.value || 'all';
-      const accent = document.getElementById('filter-voice-accent')?.value || 'all';
+      const gender = (document.getElementById('filter-voice-gender')?.value || 'all').toLowerCase();
+      const age = (document.getElementById('filter-voice-age')?.value || 'all').toLowerCase();
+      const usecase = (document.getElementById('filter-voice-usecase')?.value || 'all').toLowerCase();
+      const lang = (document.getElementById('filter-voice-lang')?.value || 'all').toLowerCase();
+      const accent = (document.getElementById('filter-voice-accent')?.value || 'all').toLowerCase();
 
       const filtered = audioVoicesRegistry.filter(v => {
         // Tab filter (All vs Favorites)
@@ -7137,15 +7419,31 @@
           const matchTitle = (v.title && v.title.toLowerCase().includes(q));
           const matchName = (v.name && v.name.toLowerCase().includes(q));
           const matchDesc = (v.desc && v.desc.toLowerCase().includes(q));
-          if (!matchTitle && !matchName && !matchDesc) return false;
+          const matchTags = (v.tags && v.tags.toLowerCase().includes(q));
+          if (!matchTitle && !matchName && !matchDesc && !matchTags) return false;
         }
 
         // Metadata dropdown filters
-        if (gender !== 'all' && v.gender && v.gender !== gender) return false;
-        if (age !== 'all' && v.age && v.age !== age) return false;
-        if (usecase !== 'all' && v.use_case && v.use_case !== usecase) return false;
-        if (lang !== 'all' && v.language && v.language !== lang && v.language !== 'multilingual') return false;
-        if (accent !== 'all' && v.accent && v.accent !== accent && v.accent !== 'neutral') return false;
+        if (gender !== 'all') {
+          const g = (v.gender || '').toLowerCase();
+          if (g && g !== gender && g !== 'unspecified') return false;
+        }
+        if (age !== 'all') {
+          const a = (v.age || '').toLowerCase().replace('-', '_');
+          if (a && !a.includes(age.replace('-', '_'))) return false;
+        }
+        if (usecase !== 'all') {
+          const u = (v.use_case || '').toLowerCase();
+          if (u && !u.includes(usecase)) return false;
+        }
+        if (lang !== 'all') {
+          const l = (v.language || '').toLowerCase();
+          if (l && l !== lang && l !== 'multilingual' && !l.includes(lang)) return false;
+        }
+        if (accent !== 'all') {
+          const ac = (v.accent || '').toLowerCase();
+          if (ac && !ac.includes(accent) && ac !== 'neutral') return false;
+        }
 
         return true;
       });
@@ -7163,8 +7461,10 @@
 
       const activePlayer = document.getElementById('audio-voice-preview-player');
       const isPlayerActive = activePlayer && !activePlayer.paused;
+      const limit = window.voiceCatalogDisplayLimit || 60;
+      const visible = filtered.slice(0, limit);
 
-      container.innerHTML = filtered.map(v => {
+      let cardsHtml = visible.map(v => {
         const isSelected = selectedAudioVoice && (selectedAudioVoice.id === v.id);
         const isFav = favs.includes(v.id);
         const isPlaying = (currentlyPlayingVoiceId === v.id) && isPlayerActive;
@@ -7212,6 +7512,17 @@
         `;
       }).join('');
 
+      if (filtered.length > limit) {
+        cardsHtml += `
+          <div class="text-center pt-3 pb-3">
+            <button type="button" onclick="loadMoreVoiceCards()" class="px-6 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-stone-200 hover:text-white text-xs font-semibold transition active:scale-95 shadow">
+              Показать еще (+60 голосов) • Показано ${visible.length} из ${filtered.length.toLocaleString()}
+            </button>
+          </div>
+        `;
+      }
+
+      container.innerHTML = cardsHtml;
       initZykoSliders();
     }
 
@@ -7463,7 +7774,7 @@
               <div class="text-[10px] text-stone-400">${isMusic ? 'Синтез студийной музыки и вокала нейросетью...' : 'Генерация нейросетевого аудио высокого разрешения...'}</div>
             </div>
           </div>
-          <span class="text-xs text-emerald-400 font-bold">${costAmount} ⚡</span>
+          <span class="text-xs text-amber-400 font-bold">${costAmount} KZ</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(text.length > 120 ? text.slice(0, 120) + '...' : text)}"
@@ -7610,7 +7921,7 @@
               <div class="text-[10px] text-stone-400">Генерация звукового эффекта нейросетью...</div>
             </div>
           </div>
-          <span class="text-xs text-emerald-400 font-bold">10 ⚡</span>
+          <span class="text-xs text-amber-400 font-bold">10 KZ</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(prompt)}"
@@ -7773,7 +8084,7 @@
         }
         alert('Ошибка клонирования голоса: ' + e.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span>⚡</span> <span>Создать клон голоса (25 Credits)</span>'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>🎙️</span> <span>Создать клон голоса (25 KZ)</span>'; }
       }
     }
 
@@ -7906,8 +8217,16 @@
       gallery.prepend(card);
     }
 
-    // 11. History Storage (Chats & Projects)
+    // 11. History Storage (Chats & Projects: Screenshot 1 & 3)
+    let currentHistoryTab = 'chats';
+    const PROJECT_COLORS = [
+      '#9C9C9C', '#EF4444', '#F97316', '#EAB308', '#22C55E',
+      '#06B6D4', '#3B82F6', '#8B5CF6', '#D946EF', '#EC4899'
+    ];
+    let selectedProjectColor = '#9C9C9C';
+
     function saveToHistory(type, title, payload) {
+      if (!chatHistories[type]) chatHistories[type] = [];
       chatHistories[type].unshift({
         title,
         payload,
@@ -7921,32 +8240,129 @@
       try {
         const saved = localStorage.getItem('zyko_history');
         if (saved) chatHistories = JSON.parse(saved);
-        renderHistoryList();
+        if (!chatHistories.chats) chatHistories.chats = [];
+        if (!chatHistories.projects) chatHistories.projects = [];
       } catch (e) {}
-    }
-
-    function renderHistoryList() {
-      const list = document.getElementById('history-item-list');
-      const items = chatHistories['chats'] || [];
-      if (!items.length) return;
-
-      list.innerHTML = items.map((it, idx) => `
-        <div class="flex items-center justify-between p-2 rounded-xl hover:bg-white/5 cursor-pointer text-xs group">
-          <span class="truncate text-stone-300 group-hover:text-white">${escapeHtml(it.title)}</span>
-          <span class="text-[10px] text-stone-500">${it.time}</span>
-        </div>
-      `).join('');
+      renderHistoryList();
     }
 
     function switchHistoryTab(tab) {
+      currentHistoryTab = tab;
       const btnChats = document.getElementById('btn-hist-chats');
       const btnProj = document.getElementById('btn-hist-projects');
+
       if (tab === 'chats') {
-        btnChats.className = 'flex-1 py-2 text-center text-emerald-400 border-b-2 border-emerald-400';
-        btnProj.className = 'flex-1 py-2 text-center text-stone-400 hover:text-white';
+        if (btnChats) btnChats.className = 'flex-1 py-2.5 text-center text-white border-b-2 border-[#ea580c] font-bold transition';
+        if (btnProj) btnProj.className = 'flex-1 py-2.5 text-center text-stone-400 hover:text-white border-b-2 border-transparent font-medium transition';
       } else {
-        btnProj.className = 'flex-1 py-2 text-center text-emerald-400 border-b-2 border-emerald-400';
-        btnChats.className = 'flex-1 py-2 text-center text-stone-400 hover:text-white';
+        if (btnProj) btnProj.className = 'flex-1 py-2.5 text-center text-white border-b-2 border-[#ea580c] font-bold transition';
+        if (btnChats) btnChats.className = 'flex-1 py-2.5 text-center text-stone-400 hover:text-white border-b-2 border-transparent font-medium transition';
+      }
+      renderHistoryList();
+    }
+
+    function filterHistoryList(val) {
+      renderHistoryList(val);
+    }
+
+    function renderHistoryList(filterQuery = '') {
+      const list = document.getElementById('history-item-list');
+      if (!list) return;
+
+      const q = (filterQuery || '').trim().toLowerCase();
+
+      if (currentHistoryTab === 'chats') {
+        const chats = (chatHistories['chats'] || []).filter(c => !q || (c.title && c.title.toLowerCase().includes(q)));
+
+        if (!chats.length) {
+          list.innerHTML = `
+            <div class="text-center py-16 px-4 text-stone-400 select-none">
+              <!-- Constellation of 3 Sparkle Stars (Screenshot 1 & 3) -->
+              <svg class="w-12 h-12 text-[#dcd6ce] mx-auto mb-3" viewBox="0 0 48 48" fill="currentColor">
+                <g transform="translate(10, 8)">
+                  <path d="M16 4c0 5.523-4.477 10-10 10 5.523 0 10 4.477 10 10 0-5.523 4.477-10 10-10-5.523 0-10-4.477-10-10z" />
+                  <path d="M28 8c0 3.314-2.686 6-6 6 3.314 0 6 2.686 6 6 0-3.314 2.686-6 6-6-3.314 0-6-2.686-6-6z" transform="scale(0.8) translate(8, 0)" />
+                  <path d="M26 22c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z" transform="scale(0.6) translate(18, 16)" />
+                </g>
+              </svg>
+              <div class="font-bold text-white text-xs sm:text-sm mb-1.5">There's a blank page here for now</div>
+              <div class="text-[11px] text-stone-400 leading-relaxed max-w-[200px] mx-auto">Send a message, and a chat will appear right away</div>
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = chats.map((it, idx) => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 cursor-pointer text-xs group transition border border-transparent hover:border-white/10" onclick="loadChatHistorySession(${idx})">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-stone-500 group-hover:text-stone-300">💬</span>
+              <span class="truncate text-stone-300 group-hover:text-white font-medium">${escapeHtml(it.title)}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-stone-500">${it.time || ''}</span>
+              <button type="button" onclick="deleteHistoryChat(${idx}, event)" class="opacity-0 group-hover:opacity-100 text-stone-500 hover:text-rose-400 p-1 rounded transition text-xs" title="Delete">✕</button>
+            </div>
+          </div>
+        `).join('');
+
+      } else {
+        // Projects tab (Screenshot 3 & 5)
+        let projects = [];
+        try {
+          const raw = localStorage.getItem('zyko_projects');
+          if (raw) projects = JSON.parse(raw);
+          else if (chatHistories['projects']) projects = chatHistories['projects'];
+        } catch (e) {
+          projects = chatHistories['projects'] || [];
+        }
+
+        const filtered = projects.filter(p => !q || (p.name && p.name.toLowerCase().includes(q)));
+
+        if (!filtered.length) {
+          list.innerHTML = `
+            <div class="text-center py-16 px-4 text-stone-400 select-none">
+              <!-- Constellation of 3 Sparkle Stars (Screenshot 3) -->
+              <svg class="w-12 h-12 text-[#dcd6ce] mx-auto mb-3" viewBox="0 0 48 48" fill="currentColor">
+                <g transform="translate(10, 8)">
+                  <path d="M16 4c0 5.523-4.477 10-10 10 5.523 0 10 4.477 10 10 0-5.523 4.477-10 10-10-5.523 0-10-4.477-10-10z" />
+                  <path d="M28 8c0 3.314-2.686 6-6 6 3.314 0 6 2.686 6 6 0-3.314 2.686-6 6-6-3.314 0-6-2.686-6-6z" transform="scale(0.8) translate(8, 0)" />
+                  <path d="M26 22c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z" transform="scale(0.6) translate(18, 16)" />
+                </g>
+              </svg>
+              <div class="font-bold text-white text-xs sm:text-sm mb-1">No projects yet</div>
+              <div class="text-[11px] text-stone-400 mb-4">Let's fix that with one click.</div>
+              <button type="button" onclick="openNewProjectModal()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white text-xs font-semibold transition active:scale-95 shadow-lg">
+                <span class="text-sm font-bold text-orange-400">+</span>
+                <span>New project</span>
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+            <span class="text-[11px] text-stone-400 font-medium">Projects (${filtered.length})</span>
+            <button type="button" onclick="openNewProjectModal()" class="text-[11px] text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-1 hover:underline">
+              <span>+</span> New project
+            </button>
+          </div>
+        `;
+
+        html += filtered.map((p, idx) => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 cursor-pointer text-xs group transition border border-transparent hover:border-white/10" onclick="selectProjectItem(${idx})">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-3.5 h-3.5 rounded-md shrink-0 shadow-sm" style="background-color: ${escapeHtml(p.color || '#9C9C9C')}"></span>
+              <span class="truncate text-stone-300 group-hover:text-white font-medium">${escapeHtml(p.name)}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-stone-500">${p.time || ''}</span>
+              <button type="button" onclick="deleteProjectItem(${idx}, event)" class="opacity-0 group-hover:opacity-100 text-stone-500 hover:text-rose-400 p-1 rounded transition text-xs" title="Delete">✕</button>
+            </div>
+          </div>
+        `).join('');
+
+        list.innerHTML = html;
       }
     }
 
@@ -7964,6 +8380,302 @@
         drawer.classList.add('hidden');
         if (backdrop) backdrop.classList.add('hidden');
       }
+    }
+
+    // New Project Modal Controller (Screenshot 5)
+    function openNewProjectModal() {
+      const modal = document.getElementById('new-project-modal');
+      const nameInput = document.getElementById('new-project-name');
+      const countEl = document.getElementById('new-project-char-count');
+      const hexInput = document.getElementById('new-project-hex');
+      const preview = document.getElementById('new-project-color-preview');
+
+      if (!modal) return;
+      if (nameInput) nameInput.value = '';
+      if (countEl) countEl.textContent = '0 / 50';
+      selectedProjectColor = '#9C9C9C';
+      if (hexInput) hexInput.value = selectedProjectColor;
+      if (preview) preview.style.backgroundColor = selectedProjectColor;
+
+      renderProjectSwatches();
+      modal.classList.remove('hidden');
+      setTimeout(() => nameInput?.focus(), 60);
+    }
+
+    function closeNewProjectModal() {
+      const modal = document.getElementById('new-project-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function renderProjectSwatches() {
+      const container = document.getElementById('new-project-swatches');
+      if (!container) return;
+
+      container.innerHTML = PROJECT_COLORS.map(c => {
+        const isSelected = c.toUpperCase() === selectedProjectColor.toUpperCase();
+        return `
+          <button type="button" onclick="selectProjectColor('${c}')" class="w-7 h-7 rounded-lg transition transform hover:scale-110 relative ${isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-[#171312]' : 'opacity-85 hover:opacity-100'}" style="background-color: ${c};" title="${c}">
+            ${isSelected ? '<span class="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold drop-shadow">✓</span>' : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectProjectColor(hex) {
+      selectedProjectColor = hex.toUpperCase();
+      const hexInput = document.getElementById('new-project-hex');
+      const preview = document.getElementById('new-project-color-preview');
+      if (hexInput) hexInput.value = selectedProjectColor;
+      if (preview) preview.style.backgroundColor = selectedProjectColor;
+      renderProjectSwatches();
+    }
+
+    function onProjectHexInput(val) {
+      const preview = document.getElementById('new-project-color-preview');
+      let hex = val.trim();
+      if (!hex.startsWith('#')) hex = '#' + hex;
+      if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+        selectedProjectColor = hex.toUpperCase();
+        if (preview) preview.style.backgroundColor = selectedProjectColor;
+        renderProjectSwatches();
+      }
+    }
+
+    function onProjectNameInput(val) {
+      const countEl = document.getElementById('new-project-char-count');
+      if (countEl) countEl.textContent = `${val.length} / 50`;
+    }
+
+    function submitNewProject() {
+      const nameInput = document.getElementById('new-project-name');
+      const name = (nameInput?.value || '').trim();
+      if (!name) {
+        if (nameInput) {
+          nameInput.focus();
+          nameInput.classList.add('border-rose-500');
+          setTimeout(() => nameInput.classList.remove('border-rose-500'), 1500);
+        }
+        return;
+      }
+
+      let projects = [];
+      try {
+        const raw = localStorage.getItem('zyko_projects');
+        if (raw) projects = JSON.parse(raw);
+      } catch (e) {}
+
+      const newProj = {
+        id: 'proj_' + Date.now(),
+        name,
+        color: selectedProjectColor,
+        time: new Date().toLocaleDateString([], { month: 'short', day: 'numeric' })
+      };
+
+      projects.unshift(newProj);
+      localStorage.setItem('zyko_projects', JSON.stringify(projects));
+      if (!chatHistories['projects']) chatHistories['projects'] = [];
+      chatHistories['projects'] = projects;
+
+      closeNewProjectModal();
+      switchHistoryTab('projects');
+      toggleHistoryDrawer(true);
+      showToastNotification(`Project "${name}" created!`);
+    }
+
+    function deleteProjectItem(idx, e) {
+      if (e) e.stopPropagation();
+      let projects = [];
+      try {
+        const raw = localStorage.getItem('zyko_projects');
+        if (raw) projects = JSON.parse(raw);
+      } catch (e) {}
+
+      if (projects[idx]) {
+        const removed = projects.splice(idx, 1);
+        localStorage.setItem('zyko_projects', JSON.stringify(projects));
+        chatHistories['projects'] = projects;
+        renderHistoryList();
+        showToastNotification(`Deleted project "${removed[0]?.name || ''}"`);
+      }
+    }
+
+    function deleteHistoryChat(idx, e) {
+      if (e) e.stopPropagation();
+      if (chatHistories['chats'] && chatHistories['chats'][idx]) {
+        chatHistories['chats'].splice(idx, 1);
+        localStorage.setItem('zyko_history', JSON.stringify(chatHistories));
+        renderHistoryList();
+      }
+    }
+
+    function selectProjectItem(idx) {
+      let projects = [];
+      try {
+        const raw = localStorage.getItem('zyko_projects');
+        if (raw) projects = JSON.parse(raw);
+      } catch (e) {}
+      const p = projects[idx];
+      if (p) {
+        showToastNotification(`Opened project: ${p.name}`);
+      }
+    }
+
+    function loadChatHistorySession(idx) {
+      const c = chatHistories['chats'] && chatHistories['chats'][idx];
+      if (!c) return;
+      switchTab('agents');
+      const chatBox = document.getElementById('agent-chat-messages');
+      const promptBox = document.getElementById('agent-prompt-box');
+      if (chatBox) {
+        chatBox.classList.remove('hidden');
+        chatBox.innerHTML = `
+          <div class="flex justify-end">
+            <div class="bg-emerald-500/20 border border-emerald-500/40 text-stone-100 rounded-2xl px-4 py-2.5 max-w-md text-xs">
+              ${escapeHtml(c.title)}
+            </div>
+          </div>
+          <div class="flex justify-start">
+            <div class="bg-white/5 border border-white/10 text-stone-200 rounded-2xl px-4 py-2.5 max-w-lg text-xs leading-relaxed">
+              ${escapeHtml(c.payload || '')}
+            </div>
+          </div>
+        `;
+      }
+      if (promptBox) promptBox.classList.remove('hidden');
+    }
+
+    // Global Toast Notification Helper
+    function showToastNotification(msg) {
+      const existing = document.getElementById('zyko-live-toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.id = 'zyko-live-toast';
+      toast.className = 'fixed bottom-5 right-5 z-[300] bg-[#1c1817] border border-white/15 text-stone-200 text-xs px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 backdrop-blur-md transition-all duration-300';
+      toast.innerHTML = `<span class="text-orange-400 font-bold">✦</span> <span>${escapeHtml(msg)}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Agent Dropdown & Selection Controllers (Screenshot 1 & 2)
+    function toggleAgentDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('agent-dropdown-menu');
+      const arrow = document.getElementById('agent-dropdown-arrow');
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        menu.classList.add('hidden');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function chooseAgentPersona(val, label, desc) {
+      const menu = document.getElementById('agent-dropdown-menu');
+      const arrow = document.getElementById('agent-dropdown-arrow');
+      const nameEl = document.getElementById('agent-selected-name');
+      const hiddenSelect = document.getElementById('agent-persona-select');
+      const promptBox = document.getElementById('agent-prompt-box');
+      const badgeName = document.getElementById('agent-active-badge-name');
+      const promptInput = document.getElementById('agent-prompt-input');
+
+      if (menu) menu.classList.add('hidden');
+      if (arrow) arrow.style.transform = 'rotate(0deg)';
+      if (nameEl) nameEl.textContent = label;
+      if (hiddenSelect) hiddenSelect.value = val;
+      if (badgeName) badgeName.textContent = label;
+
+      if (promptBox) {
+        promptBox.classList.remove('hidden');
+      }
+      if (promptInput) {
+        promptInput.placeholder = `Write instructions for ${label}...`;
+        promptInput.focus();
+      }
+
+      onSelectAgentPersona(val);
+      showToastNotification(`Agent "${label}" ready to assist`);
+    }
+
+    function resetAgentToLanding() {
+      const nameEl = document.getElementById('agent-selected-name');
+      const hiddenSelect = document.getElementById('agent-persona-select');
+      const promptBox = document.getElementById('agent-prompt-box');
+      const chatBox = document.getElementById('agent-chat-messages');
+
+      if (nameEl) nameEl.textContent = 'Select an agent from the list';
+      if (hiddenSelect) hiddenSelect.value = 'agent_creative';
+      if (promptBox) promptBox.classList.add('hidden');
+      if (chatBox) chatBox.classList.add('hidden');
+    }
+
+    // Document click to dismiss agent dropdown
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('agent-dropdown-menu');
+      const trigger = document.getElementById('agent-dropdown-trigger');
+      if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !trigger?.contains(e.target)) {
+          menu.classList.add('hidden');
+          const arrow = document.getElementById('agent-dropdown-arrow');
+          if (arrow) arrow.style.transform = 'rotate(0deg)';
+        }
+      }
+    });
+
+    // Dock Agent Flyout Controller (Screenshot 4)
+    let dockFlyoutTimer = null;
+    function showDockAgentFlyout() {
+      clearTimeout(dockFlyoutTimer);
+      const flyout = document.getElementById('dock-agent-flyout');
+      if (flyout) flyout.classList.remove('hidden');
+    }
+
+    function hideDockAgentFlyout(force) {
+      if (force) {
+        clearTimeout(dockFlyoutTimer);
+        const flyout = document.getElementById('dock-agent-flyout');
+        if (flyout) flyout.classList.add('hidden');
+        return;
+      }
+      dockFlyoutTimer = setTimeout(() => {
+        const flyout = document.getElementById('dock-agent-flyout');
+        if (flyout) flyout.classList.add('hidden');
+      }, 350);
+    }
+
+    function openCreateAgentModal() {
+      hideDockAgentFlyout(true);
+      const modal = document.getElementById('create-agent-modal');
+      const nameInput = document.getElementById('create-agent-name');
+      const instInput = document.getElementById('create-agent-instructions');
+      if (!modal) return;
+      if (nameInput) nameInput.value = '';
+      if (instInput) instInput.value = '';
+      modal.classList.remove('hidden');
+      setTimeout(() => nameInput?.focus(), 60);
+    }
+
+    function closeCreateAgentModal() {
+      const modal = document.getElementById('create-agent-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveCustomAgent() {
+      const name = (document.getElementById('create-agent-name')?.value || '').trim();
+      const inst = (document.getElementById('create-agent-instructions')?.value || '').trim();
+      if (!name) {
+        alert('Please enter agent name');
+        return;
+      }
+      chooseAgentPersona('agent_custom_' + Date.now(), `🤖 ${name}`, inst || 'Custom autonomous agent');
+      closeCreateAgentModal();
     }
 
     function toggleMobileControlPanel(forceOpen) {
@@ -8143,9 +8855,18 @@
     });
 
     function startNewSession() {
-      document.getElementById('agent-chat-messages').innerHTML = '';
-      document.getElementById('llm-chat-messages').innerHTML = '';
-      alert('Started clean new session!');
+      const agentChat = document.getElementById('agent-chat-messages');
+      const llmChat = document.getElementById('llm-chat-messages');
+      if (agentChat) {
+        agentChat.innerHTML = '';
+        agentChat.classList.add('hidden');
+      }
+      if (llmChat) {
+        llmChat.innerHTML = '';
+        llmChat.classList.add('hidden');
+      }
+      resetAgentToLanding();
+      showToastNotification('Started fresh new session');
     }
 
 
@@ -8170,9 +8891,9 @@
       document.getElementById('info-modal-content').innerHTML = `
         <p>Generate your best art or video in ZYKO.AI and tag <b>@ZykoAi_bot</b> to win tokens.</p>
         <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 font-bold">
-          🥇 1st Place: 50,000 ZK Tokens + Ultra Elite Access<br>
-          🥈 2nd Place: 20,000 ZK Tokens<br>
-          🥉 3rd Place: 10,000 ZK Tokens
+          🥇 1st Place: 50,000 KZ Tokens + Ultra Elite Access<br>
+          🥈 2nd Place: 20,000 KZ Tokens<br>
+          🥉 3rd Place: 10,000 KZ Tokens
         </div>
       `;
       document.getElementById('info-modal').classList.remove('hidden');
@@ -10505,7 +11226,7 @@
                 <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
                 ${m.badge ? `<span class="bg-black/60 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
                 <span class="text-[10px] font-mono font-semibold text-emerald-400/90 ml-auto flex items-center gap-1">
-                  ⚡ ${m.costTokens} <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                  <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> ${m.costTokens} KZ <span class="text-stone-400 font-normal">(${m.costCredits})</span>
                 </span>
               </div>
               <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
@@ -10667,7 +11388,7 @@
                 <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
                 ${m.badge ? `<span class="bg-black/60 text-amber-400 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
                 <span class="text-[10px] font-mono font-semibold text-amber-400/90 ml-auto flex items-center gap-1">
-                  ⚡ ${m.costTokens} <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                  <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> ${m.costTokens} KZ <span class="text-stone-400 font-normal">(${m.costCredits})</span>
                 </span>
               </div>
               <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
@@ -10760,7 +11481,7 @@
     }
 
     function sendToolkitInpaint() {
-      alert('Inpainting and neural reconstruction started! Cost: 15 ⚡');
+      alert('Inpainting and neural reconstruction started! Cost: 15 KZ');
       deductTokensUI(15);
     }
 
@@ -10799,6 +11520,31 @@
       }
     });
   
+    function positionAvatarDropdown() {
+      const menu = document.getElementById('avatar-dropdown-menu');
+      const btn = document.getElementById('header-user-avatar-btn');
+      if (!menu || !btn || menu.classList.contains('hidden')) return;
+
+      const rect = btn.getBoundingClientRect();
+      const screenW = window.innerWidth;
+      const menuWidth = Math.min(240, screenW - 16);
+
+      let right = screenW - rect.right;
+      if (right < 8) right = 8;
+      if (rect.right - menuWidth < 8) {
+        right = Math.max(8, screenW - menuWidth - 8);
+      }
+
+      const top = Math.max(rect.bottom + 8, 56);
+
+      menu.style.position = 'fixed';
+      menu.style.top = `${top}px`;
+      menu.style.right = `${right}px`;
+      menu.style.left = 'auto';
+      menu.style.width = `${menuWidth}px`;
+      menu.style.zIndex = '100';
+    }
+
     function toggleAvatarDropdown(e) {
       if (e) e.stopPropagation();
       closeStudioSwitcher();
@@ -10806,8 +11552,10 @@
       closeBurgerDropdown();
       const menu = document.getElementById('avatar-dropdown-menu');
       if (menu) {
-        menu.classList.toggle('hidden');
-        if (!menu.classList.contains('hidden')) {
+        const isOpening = menu.classList.contains('hidden');
+        if (isOpening) {
+          menu.classList.remove('hidden');
+          positionAvatarDropdown();
           if (currentUser && currentUser.tokens != null) {
             syncUserTokensUI(currentUser.tokens);
           } else {
@@ -10817,6 +11565,8 @@
               if (dTokens) dTokens.textContent = hVal;
             }
           }
+        } else {
+          menu.classList.add('hidden');
         }
       }
     }
@@ -10981,10 +11731,10 @@
       tbody.innerHTML = filtered.map(it => {
         const isAdded = it.type === 'added' || it.amount > 0;
         const absAmt = Math.abs(it.amount);
-        const amountDisplay = isAdded ? `+${absAmt.toLocaleString()} ⚡` : `-${absAmt.toLocaleString()} ⚡`;
+        const amountDisplay = isAdded ? `+${absAmt.toLocaleString()} KZ` : `-${absAmt.toLocaleString()} KZ`;
         const amountClass = isAdded ? 'text-emerald-400 font-bold' : 'text-stone-300 font-semibold';
         const dateDisplay = formatTokenDate(it.created_at);
-        const balanceDisplay = (it.balance != null ? Number(it.balance).toLocaleString() : '—') + ' ⚡';
+        const balanceDisplay = (it.balance != null ? Number(it.balance).toLocaleString() : '—') + ' KZ';
 
         return `
           <tr class="border-b border-white/5 hover:bg-white/[0.02] transition">
@@ -11217,7 +11967,7 @@
                 <p class="text-stone-300 font-medium line-clamp-2" title="${escapeHtml(prompt)}">${escapeHtml(prompt)}</p>
                 <div class="flex items-center justify-between text-[10px] text-stone-500 pt-1 border-t border-white/5">
                   <span>${dateStr}</span>
-                  <span class="text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                  <span class="text-amber-400 font-semibold">${tokensCost} KZ</span>
                 </div>
               </div>
             </div>
@@ -11235,7 +11985,7 @@
                   <span>${dateStr}</span>
                   <div class="flex items-center gap-2">
                     <a href="${it.result_url}" download="zyko_video.mp4" target="_blank" class="hover:text-white transition" title="Download">⬇️</a>
-                    <span class="text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                    <span class="text-amber-400 font-semibold">${tokensCost} KZ</span>
                   </div>
                 </div>
               </div>
@@ -11252,7 +12002,7 @@
                     <div class="text-[10px] text-stone-500">${dateStr}</div>
                   </div>
                 </div>
-                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} KZ</span>
               </div>
               <p class="text-xs text-stone-300 line-clamp-2 leading-relaxed" title="${escapeHtml(prompt)}">"${escapeHtml(prompt)}"</p>
               <audio src="${it.result_url}" controls class="w-full h-8 rounded-lg bg-black/40"></audio>
@@ -11274,7 +12024,7 @@
                     <div class="text-[10px] text-stone-500">${dateStr}</div>
                   </div>
                 </div>
-                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ⚡</span>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} KZ</span>
               </div>
               <div class="bg-black/30 rounded-xl p-2.5 text-xs text-stone-400 line-clamp-2 border border-white/5">
                 <span class="text-stone-300 font-semibold">User:</span> ${escapeHtml(prompt)}
@@ -11455,9 +12205,9 @@
       const sStatusEl = document.getElementById('usage-session-status');
       if (sStatusEl) {
         if (sessionSpent === 0) {
-          sStatusEl.textContent = `0 / ${sessionLimit.toLocaleString()} ⚡ used`;
+          sStatusEl.textContent = `0 / ${sessionLimit.toLocaleString()} KZ used`;
         } else {
-          sStatusEl.textContent = `${sessionSpent.toLocaleString()} / ${sessionLimit.toLocaleString()} ⚡ used`;
+          sStatusEl.textContent = `${sessionSpent.toLocaleString()} / ${sessionLimit.toLocaleString()} KZ used`;
         }
       }
 
@@ -11472,9 +12222,9 @@
       const wStatusEl = document.getElementById('usage-weekly-status');
       if (wStatusEl) {
         if (weeklySpent === 0) {
-          wStatusEl.textContent = `0 / ${weeklyLimit.toLocaleString()} ⚡ used`;
+          wStatusEl.textContent = `0 / ${weeklyLimit.toLocaleString()} KZ used`;
         } else {
-          wStatusEl.textContent = `${weeklySpent.toLocaleString()} / ${weeklyLimit.toLocaleString()} ⚡ used`;
+          wStatusEl.textContent = `${weeklySpent.toLocaleString()} / ${weeklyLimit.toLocaleString()} KZ used`;
         }
       }
 
@@ -11635,10 +12385,12 @@
     window.addEventListener('resize', () => {
       positionStudioSwitcherDropdown();
       positionNotificationDrawer();
+      positionAvatarDropdown();
     });
     window.addEventListener('scroll', () => {
       positionStudioSwitcherDropdown();
       positionNotificationDrawer();
+      positionAvatarDropdown();
     }, { passive: true });
 
     // =========================================================================
@@ -11716,7 +12468,7 @@
           if (uEl) uEl.textContent = Number(usersCount).toLocaleString();
           if (txEl) txEl.textContent = Number(txCount).toLocaleString();
           if (revEl) revEl.textContent = `${Number(revenue).toFixed(2)} €`;
-          if (tokEl) tokEl.textContent = `${Math.round(Number(tokensCount)).toLocaleString()} ⚡`;
+          if (tokEl) tokEl.textContent = `${Math.round(Number(tokensCount)).toLocaleString()} KZ`;
           if (genEl) genEl.textContent = Number(gensCount).toLocaleString();
 
           // Tiers breakdown (supports array or dict)
@@ -11800,7 +12552,7 @@
                 u.tier === 'Basic' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 'bg-stone-500/20 text-stone-400 border border-stone-500/30'
               }">${u.tier || 'Free'}</span>
             </td>
-            <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} ⚡</td>
+            <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} KZ</td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(u.created_at || '').substring(0, 16)}</td>
             <td class="p-3.5 text-right">
               <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-emerald-500 hover:text-black text-stone-200 font-bold px-3 py-1.5 rounded-xl transition text-[11px]">
@@ -11856,7 +12608,7 @@
     }
 
     async function adminGiftAll(amount = 500) {
-      if (!confirm(`Вы действительно хотите начислить по ${amount} ZK токенов ВСЕМ пользователям платформы?`)) return;
+      if (!confirm(`Вы действительно хотите начислить по ${amount} KZ токенов ВСЕМ пользователям платформы?`)) return;
       try {
         const res = await fetch('/api/admin/users/gift', {
           method: 'POST',
@@ -11865,7 +12617,7 @@
         });
         const data = await res.json();
         if (data.status === 'ok') {
-          alert(`🎉 Успешно! ${data.affected_users} пользователей получили по ${data.gifted_tokens} ZK!`);
+          alert(`🎉 Успешно! ${data.affected_users} пользователей получили по ${data.gifted_tokens} KZ!`);
           loadAdminOverview();
           loadAdminUsers();
           checkAuthStatus();
@@ -11903,7 +12655,7 @@
               <div class="text-[10px] text-stone-400">${escapeHtml(t.user_email || '')}</div>
             </td>
             <td class="p-3.5 font-black text-white">${t.amount} ${t.currency}</td>
-            <td class="p-3.5 font-mono text-amber-400 font-bold">+${Math.round(t.tokens || 0).toLocaleString()} ⚡</td>
+            <td class="p-3.5 font-mono text-amber-400 font-bold">+${Math.round(t.tokens || 0).toLocaleString()} KZ</td>
             <td class="p-3.5 text-stone-300">${t.tier || 'Pack'}</td>
             <td class="p-3.5">
               <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold ${
@@ -11979,7 +12731,7 @@
             <td class="p-3.5 max-w-xs truncate text-stone-300" title="${escapeHtml(g.prompt || '')}">
               ${g.prompt ? escapeHtml(g.prompt.substring(0, 70)) + (g.prompt.length > 70 ? '...' : '') : '—'}
             </td>
-            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ⚡</td>
+            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} KZ</td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
           </tr>
         `).join('');

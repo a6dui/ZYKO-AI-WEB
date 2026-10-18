@@ -888,6 +888,14 @@ async def handle_generate_clone(request: web.Request):
         return web.json_response({"error": str(e)}, status=500)
 
 async def handle_get_voices(request: web.Request):
+    public_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
+    lib_path = os.path.join(public_dir, "voices_library.json")
+    if os.path.exists(lib_path):
+        try:
+            with open(lib_path, "r", encoding="utf-8") as f:
+                return web.json_response({"voices": json.load(f)})
+        except Exception as e:
+            logger.error("Error reading voices_library.json: %s", e)
     return web.json_response({"voices": get_all_character_voices()})
 
 async def handle_api_voice_preview(request: web.Request):
@@ -1120,6 +1128,7 @@ def create_app():
     app.router.add_get("/icon-192.png", make_file_handler("icon-192.png", "image/png"))
     app.router.add_get("/icon-512.png", make_file_handler("icon-512.png", "image/png"))
     app.router.add_get("/site.webmanifest", make_file_handler("site.webmanifest", "application/manifest+json"))
+    app.router.add_get("/voices_library.json", make_file_handler("voices_library.json", "application/json"))
     app.router.add_get("/api/system/settings", handle_get_system_settings)
     
     # Admin Panel API
@@ -1303,7 +1312,7 @@ async def run_telegram_bot_poller(app):
                                 reply_text = (
                                     f"🎉 <b>Авторизация успешна!</b>\n\n"
                                     f"Вы вошли в <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
-                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
+                                    f"💎 Ваш баланс: <b>{user_tok:,} KZ токенов</b>\n"
                                     f"👑 Подписка: <b>{user_tier}</b>\n\n"
                                     f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт в свой аккаунт:</b>"
                                 )
@@ -1338,7 +1347,7 @@ async def run_telegram_bot_poller(app):
                                 reply_text = (
                                     f"✨ <b>Добро пожаловать в ZYKO.AI, {tg_first_name or tg_username}!</b>\n\n"
                                     f"Медиа-студия нового поколения: озвучка 40 персонажей, клонирование голоса, генерация 4K фото и видео.\n\n"
-                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
+                                    f"💎 Ваш баланс: <b>{user_tok:,} KZ токенов</b>\n"
                                     f"👑 Тариф: <b>{user_tier}</b>\n\n"
                                     f"👇 Нажмите кнопку ниже для мгновенного входа в свой профиль:"
                                 )

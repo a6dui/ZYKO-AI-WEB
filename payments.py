@@ -116,7 +116,7 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
                     "currency": "eur",
                     "product_data": {
                         "name": f"ZYKO.AI Subscription: {plan_name}",
-                        "description": f"{plan['tokens']} ZK Tokens + {plan['desc']}",
+                        "description": f"{plan['tokens']} KZ Tokens + {plan['desc']}",
                         "images": [card_image_url]
                     },
                     "unit_amount": amount_cents,
@@ -201,7 +201,7 @@ async def create_platega_payment(user_id: int, plan_name: str, origin_url: str, 
             "amount": round(float(amount_rub), 2),
             "currency": "RUB"
         },
-        "description": f"ZYKO.AI: Тариф {plan_name} ({plan['tokens']} ZK)",
+        "description": f"ZYKO.AI: Тариф {plan_name} ({plan['tokens']} KZ)",
         "return": f"{origin_url}/?payment=success&order_id={order_id}",
         "failedUrl": f"{origin_url}/?payment=cancelled",
         "payload": str(order_id)
