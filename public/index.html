@@ -6406,6 +6406,13 @@
         nameEl.textContent = file.name;
         preview.classList.remove('hidden');
       }
+      if (studio === 'video') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          currentVideoReferenceImage = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
     }
 
     function removeAttachedFile(studio) {
@@ -6413,6 +6420,9 @@
       const preview = document.getElementById(`${studio}-file-preview`);
       if (input) input.value = '';
       if (preview) preview.classList.add('hidden');
+      if (studio === 'video') {
+        currentVideoReferenceImage = null;
+      }
     }
 
     // Studio Favorite Toggle (⭐)
