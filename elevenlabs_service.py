@@ -655,10 +655,12 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
 
     # 2. Configure ElevenLabs model parameters
     model_lower = (model or "").lower()
-    if "pro" in model_lower or "veo_3_1_pro" in model_lower or "quality" in model_lower:
-        el_model_id = "veo-3.1-generate-001"
+    if "seedance" in model_lower or "bytedance" in model_lower:
+        preferred_models = ["bytedance-seedance-v2.5", "bytedance-seedance-v2", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"]
+    elif "pro" in model_lower or "veo_3_1_pro" in model_lower or "quality" in model_lower:
+        preferred_models = ["veo-3.1-generate-001", "veo-3.1-fast-generate-001"]
     else:
-        el_model_id = "veo-3.1-fast-generate-001"
+        preferred_models = ["veo-3.1-fast-generate-001", "veo-3.1-generate-001"]
 
     aspect_ratio = "9:16" if "9:16" in str(aspect) else "16:9"
 
@@ -673,67 +675,78 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     else:
         clean_prompt = "Cinematic 8K smooth motion, highly detailed octane render"
 
-    payload = {
-        "model_id": el_model_id,
-        "prompt": clean_prompt,
-        "aspect_ratio": aspect_ratio,
-        "duration_secs": duration_secs,
-        "generate_audio": True
-    }
-    if start_frame:
-        payload["start_frame"] = start_frame
-
-    # 3. Call ElevenLabs Video Flows API if keys configured
+    # 3. Call ElevenLabs Video Flows API
     keys = get_all_elevenlabs_keys()
-    for attempt_idx, api_key in enumerate(keys):
-        headers = {
-            "xi-api-key": api_key,
-            "Content-Type": "application/json"
+    for target_model in preferred_models:
+        payload = {
+            "model_id": target_model,
+            "prompt": clean_prompt,
+            "aspect_ratio": aspect_ratio,
+            "duration_secs": duration_secs,
+            "generate_audio": True
         }
-        try:
-            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=360)) as session:
-                async with session.post("https://api.elevenlabs.io/v1/flows/video", headers=headers, json=payload) as resp:
-                    if resp.status == 200:
-                        data = await resp.json()
-                        gen_id = data.get("id")
-                        for poll_i in range(100):
-                            await asyncio.sleep(3.0)
-                            async with session.get(f"https://api.elevenlabs.io/v1/flows/video/{gen_id}", headers=headers) as p_resp:
-                                if p_resp.status == 200:
-                                    p_data = await p_resp.json()
-                                    st = p_data.get("status")
-                                    if st == "completed":
-                                        content_url = p_data.get("content_url")
-                                        try:
-                                            async with session.get(content_url) as dl_resp:
-                                                if dl_resp.status == 200:
-                                                    vid_bytes = await dl_resp.read()
-                                                    local_path = save_local_video_media(vid_bytes, "video", "mp4")
-                                                    if local_path:
-                                                        return {
-                                                            "video_url": local_path,
-                                                            "cloud_url": content_url,
-                                                            "model": model,
-                                                            "duration": duration_label,
-                                                            "status": "completed",
-                                                            "prompt": prompt,
-                                                            "aspect": aspect
-                                                        }
-                                        except Exception as dl_err:
-                                            logger.warning("Could not download generated video to local storage: %s", dl_err)
+        if start_frame:
+            payload["start_frame"] = start_frame
 
-                                        return {
-                                            "video_url": content_url,
-                                            "model": model,
-                                            "duration": duration_label,
-                                            "status": "completed",
-                                            "prompt": prompt,
-                                            "aspect": aspect
-                                        }
-                                    elif st == "failed":
-                                        break
-        except Exception as e:
-            logger.debug("ElevenLabs video flow attempt %d failed: %s", attempt_idx, e)
+        for attempt_idx, api_key in enumerate(keys):
+            headers = {
+                "xi-api-key": api_key,
+                "Content-Type": "application/json"
+            }
+            try:
+                async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=360)) as session:
+                    async with session.post("https://api.elevenlabs.io/v1/flows/video", headers=headers, json=payload) as resp:
+                        if resp.status == 200:
+                            data = await resp.json()
+                            gen_id = data.get("id")
+                            for poll_i in range(120):
+                                await asyncio.sleep(2.5)
+                                async with session.get(f"https://api.elevenlabs.io/v1/flows/video/{gen_id}", headers=headers) as p_resp:
+                                    if p_resp.status == 200:
+                                        p_data = await p_resp.json()
+                                        st = p_data.get("status")
+                                        if st == "completed":
+                                            content_url = p_data.get("content_url")
+                                            try:
+                                                async with session.get(content_url) as dl_resp:
+                                                    if dl_resp.status == 200:
+                                                        vid_bytes = await dl_resp.read()
+                                                        local_path = save_local_video_media(vid_bytes, "video", "mp4")
+                                                        if local_path:
+                                                            return {
+                                                                "video_url": local_path,
+                                                                "cloud_url": content_url,
+                                                                "model": model,
+                                                                "duration": duration_label,
+                                                                "status": "completed",
+                                                                "prompt": prompt,
+                                                                "aspect": aspect
+                                                            }
+                                            except Exception as dl_err:
+                                                logger.warning("Could not download generated video to local storage: %s", dl_err)
+
+                                            return {
+                                                "video_url": content_url,
+                                                "model": model,
+                                                "duration": duration_label,
+                                                "status": "completed",
+                                                "prompt": prompt,
+                                                "aspect": aspect
+                                            }
+                                        elif st == "failed":
+                                            break
+                        elif resp.status == 403:
+                            # Model requires explicit enterprise approval on this key, break to try next preferred model
+                            err_txt = await resp.text()
+                            logger.info("ElevenLabs model %s access denied on key %d, checking next model: %s", target_model, attempt_idx, err_txt[:80])
+                            break
+                        elif resp.status == 401:
+                            continue
+                        else:
+                            err_txt = await resp.text()
+                            logger.warning("ElevenLabs video flow error %s on model %s: %s", resp.status, target_model, err_txt[:100])
+            except Exception as e:
+                logger.warning("ElevenLabs video flow attempt %d failed: %s", attempt_idx, e)
 
     # 4. Authentic Local Studio Library (100% Reliable, 1080p HD, No External CDN Breaks)
     base_dir = os.path.dirname(os.path.abspath(__file__))
