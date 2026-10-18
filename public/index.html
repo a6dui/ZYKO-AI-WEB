@@ -575,8 +575,10 @@
             <span id="notification-unread-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0c1110] animate-pulse"></span>
           </button>
 
-          <!-- Notification Popover -->
-          <div id="notification-drawer" class="hidden bg-[#121615]/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50">
+          <!-- Notification Popover (Anchored directly under the bell) -->
+          <div id="notification-drawer" class="hidden absolute right-[-20px] sm:right-[-60px] top-full mt-2.5 w-[calc(100vw-32px)] sm:w-96 max-w-[390px] bg-[#121615]/98 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl p-3.5 z-50">
+            <!-- Top pointer caret arrow aligned with bell icon -->
+            <div class="absolute -top-1.5 right-[28px] sm:right-[68px] w-3 h-3 bg-[#121615] border-t border-l border-white/15 rotate-45 pointer-events-none"></div>
             <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="text-emerald-400 text-sm">🔔</span>
@@ -4474,7 +4476,7 @@
 
         notif_title: "Notifications",
         notif_mark_read: "Mark all read",
-        notif_1_title: "+ ZK tokens credited",
+        notif_1_title: "+5.5 ZK tokens credited",
         notif_1_time: "Just now",
         notif_1_text: "Starter token balance granted for trial generations across all models.",
         notif_2_title: "Wan 3.0 & Veo 3.1 available",
@@ -4644,7 +4646,7 @@
 
         notif_title: "Уведомления",
         notif_mark_read: "Прочитать все",
-        notif_1_title: "+ ZK токенов начислено",
+        notif_1_title: "+5.5 ZK токенов начислено",
         notif_1_time: "Только что",
         notif_1_text: "Вам начислен стартовый баланс токенов для тестовых генераций во всех моделях.",
         notif_2_title: "Wan 3.0 & Veo 3.1 доступны",
@@ -8874,8 +8876,8 @@
       if (!drawer) return;
       const isOpening = drawer.classList.contains('hidden');
       if (isOpening) {
-        drawer.classList.remove('hidden');
         positionNotificationDrawer();
+        drawer.classList.remove('hidden');
         // Hide the pulsing bell unread indicator dot, but do NOT wipe notifications until explicit click/read!
         const bellDot = document.getElementById('notification-unread-dot');
         if (bellDot) bellDot.classList.add('hidden');
@@ -8891,30 +8893,14 @@
 
     function positionNotificationDrawer() {
       const drawer = document.getElementById('notification-drawer');
-      const btn = document.getElementById('notification-bell-btn');
-      if (!drawer || !btn || drawer.classList.contains('hidden')) return;
-
-      const rect = btn.getBoundingClientRect();
-      const screenW = window.innerWidth;
-      const drawerWidth = Math.min(380, screenW - 24);
-
-      // Anchor drawer directly below the bell button, clamped within viewport margins
-      let left = (rect.right - drawerWidth) + 16;
-      if (left + drawerWidth > screenW - 12) {
-        left = screenW - drawerWidth - 12;
-      }
-      if (left < 12) {
-        left = 12;
-      }
-
-      const top = Math.max(rect.bottom + 8, 56);
-
-      drawer.style.position = 'fixed';
-      drawer.style.top = `${top}px`;
-      drawer.style.left = `${left}px`;
-      drawer.style.right = 'auto';
-      drawer.style.width = `${drawerWidth}px`;
-      drawer.style.zIndex = '90';
+      if (!drawer) return;
+      // Clear legacy inline fixed styles so native Tailwind CSS handles crisp positioning
+      drawer.style.position = '';
+      drawer.style.top = '';
+      drawer.style.left = '';
+      drawer.style.right = '';
+      drawer.style.width = '';
+      drawer.style.zIndex = '';
     }
 
     window.addEventListener('resize', () => {
