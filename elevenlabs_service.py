@@ -505,44 +505,51 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
                     "content_base64": b64_part,
                     "mime_type": mime
                 }
-            # Case B: Local server file path (/media/... or static/...)
-            elif not image_url.startswith("http"):
-                clean_path = image_url.lstrip("/")
+            # Case B: Raw base64 string
+            elif len(image_url) > 200 and not image_url.startswith("http") and not image_url.startswith("/"):
+                start_frame = {
+                    "type": "inline_base64",
+                    "content_base64": image_url,
+                    "mime_type": "image/jpeg"
+                }
+            # Case C: Local server file path or local media URL
+            else:
                 base_dir = os.path.dirname(os.path.abspath(__file__))
-                candidates = [
-                    os.path.join(base_dir, "public", clean_path),
-                    os.path.join(base_dir, clean_path),
-                    clean_path
-                ]
+                clean_path = ""
+                if "/media/generations/" in image_url:
+                    clean_path = "media/generations/" + image_url.split("/media/generations/")[-1].split("?")[0]
+                elif not image_url.startswith("http"):
+                    clean_path = image_url.lstrip("/")
+
                 found_bytes = None
-                for cp in candidates:
-                    if os.path.exists(cp) and os.path.isfile(cp):
-                        with open(cp, "rb") as f:
-                            found_bytes = f.read()
-                        break
+                if clean_path:
+                    candidates = [
+                        os.path.join(base_dir, "public", clean_path),
+                        os.path.join(base_dir, clean_path),
+                        clean_path
+                    ]
+                    for cp in candidates:
+                        if os.path.exists(cp) and os.path.isfile(cp):
+                            with open(cp, "rb") as f:
+                                found_bytes = f.read()
+                            break
+
+                # Case D: External HTTP URL (if not found on local disk)
+                if not found_bytes and image_url.startswith("http"):
+                    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as dl_s:
+                        async with dl_s.get(image_url) as dl_r:
+                            if dl_r.status == 200:
+                                found_bytes = await dl_r.read()
+
                 if found_bytes:
                     mime = "image/jpeg"
-                    if clean_path.endswith(".png"): mime = "image/png"
-                    elif clean_path.endswith(".webp"): mime = "image/webp"
+                    if str(image_url).lower().endswith(".png"): mime = "image/png"
+                    elif str(image_url).lower().endswith(".webp"): mime = "image/webp"
                     start_frame = {
                         "type": "inline_base64",
                         "content_base64": base64.b64encode(found_bytes).decode("utf-8"),
                         "mime_type": mime
                     }
-            # Case C: External HTTP URL
-            elif image_url.startswith("http"):
-                async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as dl_s:
-                    async with dl_s.get(image_url) as dl_r:
-                        if dl_r.status == 200:
-                            dl_bytes = await dl_r.read()
-                            mime = dl_r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
-                            if not mime.startswith("image/"):
-                                mime = "image/jpeg"
-                            start_frame = {
-                                "type": "inline_base64",
-                                "content_base64": base64.b64encode(dl_bytes).decode("utf-8"),
-                                "mime_type": mime
-                            }
         except Exception as img_err:
             logger.warning("Error encoding video reference photo: %s", img_err)
 
@@ -557,9 +564,14 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     duration_secs = 4
 
     clean_prompt = (prompt or "").strip()
-    if not clean_prompt and start_frame:
+    if clean_prompt:
+        try:
+            clean_prompt = await translate_prompt_to_english(clean_prompt)
+        except Exception as te:
+            logger.warning("Error translating video prompt: %s", te)
+    elif start_frame:
         clean_prompt = "Cinematic fluid camera motion, 8K realistic lighting, vivid textures"
-    elif not clean_prompt:
+    else:
         clean_prompt = "Cinematic 8K smooth motion, highly detailed octane render"
 
     payload = {
@@ -571,6 +583,8 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     }
     if start_frame:
         payload["start_frame"] = start_frame
+        logger.info("Image-to-Video mode active. Frame mime: %s, payload size: %d bytes", 
+                    start_frame.get("mime_type"), len(start_frame.get("content_base64", "")))
 
     # 3. Call ElevenLabs Video Flows API
     keys = get_all_elevenlabs_keys()
@@ -582,20 +596,22 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
         try:
             logger.info("Submitting ElevenLabs Video Flow (%d/%d, model: %s, has_start_frame: %s)...", 
                         attempt_idx + 1, len(keys), el_model_id, bool(start_frame))
-            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=180)) as session:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=360)) as session:
                 async with session.post("https://api.elevenlabs.io/v1/flows/video", headers=headers, json=payload) as resp:
                     if resp.status == 200:
                         data = await resp.json()
                         gen_id = data.get("id")
                         logger.info("ElevenLabs Video Flow task created: %s. Polling for completion...", gen_id)
 
-                        # Poll for completion (up to ~125 seconds)
-                        for poll_i in range(50):
-                            await asyncio.sleep(2.5)
+                        # Poll for completion (up to ~300 seconds)
+                        for poll_i in range(100):
+                            await asyncio.sleep(3.0)
                             async with session.get(f"https://api.elevenlabs.io/v1/flows/video/{gen_id}", headers=headers) as p_resp:
                                 if p_resp.status == 200:
                                     p_data = await p_resp.json()
                                     st = p_data.get("status")
+                                    if poll_i % 5 == 0:
+                                        logger.info("Polling ElevenLabs Video Flow %s (%d/100)... Status: %s", gen_id, poll_i + 1, st)
                                     if st == "completed":
                                         content_url = p_data.get("content_url")
                                         logger.info("ElevenLabs Video Flow completed! Content URL: %s", content_url[:80])

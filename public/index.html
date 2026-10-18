@@ -6955,7 +6955,15 @@
         if (resp.ok) {
           const serverUrl = resp.headers.get('x-result-url');
           const blob = await resp.blob();
-          const imgUrl = serverUrl || URL.createObjectURL(blob);
+          let base64Url = null;
+          try {
+            base64Url = await new Promise((resolve) => {
+              const r = new FileReader();
+              r.onloadend = () => resolve(r.result);
+              r.readAsDataURL(blob);
+            });
+          } catch(e) {}
+          const imgUrl = base64Url || serverUrl || URL.createObjectURL(blob);
 
           gallery.insertAdjacentHTML('afterbegin', `
             <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01] cursor-pointer" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')">
@@ -7052,18 +7060,18 @@
         </div>
       `);
 
-      // Progress animation
-      let progress = 15;
+      // Progress animation (smooth progress over real generation duration)
+      let progress = 10;
       const progressTimer = setInterval(() => {
-        if (progress < 85) {
-          progress += Math.floor(Math.random() * 15) + 5;
-          if (progress > 85) progress = 85;
+        if (progress < 90) {
+          progress += Math.floor(Math.random() * 3) + 1;
+          if (progress > 90) progress = 90;
           const pbar = document.getElementById(pbarId);
           const ptext = document.getElementById(ptextId);
           if (pbar) pbar.style.width = progress + '%';
           if (ptext) ptext.textContent = progress + '%';
         }
-      }, 350);
+      }, 800);
 
       try {
         const token = localStorage.getItem('zyko_token');
@@ -7077,7 +7085,22 @@
           model: modelToUse
         };
         if (typeof currentVideoReferenceImage !== 'undefined' && currentVideoReferenceImage) {
-          bodyData.image_url = currentVideoReferenceImage;
+          let refImg = currentVideoReferenceImage;
+          if (!refImg.startsWith('data:')) {
+            try {
+              const r = await fetch(refImg);
+              const b = await r.blob();
+              refImg = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(b);
+              });
+              currentVideoReferenceImage = refImg;
+            } catch (err) {
+              console.warn('Could not convert ref image to base64:', err);
+            }
+          }
+          bodyData.image_url = refImg;
         }
 
         const resp = await fetch('/api/generate/video', {
@@ -9555,8 +9578,8 @@
     // =========================================================================
     let currentVideoReferenceImage = null;
 
-    function animatePhotoToVideo(imgUrl, prompt) {
-      const urlToUse = imgUrl || currentLightboxPhoto?.url;
+    async function animatePhotoToVideo(imgUrl, prompt) {
+      let urlToUse = imgUrl || currentLightboxPhoto?.url;
       const promptToUse = prompt || currentLightboxPhoto?.prompt || '';
 
       if (!urlToUse) {
@@ -9567,11 +9590,26 @@
       closePhotoLightbox();
       if (typeof switchTab === 'function') switchTab('video');
 
+      // Convert image to Base64 Data URL so it is fully self-contained
+      if (!urlToUse.startsWith('data:')) {
+        try {
+          const r = await fetch(urlToUse);
+          const b = await r.blob();
+          urlToUse = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(b);
+          });
+        } catch (e) {
+          console.warn('animatePhotoToVideo base64 conversion fallback:', e);
+        }
+      }
+
       currentVideoReferenceImage = urlToUse;
 
       const input = document.getElementById('video-prompt-input');
       if (input) {
-        input.value = promptToUse ? `Cinematic lifelike motion, 8K dynamic camera angle: ${promptToUse}` : 'Cinematic 8K smooth motion camera tracking shot';
+        input.value = promptToUse ? `Плавная анимация, кинематографичное движение: ${promptToUse}` : 'Плавная анимация, динамичный ракурс камеры';
         input.dispatchEvent(new Event('input'));
         input.focus();
       }
@@ -9582,14 +9620,16 @@
         previewChip.innerHTML = `
           <img src="${urlToUse}" class="w-8 h-8 object-cover rounded-lg border border-purple-400/70 shadow shrink-0">
           <div class="min-w-0 pr-2">
-            <div class="text-[10px] text-purple-400 uppercase font-mono font-bold">Image-to-Video Референс</div>
-            <div class="truncate max-w-[200px] text-[11px] font-bold text-white">${escapeHtml(promptToUse.slice(0, 30) || 'Фото референс')}...</div>
+            <div class="text-[10px] text-purple-400 uppercase font-mono font-bold flex items-center gap-1">
+              <span>📸</span> <span>Фото зафиксировано для анимации</span>
+            </div>
+            <div class="truncate max-w-[200px] text-[11px] font-bold text-white">${escapeHtml(promptToUse.slice(0, 35) || 'Фото референс')}</div>
           </div>
           <button type="button" onclick="clearVideoReference()" class="text-stone-400 hover:text-white ml-auto text-xs px-1.5 py-0.5 rounded hover:bg-white/10" title="Удалить">✕</button>
         `;
       }
 
-      showToastNotification('🎬 Фото перенесено в Видеостудию! Нажмите ➤ для генерации ролика.');
+      showToastNotification('🎬 Фото перенесено в Видеостудию! Опишите движение и нажмите ➤');
     }
 
     function clearVideoReference() {

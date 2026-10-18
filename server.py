@@ -1292,7 +1292,7 @@ async def handle_user_redeem_promo(request: web.Request):
         return web.json_response({"error": str(e)}, status=400)
 
 def create_app():
-    app = web.Application()
+    app = web.Application(client_max_size=50 * 1024 * 1024)
     
     # API endpoints
     app.router.add_get("/health", handle_health)
