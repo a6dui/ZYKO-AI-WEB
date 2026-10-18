@@ -3553,8 +3553,20 @@
         <button onclick="switchAdminTab('overview')" id="admin-tab-btn-overview" class="admin-tab-btn active py-3 px-3.5 text-xs font-bold border-b-2 border-emerald-400 text-white flex items-center gap-2 transition whitespace-nowrap">
           <span>📊</span> Обзор & KPI
         </button>
+        <button onclick="switchAdminTab('broadcast')" id="admin-tab-btn-broadcast" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>📢</span> Рассылка TG
+        </button>
+        <button onclick="switchAdminTab('elevenlabs')" id="admin-tab-btn-elevenlabs" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>🔑</span> ElevenLabs & Квоты
+        </button>
         <button onclick="switchAdminTab('users')" id="admin-tab-btn-users" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
           <span>👥</span> Пользователи
+        </button>
+        <button onclick="switchAdminTab('analytics')" id="admin-tab-btn-analytics" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>📈</span> Аналитика студий
+        </button>
+        <button onclick="switchAdminTab('generations')" id="admin-tab-btn-generations" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>🎨</span> Генерации ИИ & Медиа
         </button>
         <button onclick="switchAdminTab('promos')" id="admin-tab-btn-promos" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
           <span>🎟️</span> Промокоды
@@ -3562,11 +3574,8 @@
         <button onclick="switchAdminTab('transactions')" id="admin-tab-btn-transactions" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
           <span>💳</span> Транзакции & Оплаты
         </button>
-        <button onclick="switchAdminTab('generations')" id="admin-tab-btn-generations" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
-          <span>🎨</span> Генерации ИИ
-        </button>
         <button onclick="switchAdminTab('settings')" id="admin-tab-btn-settings" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
-          <span>⚙️</span> Настройки & Баннер
+          <span>⚙️</span> Цены & Настройки
         </button>
       </div>
 
@@ -3651,8 +3660,284 @@
           </div>
         </div>
 
+        <!-- Tab: Telegram Broadcast -->
+        <div id="admin-view-broadcast" class="hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Broadcast Composer (7 cols) -->
+            <div class="lg:col-span-7 bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>📢</span> Массовая рассылка в Telegram (@ZykoAi_bot)
+                </h3>
+                <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">30 msg/sec Safe Rate</span>
+              </div>
+              <p class="text-xs text-stone-400">
+                Отправка официальных оповещений, промокодов, анонсов новых моделей прямо в личные сообщения пользователей Telegram-бота.
+              </p>
+
+              <div class="space-y-3">
+                <!-- Target Audience Filter -->
+                <div>
+                  <label class="block text-[11px] font-semibold text-stone-300 mb-1">Аудитория получателей</label>
+                  <select id="admin-broadcast-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+                    <option value="all">👥 Всем пользователям с Telegram (Free + Платные)</option>
+                    <option value="free">🌱 Только Free пользователям (стимулировать апгрейд)</option>
+                    <option value="paid">👑 Только платным подписчикам (Basic / Pro / VIP / Elite)</option>
+                  </select>
+                </div>
+
+                <!-- Message Text with HTML formatting support -->
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-[11px] font-semibold text-stone-300">Текст сообщения (HTML / Markdown)</label>
+                    <span class="text-[10px] text-stone-500">&lt;b&gt;, &lt;i&gt;, &lt;a href="..."&gt;, эмодзи</span>
+                  </div>
+                  <textarea id="admin-broadcast-text" rows="5" placeholder="Привет! 🚀 Мы добавили новые возможности в ZYKO.AI:&#10;&#10;<b>Google Veo 3.1 HD</b> теперь доступен для всех!&#10;Используйте промокод <code>VEO2026</code> и получите +500 ZK." class="w-full bg-black/40 border border-white/15 rounded-xl p-3 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-emerald-400 font-sans"></textarea>
+                </div>
+
+                <!-- Photo URL Attachment (Optional) -->
+                <div>
+                  <label class="block text-[11px] font-semibold text-stone-300 mb-1">URL картинки / баннера (опционально)</label>
+                  <input id="admin-broadcast-photo" type="url" placeholder="https://example.com/banner.jpg" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-emerald-400">
+                </div>
+
+                <!-- Inline Action Button (Optional) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Текст Inline-кнопки (опц.)</label>
+                    <input id="admin-broadcast-btn-text" type="text" placeholder="🎬 Попробовать Veo 3.1" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-emerald-400">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-stone-300 mb-1">Ссылка кнопки (URL)</label>
+                    <input id="admin-broadcast-btn-url" type="url" placeholder="https://t.me/ZykoAi_bot/app" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-emerald-400">
+                  </div>
+                </div>
+
+                <!-- Start / Stop Actions -->
+                <div class="pt-3 flex items-center gap-3">
+                  <button id="admin-broadcast-start-btn" onclick="startAdminBroadcast()" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95 flex items-center justify-center gap-2">
+                    <span>🚀</span> Начать массовую рассылку
+                  </button>
+                  <button id="admin-broadcast-cancel-btn" onclick="cancelAdminBroadcast()" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 font-bold text-xs px-4 py-2.5 rounded-xl transition active:scale-95 hidden flex items-center gap-1.5">
+                    <span>⏹️</span> Остановить
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Broadcast Progress & Analytics (5 cols) -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span>⚡</span> Статус отправки в реальном времени
+                  </h4>
+                  <span id="admin-broadcast-status-badge" class="bg-stone-500/20 text-stone-400 border border-stone-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">Ожидание</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div>
+                  <div class="flex justify-between text-[11px] font-semibold mb-1.5">
+                    <span class="text-stone-400">Прогресс доставки</span>
+                    <span id="admin-broadcast-prog-pct" class="text-emerald-400 font-mono">0%</span>
+                  </div>
+                  <div class="w-full h-2.5 bg-black/50 rounded-full overflow-hidden border border-white/10">
+                    <div id="admin-broadcast-prog-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                  <div class="bg-black/30 border border-white/5 rounded-xl p-3">
+                    <div class="text-[10px] text-stone-400">Успешно доставлено</div>
+                    <div id="admin-broadcast-stat-sent" class="text-xl font-black text-emerald-400 mt-0.5 font-mono">0</div>
+                  </div>
+                  <div class="bg-black/30 border border-white/5 rounded-xl p-3">
+                    <div class="text-[10px] text-stone-400">Заблокировали бота</div>
+                    <div id="admin-broadcast-stat-blocked" class="text-xl font-black text-amber-400 mt-0.5 font-mono">0</div>
+                  </div>
+                  <div class="bg-black/30 border border-white/5 rounded-xl p-3">
+                    <div class="text-[10px] text-stone-400">Ошибки отправки</div>
+                    <div id="admin-broadcast-stat-failed" class="text-xl font-black text-rose-400 mt-0.5 font-mono">0</div>
+                  </div>
+                  <div class="bg-black/30 border border-white/5 rounded-xl p-3">
+                    <div class="text-[10px] text-stone-400">Всего получателей</div>
+                    <div id="admin-broadcast-stat-total" class="text-xl font-black text-white mt-0.5 font-mono">0</div>
+                  </div>
+                </div>
+
+                <!-- Execution Info & Logs -->
+                <div class="bg-black/40 border border-white/10 rounded-xl p-3 text-[11px] space-y-1 font-mono">
+                  <div class="text-stone-400 flex justify-between">
+                    <span>Старт:</span>
+                    <span id="admin-broadcast-time-start" class="text-stone-300">—</span>
+                  </div>
+                  <div class="text-stone-400 flex justify-between">
+                    <span>Финиш:</span>
+                    <span id="admin-broadcast-time-end" class="text-stone-300">—</span>
+                  </div>
+                  <div id="admin-broadcast-last-error" class="text-rose-400 text-[10px] pt-1 truncate hidden"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: ElevenLabs & Live Quota Tracker -->
+        <div id="admin-view-elevenlabs" class="hidden space-y-6">
+          <!-- Scale Tier Summary Card -->
+          <div class="bg-gradient-to-br from-[#14231e] to-[#0e1412] border border-emerald-500/30 rounded-2xl p-5 md:p-6 shadow-lg space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">🎙️</span>
+                  <h3 class="text-base font-black text-white">ElevenLabs Scale Enterprise Sub</h3>
+                  <span id="admin-el-sub-badge" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Scale ($990/мес)</span>
+                </div>
+                <p class="text-xs text-stone-400 mt-1">Официальная квота символов, состояние пула API-ключей и автоматический роутинг голосов.</p>
+              </div>
+              <button onclick="loadAdminElevenLabs()" class="bg-white/10 hover:bg-white/20 text-stone-200 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                <span>🔄</span> Обновить квоту
+              </button>
+            </div>
+
+            <!-- Big Quota Bar -->
+            <div class="space-y-2 pt-2">
+              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-1 text-xs">
+                <div>
+                  <span class="text-stone-400 text-[11px]">Использовано в текущем периоде:</span>
+                  <span id="admin-el-used-chars" class="font-bold text-white ml-1 font-mono">...</span>
+                  <span class="text-stone-400">/</span>
+                  <span id="admin-el-limit-chars" class="font-bold text-stone-300 font-mono">...</span>
+                </div>
+                <div class="text-[11px]">
+                  <span class="text-stone-400">Остаток:</span>
+                  <span id="admin-el-remaining-chars" class="font-black text-emerald-400 font-mono ml-1">... символов</span>
+                </div>
+              </div>
+
+              <div class="w-full h-3.5 bg-black/60 rounded-full overflow-hidden border border-white/10 p-0.5">
+                <div id="admin-el-quota-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-amber-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between text-[11px] text-stone-400 pt-1">
+                <span id="admin-el-reset-date" class="flex items-center gap-1">
+                  <span>⏳</span> Следующий сброс квоты: <strong class="text-stone-200 font-mono">...</strong>
+                </span>
+                <span id="admin-el-keys-summary" class="flex items-center gap-1 text-emerald-300">
+                  <span>🔑</span> Ключей в пуле: <strong class="font-mono">...</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Key Box -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+            <h4 class="text-xs font-bold text-white flex items-center gap-2">
+              <span>➕</span> Добавить дополнительный API-ключ в пул
+            </h4>
+            <p class="text-xs text-stone-400">Ключ будет проверен в реальном времени через ElevenLabs API и добавлен в ротацию без перезапуска сервера.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <input id="admin-el-new-key" type="password" placeholder="sk_live_..." class="flex-1 bg-black/40 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-600 font-mono focus:outline-none focus:border-emerald-400">
+              <button onclick="adminAddElevenLabsKey()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-5 py-2.5 rounded-xl transition shadow active:scale-95 whitespace-nowrap">
+                ⚡ Проверить & Добавить
+              </button>
+            </div>
+          </div>
+
+          <!-- Keys Pool Table -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl overflow-hidden shadow-sm space-y-2">
+            <div class="p-4 border-b border-white/10 flex items-center justify-between">
+              <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>📋</span> Все ключи пула ElevenLabs
+              </h4>
+              <span class="text-[10px] text-stone-400">Авто-переключение при ошибках или исчерпании лимита</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3.5 font-semibold">#</th>
+                    <th class="p-3.5 font-semibold">Маска ключа</th>
+                    <th class="p-3.5 font-semibold">Тариф</th>
+                    <th class="p-3.5 font-semibold">Статус</th>
+                    <th class="p-3.5 font-semibold">Использовано</th>
+                    <th class="p-3.5 font-semibold">Лимит</th>
+                    <th class="p-3.5 font-semibold">Остаток</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-el-keys-tbody" class="divide-y divide-white/5 text-stone-300 font-mono">
+                  <tr>
+                    <td colspan="7" class="p-6 text-center text-stone-500">Загрузка информации о ключах...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <!-- Tab 2: Users Management -->
         <div id="admin-view-users" class="hidden space-y-4">
+          <!-- Quick Action: Express Grant by @username or Telegram ID -->
+          <div class="bg-gradient-to-br from-[#151c19] to-[#0f1412] border border-emerald-500/30 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>⚡</span> Экспресс-выдача подписки и токенов по @username или Telegram ID
+                </h3>
+                <p class="text-xs text-stone-400 mt-0.5">Мгновенная активация тарифов и начисление ZK без поиска по списку.</p>
+              </div>
+              <span class="text-[10px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold self-start sm:self-auto">Instant Grant</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+              <div class="md:col-span-4">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">@username, Telegram ID или Email</label>
+                <input id="admin-quick-ident" type="text" placeholder="@username или 7733475148" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+              </div>
+
+              <div class="md:col-span-3">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Тариф (опционально)</label>
+                <select id="admin-quick-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+                  <option value="">Без изменения тарифа</option>
+                  <option value="Basic">Basic (30 дней)</option>
+                  <option value="Pro">Pro (30 дней)</option>
+                  <option value="VIP">VIP (30 дней)</option>
+                  <option value="Elite">Elite (30 дней)</option>
+                  <option value="Ultra Elite">Ultra Elite (30 дней)</option>
+                </select>
+              </div>
+
+              <div class="md:col-span-3">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Добавить токенов (ZK)</label>
+                <input id="admin-quick-tokens" type="number" placeholder="например, 10000" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-400">
+              </div>
+
+              <div class="md:col-span-2">
+                <button onclick="adminQuickActionSubmit()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs py-2.5 rounded-xl transition shadow active:scale-95">
+                  ⚡ Выдать
+                </button>
+              </div>
+            </div>
+
+            <!-- 1-Click Fast Presets -->
+            <div class="flex items-center gap-2 flex-wrap pt-1 text-xs">
+              <span class="text-[11px] text-stone-400 font-semibold mr-1">Быстрые кнопки:</span>
+              <button onclick="adminQuickPreset('ultra')" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                💎 Ultra Elite + 10k ZK
+              </button>
+              <button onclick="adminQuickPreset('vip')" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                👑 VIP + 5k ZK
+              </button>
+              <button onclick="adminQuickPreset('tokens_10k')" class="bg-white/10 hover:bg-white/20 text-stone-200 border border-white/15 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                ⚡ +10 000 ZK
+              </button>
+              <button onclick="adminQuickPreset('tokens_50k')" class="bg-white/10 hover:bg-white/20 text-stone-200 border border-white/15 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                🎁 +50 000 ZK
+              </button>
+            </div>
+          </div>
+
           <!-- Filter & Search Bar -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div class="relative flex-1">
@@ -3693,6 +3978,83 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Studio Analytics -->
+        <div id="admin-view-analytics" class="hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>📈</span> Аналитика активности по нейросетевым студиям
+              </h3>
+              <p class="text-xs text-stone-400 mt-0.5">Статистика популярности студий за 24 часа и за все время существования платформы.</p>
+            </div>
+            <button onclick="loadAdminAnalytics()" class="bg-white/10 hover:bg-white/20 text-stone-200 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+              <span>🔄</span> Обновить данные
+            </button>
+          </div>
+
+          <!-- Studio KPI Distribution (24h) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="flex items-center justify-between text-[11px] font-medium text-stone-400">
+                <span>🎬 Video (24h)</span>
+                <span class="text-emerald-400 font-bold">Veo / Kling</span>
+              </div>
+              <div id="admin-ana-video-count" class="text-2xl font-black text-white mt-1">0</div>
+              <div id="admin-ana-video-tokens" class="text-[11px] text-amber-400 font-mono mt-0.5">0 ZK списано</div>
+            </div>
+
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="flex items-center justify-between text-[11px] font-medium text-stone-400">
+                <span>🎨 Image (24h)</span>
+                <span class="text-sky-400 font-bold">FLUX / Midj</span>
+              </div>
+              <div id="admin-ana-image-count" class="text-2xl font-black text-white mt-1">0</div>
+              <div id="admin-ana-image-tokens" class="text-[11px] text-amber-400 font-mono mt-0.5">0 ZK списано</div>
+            </div>
+
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="flex items-center justify-between text-[11px] font-medium text-stone-400">
+                <span>🎙️ Audio (24h)</span>
+                <span class="text-purple-400 font-bold">ElevenLabs</span>
+              </div>
+              <div id="admin-ana-audio-count" class="text-2xl font-black text-white mt-1">0</div>
+              <div id="admin-ana-audio-tokens" class="text-[11px] text-amber-400 font-mono mt-0.5">0 ZK списано</div>
+            </div>
+
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
+              <div class="flex items-center justify-between text-[11px] font-medium text-stone-400">
+                <span>💬 LLM Chat (24h)</span>
+                <span class="text-amber-400 font-bold">Gemini / GPT</span>
+              </div>
+              <div id="admin-ana-llm-count" class="text-2xl font-black text-white mt-1">0</div>
+              <div id="admin-ana-llm-tokens" class="text-[11px] text-amber-400 font-mono mt-0.5">0 ZK списано</div>
+            </div>
+          </div>
+
+          <!-- All Time Distribution & Visual Breakdown -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Studio Progress Bars -->
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
+              <h4 class="text-xs font-bold text-white flex items-center gap-2">
+                <span>📊</span> Доли студий в общем объеме генераций (All Time)
+              </h4>
+              <div id="admin-ana-bars" class="space-y-3.5 text-xs">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
+            <!-- 7-Day Trend -->
+            <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
+              <h4 class="text-xs font-bold text-white flex items-center gap-2">
+                <span>📅</span> Динамика генераций за последние 7 дней
+              </h4>
+              <div id="admin-ana-trend" class="space-y-2 text-xs">
+                <!-- Dynamically populated via JS -->
+              </div>
             </div>
           </div>
         </div>
@@ -3804,13 +4166,15 @@
                     <th class="p-3.5 font-semibold">Пользователь</th>
                     <th class="p-3.5 font-semibold">Модель</th>
                     <th class="p-3.5 font-semibold">Промпт</th>
+                    <th class="p-3.5 font-semibold">Медиаконтент</th>
                     <th class="p-3.5 font-semibold">Списано</th>
                     <th class="p-3.5 font-semibold">Дата</th>
+                    <th class="p-3.5 font-semibold text-right">Модерация Trends</th>
                   </tr>
                 </thead>
                 <tbody id="admin-gens-table-body" class="divide-y divide-white/5 text-stone-300">
                   <tr>
-                    <td colspan="6" class="p-6 text-center text-stone-500">Загрузка генераций...</td>
+                    <td colspan="8" class="p-6 text-center text-stone-500">Загрузка генераций...</td>
                   </tr>
                 </tbody>
               </table>
@@ -3818,8 +4182,83 @@
           </div>
         </div>
 
-        <!-- Tab 5: Settings & Banner -->
+        <!-- Tab 5: Settings & Pricing -->
         <div id="admin-view-settings" class="hidden space-y-6">
+          <!-- Dynamic Generation Pricing & Starting Tokens -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>⚙️</span> Динамическая стоимость генераций (ZK) и приветственный бонус
+                </h3>
+                <p class="text-xs text-stone-400 mt-0.5">Цены списания токенов применяются на лету для всех пользователей без перезапуска сервера.</p>
+              </div>
+              <span class="text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-bold">ZK Tokens</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🎨 Фото / Image (ZK)</label>
+                <input id="admin-cost-image" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="12">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🎬 Видео / Veo & Kling (ZK)</label>
+                <input id="admin-cost-video" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="25">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🎵 Музыка / AI Tracks (ZK)</label>
+                <input id="admin-cost-music" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="20">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🎙️ Озвучка / Eleven TTS (ZK)</label>
+                <input id="admin-cost-tts" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="2">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🧬 Клон голоса / Clone (ZK)</label>
+                <input id="admin-cost-clone" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="50">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">✂️ Изоляция вокала (ZK)</label>
+                <input id="admin-cost-isolate" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="15">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🔄 Speech-to-Speech (ZK)</label>
+                <input id="admin-cost-sts" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" value="15">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">🎁 Приветственный бонус (ZK)</label>
+                <input id="admin-cost-starting" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-emerald-400 font-mono" value="1000">
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintenance Mode Card -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span>🚧</span> Режим технического обслуживания (Maintenance Mode)
+                </h3>
+                <p class="text-xs text-stone-400 mt-0.5">Включение режима блокирует запуск новых генераций для пользователей с показом заглушки.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="admin-setting-maintenance-mode" type="checkbox" class="sr-only peer">
+                <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Текст уведомления для пользователей</label>
+              <textarea id="admin-setting-maintenance-msg" rows="2" class="w-full bg-black/40 border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400">Платформа ZYKO.AI временно обновляется для установки новейших нейросетей. Пожалуйста, подождите несколько минут.</textarea>
+            </div>
+
+            <div class="pt-1">
+              <button onclick="adminSaveBatchSettings()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-6 py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">
+                💾 Сохранить все системные настройки и цены
+              </button>
+            </div>
+          </div>
+
           <!-- Announcement Banner Settings -->
           <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -3893,6 +4332,20 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Media Preview Modal (4K Lightbox & Video Player) -->
+  <div id="admin-media-modal" class="fixed inset-0 z-[220] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeAdminMediaModal()">
+    <div class="bg-[#111514] border border-white/20 rounded-3xl p-4 max-w-2xl w-full shadow-2xl relative flex flex-col items-center" onclick="event.stopPropagation()">
+      <button onclick="closeAdminMediaModal()" class="absolute top-3 right-3 text-stone-400 hover:text-white text-lg z-10 bg-black/60 rounded-full w-8 h-8 flex items-center justify-center transition">✕</button>
+      <div id="admin-media-container" class="w-full max-h-[75vh] flex items-center justify-center overflow-hidden rounded-2xl bg-black">
+        <!-- Injected via JS -->
+      </div>
+      <div class="mt-3 flex items-center justify-between w-full px-2 text-xs">
+        <span id="admin-media-title" class="text-stone-300 font-mono truncate max-w-md"></span>
+        <a id="admin-media-download" href="#" target="_blank" download class="bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30 font-bold px-3 py-1 rounded-xl transition">📥 Открыть оригинал</a>
       </div>
     </div>
   </div>
@@ -13698,7 +14151,7 @@
 
     function switchAdminTab(tabName) {
       adminCurrentTab = tabName;
-      const tabs = ['overview', 'users', 'promos', 'transactions', 'generations', 'settings'];
+      const tabs = ['overview', 'broadcast', 'elevenlabs', 'users', 'analytics', 'generations', 'promos', 'transactions', 'settings'];
       tabs.forEach(t => {
         const view = document.getElementById(`admin-view-${t}`);
         const btn = document.getElementById(`admin-tab-btn-${t}`);
@@ -13715,10 +14168,13 @@
       });
 
       if (tabName === 'overview') loadAdminOverview();
+      else if (tabName === 'broadcast') loadAdminBroadcast();
+      else if (tabName === 'elevenlabs') loadAdminElevenLabs();
       else if (tabName === 'users') loadAdminUsers();
+      else if (tabName === 'analytics') loadAdminAnalytics();
+      else if (tabName === 'generations') loadAdminGenerations();
       else if (tabName === 'promos') loadAdminPromos();
       else if (tabName === 'transactions') loadAdminTransactions();
-      else if (tabName === 'generations') loadAdminGenerations();
       else if (tabName === 'settings') loadAdminSettings();
     }
 
@@ -13779,6 +14235,326 @@
         }
       } catch (e) {
         console.error('Error loading admin overview:', e);
+      }
+    }
+
+    // ==========================================
+    // TAB: TELEGRAM BROADCAST CONTROLLER
+    // ==========================================
+    let adminBroadcastPollInterval = null;
+
+    async function loadAdminBroadcast() {
+      try {
+        const res = await fetch('/api/admin/broadcast/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && data.broadcast) {
+          updateBroadcastStatusUI(data.broadcast);
+          if (data.broadcast.is_running && !adminBroadcastPollInterval) {
+            adminBroadcastPollInterval = setInterval(pollBroadcastStatus, 1500);
+          }
+        }
+      } catch (e) {
+        console.error('Error loading broadcast status:', e);
+      }
+    }
+
+    async function pollBroadcastStatus() {
+      try {
+        const res = await fetch('/api/admin/broadcast/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && data.broadcast) {
+          updateBroadcastStatusUI(data.broadcast);
+          if (!data.broadcast.is_running) {
+            clearInterval(adminBroadcastPollInterval);
+            adminBroadcastPollInterval = null;
+          }
+        }
+      } catch (e) {
+        console.error('Error polling broadcast:', e);
+      }
+    }
+
+    function updateBroadcastStatusUI(b) {
+      const badge = document.getElementById('admin-broadcast-status-badge');
+      const startBtn = document.getElementById('admin-broadcast-start-btn');
+      const cancelBtn = document.getElementById('admin-broadcast-cancel-btn');
+      const sentEl = document.getElementById('admin-broadcast-stat-sent');
+      const blockedEl = document.getElementById('admin-broadcast-stat-blocked');
+      const failedEl = document.getElementById('admin-broadcast-stat-failed');
+      const totalEl = document.getElementById('admin-broadcast-stat-total');
+      const progBar = document.getElementById('admin-broadcast-prog-bar');
+      const progPct = document.getElementById('admin-broadcast-prog-pct');
+      const timeStart = document.getElementById('admin-broadcast-time-start');
+      const timeEnd = document.getElementById('admin-broadcast-time-end');
+      const lastErr = document.getElementById('admin-broadcast-last-error');
+
+      if (sentEl) sentEl.textContent = (b.sent || 0).toLocaleString();
+      if (blockedEl) blockedEl.textContent = (b.blocked || 0).toLocaleString();
+      if (failedEl) failedEl.textContent = (b.failed || 0).toLocaleString();
+      if (totalEl) totalEl.textContent = (b.total || 0).toLocaleString();
+
+      const pct = b.total > 0 ? Math.min(100, Math.round(((b.current_index || (b.sent + b.blocked + b.failed)) / b.total) * 100)) : (b.status === 'completed' ? 100 : 0);
+      if (progBar) progBar.style.width = `${pct}%`;
+      if (progPct) progPct.textContent = `${pct}%`;
+
+      if (timeStart) timeStart.textContent = b.started_at || '—';
+      if (timeEnd) timeEnd.textContent = b.finished_at || (b.is_running ? 'В процессе...' : '—');
+
+      if (lastErr) {
+        if (b.last_error) {
+          lastErr.textContent = `⚠️ Посл. ошибка: ${b.last_error}`;
+          lastErr.classList.remove('hidden');
+        } else {
+          lastErr.classList.add('hidden');
+        }
+      }
+
+      if (b.is_running) {
+        if (badge) {
+          badge.textContent = '● Выполняется...';
+          badge.className = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse';
+        }
+        if (startBtn) {
+          startBtn.disabled = true;
+          startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+        if (cancelBtn) cancelBtn.classList.remove('hidden');
+      } else {
+        if (badge) {
+          if (b.status === 'completed') {
+            badge.textContent = '✓ Завершено';
+            badge.className = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full';
+          } else if (b.status === 'cancelled') {
+            badge.textContent = '✕ Остановлено';
+            badge.className = 'bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full';
+          } else {
+            badge.textContent = 'Ожидание';
+            badge.className = 'bg-stone-500/20 text-stone-400 border border-stone-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full';
+          }
+        }
+        if (startBtn) {
+          startBtn.disabled = false;
+          startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+        if (cancelBtn) cancelBtn.classList.add('hidden');
+      }
+    }
+
+    async function startAdminBroadcast() {
+      const tier_filter = document.getElementById('admin-broadcast-tier')?.value || 'all';
+      const message = document.getElementById('admin-broadcast-text')?.value || '';
+      const photo_url = document.getElementById('admin-broadcast-photo')?.value || '';
+      const button_text = document.getElementById('admin-broadcast-btn-text')?.value || '';
+      const button_url = document.getElementById('admin-broadcast-btn-url')?.value || '';
+
+      if (!message.trim() && !photo_url.trim()) {
+        alert('Пожалуйста, введите текст сообщения или ссылку на фото для рассылки.');
+        return;
+      }
+
+      if (!confirm(`Вы действительно хотите запустить массовую рассылку сообщений в Telegram для выбранной аудитории?`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/broadcast/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tier_filter, message, photo_url, button_text, button_url })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          alert('🚀 Рассылка успешно запущена!');
+          if (adminBroadcastPollInterval) clearInterval(adminBroadcastPollInterval);
+          adminBroadcastPollInterval = setInterval(pollBroadcastStatus, 1500);
+          pollBroadcastStatus();
+        } else {
+          alert('Ошибка запуска: ' + (data.error || 'Неизвестная ошибка'));
+        }
+      } catch (e) {
+        alert('Сетевая ошибка: ' + e.message);
+      }
+    }
+
+    async function cancelAdminBroadcast() {
+      if (!confirm('Остановить текущую рассылку? Отправленные сообщения уже доставлены.')) return;
+      try {
+        const res = await fetch('/api/admin/broadcast/cancel', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert('Остановка рассылки запрошена.');
+          pollBroadcastStatus();
+        }
+      } catch (e) {
+        alert('Ошибка: ' + e.message);
+      }
+    }
+
+    // ==========================================
+    // TAB: ELEVENLABS QUOTA CONTROLLER
+    // ==========================================
+    async function loadAdminElevenLabs() {
+      const tbody = document.getElementById('admin-el-keys-tbody');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-stone-500">Загрузка квот из ElevenLabs API...</td></tr>';
+
+      try {
+        const res = await fetch('/api/admin/elevenlabs/quota');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data.status === 'ok' && data.quota) {
+          const q = data.quota;
+          const sub = q.subscription || {};
+
+          const used = sub.character_count || 0;
+          const limit = sub.character_limit || 0;
+          const remaining = Math.max(0, limit - used);
+          const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+
+          const usedEl = document.getElementById('admin-el-used-chars');
+          const limitEl = document.getElementById('admin-el-limit-chars');
+          const remEl = document.getElementById('admin-el-remaining-chars');
+          const barEl = document.getElementById('admin-el-quota-bar');
+          const resetEl = document.getElementById('admin-el-reset-date');
+          const keysSumEl = document.getElementById('admin-el-keys-summary');
+          const subBadge = document.getElementById('admin-el-sub-badge');
+
+          if (usedEl) usedEl.textContent = used.toLocaleString();
+          if (limitEl) limitEl.textContent = limit.toLocaleString();
+          if (remEl) remEl.textContent = `${remaining.toLocaleString()} символов`;
+          if (barEl) barEl.style.width = `${pct}%`;
+          if (subBadge && sub.tier) subBadge.textContent = `${sub.tier} ($990/мес)`;
+
+          if (resetEl) {
+            let resetStr = 'Не указано';
+            if (sub.reset_unix) {
+              const d = new Date(sub.reset_unix * 1000);
+              resetStr = d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
+            resetEl.innerHTML = `<span>⏳</span> Следующий сброс квоты: <strong class="text-stone-200 font-mono">${resetStr}</strong>`;
+          }
+
+          if (keysSumEl) {
+            keysSumEl.innerHTML = `<span>🔑</span> Ключей в пуле: <strong class="font-mono">${q.active_keys || 0} из ${q.total_keys || 0} онлайн</strong>`;
+          }
+
+          if (tbody) {
+            const keys = q.keys || [];
+            if (keys.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-stone-500">Ключей в пуле не обнаружено</td></tr>';
+              return;
+            }
+
+            tbody.innerHTML = keys.map(k => {
+              const kUsed = k.character_count || 0;
+              const kLimit = k.character_limit || 0;
+              const kRem = Math.max(0, kLimit - kUsed);
+              const statusBadge = k.is_active
+                ? '<span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-bold">🟢 Активен</span>'
+                : `<span class="bg-red-500/20 text-red-300 border border-red-500/30 px-2 py-0.5 rounded text-[10px] font-bold">🔴 ${escapeHtml(k.error_detail || k.status || 'Ошибка')}</span>`;
+
+              return `
+                <tr class="hover:bg-white/5 transition">
+                  <td class="p-3.5 text-stone-400">#${k.index}</td>
+                  <td class="p-3.5 text-white font-bold">${k.masked_key}</td>
+                  <td class="p-3.5 text-stone-300">${k.tier || 'Scale'}</td>
+                  <td class="p-3.5">${statusBadge}</td>
+                  <td class="p-3.5 text-stone-200">${kUsed.toLocaleString()}</td>
+                  <td class="p-3.5 text-stone-400">${kLimit.toLocaleString()}</td>
+                  <td class="p-3.5 text-emerald-400 font-bold">${kRem.toLocaleString()}</td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+      } catch (e) {
+        console.error('Error loading ElevenLabs quota:', e);
+        if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-red-400">Ошибка запроса квоты: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function adminAddElevenLabsKey() {
+      const input = document.getElementById('admin-el-new-key');
+      const key = (input?.value || '').trim();
+      if (!key) {
+        alert('Введите API-ключ ElevenLabs (начинается с sk_...)');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/elevenlabs/add-key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          alert('🎉 ' + (data.message || 'Ключ успешно проверен и подключен к пулу ElevenLabs!'));
+          if (input) input.value = '';
+          loadAdminElevenLabs();
+        } else {
+          alert('Ошибка проверки ключа: ' + (data.error || 'Ключ не принят'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    // Quick Action: Express Grant
+    function adminQuickPreset(type) {
+      const tierEl = document.getElementById('admin-quick-tier');
+      const tokEl = document.getElementById('admin-quick-tokens');
+      if (type === 'ultra') {
+        if (tierEl) tierEl.value = 'Ultra Elite';
+        if (tokEl) tokEl.value = '10000';
+      } else if (type === 'vip') {
+        if (tierEl) tierEl.value = 'VIP';
+        if (tokEl) tokEl.value = '5000';
+      } else if (type === 'tokens_10k') {
+        if (tokEl) tokEl.value = '10000';
+      } else if (type === 'tokens_50k') {
+        if (tokEl) tokEl.value = '50000';
+      }
+    }
+
+    async function adminQuickActionSubmit() {
+      const ident = (document.getElementById('admin-quick-ident')?.value || '').trim();
+      const tier = document.getElementById('admin-quick-tier')?.value || null;
+      const tokensVal = document.getElementById('admin-quick-tokens')?.value;
+      const tokens = tokensVal ? parseFloat(tokensVal) : null;
+
+      if (!ident) {
+        alert('Укажите @username, Telegram ID или Email пользователя');
+        return;
+      }
+      if (!tier && (tokens === null || isNaN(tokens))) {
+        alert('Выберите тариф или укажите количество токенов для начисления');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/users/quick-action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: ident, tier: tier || undefined, tokens: tokens !== null ? tokens : undefined, days: 30 })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          const u = data.user || {};
+          alert(`✅ Успешно! Пользователю ${u.name || u.telegram_username || ident} начислено: ${tokens ? '+' + tokens + ' ZK' : ''} ${tier ? '| Тариф: ' + tier : ''}. Текущий баланс: ${Math.round(u.tokens)} ZK.`);
+          document.getElementById('admin-quick-ident').value = '';
+          document.getElementById('admin-quick-tokens').value = '';
+          loadAdminUsers();
+          loadAdminOverview();
+          if (currentUser && currentUser.id == u.id) {
+            checkAuthStatus();
+          }
+        } else {
+          alert('Ошибка: ' + (data.error || 'Пользователь не найден'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
       }
     }
 
@@ -14208,11 +14984,148 @@
       }
     }
 
+    // ==========================================
+    // TAB: STUDIO ANALYTICS CONTROLLER
+    // ==========================================
+    async function loadAdminAnalytics() {
+      try {
+        const res = await fetch('/api/admin/analytics/studios');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && data.analytics) {
+          const a = data.analytics;
+          const s24 = a.studios_24h || {};
+          const t24 = a.tokens_24h || {};
+          const all = a.studios_all_time || {};
+          const trend = a.daily_trend || [];
+
+          // 24h KPI metrics
+          const vCnt = document.getElementById('admin-ana-video-count');
+          const vTok = document.getElementById('admin-ana-video-tokens');
+          const iCnt = document.getElementById('admin-ana-image-count');
+          const iTok = document.getElementById('admin-ana-image-tokens');
+          const aCnt = document.getElementById('admin-ana-audio-count');
+          const aTok = document.getElementById('admin-ana-audio-tokens');
+          const lCnt = document.getElementById('admin-ana-llm-count');
+          const lTok = document.getElementById('admin-ana-llm-tokens');
+
+          if (vCnt) vCnt.textContent = (s24.video || 0).toLocaleString();
+          if (vTok) vTok.textContent = `${(t24.video || 0).toLocaleString()} ZK списано`;
+          if (iCnt) iCnt.textContent = (s24.image || 0).toLocaleString();
+          if (iTok) iTok.textContent = `${(t24.image || 0).toLocaleString()} ZK списано`;
+          if (aCnt) aCnt.textContent = (s24.audio || 0).toLocaleString();
+          if (aTok) aTok.textContent = `${(t24.audio || 0).toLocaleString()} ZK списано`;
+          if (lCnt) lCnt.textContent = (s24.llm || 0).toLocaleString();
+          if (lTok) lTok.textContent = `${(t24.llm || 0).toLocaleString()} ZK списано`;
+
+          // All-time proportional bars
+          const barsEl = document.getElementById('admin-ana-bars');
+          if (barsEl) {
+            const total = all.total_count || 1;
+            const studios = [
+              { name: '🎬 Video Studio (Veo, Kling, Sora, Wan)', count: all.video_count || 0, color: 'from-emerald-500 to-teal-400' },
+              { name: '🎨 Image Studio (FLUX.1, Midjourney)', count: all.image_count || 0, color: 'from-sky-500 to-blue-400' },
+              { name: '🎙️ Audio Studio (ElevenLabs, Music)', count: all.audio_count || 0, color: 'from-purple-500 to-pink-400' },
+              { name: '💬 LLM Chat (Gemini Pro, GPT-4o)', count: all.llm_count || 0, color: 'from-amber-500 to-orange-400' }
+            ];
+
+            barsEl.innerHTML = studios.map(st => {
+              const pct = Math.round((st.count / total) * 100);
+              return `
+                <div>
+                  <div class="flex justify-between text-[11px] mb-1">
+                    <span class="text-stone-300 font-medium">${st.name}</span>
+                    <span class="text-white font-mono font-bold">${st.count.toLocaleString()} (${pct}%)</span>
+                  </div>
+                  <div class="w-full h-2.5 bg-black/50 rounded-full overflow-hidden border border-white/5">
+                    <div class="h-full bg-gradient-to-r ${st.color} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+
+          // 7-day trend
+          const trendEl = document.getElementById('admin-ana-trend');
+          if (trendEl) {
+            if (trend.length === 0) {
+              trendEl.innerHTML = '<div class="text-stone-500 text-center py-4">Данных за последние 7 дней пока нет</div>';
+            } else {
+              const maxCount = Math.max(...trend.map(t => t.count), 1);
+              trendEl.innerHTML = trend.map(t => {
+                const barPct = Math.round((t.count / maxCount) * 100);
+                return `
+                  <div class="flex items-center gap-3 py-1">
+                    <span class="text-[11px] font-mono text-stone-400 w-24">${t.day}</span>
+                    <div class="flex-1 h-3 bg-black/40 rounded-full overflow-hidden border border-white/5">
+                      <div class="h-full bg-emerald-400 rounded-full" style="width: ${barPct}%"></div>
+                    </div>
+                    <span class="text-[11px] font-mono font-bold text-white w-12 text-right">${t.count}</span>
+                  </div>
+                `;
+              }).join('');
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error loading analytics:', e);
+      }
+    }
+
+    // ==========================================
+    // MEDIA INSPECTOR & MODERATION (GENERATIONS)
+    // ==========================================
+    function openAdminMediaPreview(url, type) {
+      const modal = document.getElementById('admin-media-modal');
+      const container = document.getElementById('admin-media-container');
+      const titleEl = document.getElementById('admin-media-title');
+      const dlLink = document.getElementById('admin-media-download');
+      if (!modal || !container) return;
+
+      if (titleEl) titleEl.textContent = url;
+      if (dlLink) dlLink.href = url;
+
+      if (type === 'video' || url.endsWith('.mp4') || url.endsWith('.webm')) {
+        container.innerHTML = `<video src="${url}" controls autoplay loop playsinline class="max-h-[70vh] w-auto max-w-full rounded-xl"></video>`;
+      } else if (type === 'audio' || url.endsWith('.mp3') || url.endsWith('.wav')) {
+        container.innerHTML = `<div class="p-8 text-center"><audio src="${url}" controls autoplay class="w-80"></audio></div>`;
+      } else {
+        container.innerHTML = `<img src="${url}" class="max-h-[70vh] w-auto max-w-full object-contain rounded-xl" alt="Preview 4K">`;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeAdminMediaModal() {
+      const modal = document.getElementById('admin-media-modal');
+      const container = document.getElementById('admin-media-container');
+      if (modal) modal.classList.add('hidden');
+      if (container) container.innerHTML = '';
+    }
+
+    async function adminToggleGenVisibility(genId, isHidden) {
+      try {
+        const res = await fetch('/api/admin/generations/toggle-visibility', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ generation_id: genId, is_hidden: isHidden })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          loadAdminGenerations();
+        } else {
+          alert('Ошибка модерации: ' + (data.error || 'Не удалось обновить статус'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
     // Tab 4: AI Generations Feed
     async function loadAdminGenerations() {
       const tbody = document.getElementById('admin-gens-table-body');
       if (!tbody) return;
-      tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-stone-500">Загрузка генераций...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-stone-500">Загрузка генераций...</td></tr>';
 
       try {
         const res = await fetch('/api/admin/generations');
@@ -14221,34 +15134,66 @@
         const gens = data.generations || [];
 
         if (gens.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-stone-500">Генераций пока нет</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-stone-500">Генераций пока нет</td></tr>';
           return;
         }
 
-        tbody.innerHTML = gens.map(g => `
-          <tr class="hover:bg-white/5 transition">
-            <td class="p-3.5 font-mono text-stone-400 text-[11px]">#${g.id}</td>
-            <td class="p-3.5">
-              <div class="font-bold text-white">${escapeHtml(g.user_name || 'User #' + g.user_id)}</div>
-              <div class="text-[10px] text-stone-400">${escapeHtml(g.user_email || '')}</div>
-            </td>
-            <td class="p-3.5">
-              <span class="bg-white/10 text-stone-200 px-2 py-0.5 rounded-lg text-[10px] font-semibold">${escapeHtml(g.model || 'AI Model')}</span>
-            </td>
-            <td class="p-3.5 max-w-xs truncate text-stone-300" title="${escapeHtml(g.prompt || '')}">
-              ${g.prompt ? escapeHtml(g.prompt.substring(0, 70)) + (g.prompt.length > 70 ? '...' : '') : '—'}
-            </td>
-            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ZK</td>
-            <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
-          </tr>
-        `).join('');
+        tbody.innerHTML = gens.map(g => {
+          const url = g.result_url || '';
+          let mediaHtml = '<span class="text-stone-500 text-[10px]">—</span>';
+          if (url) {
+            const isVid = url.endsWith('.mp4') || url.endsWith('.webm') || (g.model || '').includes('video') || (g.model || '').includes('veo') || (g.model || '').includes('kling');
+            const isAud = url.endsWith('.mp3') || url.endsWith('.wav') || (g.model || '').includes('tts') || (g.model || '').includes('music') || (g.model || '').includes('voice');
+            if (isVid) {
+              mediaHtml = `
+                <button onclick="openAdminMediaPreview('${url}', 'video')" class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-300 border border-teal-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold flex items-center gap-1 transition">
+                  <span>🎬</span> Видео 4K
+                </button>
+              `;
+            } else if (isAud) {
+              mediaHtml = `
+                <audio controls class="h-7 w-32" src="${url}" preload="metadata"></audio>
+              `;
+            } else {
+              mediaHtml = `
+                <img src="${url}" class="w-10 h-10 object-cover rounded-lg border border-white/10 cursor-pointer hover:scale-105 transition" onclick="openAdminMediaPreview('${url}', 'image')" title="Нажмите для открытия в 4K" alt="thumbnail">
+              `;
+            }
+          }
+
+          const modBtn = g.is_hidden == 1
+            ? `<button onclick="adminToggleGenVisibility(${g.id}, 0)" class="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">🚫 Скрыто (Показать)</button>`
+            : `<button onclick="adminToggleGenVisibility(${g.id}, 1)" class="bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 border border-emerald-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">👁️ В Trends (Скрыть)</button>`;
+
+          return `
+            <tr class="hover:bg-white/5 transition">
+              <td class="p-3.5 font-mono text-stone-400 text-[11px]">#${g.id}</td>
+              <td class="p-3.5">
+                <div class="font-bold text-white">${escapeHtml(g.user_name || 'User #' + g.user_id)}</div>
+                <div class="text-[10px] text-stone-400">${escapeHtml(g.user_email || '')}</div>
+              </td>
+              <td class="p-3.5">
+                <span class="bg-white/10 text-stone-200 px-2 py-0.5 rounded-lg text-[10px] font-semibold">${escapeHtml(g.model || 'AI Model')}</span>
+              </td>
+              <td class="p-3.5 max-w-xs truncate text-stone-300" title="${escapeHtml(g.prompt || '')}">
+                ${g.prompt ? escapeHtml(g.prompt.substring(0, 60)) + (g.prompt.length > 60 ? '...' : '') : '—'}
+              </td>
+              <td class="p-3.5">${mediaHtml}</td>
+              <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ZK</td>
+              <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
+              <td class="p-3.5 text-right">${modBtn}</td>
+            </tr>
+          `;
+        }).join('');
       } catch (e) {
         console.error(e);
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
       }
     }
 
-    // Tab 5: Settings & Announcement Banner
+    // ==========================================
+    // TAB: SETTINGS & DYNAMIC CONFIG CONTROLLER
+    // ==========================================
     function populateBannerInputs(settings) {
       const text = settings.announcement_banner_text || settings.banner_text;
       if (text) {
@@ -14281,10 +15226,65 @@
         if (!res.ok) return;
         const data = await res.json();
         if (data.status === 'ok' && data.settings) {
-          populateBannerInputs(data.settings);
+          const s = data.settings;
+          populateBannerInputs(s);
+
+          const costImage = document.getElementById('admin-cost-image');
+          const costVideo = document.getElementById('admin-cost-video');
+          const costMusic = document.getElementById('admin-cost-music');
+          const costTts = document.getElementById('admin-cost-tts');
+          const costClone = document.getElementById('admin-cost-clone');
+          const costIsolate = document.getElementById('admin-cost-isolate');
+          const costSts = document.getElementById('admin-cost-sts');
+          const costStarting = document.getElementById('admin-cost-starting');
+          const maintMode = document.getElementById('admin-setting-maintenance-mode');
+          const maintMsg = document.getElementById('admin-setting-maintenance-msg');
+
+          if (costImage && s.cost_image) costImage.value = s.cost_image;
+          if (costVideo && s.cost_video) costVideo.value = s.cost_video;
+          if (costMusic && s.cost_music) costMusic.value = s.cost_music;
+          if (costTts && s.cost_tts) costTts.value = s.cost_tts;
+          if (costClone && s.cost_clone) costClone.value = s.cost_clone;
+          if (costIsolate && s.cost_isolate) costIsolate.value = s.cost_isolate;
+          if (costSts && s.cost_sts) costSts.value = s.cost_sts;
+          if (costStarting && s.starting_tokens) costStarting.value = s.starting_tokens;
+
+          if (maintMode) maintMode.checked = (s.maintenance_mode === 'true' || s.maintenance_mode === '1');
+          if (maintMsg && s.maintenance_message) maintMsg.value = s.maintenance_message;
         }
       } catch (e) {
         console.error('Error loading settings:', e);
+      }
+    }
+
+    async function adminSaveBatchSettings() {
+      const payload = {
+        cost_image: document.getElementById('admin-cost-image')?.value || '12',
+        cost_video: document.getElementById('admin-cost-video')?.value || '25',
+        cost_music: document.getElementById('admin-cost-music')?.value || '20',
+        cost_tts: document.getElementById('admin-cost-tts')?.value || '2',
+        cost_clone: document.getElementById('admin-cost-clone')?.value || '50',
+        cost_isolate: document.getElementById('admin-cost-isolate')?.value || '15',
+        cost_sts: document.getElementById('admin-cost-sts')?.value || '15',
+        starting_tokens: document.getElementById('admin-cost-starting')?.value || '1000',
+        maintenance_mode: document.getElementById('admin-setting-maintenance-mode')?.checked ? 'true' : 'false',
+        maintenance_message: document.getElementById('admin-setting-maintenance-msg')?.value || ''
+      };
+
+      try {
+        const res = await fetch('/api/admin/settings/batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ settings: payload })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          alert('💾 Системные настройки, цены генераций и режим техобслуживания успешно сохранены!');
+        } else {
+          alert('Ошибка сохранения: ' + (data.error || 'Неизвестная ошибка'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
       }
     }
 

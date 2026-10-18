@@ -34,6 +34,10 @@ from database import (
     get_admin_generations,
     get_system_settings,
     update_system_setting,
+    get_telegram_broadcast_recipients,
+    get_admin_studio_analytics,
+    admin_toggle_generation_hidden,
+    admin_quick_grant,
     complete_transaction,
     get_user_by_email,
     create_email_user,
@@ -268,11 +272,23 @@ async def handle_models_status(request: web.Request):
     })
 
 async def handle_public_config(request: web.Request):
+    settings = await get_system_settings()
     return web.json_response({
         "google_client_id": GOOGLE_CLIENT_ID,
         "bot_username": TELEGRAM_BOT_USERNAME,
         "stripe_publishable_key": STRIPE_PUBLISHABLE_KEY,
-        "plans": PLANS
+        "plans": PLANS,
+        "costs": {
+            "image": int(settings.get("cost_image", 12)),
+            "video": int(settings.get("cost_video", 25)),
+            "music": int(settings.get("cost_music", 20)),
+            "tts": int(settings.get("cost_tts", 2)),
+            "clone": int(settings.get("cost_clone", 50)),
+            "isolate": int(settings.get("cost_isolate", 15)),
+            "sts": int(settings.get("cost_sts", 15))
+        },
+        "maintenance": settings.get("maintenance_mode") == "true",
+        "maintenance_message": settings.get("maintenance_message", "")
     })
 
 async def handle_google_auth(request: web.Request):
@@ -773,9 +789,35 @@ from elevenlabs_service import (
     get_all_character_voices,
     generate_ai_image,
     generate_ai_video,
-    generate_ai_music
+    generate_ai_music,
+    check_elevenlabs_pool_quota,
+    add_dynamic_elevenlabs_key
 )
 from database import deduct_tokens, log_generation
+
+async def get_generation_cost(action: str, default: int) -> int:
+    try:
+        settings = await get_system_settings()
+        key = f"cost_{action}"
+        if key in settings:
+            val = str(settings[key]).strip()
+            if val.isdigit():
+                return int(val)
+    except Exception:
+        pass
+    return default
+
+async def check_maintenance_blocked(request: web.Request):
+    try:
+        settings = await get_system_settings()
+        if settings.get("maintenance_mode") == "true":
+            user = await get_current_user(request)
+            if not user or not user.get("is_superadmin"):
+                msg = settings.get("maintenance_message") or "Платформа ZYKO.AI на техобслуживании. Мы скоро вернемся!"
+                return web.json_response({"error": msg, "maintenance": True}, status=503)
+    except Exception:
+        pass
+    return None
 
 async def handle_expand_prompt(request: web.Request):
     try:
@@ -855,6 +897,9 @@ async def handle_ai_chat(request: web.Request):
 
 async def handle_generate_tts(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         data = await request.json()
         text = data.get("text", "").strip()
         voice_id = data.get("voice_id", "pNInz6obpgDQGcFmaJgB")
@@ -863,14 +908,15 @@ async def handle_generate_tts(request: web.Request):
         if not text:
             return web.json_response({"error": "Text required"}, status=400)
             
+        cost = await get_generation_cost("tts", 2)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 10):
-            return web.json_response({"error": "Insufficient tokens (requires 10 Credits)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         voice_settings = data.get("voice_settings")
         audio_bytes = await text_to_speech(text, voice_id, model_id, voice_settings)
         result_url = save_generated_media(audio_bytes, "tts", "mp3")
-        await log_generation(user["id"], f"elevenlabs_tts_{model_id}", text[:100], result_url or "tts_audio", 10)
+        await log_generation(user["id"], f"elevenlabs_tts_{model_id}", text[:100], result_url or "tts_audio", cost)
             
         resp = web.Response(body=audio_bytes, content_type="audio/mpeg")
         if result_url:
@@ -908,6 +954,9 @@ async def handle_generate_sfx(request: web.Request):
 
 async def handle_generate_clone(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         reader = await request.multipart()
         name = ""
         audio_bytes = b""
@@ -926,12 +975,13 @@ async def handle_generate_clone(request: web.Request):
         if not name or not audio_bytes:
             return web.json_response({"error": "Name and audio sample file required"}, status=400)
             
+        cost = await get_generation_cost("clone", 50)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 25):
-            return web.json_response({"error": "Insufficient tokens for voice cloning (requires 25 Credits)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         res = await clone_voice(name, audio_bytes, filename)
-        await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), 25)
+        await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), cost)
             
         return web.json_response({"status": "success", "voice": res})
     except Exception as e:
@@ -967,6 +1017,9 @@ async def handle_api_voice_preview(request: web.Request):
 
 async def handle_generate_isolate(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         reader = await request.multipart()
         audio_bytes = b""
         while True:
@@ -979,13 +1032,14 @@ async def handle_generate_isolate(request: web.Request):
         if not audio_bytes:
             return web.json_response({"error": "Audio file required for isolation"}, status=400)
             
+        cost = await get_generation_cost("isolate", 15)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 12):
-            return web.json_response({"error": "Insufficient tokens (requires 12 Credits)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         clean_bytes = await isolate_audio(audio_bytes)
         result_url = save_generated_media(clean_bytes, "isolate", "mp3")
-        await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", result_url or "isolated_audio", 12)
+        await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", result_url or "isolated_audio", cost)
             
         resp = web.Response(body=clean_bytes, content_type="audio/mpeg")
         if result_url:
@@ -998,6 +1052,9 @@ async def handle_generate_isolate(request: web.Request):
 
 async def handle_generate_sts(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         reader = await request.multipart()
         audio_bytes = b""
         voice_id = "pNInz6obpgDQGcFmaJgB"
@@ -1015,13 +1072,14 @@ async def handle_generate_sts(request: web.Request):
         if not audio_bytes:
             return web.json_response({"error": "Audio recording or file required for Speech-to-Speech"}, status=400)
 
+        cost = await get_generation_cost("sts", 15)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 15):
-            return web.json_response({"error": "Insufficient tokens (requires 15 ZK)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
 
         changed_bytes = await speech_to_speech(audio_bytes, voice_id=voice_id)
         result_url = save_generated_media(changed_bytes, "sts", "mp3")
-        await log_generation(user["id"], "speech_to_speech", f"Voice Changer: {voice_id}", result_url or "sts_audio", 15)
+        await log_generation(user["id"], "speech_to_speech", f"Voice Changer: {voice_id}", result_url or "sts_audio", cost)
 
         resp = web.Response(body=changed_bytes, content_type="audio/mpeg")
         if result_url:
@@ -1034,6 +1092,9 @@ async def handle_generate_sts(request: web.Request):
 
 async def handle_generate_image(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         data = await request.json()
         prompt = data.get("prompt", "").strip()
         aspect = data.get("aspect", "1:1")
@@ -1042,13 +1103,14 @@ async def handle_generate_image(request: web.Request):
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
+        cost = await get_generation_cost("image", 12)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 12):
-            return web.json_response({"error": "Insufficient tokens (requires 12 Credits)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         img_bytes = await generate_ai_image(prompt, aspect, model)
         result_url = save_generated_media(img_bytes, "img", "jpg")
-        await log_generation(user["id"], f"image_{model}", prompt, result_url or "image_result", 12)
+        await log_generation(user["id"], f"image_{model}", prompt, result_url or "image_result", cost)
             
         resp = web.Response(body=img_bytes, content_type="image/jpeg")
         if result_url:
@@ -1061,6 +1123,9 @@ async def handle_generate_image(request: web.Request):
 
 async def handle_generate_video(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         data = await request.json()
         prompt = data.get("prompt", "").strip()
         aspect = data.get("aspect", "9:16")
@@ -1070,13 +1135,14 @@ async def handle_generate_video(request: web.Request):
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
+        cost = await get_generation_cost("video", 25)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 25):
-            return web.json_response({"error": "Insufficient tokens (requires 25 ZK)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         res = await generate_ai_video(prompt, aspect, model, image_url=image_url)
         video_url = res.get("video_url", "") if isinstance(res, dict) else ""
-        await log_generation(user["id"], f"video_{model}", prompt, video_url, 25)
+        await log_generation(user["id"], f"video_{model}", prompt, video_url, cost)
             
         return web.json_response(res)
     except Exception as e:
@@ -1085,20 +1151,24 @@ async def handle_generate_video(request: web.Request):
 
 async def handle_generate_music(request: web.Request):
     try:
+        m_block = await check_maintenance_blocked(request)
+        if m_block: return m_block
+
         data = await request.json()
         prompt = data.get("prompt", "").strip()
         style = data.get("style", "Lo-Fi")
         title = data.get("title", "AI Track")
         
+        cost = await get_generation_cost("music", 20)
         user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 20):
-            return web.json_response({"error": "Insufficient tokens (requires 20 Credits)"}, status=400)
+        if not await deduct_tokens(user["id"], cost):
+            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
             
         res = await generate_ai_music(prompt, style, title)
         result_url = ""
         if isinstance(res, (bytes, bytearray)):
             result_url = save_generated_media(res, "music", "mp3")
-            await log_generation(user["id"], "ai_music", prompt, result_url or "music_audio", 20)
+            await log_generation(user["id"], "ai_music", prompt, result_url or "music_audio", cost)
             resp = web.Response(body=res, content_type="audio/mpeg")
             if result_url:
                 resp.headers["X-Result-URL"] = result_url
@@ -1106,7 +1176,7 @@ async def handle_generate_music(request: web.Request):
             return resp
         else:
             result_url = res.get("audio_url", "") if isinstance(res, dict) else ""
-            await log_generation(user["id"], "ai_music", prompt, result_url, 20)
+            await log_generation(user["id"], "ai_music", prompt, result_url, cost)
             return web.json_response(res)
     except Exception as e:
         logger.error("Music generation error: %s", e)
@@ -1291,6 +1361,194 @@ async def handle_user_redeem_promo(request: web.Request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=400)
 
+# =========================================================================
+# BROADCAST & ADVANCED ADMIN SUITE
+# =========================================================================
+
+BROADCAST_STATE = {
+    "is_running": False,
+    "total": 0,
+    "sent": 0,
+    "failed": 0,
+    "blocked": 0,
+    "current_index": 0,
+    "status": "idle",
+    "last_error": "",
+    "started_at": None,
+    "finished_at": None
+}
+_broadcast_cancel_flag = False
+
+async def execute_telegram_broadcast_task(message_text: str, photo_url: str, button_text: str, button_url: str, tier_filter: str):
+    global BROADCAST_STATE, _broadcast_cancel_flag
+    _broadcast_cancel_flag = False
+    
+    recipients = await get_telegram_broadcast_recipients(tier_filter)
+    BROADCAST_STATE.update({
+        "is_running": True,
+        "total": len(recipients),
+        "sent": 0,
+        "failed": 0,
+        "blocked": 0,
+        "current_index": 0,
+        "status": "running",
+        "last_error": "",
+        "started_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "finished_at": None
+    })
+    
+    bot_token = TELEGRAM_BOT_TOKEN
+    reply_markup = None
+    if button_text and button_url:
+        reply_markup = {
+            "inline_keyboard": [[
+                {"text": button_text, "url": button_url}
+            ]]
+        }
+
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=12)) as session:
+        for idx, u in enumerate(recipients):
+            if _broadcast_cancel_flag:
+                BROADCAST_STATE["status"] = "cancelled"
+                break
+                
+            tg_id = u["telegram_id"]
+            BROADCAST_STATE["current_index"] = idx + 1
+            
+            try:
+                if photo_url:
+                    payload = {
+                        "chat_id": tg_id,
+                        "photo": photo_url,
+                        "caption": message_text,
+                        "parse_mode": "HTML"
+                    }
+                    if reply_markup:
+                        payload["reply_markup"] = reply_markup
+                    url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
+                else:
+                    payload = {
+                        "chat_id": tg_id,
+                        "text": message_text,
+                        "parse_mode": "HTML"
+                    }
+                    if reply_markup:
+                        payload["reply_markup"] = reply_markup
+                    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                
+                async with session.post(url, json=payload) as resp:
+                    res_json = await resp.json()
+                    if resp.status == 200 and res_json.get("ok"):
+                        BROADCAST_STATE["sent"] += 1
+                    else:
+                        desc = res_json.get("description", "")
+                        if "blocked by the user" in desc.lower() or "deactivated" in desc.lower():
+                            BROADCAST_STATE["blocked"] += 1
+                        else:
+                            BROADCAST_STATE["failed"] += 1
+                            BROADCAST_STATE["last_error"] = desc[:100]
+            except Exception as e:
+                BROADCAST_STATE["failed"] += 1
+                BROADCAST_STATE["last_error"] = str(e)[:100]
+                
+            await asyncio.sleep(0.045)
+            
+    if BROADCAST_STATE["status"] != "cancelled":
+        BROADCAST_STATE["status"] = "completed"
+    BROADCAST_STATE["is_running"] = False
+    BROADCAST_STATE["finished_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+async def handle_admin_start_broadcast(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+        
+    global BROADCAST_STATE
+    if BROADCAST_STATE["is_running"]:
+        return web.json_response({"error": "Рассылка уже выполняется в данный момент"}, status=400)
+        
+    data = await request.json()
+    message = data.get("message", "").strip()
+    photo_url = data.get("photo_url", "").strip()
+    button_text = data.get("button_text", "").strip()
+    button_url = data.get("button_url", "").strip()
+    tier_filter = data.get("tier_filter", "all").strip().lower()
+    
+    if not message and not photo_url:
+        return web.json_response({"error": "Введите текст сообщения для рассылки"}, status=400)
+        
+    asyncio.create_task(execute_telegram_broadcast_task(message, photo_url, button_text, button_url, tier_filter))
+    return web.json_response({"status": "ok", "message": "Рассылка успешно запущена в фоновом режиме"})
+
+async def handle_admin_get_broadcast_status(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    return web.json_response({"status": "ok", "broadcast": BROADCAST_STATE})
+
+async def handle_admin_cancel_broadcast(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    global _broadcast_cancel_flag
+    _broadcast_cancel_flag = True
+    return web.json_response({"status": "ok", "message": "Остановка рассылки запрошена"})
+
+async def handle_admin_elevenlabs_quota(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    res = await check_elevenlabs_pool_quota()
+    return web.json_response({"status": "ok", "quota": res})
+
+async def handle_admin_elevenlabs_add_key(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await request.json()
+    key = data.get("key", "").strip()
+    res = await add_dynamic_elevenlabs_key(key)
+    return web.json_response(res)
+
+async def handle_admin_generations_toggle(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await request.json()
+    gen_id = int(data.get("generation_id", 0))
+    is_hidden = int(data.get("is_hidden", 0))
+    await admin_toggle_generation_hidden(gen_id, is_hidden)
+    return web.json_response({"status": "ok", "generation_id": gen_id, "is_hidden": is_hidden})
+
+async def handle_admin_studio_analytics(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    analytics = await get_admin_studio_analytics()
+    return web.json_response({"status": "ok", "analytics": analytics})
+
+async def handle_admin_quick_grant(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await request.json()
+    identifier = data.get("identifier", "").strip()
+    tokens = data.get("tokens")
+    tier = data.get("tier")
+    days = int(data.get("days", 30))
+    res = await admin_quick_grant(identifier, tokens, tier, days)
+    return web.json_response(res)
+
+async def handle_admin_update_settings_batch(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await request.json()
+    settings_dict = data.get("settings", {})
+    for k, v in settings_dict.items():
+        await update_system_setting(str(k), str(v))
+    return web.json_response({"status": "ok", "message": "Настройки успешно сохранены"})
+
 def create_app():
     app = web.Application(client_max_size=50 * 1024 * 1024)
     
@@ -1318,6 +1576,7 @@ def create_app():
     app.router.add_post("/api/admin/users/gift", handle_admin_gift_all)
     app.router.add_post("/api/admin/users/ban", handle_admin_toggle_ban)
     app.router.add_post("/api/admin/users/adjust-tokens", handle_admin_adjust_tokens)
+    app.router.add_post("/api/admin/users/quick-action", handle_admin_quick_grant)
     app.router.add_get("/api/admin/promos", handle_admin_promos)
     app.router.add_post("/api/admin/promos/create", handle_admin_create_promo)
     app.router.add_post("/api/admin/promos/toggle", handle_admin_toggle_promo)
@@ -1325,6 +1584,15 @@ def create_app():
     app.router.add_get("/api/admin/transactions", handle_admin_transactions)
     app.router.add_post("/api/admin/transactions/complete", handle_admin_complete_transaction)
     app.router.add_get("/api/admin/generations", handle_admin_generations)
+    app.router.add_post("/api/admin/generations/toggle-visibility", handle_admin_generations_toggle)
+    app.router.add_post("/api/admin/settings", handle_admin_update_setting)
+    app.router.add_post("/api/admin/settings/batch", handle_admin_update_settings_batch)
+    app.router.add_get("/api/admin/analytics/studios", handle_admin_studio_analytics)
+    app.router.add_get("/api/admin/elevenlabs/quota", handle_admin_elevenlabs_quota)
+    app.router.add_post("/api/admin/elevenlabs/add-key", handle_admin_elevenlabs_add_key)
+    app.router.add_post("/api/admin/broadcast/start", handle_admin_start_broadcast)
+    app.router.add_get("/api/admin/broadcast/status", handle_admin_get_broadcast_status)
+    app.router.add_post("/api/admin/broadcast/cancel", handle_admin_cancel_broadcast)
     app.router.add_post("/api/admin/settings", handle_admin_update_setting)
     app.router.add_post("/api/user/redeem-promo", handle_user_redeem_promo)
     

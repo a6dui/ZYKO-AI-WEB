@@ -1,6 +1,7 @@
 import os
 import aiosqlite
 import logging
+from datetime import datetime, timedelta
 
 logger = logging.getLogger("zyko_db")
 
@@ -81,9 +82,23 @@ async def init_db():
             INSERT OR IGNORE INTO system_settings (key, value) VALUES 
             ('banner_text', 'Meet Wan 3.0: Up to 30 Seconds of Limitless Creativity'),
             ('banner_link_tab', 'video'),
-            ('announcement_active', 'true')
+            ('announcement_active', 'true'),
+            ('cost_image', '12'),
+            ('cost_video', '25'),
+            ('cost_music', '20'),
+            ('cost_tts', '2'),
+            ('cost_clone', '50'),
+            ('cost_isolate', '15'),
+            ('cost_sts', '15'),
+            ('starting_tokens', '1000'),
+            ('maintenance_mode', 'false'),
+            ('maintenance_message', 'Платформа ZYKO.AI обновляется. Мы скоро вернемся!')
         """)
         # Ensure additional columns exist on older tables
+        try:
+            await db.execute("ALTER TABLE generations ADD COLUMN is_hidden INTEGER DEFAULT 0")
+        except Exception:
+            pass
         try:
             await db.execute("ALTER TABLE users ADD COLUMN password_hash TEXT")
         except Exception:
@@ -542,6 +557,138 @@ async def update_system_setting(key: str, value: str):
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("INSERT OR REPLACE INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)", (key, value))
         await db.commit()
+
+async def get_telegram_broadcast_recipients(tier_filter: str = "all") -> list:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT id, telegram_id, name, telegram_username, tier FROM users WHERE telegram_id IS NOT NULL AND is_banned = 0"
+        params = []
+        if tier_filter == "free":
+            query += " AND (tier = 'Free' OR tier IS NULL)"
+        elif tier_filter == "paid":
+            query += " AND tier != 'Free' AND tier IS NOT NULL"
+        elif tier_filter and tier_filter != "all":
+            query += " AND tier = ?"
+            params.append(tier_filter)
+        async with db.execute(query, tuple(params)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def get_admin_studio_analytics() -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        # Last 24h by model
+        async with db.execute("""
+            SELECT model, COUNT(*) as count, SUM(tokens_cost) as tokens 
+            FROM generations 
+            WHERE created_at >= datetime('now', '-24 hours') 
+            GROUP BY model
+        """) as c24:
+            rows24 = [dict(r) for r in await c24.fetchall()]
+        
+        studios_24h = {"video": 0, "image": 0, "audio": 0, "llm": 0, "other": 0}
+        tokens_24h = {"video": 0, "image": 0, "audio": 0, "llm": 0, "other": 0}
+        for r in rows24:
+            m = (r.get("model") or "").lower()
+            cnt = r.get("count", 0)
+            tok = r.get("tokens", 0) or 0
+            if any(k in m for k in ["video", "veo", "kling", "sora", "wan"]):
+                studios_24h["video"] += cnt
+                tokens_24h["video"] += tok
+            elif any(k in m for k in ["image", "flux", "midjourney", "dall", "photo"]):
+                studios_24h["image"] += cnt
+                tokens_24h["image"] += tok
+            elif any(k in m for k in ["audio", "tts", "music", "sfx", "clone", "sts", "isolate"]):
+                studios_24h["audio"] += cnt
+                tokens_24h["audio"] += tok
+            elif any(k in m for k in ["gpt", "claude", "gemini", "chat", "llm"]):
+                studios_24h["llm"] += cnt
+                tokens_24h["llm"] += tok
+            else:
+                studios_24h["other"] += cnt
+                tokens_24h["other"] += tok
+
+        # All-time by studio
+        async with db.execute("""
+            SELECT 
+                SUM(CASE WHEN model LIKE '%video%' OR model LIKE '%veo%' OR model LIKE '%kling%' OR model LIKE '%sora%' THEN 1 ELSE 0 END) as video_count,
+                SUM(CASE WHEN model LIKE '%image%' OR model LIKE '%flux%' OR model LIKE '%midjourney%' THEN 1 ELSE 0 END) as image_count,
+                SUM(CASE WHEN model LIKE '%audio%' OR model LIKE '%tts%' OR model LIKE '%music%' OR model LIKE '%sfx%' OR model LIKE '%clone%' OR model LIKE '%sts%' THEN 1 ELSE 0 END) as audio_count,
+                SUM(CASE WHEN model LIKE '%chat%' OR model LIKE '%gemini%' OR model LIKE '%gpt%' OR model LIKE '%claude%' THEN 1 ELSE 0 END) as llm_count,
+                COUNT(*) as total_count
+            FROM generations
+        """) as ct:
+            row_all = await ct.fetchone()
+            studios_all_time = dict(row_all) if row_all else {}
+
+        # Daily trend last 7 days
+        async with db.execute("""
+            SELECT strftime('%Y-%m-%d', created_at) as day, COUNT(*) as count 
+            FROM generations 
+            WHERE created_at >= datetime('now', '-7 days') 
+            GROUP BY day ORDER BY day ASC
+        """) as cd:
+            daily_trend = [dict(r) for r in await cd.fetchall()]
+
+        return {
+            "studios_24h": studios_24h,
+            "tokens_24h": tokens_24h,
+            "studios_all_time": studios_all_time,
+            "daily_trend": daily_trend
+        }
+
+async def admin_toggle_generation_hidden(generation_id: int, is_hidden: int) -> bool:
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("UPDATE generations SET is_hidden = ? WHERE id = ?", (is_hidden, generation_id))
+        await db.commit()
+        return True
+
+async def admin_quick_grant(identifier: str, tokens: float = None, tier: str = None, days: int = 30) -> dict:
+    clean_id = (identifier or "").strip().lstrip("@")
+    if not clean_id:
+        return {"error": "Identifier required"}
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = """
+            SELECT * FROM users WHERE 
+                telegram_username LIKE ? OR 
+                CAST(telegram_id AS TEXT) = ? OR 
+                email = ? OR 
+                CAST(id AS TEXT) = ?
+            LIMIT 1
+        """
+        async with db.execute(query, (f"%{clean_id}%", clean_id, clean_id, clean_id)) as c:
+            user = await c.fetchone()
+        
+        if not user:
+            return {"error": f"Пользователь '{identifier}' не найден в базе"}
+
+        user_dict = dict(user)
+        user_id = user_dict["id"]
+        
+        updates = []
+        params = []
+        
+        if tokens is not None:
+            updates.append("tokens = tokens + ?")
+            params.append(float(tokens))
+            
+        if tier:
+            updates.append("tier = ?")
+            params.append(tier)
+            expires = datetime.now() + timedelta(days=days)
+            updates.append("tier_expires_at = ?")
+            params.append(expires.isoformat())
+
+        if updates:
+            params.append(user_id)
+            await db.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", tuple(params))
+            await db.commit()
+            
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
+            updated_user = await c2.fetchone()
+            return {"status": "ok", "user": dict(updated_user)}
 
 TIER_LIMITS = {
     "Free": {"session": 150, "weekly": 600},

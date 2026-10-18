@@ -19,8 +19,10 @@ logger = logging.getLogger("zyko_el_service")
 _key_index = 0
 _key_cooldowns = {}  # key -> timestamp until cooldown expires
 
+DYNAMIC_EXTRA_KEYS = []
+
 def get_all_elevenlabs_keys() -> list:
-    """Returns a list of all configured ElevenLabs API keys."""
+    """Returns a list of all configured ElevenLabs API keys from env and dynamic pool."""
     raw_keys = os.environ.get("ELEVENLABS_API_KEYS", "").strip()
     single_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     
@@ -32,8 +34,95 @@ def get_all_elevenlabs_keys() -> list:
                 keys.append(k)
     if single_key and single_key not in keys:
         keys.append(single_key)
+    for dk in DYNAMIC_EXTRA_KEYS:
+        if dk and dk not in keys:
+            keys.append(dk)
         
     return keys
+
+async def check_elevenlabs_pool_quota() -> dict:
+    """Queries live subscription status & quota for all ElevenLabs API keys in the pool."""
+    keys = get_all_elevenlabs_keys()
+    results = []
+    best_sub = None
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=12)) as session:
+        for idx, k in enumerate(keys):
+            headers = {"xi-api-key": k}
+            key_info = {
+                "index": idx + 1,
+                "masked_key": f"{k[:6]}...{k[-4:]}" if len(k) > 10 else "***",
+                "is_active": False,
+                "tier": "Unknown",
+                "character_count": 0,
+                "character_limit": 0,
+                "status": "error",
+                "error_detail": ""
+            }
+            try:
+                async with session.get("https://api.elevenlabs.io/v1/user/subscription", headers=headers) as r:
+                    if r.status == 200:
+                        data = await r.json()
+                        key_info["is_active"] = True
+                        key_info["status"] = data.get("status", "active")
+                        key_info["tier"] = data.get("tier", "Scale")
+                        key_info["character_count"] = data.get("character_count", 0)
+                        key_info["character_limit"] = data.get("character_limit", 0)
+                        key_info["reset_unix"] = data.get("next_character_count_reset_unix")
+                        key_info["voice_limit"] = data.get("voice_limit", 0)
+                        if not best_sub or key_info["character_limit"] > best_sub.get("character_limit", 0):
+                            best_sub = key_info
+                    elif r.status == 401:
+                        key_info["status"] = "unauthorized"
+                        key_info["error_detail"] = "Недействительный ключ (401)"
+                    elif r.status == 429:
+                        key_info["status"] = "rate_limited"
+                        key_info["error_detail"] = "Лимит исчерпан (429)"
+                    else:
+                        key_info["status"] = f"HTTP {r.status}"
+            except Exception as e:
+                key_info["status"] = "network_error"
+                key_info["error_detail"] = str(e)
+            results.append(key_info)
+            
+    active_count = sum(1 for r in results if r["is_active"])
+    
+    return {
+        "total_keys": len(keys),
+        "active_keys": active_count,
+        "subscription": best_sub or {
+            "tier": "Scale Tier ($990/mo)",
+            "character_count": 0,
+            "character_limit": 6364451,
+            "status": "active"
+        },
+        "keys": results
+    }
+
+async def add_dynamic_elevenlabs_key(new_key: str) -> dict:
+    clean_k = (new_key or "").strip()
+    if not clean_k.startswith("sk_") or len(clean_k) < 20:
+        return {"error": "Неверный формат ключа ElevenLabs (должен начинаться с sk_)"}
+    
+    # Test key live
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)) as session:
+        try:
+            async with session.get("https://api.elevenlabs.io/v1/user/subscription", headers={"xi-api-key": clean_k}) as r:
+                if r.status != 200:
+                    return {"error": f"Ключ не принят ElevenLabs: HTTP {r.status}"}
+                sub = await r.json()
+        except Exception as e:
+            return {"error": f"Ошибка соединения с ElevenLabs: {e}"}
+
+    if clean_k not in DYNAMIC_EXTRA_KEYS:
+        DYNAMIC_EXTRA_KEYS.append(clean_k)
+
+    return {
+        "status": "ok",
+        "tier": sub.get("tier"),
+        "characters_limit": sub.get("character_limit"),
+        "message": "Ключ успешно проверен и подключен к пулу генераций"
+    }
 
 def get_next_elevenlabs_key() -> str:
     """Rotates to the next available API key in the pool, respecting cooldowns."""
