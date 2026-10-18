@@ -657,7 +657,7 @@
           <!-- Token balance pill -->
           <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm">
             <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
-            <span id="header-user-tokens" class="text-xs font-black text-white">500 000</span>
+            <span id="header-user-tokens" class="text-xs font-black text-white">0</span>
             <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">MAX</span>
           </div>
 
@@ -675,7 +675,7 @@
                 <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">MAX</div>
                 <div class="text-sm font-extrabold text-white flex items-center gap-1.5 mt-1.5">
                   <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
-                  <span id="dropdown-user-tokens">500 000</span>
+                  <span id="dropdown-user-tokens">0</span>
                 </div>
               </div>
               <div class="border-t border-white/10 my-2"></div>
@@ -2896,7 +2896,7 @@
                   <span>Purchase Tokens</span> <span class="cursor-pointer text-stone-500">ⓘ</span>
                 </div>
                 <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2.5">
-                  <span id="profile-card-tokens">500 000</span>
+                  <span id="profile-card-tokens">0</span>
                   <span class="text-xl md:text-2xl font-black text-amber-400 font-mono">ZK</span>
                 </div>
               </div>
@@ -3238,6 +3238,22 @@
                   Buy a subscription
                 </button>
               </div>
+
+              <!-- Promo Code Redemption Box -->
+              <div class="mt-6 w-full bg-[#161a19] border border-white/10 rounded-2xl p-5 text-left shadow-lg">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-base">🎟️</span>
+                  <h4 class="text-sm font-bold text-white">Активация промокода</h4>
+                </div>
+                <p class="text-xs text-stone-400 mb-3">Введите промокод для мгновенного зачисления ZK токенов или активации тарифа.</p>
+                <div class="flex items-center gap-2">
+                  <input id="user-promo-input" type="text" placeholder="Например: ZYKO2026" class="flex-1 bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white uppercase tracking-wider placeholder-stone-500 focus:outline-none focus:border-emerald-400 font-mono">
+                  <button onclick="redeemUserPromo()" id="btn-redeem-promo" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-md shadow-emerald-500/20 whitespace-nowrap active:scale-95">
+                    Активировать
+                  </button>
+                </div>
+                <div id="user-promo-status" class="hidden text-xs mt-2.5 font-medium"></div>
+              </div>
             </div>
           </div>
 
@@ -3476,6 +3492,9 @@
         </div>
 
         <div class="flex items-center gap-2">
+          <a href="/api/admin/backup-db" target="_blank" download title="Скачать резервную копию базы данных (.db)" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition shadow-sm">
+            <span>📥</span> <span class="hidden sm:inline">Бэкап БД</span>
+          </a>
           <button onclick="refreshAdminData()" title="Refresh Data" class="p-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition text-sm">
             🔄
           </button>
@@ -3492,6 +3511,9 @@
         </button>
         <button onclick="switchAdminTab('users')" id="admin-tab-btn-users" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
           <span>👥</span> Пользователи
+        </button>
+        <button onclick="switchAdminTab('promos')" id="admin-tab-btn-promos" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
+          <span>🎟️</span> Промокоды
         </button>
         <button onclick="switchAdminTab('transactions')" id="admin-tab-btn-transactions" class="admin-tab-btn py-3 px-3.5 text-xs font-semibold text-stone-400 hover:text-stone-200 border-b-2 border-transparent flex items-center gap-2 transition whitespace-nowrap">
           <span>💳</span> Транзакции & Оплаты
@@ -3554,11 +3576,21 @@
                 <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
                   <div>
                     <div class="text-xs font-bold text-white">Подарок всем пользователям</div>
-                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по  ZK токенов</div>
+                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по 500 ZK токенов</div>
                   </div>
                   <button onclick="adminGiftAll(500)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs px-3.5 py-2 rounded-xl transition shrink-0">
-                    🎁 Подарить  ZK
+                    🎁 Подарить 500 ZK
                   </button>
+                </div>
+
+                <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
+                  <div>
+                    <div class="text-xs font-bold text-white">Резервная копия базы данных</div>
+                    <div class="text-[11px] text-stone-400">Скачать полный дамп SQLite (users, balances, tx, promos)</div>
+                  </div>
+                  <a href="/api/admin/backup-db" target="_blank" download class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs px-3.5 py-2 rounded-xl transition shrink-0 flex items-center gap-1.5">
+                    📥 Скачать .db
+                  </a>
                 </div>
 
                 <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
@@ -3606,13 +3638,82 @@
                     <th class="p-3.5 font-semibold">Telegram ID</th>
                     <th class="p-3.5 font-semibold">Тариф</th>
                     <th class="p-3.5 font-semibold">Токены</th>
+                    <th class="p-3.5 font-semibold">Статус</th>
                     <th class="p-3.5 font-semibold">Дата регистрации</th>
-                    <th class="p-3.5 font-semibold text-right">Действие</th>
+                    <th class="p-3.5 font-semibold text-right">Действия</th>
                   </tr>
                 </thead>
                 <tbody id="admin-users-table-body" class="divide-y divide-white/5 text-stone-300">
                   <tr>
-                    <td colspan="7" class="p-6 text-center text-stone-500">Загрузка пользователей...</td>
+                    <td colspan="8" class="p-6 text-center text-stone-500">Загрузка пользователей...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Promo Codes Management -->
+        <div id="admin-view-promos" class="hidden space-y-6">
+          <!-- Create Promo Box -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>🎟️</span> Создать новый промокод
+            </h3>
+            <p class="text-xs text-stone-400">Промокоды позволяют мгновенно привлекать аудиторию, запускать акции в Telegram и выдавать персональные бонусы.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Код промокода</label>
+                <input id="admin-promo-code" type="text" placeholder="например, ZYKO2026" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white uppercase tracking-wider font-mono focus:outline-none focus:border-emerald-400">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Награда (ZK токенов)</label>
+                <input id="admin-promo-tokens" type="number" value="500" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Бонусный тариф (опц.)</label>
+                <select id="admin-promo-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
+                  <option value="">Без изменения тарифа</option>
+                  <option value="Basic">Basic</option>
+                  <option value="Pro">Pro</option>
+                  <option value="VIP">VIP</option>
+                  <option value="Elite">Elite</option>
+                  <option value="Ultra Elite">Ultra Elite</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Лимит активаций</label>
+                <input id="admin-promo-max-uses" type="number" value="100" class="w-full bg-black/40 border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <button onclick="adminCreatePromoCode()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-5 py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95">
+                ➕ Создать промокод
+              </button>
+            </div>
+          </div>
+
+          <!-- Promo Codes Table -->
+          <div class="bg-[#141a18] border border-white/10 rounded-2xl overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3.5 font-semibold">ID</th>
+                    <th class="p-3.5 font-semibold">Промокод</th>
+                    <th class="p-3.5 font-semibold">Награда</th>
+                    <th class="p-3.5 font-semibold">Тариф</th>
+                    <th class="p-3.5 font-semibold">Активаций</th>
+                    <th class="p-3.5 font-semibold">Статус</th>
+                    <th class="p-3.5 font-semibold">Создан</th>
+                    <th class="p-3.5 font-semibold text-right">Действие</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-promos-table-body" class="divide-y divide-white/5 text-stone-300">
+                  <tr>
+                    <td colspan="8" class="p-6 text-center text-stone-500">Загрузка промокодов...</td>
                   </tr>
                 </tbody>
               </table>
@@ -10631,7 +10732,7 @@
         const num = Number(user.tokens);
         tokVal = num >= 100 ? Math.round(num).toLocaleString() : num.toString().replace('.', ',');
       } else {
-        tokVal = '500 000';
+        tokVal = '0';
       }
 
       const rawName = user.name || (user.telegram_username ? '@' + user.telegram_username : (user.email ? user.email.split('@')[0] : 'Пользователь'));
@@ -10641,7 +10742,7 @@
       const userHandle = user.telegram_username ? '@' + user.telegram_username : (user.email ? '@' + user.email.split('@')[0] : (user.telegram_id ? '@id' + user.telegram_id : '@user'));
       const userTier = (user.tier || 'Max').toUpperCase();
 
-      syncUserTokensUI(user.tokens != null ? user.tokens : 500000);
+      syncUserTokensUI(user.tokens != null ? user.tokens : 0);
       document.getElementById('header-user-tier').textContent = userTier;
       document.getElementById('header-user-initial').textContent = initialChar;
 
@@ -10760,13 +10861,13 @@
     function deductTokensUI(amount, description = 'AI Service Generation') {
       if (!amount || isNaN(amount) || amount <= 0) return;
 
-      let cur = 500000;
+      let cur = 0;
       if (currentUser && currentUser.tokens != null) {
         cur = Number(currentUser.tokens);
       } else {
         const el = document.getElementById('header-user-tokens');
         if (el) {
-          cur = parseInt(el.textContent.replace(/\D/g, '')) || 500000;
+          cur = parseInt(el.textContent.replace(/\D/g, '')) || 0;
         }
       }
 
@@ -13212,7 +13313,7 @@
 
     function switchAdminTab(tabName) {
       adminCurrentTab = tabName;
-      const tabs = ['overview', 'users', 'transactions', 'generations', 'settings'];
+      const tabs = ['overview', 'users', 'promos', 'transactions', 'generations', 'settings'];
       tabs.forEach(t => {
         const view = document.getElementById(`admin-view-${t}`);
         const btn = document.getElementById(`admin-tab-btn-${t}`);
@@ -13230,6 +13331,7 @@
 
       if (tabName === 'overview') loadAdminOverview();
       else if (tabName === 'users') loadAdminUsers();
+      else if (tabName === 'promos') loadAdminPromos();
       else if (tabName === 'transactions') loadAdminTransactions();
       else if (tabName === 'generations') loadAdminGenerations();
       else if (tabName === 'settings') loadAdminSettings();
@@ -13322,7 +13424,7 @@
         cachedAdminUsers = data.users || [];
 
         if (cachedAdminUsers.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-stone-500">Пользователи не найдены</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-stone-500">Пользователи не найдены</td></tr>';
           return;
         }
 
@@ -13347,17 +13449,28 @@
               }">${u.tier || 'Free'}</span>
             </td>
             <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} ZK</td>
+            <td class="p-3.5">
+              ${u.is_banned ? '<span class="bg-red-500/20 text-red-400 border border-red-500/30 font-bold px-2 py-0.5 rounded text-[10px]">⛔ Бан</span>' : '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-2 py-0.5 rounded text-[10px]">🟢 Активен</span>'}
+            </td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(u.created_at || '').substring(0, 16)}</td>
             <td class="p-3.5 text-right">
-              <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-emerald-500 hover:text-black text-stone-200 font-bold px-3 py-1.5 rounded-xl transition text-[11px]">
-                Редактировать
-              </button>
+              <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-white/20 text-stone-200 font-bold px-2.5 py-1 rounded-xl transition text-[11px]" title="Изменить тариф и баланс">
+                  ✏️ Инфо
+                </button>
+                <button onclick="adminPromptAdjustTokens(${u.id})" class="bg-amber-500/10 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-bold px-2 py-1 rounded-xl transition text-[11px]" title="Начислить (+) или списать (-) ZK">
+                  ⚡ +/- ZK
+                </button>
+                <button onclick="adminToggleBan(${u.id}, ${u.is_banned ? 0 : 1})" class="${u.is_banned ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30'} font-bold px-2 py-1 rounded-xl transition text-[11px]">
+                  ${u.is_banned ? 'Разбанить' : 'Бан'}
+                </button>
+              </div>
             </td>
           </tr>
         `).join('');
       } catch (e) {
         console.error(e);
-        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
       }
     }
 
@@ -13398,6 +13511,221 @@
         }
       } catch (e) {
         alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    async function adminToggleBan(userId, newBanState) {
+      const actionText = newBanState ? 'ЗАБЛОКИРОВАТЬ' : 'РАЗБЛОКИРОВАТЬ';
+      if (!confirm(`Вы уверены, что хотите ${actionText} пользователя #${userId}?`)) return;
+      try {
+        const res = await fetch('/api/admin/users/ban', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, is_banned: newBanState })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          loadAdminUsers();
+        } else {
+          alert('Ошибка: ' + (data.error || 'Не удалось обновить статус блокировки'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    async function adminPromptAdjustTokens(userId) {
+      const user = cachedAdminUsers.find(u => u.id === userId);
+      const cur = user ? Math.round(user.tokens || 0) : 0;
+      const input = prompt(`Изменение баланса пользователя #${userId} (текущий: ${cur} ZK).\nВведите число для начисления (+500) или списания (-200):`, '500');
+      if (input === null) return;
+      const delta = parseFloat(input.trim());
+      if (isNaN(delta) || delta === 0) {
+        alert('Некорректное значение');
+        return;
+      }
+      const reason = prompt('Укажите причину изменения (для аудита):', delta > 0 ? 'Бонус от администрации' : 'Ручная корректировка') || 'Admin adjustment';
+      try {
+        const res = await fetch('/api/admin/users/adjust-tokens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, delta, reason })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert(`✅ Баланс успешно изменен! Новый баланс: ${Math.round(data.user.tokens)} ZK`);
+          loadAdminUsers();
+          loadAdminOverview();
+          if (currentUser && currentUser.id == userId) {
+            checkAuthStatus();
+          }
+        } else {
+          alert('Ошибка: ' + (data.error || 'Не удалось изменить баланс'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    // Promos Management (Admin)
+    async function loadAdminPromos() {
+      const tbody = document.getElementById('admin-promos-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-stone-500">Загрузка промокодов...</td></tr>';
+
+      try {
+        const res = await fetch('/api/admin/promos');
+        if (!res.ok) throw new Error('Failed to load promo codes');
+        const data = await res.json();
+        const promos = data.promos || [];
+
+        if (promos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-stone-500">Промокодов пока нет. Создайте первый выше!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = promos.map(p => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3.5 font-mono text-stone-400">#${p.id}</td>
+            <td class="p-3.5 font-mono font-bold text-white text-xs tracking-wider">${escapeHtml(p.code)}</td>
+            <td class="p-3.5 font-black text-amber-400 font-mono">+${Math.round(p.tokens || 0).toLocaleString()} ZK</td>
+            <td class="p-3.5">
+              ${p.tier ? `<span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-bold">${p.tier}</span>` : '<span class="text-stone-500">—</span>'}
+            </td>
+            <td class="p-3.5 font-mono text-stone-300">${p.times_used} / ${p.max_uses}</td>
+            <td class="p-3.5">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.is_active ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-stone-500/20 text-stone-400 border border-stone-500/30'}">
+                ${p.is_active ? '● Активен' : '○ Выключен'}
+              </span>
+            </td>
+            <td class="p-3.5 text-stone-400 text-[11px]">${(p.created_at || '').substring(0, 16)}</td>
+            <td class="p-3.5 text-right">
+              <button onclick="adminTogglePromo(${p.id}, ${p.is_active ? 0 : 1})" class="${p.is_active ? 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30'} font-bold px-2.5 py-1 rounded-xl transition text-[10px]">
+                ${p.is_active ? 'Выключить' : 'Включить'}
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-red-400">Ошибка: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function adminCreatePromoCode() {
+      const codeInput = document.getElementById('admin-promo-code');
+      const tokensInput = document.getElementById('admin-promo-tokens');
+      const tierSelect = document.getElementById('admin-promo-tier');
+      const maxUsesInput = document.getElementById('admin-promo-max-uses');
+
+      const code = (codeInput?.value || '').trim().toUpperCase();
+      const tokens = parseInt(tokensInput?.value || '0', 10);
+      const tier = tierSelect?.value || null;
+      const max_uses = parseInt(maxUsesInput?.value || '100', 10);
+
+      if (!code) {
+        alert('Пожалуйста, введите код промокода');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/promos/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, tokens, tier, max_uses })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          alert(`🎉 Промокод ${code} успешно создан!`);
+          if (codeInput) codeInput.value = '';
+          loadAdminPromos();
+        } else {
+          alert('Ошибка создания: ' + (data.error || 'Неизвестная ошибка'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    async function adminTogglePromo(promoId, newActiveState) {
+      try {
+        const res = await fetch('/api/admin/promos/toggle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ promo_id: promoId, is_active: newActiveState })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          loadAdminPromos();
+        } else {
+          alert('Ошибка: ' + (data.error || 'Не удалось обновить промокод'));
+        }
+      } catch (e) {
+        alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    // User-side Promo Redemption
+    async function redeemUserPromo() {
+      const input = document.getElementById('user-promo-input');
+      const statusEl = document.getElementById('user-promo-status');
+      const btn = document.getElementById('btn-redeem-promo');
+      const code = (input?.value || '').trim();
+
+      if (!code) {
+        if (statusEl) {
+          statusEl.textContent = 'Введите промокод';
+          statusEl.className = 'text-xs mt-2.5 font-medium text-amber-400';
+          statusEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+      if (statusEl) {
+        statusEl.textContent = 'Проверка промокода...';
+        statusEl.className = 'text-xs mt-2.5 font-medium text-stone-400';
+        statusEl.classList.remove('hidden');
+      }
+
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/user/redeem-promo', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'ok') {
+          if (statusEl) {
+            statusEl.textContent = `🎉 ${data.message}`;
+            statusEl.className = 'text-xs mt-2.5 font-medium text-emerald-400';
+          }
+          if (input) input.value = '';
+          if (data.user) {
+            currentUser = data.user;
+            localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+            updateUserUI(currentUser);
+          } else {
+            checkAuthStatus();
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = `❌ ${data.error || 'Неверный промокод'}`;
+            statusEl.className = 'text-xs mt-2.5 font-medium text-red-400';
+          }
+        }
+      } catch (e) {
+        if (statusEl) {
+          statusEl.textContent = `❌ Ошибка сети: ${e.message}`;
+          statusEl.className = 'text-xs mt-2.5 font-medium text-red-400';
+        }
+      } finally {
+        if (btn) btn.disabled = false;
       }
     }
 

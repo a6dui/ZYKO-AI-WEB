@@ -96,8 +96,35 @@ async def init_db():
             await db.execute("ALTER TABLE users ADD COLUMN is_superadmin INTEGER DEFAULT 0")
         except Exception:
             pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0")
+        except Exception:
+            pass
 
-        # Seed or maintain owner / superadmin 755843448 with Max tier and huge tokens
+        # Create promo codes system tables
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS promo_codes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                code TEXT UNIQUE NOT NULL,
+                tokens INTEGER NOT NULL DEFAULT 500,
+                tier TEXT,
+                max_uses INTEGER DEFAULT 100,
+                times_used INTEGER DEFAULT 0,
+                is_active INTEGER DEFAULT 1,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS promo_usages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                promo_code_id INTEGER,
+                used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(user_id, promo_code_id)
+            )
+        """)
+
+        # Ensure owner / superadmin 755843448 is superadmin with Max tier, but NEVER overwrite their existing balance
         try:
             async with db.execute(
                 "SELECT * FROM users WHERE telegram_id = 755843448 OR CAST(telegram_id AS TEXT) = '755843448'"
@@ -106,7 +133,7 @@ async def init_db():
                 if not admin_row:
                     await db.execute("""
                         INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
-                        VALUES (755843448, 'Zykolandstore', 'Zykolandstore', 500000, 'Max', 1)
+                        VALUES (755843448, 'Zykolandstore', 'Zykolandstore', 10000, 'Max', 1)
                     """)
                 else:
                     await db.execute("""
@@ -203,8 +230,6 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                     updates.append("is_superadmin = 1")
                     if user.get("tier") in ("Free", None, ""):
                         updates.append("tier = 'Max'")
-                    if float(user.get("tokens") or 0) < 50000:
-                        updates.append("tokens = 100000")
                 
                 query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
                 params.append(user["id"])
@@ -215,7 +240,7 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                     return dict(await c2.fetchone())
             else:
                 initial_tier = "Max" if is_admin else "Free"
-                initial_tokens = 500000 if is_admin else 1000
+                initial_tokens = 10000 if is_admin else 1000
                 cursor_ins = await db.execute(
                     """
                     INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
@@ -672,6 +697,113 @@ async def get_user_token_history(user_id: int, filter_type: str = 'all', limit: 
             filtered = events
 
         return filtered[:limit]
+
+async def admin_toggle_ban_user(user_id: int, is_banned: int) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        await db.execute("UPDATE users SET is_banned = ? WHERE id = ?", (1 if is_banned else 0, user_id))
+        await db.commit()
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c:
+            row = await c.fetchone()
+            return dict(row) if row else None
+
+async def admin_adjust_user_tokens(user_id: int, delta: float, reason: str = "Admin adjustment") -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        await db.execute("UPDATE users SET tokens = MAX(0, tokens + ?) WHERE id = ?", (delta, user_id))
+        await db.commit()
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c:
+            row = await c.fetchone()
+            return dict(row) if row else None
+
+async def admin_get_promo_codes() -> list:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM promo_codes ORDER BY created_at DESC") as c:
+            rows = await c.fetchall()
+            return [dict(r) for r in rows]
+
+async def admin_create_promo(code: str, tokens: int = 500, tier: str = None, max_uses: int = 100) -> dict:
+    clean_code = code.strip().upper()
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        cursor = await db.execute(
+            """
+            INSERT INTO promo_codes (code, tokens, tier, max_uses, times_used, is_active)
+            VALUES (?, ?, ?, ?, 0, 1)
+            """,
+            (clean_code, tokens, tier if tier else None, max_uses)
+        )
+        await db.commit()
+        promo_id = cursor.lastrowid
+        async with db.execute("SELECT * FROM promo_codes WHERE id = ?", (promo_id,)) as c:
+            return dict(await c.fetchone())
+
+async def admin_toggle_promo(promo_id: int, is_active: int) -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        await db.execute("UPDATE promo_codes SET is_active = ? WHERE id = ?", (1 if is_active else 0, promo_id))
+        await db.commit()
+        async with db.execute("SELECT * FROM promo_codes WHERE id = ?", (promo_id,)) as c:
+            row = await c.fetchone()
+            return dict(row) if row else None
+
+async def redeem_promo_code(user_id: int, code: str) -> dict:
+    clean_code = code.strip().upper()
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM promo_codes WHERE UPPER(code) = ? AND is_active = 1", (clean_code,)) as c:
+            promo = await c.fetchone()
+            if not promo:
+                raise ValueError("Промокод не найден или неактивен")
+            promo = dict(promo)
+
+        if promo["max_uses"] and promo["times_used"] >= promo["max_uses"]:
+            raise ValueError("Лимит активаций этого промокода исчерпан")
+
+        # Check if user already used this promo
+        async with db.execute(
+            "SELECT id FROM promo_usages WHERE user_id = ? AND promo_code_id = ?",
+            (user_id, promo["id"])
+        ) as c_used:
+            if await c_used.fetchone():
+                raise ValueError("Вы уже активировали этот промокод ранее")
+
+        # Record usage
+        await db.execute(
+            "INSERT INTO promo_usages (user_id, promo_code_id) VALUES (?, ?)",
+            (user_id, promo["id"])
+        )
+        await db.execute(
+            "UPDATE promo_codes SET times_used = times_used + 1 WHERE id = ?",
+            (promo["id"],)
+        )
+
+        # Credit tokens & tier
+        tokens_to_add = promo["tokens"] or 0
+        tier_to_set = promo["tier"]
+        if tier_to_set:
+            await db.execute(
+                "UPDATE users SET tokens = tokens + ?, tier = ? WHERE id = ?",
+                (tokens_to_add, tier_to_set, user_id)
+            )
+        else:
+            await db.execute(
+                "UPDATE users SET tokens = tokens + ? WHERE id = ?",
+                (tokens_to_add, user_id)
+            )
+        await db.commit()
+
+        async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c_u:
+            updated_user = dict(await c_u.fetchone())
+
+        return {
+            "status": "ok",
+            "message": f"Промокод успешно активирован! Начислено {tokens_to_add} ZK",
+            "tokens_added": tokens_to_add,
+            "tier_activated": tier_to_set,
+            "user": updated_user
+        }
 
 
 

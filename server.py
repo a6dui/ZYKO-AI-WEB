@@ -14,6 +14,7 @@ load_dotenv()
 
 from database import (
     init_db,
+    DB_PATH,
     get_user_by_id,
     get_or_create_google_user,
     get_or_create_telegram_user,
@@ -23,6 +24,12 @@ from database import (
     get_admin_users,
     admin_update_user,
     admin_gift_all_users,
+    admin_toggle_ban_user,
+    admin_adjust_user_tokens,
+    admin_get_promo_codes,
+    admin_create_promo,
+    admin_toggle_promo,
+    redeem_promo_code,
     get_admin_transactions,
     get_admin_generations,
     get_system_settings,
@@ -75,7 +82,10 @@ async def get_current_user(request: web.Request):
     user_id = decode_access_token(token)
     if not user_id:
         return None
-    return await get_user_by_id(user_id)
+    user = await get_user_by_id(user_id)
+    if user and user.get("is_banned"):
+        raise web.HTTPForbidden(text=json.dumps({"error": "Аккаунт заблокирован администратором платформы. Обратитесь в поддержку: @ZykoAi_bot"}), content_type="application/json")
+    return user
 
 # --- Routes ---
 
@@ -1149,6 +1159,98 @@ async def handle_admin_update_setting(request: web.Request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=400)
 
+async def handle_admin_toggle_ban(request: web.Request):
+    try:
+        admin = await get_current_user(request)
+        if not admin or not admin.get("is_superadmin"):
+            return web.json_response({"error": "Superadmin required"}, status=403)
+        data = await request.json()
+        user_id = int(data.get("user_id"))
+        is_banned = int(data.get("is_banned", 0))
+        updated = await admin_toggle_ban_user(user_id, is_banned)
+        return web.json_response({"status": "ok", "user": updated})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_adjust_tokens(request: web.Request):
+    try:
+        admin = await get_current_user(request)
+        if not admin or not admin.get("is_superadmin"):
+            return web.json_response({"error": "Superadmin required"}, status=403)
+        data = await request.json()
+        user_id = int(data.get("user_id"))
+        delta = float(data.get("delta", 0))
+        reason = str(data.get("reason", "Admin manual adjustment"))
+        updated = await admin_adjust_user_tokens(user_id, delta, reason)
+        return web.json_response({"status": "ok", "user": updated})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_promos(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    promos = await admin_get_promo_codes()
+    return web.json_response({"status": "ok", "promos": promos})
+
+async def handle_admin_create_promo(request: web.Request):
+    try:
+        admin = await get_current_user(request)
+        if not admin or not admin.get("is_superadmin"):
+            return web.json_response({"error": "Superadmin required"}, status=403)
+        data = await request.json()
+        code = data.get("code")
+        tokens = int(data.get("tokens", 500))
+        tier = data.get("tier")
+        max_uses = int(data.get("max_uses", 100))
+        if not code:
+            return web.json_response({"error": "Promo code required"}, status=400)
+        promo = await admin_create_promo(code, tokens, tier, max_uses)
+        return web.json_response({"status": "ok", "promo": promo})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_toggle_promo(request: web.Request):
+    try:
+        admin = await get_current_user(request)
+        if not admin or not admin.get("is_superadmin"):
+            return web.json_response({"error": "Superadmin required"}, status=403)
+        data = await request.json()
+        promo_id = int(data.get("promo_id"))
+        is_active = int(data.get("is_active", 1))
+        updated = await admin_toggle_promo(promo_id, is_active)
+        return web.json_response({"status": "ok", "promo": updated})
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
+async def handle_admin_backup_db(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    if not os.path.exists(DB_PATH):
+        return web.json_response({"error": "Database file not found"}, status=404)
+    with open(DB_PATH, "rb") as f:
+        data = f.read()
+    now_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"zyko_backup_{now_str}.db"
+    resp = web.Response(body=data, content_type="application/octet-stream")
+    resp.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return resp
+
+async def handle_user_redeem_promo(request: web.Request):
+    try:
+        user = await get_current_user(request)
+        if not user:
+            return web.json_response({"error": "Unauthorized"}, status=401)
+        data = await request.json()
+        code = data.get("code", "").strip()
+        if not code:
+            return web.json_response({"error": "Введите промокод"}, status=400)
+        res = await redeem_promo_code(user["id"], code)
+        return web.json_response(res)
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=400)
+
 def create_app():
     app = web.Application()
     
@@ -1174,10 +1276,17 @@ def create_app():
     app.router.add_get("/api/admin/users", handle_admin_users)
     app.router.add_post("/api/admin/users/update", handle_admin_update_user)
     app.router.add_post("/api/admin/users/gift", handle_admin_gift_all)
+    app.router.add_post("/api/admin/users/ban", handle_admin_toggle_ban)
+    app.router.add_post("/api/admin/users/adjust-tokens", handle_admin_adjust_tokens)
+    app.router.add_get("/api/admin/promos", handle_admin_promos)
+    app.router.add_post("/api/admin/promos/create", handle_admin_create_promo)
+    app.router.add_post("/api/admin/promos/toggle", handle_admin_toggle_promo)
+    app.router.add_get("/api/admin/backup-db", handle_admin_backup_db)
     app.router.add_get("/api/admin/transactions", handle_admin_transactions)
     app.router.add_post("/api/admin/transactions/complete", handle_admin_complete_transaction)
     app.router.add_get("/api/admin/generations", handle_admin_generations)
     app.router.add_post("/api/admin/settings", handle_admin_update_setting)
+    app.router.add_post("/api/user/redeem-promo", handle_user_redeem_promo)
     
     # Auth
     app.router.add_post("/api/auth/login", handle_email_login)
