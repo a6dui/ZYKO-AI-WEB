@@ -1200,6 +1200,12 @@ async def handle_generate_video(request: web.Request):
         res = await generate_ai_video(prompt, aspect, model, image_url=image_url, duration=duration)
         video_url = res.get("video_url", "") if isinstance(res, dict) else ""
         await log_generation(user["id"], f"video_{model}", prompt, video_url, cost)
+        
+        updated_user = await get_user_by_id(user["id"])
+        new_balance = updated_user.get("tokens", 0) if updated_user else 0
+        if isinstance(res, dict):
+            res["tokens_remaining"] = new_balance
+            res["tokens_deducted"] = cost
             
         return web.json_response(res)
     except Exception as e:

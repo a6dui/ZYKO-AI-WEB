@@ -178,15 +178,15 @@ async def init_db():
                     else:
                         await db.execute("""
                             UPDATE users SET is_superadmin = 1, tier = 'Max',
-                                tokens = CASE WHEN tokens < 500000 THEN 500000 ELSE tokens END,
+                                tokens = COALESCE(tokens, 500000),
                                 telegram_username = COALESCE(telegram_username, 'Zykolandstore'),
                                 name = COALESCE(name, 'Zykolandstore')
                             WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?
                         """, (admin_tg_id, str(admin_tg_id)))
 
-            # Also ensure all superadmins and demo accounts have at least 500,000 tokens and Max tier
+            # Also ensure all superadmins and demo accounts have at least initial tokens and Max tier
             await db.execute("""
-                UPDATE users SET tokens = CASE WHEN tokens < 500000 THEN 500000 ELSE tokens END,
+                UPDATE users SET tokens = COALESCE(tokens, 500000),
                     tier = 'Max', is_superadmin = 1
                 WHERE is_superadmin = 1 OR email IN ('foryafrom@gmail.com', 'demo@zyko.ai')
             """)
@@ -279,7 +279,7 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
                 if is_admin:
                     updates.append("is_superadmin = 1")
                     updates.append("tier = 'Max'")
-                    if (user.get("tokens") or 0) < 500000:
+                    if user.get("tokens") is None:
                         updates.append("tokens = 500000")
                 
                 query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
@@ -311,10 +311,11 @@ async def get_or_create_demo_user() -> dict:
             row = await cursor.fetchone()
             if row:
                 user = dict(row)
-                if (user.get("tokens") or 0) < 500000 or user.get("tier") != "Max":
-                    await db.execute("UPDATE users SET tokens = 500000, tier = 'Max', is_superadmin = 1 WHERE id = ?", (user["id"],))
+                if user.get("tokens") is None or user.get("tier") != "Max":
+                    await db.execute("UPDATE users SET tokens = COALESCE(tokens, 500000), tier = 'Max', is_superadmin = 1 WHERE id = ?", (user["id"],))
                     await db.commit()
-                    user["tokens"] = 500000
+                    if user.get("tokens") is None:
+                        user["tokens"] = 500000
                     user["tier"] = "Max"
                     user["is_superadmin"] = 1
                 return user
@@ -336,10 +337,15 @@ async def get_user_by_id(user_id: int) -> dict:
             user = dict(row)
             tg_id = user.get("telegram_id")
             is_admin = bool(user.get("is_superadmin") or (tg_id and int(tg_id) in ADMIN_TELEGRAM_IDS))
-            if is_admin and (user.get("tokens") or 0) < 500000:
+            if is_admin and user.get("tokens") is None:
                 await db.execute("UPDATE users SET tokens = 500000, tier = 'Max', is_superadmin = 1 WHERE id = ?", (user_id,))
                 await db.commit()
                 user["tokens"] = 500000
+                user["tier"] = "Max"
+                user["is_superadmin"] = 1
+            elif is_admin and (user.get("tier") != "Max" or not user.get("is_superadmin")):
+                await db.execute("UPDATE users SET tier = 'Max', is_superadmin = 1 WHERE id = ?", (user_id,))
+                await db.commit()
                 user["tier"] = "Max"
                 user["is_superadmin"] = 1
             return user

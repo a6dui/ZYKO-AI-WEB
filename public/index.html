@@ -698,15 +698,22 @@
         </div>
 
         <!-- Logged Out State -->
-        <button id="btn-login-header" onclick="openAuthModal()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/25 active:scale-95">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          <span data-i18n="sign_in">Sign in</span>
-        </button>
+        <div id="logged-out-header-group" class="flex items-center gap-2">
+          <!-- Guest Token balance pill -->
+          <div onclick="openAuthModal()" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm" title="Ваш баланс токенов">
+            <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
+            <span id="guest-user-tokens" class="text-xs font-black text-white">250</span>
+          </div>
+          <button id="btn-login-header" onclick="openAuthModal()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/25 active:scale-95">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span data-i18n="sign_in">Sign in</span>
+          </button>
+        </div>
 
         <!-- Logged In State (Initially hidden) -->
         <div id="user-profile-header" class="hidden flex items-center gap-3">
           <!-- Token balance pill -->
-          <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm">
+          <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm" title="Баланс аккаунта">
             <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
             <span id="header-user-tokens" class="text-xs font-black text-white">0</span>
             <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">MAX</span>
@@ -1723,7 +1730,8 @@
                   <button type="button" onclick="handleVoiceInput('image')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                   </button>
-                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm" title="Стоимость генерации изображения: 12 ZK">
+                    <span class="text-[10px] text-stone-400 font-medium">Стоимость:</span>
                     <span id="image-token-cost">12</span>
                     <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
@@ -1815,7 +1823,8 @@
                   <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                   </button>
-                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm" title="Стоимость генерации видео: 25 ZK">
+                    <span class="text-[10px] text-stone-400 font-medium">Стоимость:</span>
                     <span id="video-token-cost">25</span>
                     <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
@@ -2039,7 +2048,8 @@
                   <button type="button" onclick="handleVoiceInput('audio')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                   </button>
-                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm" title="Стоимость аудиогенерации">
+                    <span class="text-[10px] text-stone-400 font-medium">Стоимость:</span>
                     <span id="audio-token-cost-val">10</span>
                     <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
@@ -8505,6 +8515,9 @@
           if (ptext) ptext.textContent = '100%';
 
           deductTokensUI(25, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
+          if (currentUser && data.tokens_remaining != null) {
+            syncUserTokensUI(data.tokens_remaining);
+          }
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
@@ -12288,6 +12301,18 @@
       return null;
     }
 
+    function flashTokensPill() {
+      const isLogged = currentUser && document.getElementById('user-profile-header') && !document.getElementById('user-profile-header').classList.contains('hidden');
+      const targetId = isLogged ? 'header-user-tokens' : 'guest-user-tokens';
+      const el = document.getElementById(targetId);
+      const pill = el ? el.closest('.flex') : null;
+      if (!pill) return;
+      pill.classList.add('ring-2', 'ring-amber-400', 'scale-105', 'bg-amber-500/20');
+      setTimeout(() => {
+        pill.classList.remove('ring-2', 'ring-amber-400', 'scale-105', 'bg-amber-500/20');
+      }, 700);
+    }
+
     function syncUserTokensUI(tokens) {
       if (tokens == null || isNaN(Number(tokens))) return;
       const num = Math.max(0, Number(tokens));
@@ -12298,10 +12323,17 @@
         try {
           localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
         } catch (e) {}
+      } else {
+        try {
+          localStorage.setItem('zyko_guest_tokens', num.toString());
+        } catch (e) {}
       }
 
       const hEl = document.getElementById('header-user-tokens');
       if (hEl) hEl.textContent = tokVal;
+
+      const gEl = document.getElementById('guest-user-tokens');
+      if (gEl) gEl.textContent = tokVal;
 
       const dEl = document.getElementById('dropdown-user-tokens');
       if (dEl) dEl.textContent = tokVal;
@@ -12311,16 +12343,24 @@
     }
 
     function updateUserUI(user) {
+      const loggedOutGroup = document.getElementById('logged-out-header-group');
       const loginBtn = document.getElementById('btn-login-header');
       const profile = document.getElementById('user-profile-header');
 
       if (!user) {
-        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (loggedOutGroup) loggedOutGroup.classList.remove('hidden');
+        else if (loginBtn) loginBtn.classList.remove('hidden');
         if (profile) profile.classList.add('hidden');
+
+        const guestStored = localStorage.getItem('zyko_guest_tokens');
+        const guestTokens = guestStored != null ? Number(guestStored) : 250;
+        const guestEl = document.getElementById('guest-user-tokens');
+        if (guestEl) guestEl.textContent = guestTokens.toLocaleString();
         return;
       }
 
-      if (loginBtn) loginBtn.classList.add('hidden');
+      if (loggedOutGroup) loggedOutGroup.classList.add('hidden');
+      else if (loginBtn) loginBtn.classList.add('hidden');
       if (profile) profile.classList.remove('hidden');
 
       let tokVal;
@@ -12464,17 +12504,28 @@
       if (currentUser && currentUser.tokens != null) {
         cur = Number(currentUser.tokens);
       } else {
-        const el = document.getElementById('header-user-tokens');
-        if (el) {
-          cur = parseInt(el.textContent.replace(/\D/g, '')) || 0;
+        const stored = localStorage.getItem('zyko_guest_tokens');
+        if (stored != null && !isNaN(Number(stored))) {
+          cur = Number(stored);
+        } else {
+          const gEl = document.getElementById('guest-user-tokens');
+          cur = gEl ? (parseInt(gEl.textContent.replace(/\D/g, '')) || 250) : 250;
         }
       }
 
       const newBal = Math.max(0, cur - Number(amount));
       syncUserTokensUI(newBal);
+      flashTokensPill();
+
+      // Show toast notification for deduction
+      if (typeof showToastNotification === 'function') {
+        showToastNotification(`Списано: -${amount} ZK • ${description}`);
+      }
 
       // Record expenditure in plan usage limits
-      recordUsageLimitExpenditure(amount);
+      if (typeof recordUsageLimitExpenditure === 'function') {
+        recordUsageLimitExpenditure(amount);
+      }
 
       // Record in local token history
       if (typeof recordLocalTokenHistory === 'function') {
@@ -12487,12 +12538,14 @@
         });
       }
 
-      // Sync with server DB in background
-      setTimeout(() => {
-        if (typeof checkAuthStatus === 'function') {
-          checkAuthStatus();
-        }
-      }, 1500);
+      // Sync with server DB in background if user is authenticated
+      if (currentUser) {
+        setTimeout(() => {
+          if (typeof checkAuthStatus === 'function') {
+            checkAuthStatus();
+          }
+        }, 1500);
+      }
     }
 
     async function handleLogout() {
