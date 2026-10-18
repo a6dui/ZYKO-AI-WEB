@@ -1312,7 +1312,7 @@ async def run_telegram_bot_poller(app):
                                 reply_text = (
                                     f"🎉 <b>Авторизация успешна!</b>\n\n"
                                     f"Вы вошли в <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
-                                    f"💎 Ваш баланс: <b>{user_tok:,} KZ токенов</b>\n"
+                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
                                     f"👑 Подписка: <b>{user_tier}</b>\n\n"
                                     f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт в свой аккаунт:</b>"
                                 )
@@ -1347,7 +1347,7 @@ async def run_telegram_bot_poller(app):
                                 reply_text = (
                                     f"✨ <b>Добро пожаловать в ZYKO.AI, {tg_first_name or tg_username}!</b>\n\n"
                                     f"Медиа-студия нового поколения: озвучка 40 персонажей, клонирование голоса, генерация 4K фото и видео.\n\n"
-                                    f"💎 Ваш баланс: <b>{user_tok:,} KZ токенов</b>\n"
+                                    f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
                                     f"👑 Тариф: <b>{user_tier}</b>\n\n"
                                     f"👇 Нажмите кнопку ниже для мгновенного входа в свой профиль:"
                                 )

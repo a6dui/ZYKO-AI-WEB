@@ -356,14 +356,10 @@
 </head>
 <body class="selection:bg-emerald-400 selection:text-black notranslate">
 
-  <!-- Global KZ Token Coin SVG Defs -->
+  <!-- Global ZK Token Coin SVG Defs -->
   <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
     <defs>
-      <linearGradient id="kzCoinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="45%" stop-color="#fbbf24"/>
-        <stop offset="100%" stop-color="#fef08a"/>
-      </linearGradient>
+      
     </defs>
   </svg>
 
@@ -592,12 +588,12 @@
 
             <div class="divide-y divide-white/5 max-h-80 overflow-y-auto space-y-1 pt-1 text-xs" id="notification-items-list">
               <div class="notification-item p-2 rounded-xl hover:bg-white/5 transition flex items-start gap-3 cursor-pointer group" onclick="handleNotificationClick('profile')">
-                <svg class="w-5 h-5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)] mt-0.5" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between gap-1">
                     <div class="flex items-center gap-1.5 min-w-0">
                       <span class="notif-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_1_title">+5.5 KZ tokens credited</span>
+                      <span class="font-bold text-white text-[11px] truncate group-hover:text-emerald-400 transition" data-i18n="notif_1_title">+5.5 ZK tokens credited</span>
                     </div>
                     <span class="text-[9px] text-stone-500 shrink-0" data-i18n="notif_1_time">Just now</span>
                   </div>
@@ -658,11 +654,7 @@
         <div id="user-profile-header" class="hidden flex items-center gap-3">
           <!-- Token balance pill -->
           <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm">
-            <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_6px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
-              <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
-              <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
-            </svg>
+            <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
             <span id="header-user-tokens" class="text-xs font-black text-white">500 000</span>
             <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">MAX</span>
           </div>
@@ -680,13 +672,8 @@
                 <div id="dropdown-user-handle" class="text-xs font-semibold text-stone-200 truncate">@foryafrom-em</div>
                 <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">MAX</div>
                 <div class="text-sm font-extrabold text-white flex items-center gap-1.5 mt-1.5">
-                  <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_6px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
-                    <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
-                    <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
-                  </svg>
+                  <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
                   <span id="dropdown-user-tokens">500 000</span>
-                  <span class="text-[11px] font-black text-amber-400 font-mono">KZ</span>
                 </div>
               </div>
               <div class="border-t border-white/10 my-2"></div>
@@ -840,8 +827,8 @@
               </div>
               <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
                 <span>3,120</span>
-                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
-                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
+
               </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Essential neural network starter with Kling & Nano Banana.</p>
             </div>
@@ -859,8 +846,8 @@
               </div>
               <div class="text-[11px] text-emerald-400 font-extrabold mb-4 flex items-center gap-1.5">
                 <span>8,160</span>
-                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
-                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
+
               </div>
               <p class="text-xs text-stone-300 mb-4 leading-relaxed">Full package: Seedance 2.5, Kling 1.5, Nano Banana 2.1, Veo 3.1 & ElevenLabs.</p>
             </div>
@@ -877,8 +864,8 @@
               </div>
               <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
                 <span>20,400</span>
-                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
-                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
+
               </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Full package + Topaz 4K + 6x more requests for high-volume creators.</p>
             </div>
@@ -895,8 +882,8 @@
               </div>
               <div class="text-[11px] text-emerald-400 font-bold mb-4 flex items-center gap-1.5">
                 <span>31,200</span>
-                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
-                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
+
               </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited generations in Veo 3.1 Lite, Runway, and Topaz upscaler.</p>
             </div>
@@ -913,8 +900,8 @@
               </div>
               <div class="text-[11px] text-cyan-400 font-bold mb-4 flex items-center gap-1.5">
                 <span>36,000</span>
-                <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
-                <span class="text-[10px] text-stone-400 font-mono">KZ</span>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
+
               </div>
               <p class="text-xs text-stone-400 mb-4 leading-relaxed">Unlimited Veo 3.1, Claude Sonnet 3.7, Gemini 2.5 Pro & Priority API.</p>
             </div>
@@ -966,7 +953,7 @@
                 <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
               </button>
               <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a1">
-                Yes! Every new user receives complimentary trial tokens (5.5 KZ) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.
+                Yes! Every new user receives complimentary trial tokens ( ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.
               </div>
             </div>
 
@@ -992,11 +979,11 @@
 
             <div class="faq-item bg-[#111514] hover:bg-[#141a17] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-5 transition">
               <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left text-sm font-bold text-white group">
-                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q4">What are KZ tokens and how are they spent?</span>
+                <span class="group-hover:text-emerald-300 transition pr-4" data-i18n="faq_q4">What are ZK tokens and how are they spent?</span>
                 <span class="faq-chevron transition text-stone-400 text-xs shrink-0">▾</span>
               </button>
               <div class="faq-answer text-xs text-stone-400 mt-2.5 leading-relaxed" data-i18n="faq_a4">
-                Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 KZ, photorealistic images = 12 KZ, voice synthesis & SFX = 10 KZ, AI Music = 20 KZ, and cinematic video (Kling, Seedance, Veo) = 25 KZ.
+                Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries =  ZK, photorealistic images =  ZK, voice synthesis & SFX =  ZK, AI Music =  ZK, and cinematic video (Kling, Seedance, Veo) =  ZK.
               </div>
             </div>
 
@@ -1173,9 +1160,6 @@
           <button onclick="toggleFavorites()" class="p-2.5 rounded-xl hover:bg-white/10 text-stone-400 hover:text-amber-400 transition" title="Starred / Favorites">
             <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
           </button>
-        </div>
-        <div class="flex flex-col items-center gap-3 text-stone-500 text-xs">
-          <span title="Tokens Balance" class="text-[10px] font-bold text-amber-400 cursor-pointer" onclick="openPaymentModal('Pro')">KZ</span>
         </div>
       </div>
 
@@ -1380,7 +1364,7 @@
                   </button>
                   <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="agent-token-cost">10</span>
-                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                    <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" onclick="sendAgentMessage()" id="btn-send-agent" class="w-8 h-8 rounded-xl bg-[#ea580c] hover:bg-orange-500 text-white font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
@@ -1415,7 +1399,7 @@
             <div id="llm-chat-messages" class="text-left space-y-3 max-w-2xl mx-auto hidden mb-4 sm:mb-6 max-h-80 sm:max-h-96 overflow-y-auto p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10"></div>
           </div>
 
-          <!-- Bottom Prompt Box (LLM Studio: Screenshot 1 style: 0/25000, ⬡, 🎙️, 1 KZ) -->
+          <!-- Bottom Prompt Box (LLM Studio: Screenshot 1 style: 0/25000, ⬡, 🎙️,  ZK) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1456,7 +1440,7 @@
                   </button>
                   <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="llm-token-cost">10</span>
-                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                    <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" onclick="sendLLMMessage()" id="btn-send-llm" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Send Message">
                     ➤
@@ -1494,7 +1478,7 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 3 & Screenshot 1 style: 0/24000, 9:16, 2K, ⬡, ✦, 🎙️, 2 KZ) -->
+          <!-- Bottom Prompt Box (Screenshot 3 & Screenshot 1 style: 0/24000, 9:16, 2K, ⬡, ✦, 🎙️,  ZK) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1545,7 +1529,7 @@
                   </button>
                   <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="image-token-cost">12</span>
-                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                    <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" onclick="sendGenerateImage()" id="btn-generate-image" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Image">
                     ➤
@@ -1577,7 +1561,7 @@
             </div>
           </div>
 
-          <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s, 32 KZ) -->
+          <!-- Bottom Prompt Box (Screenshot 1: 0/24000, 16:9, 720, 5.0s,  ZK) -->
           <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-emerald-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
@@ -1636,7 +1620,7 @@
                   </button>
                   <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="video-token-cost">25</span>
-                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                    <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Video">
                     ➤
@@ -1728,7 +1712,7 @@
                   </button>
                   <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
                     <span id="audio-token-cost-val">10</span>
-                    <svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                    <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" id="btn-audio-send" onclick="sendGenerateAudioAction()" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Speech">
                     ➤
@@ -1783,7 +1767,7 @@
               <div class="flex items-center gap-2">
                 <button title="Download 4K" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 transition">📥</button>
                 <button onclick="sendToolkitInpaint()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg active:scale-95">
-                  <span>Send</span> <span class="bg-black/25 text-black px-1.5 py-0.5 rounded text-[10px] font-mono font-black flex items-center gap-1">15 <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_3px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg></span>
+                  <span>Send</span> <span class="bg-black/25 text-black px-1.5 py-0.5 rounded text-[10px] font-mono font-black flex items-center gap-1">15 <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span></span>
                 </button>
               </div>
             </div>
@@ -1916,7 +1900,7 @@
 
               <div id="dropdown-menu-image" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
                 <button onclick="openImageModelsModal(); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 text-xs transition mb-1">
-                  <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> Все 25 моделей...</span>
+                  <span class="flex items-center gap-1.5"><span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> Все 25 моделей...</span>
                   <span class="text-[10px]">Каталог ↗</span>
                 </button>
                 <div class="px-2 py-1 text-[10px] font-bold text-stone-500 uppercase tracking-wider">Каталог моделей</div>
@@ -1925,63 +1909,63 @@
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
                     <span>Nano Banana Pro</span>
                   </span>
-                  <span class="text-[10px] text-amber-400 font-mono">24 KZ</span>
+                  <span class="text-[10px] text-amber-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('seedream_5_pro'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
                     <span>Seedream 5 Pro</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">20 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('flux_3_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg>
                     <span>FLUX 3 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">14 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('gpt_image_2_5_sunburst'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-[#10a37f] fill-current" viewBox="0 0 24 24"><path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08z"/></svg>
                     <span>GPT Image 2.5 Sunburst</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">11 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('recraft_v4'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
                     <span>Recraft V4</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">12 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('krea_2_large'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4v16M6 14c2-2 5-2 6 0s-1 4-3 4M6 10c2-2 5-2 6 0s-1 4-3 4"/></svg>
                     <span>Krea 2 Large</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">15 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('gen_4_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg>
                     <span>Gen-4 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">12 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('kling_o1_image'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg>
                     <span>Kling O1 Image</span>
                   </span>
-                  <span class="text-[10px] text-emerald-400 font-mono">10 KZ</span>
+                  <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsImageModel('recraft_4_1_flash'); toggleModelDropdown('image');" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-stone-200">
                   <span class="flex items-center gap-2">
                     <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M6 3h7a5 5 0 0 1 3.5 8.5L20 21h-4l-3-8H9v8H6V3zm3 3v4h4a2 2 0 1 0 0-4H9z"/></svg>
                     <span>Recraft 4.1 Flash</span>
                   </span>
-                  <span class="text-[10px] text-amber-400 font-mono">5 KZ</span>
+                  <span class="text-[10px] text-amber-400 font-mono"> ZK</span>
                 </button>
               </div>
             </div>
@@ -2072,120 +2056,120 @@
 
               <div id="dropdown-menu-video" class="hidden absolute top-14 left-0 right-0 bg-[#121816] border border-white/20 rounded-2xl shadow-2xl p-1.5 space-y-1 z-40 max-h-80 overflow-y-auto">
                 <button onclick="openVideoModelsModal(); toggleModelDropdown('video');" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-left text-xs font-bold text-emerald-300 transition mb-1 shadow">
-                  <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> <span>Все 28 моделей видео</span></span>
+                  <span class="flex items-center gap-1.5"><span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> <span>Все 28 моделей видео</span></span>
                   <span class="text-[10px]">➔</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-bold text-emerald-300">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg> <span>Seedance 2.5</span></span>
-                  <span class="text-[10px] text-stone-400">25 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5_extend')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><path d="M17 11l4 3-4 3v-6z"/></svg> <span>Seedance 2.5 Extend</span></span>
-                  <span class="text-[10px] text-stone-400">25 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_5_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><path d="M19 4l2 2-7 7H12v-2l7-7z"/></svg> <span>Seedance 2.5 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">25 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg> <span>Seedance 2.0</span></span>
-                  <span class="text-[10px] text-stone-400">20 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0_fast')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-300 fill-current" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z"/></svg> <span>Seedance 2.0 Fast</span></span>
-                  <span class="text-[10px] text-stone-400">18 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('seedance_2_0_mini')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-sky-400 fill-current" viewBox="0 0 24 24"><rect x="5" y="8" width="3" height="11" rx="1.5"/><rect x="10" y="5" width="3" height="14" rx="1.5"/><rect x="15" y="9" width="3" height="10" rx="1.5"/></svg> <span>Seedance 2.0 Mini</span></span>
-                  <span class="text-[10px] text-stone-400">15 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_3_pro')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 3.0 Pro</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_2_6_pro')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5-7.5-3.36-7.5-7.5 3.36-7.5 7.5-7.5zm0 3a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"/></svg> <span>Kling 2.6 Pro</span></span>
-                  <span class="text-[10px] text-stone-400">20 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O3</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o3_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O3 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">18 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg> <span>Kling O1</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('kling_o1_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-purple-400 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M16 16l4 4M18 14l2 2"/></svg> <span>Kling O1 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">18 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('veo_3_1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><span class="font-black text-white text-xs w-4 text-center leading-none">G</span> <span>Veo 3.1</span></span>
-                  <span class="text-[10px] text-stone-400">26 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gen_4_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-stone-300 fill-none stroke-current" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 12h18"/></svg> <span>Gen-4.5</span></span>
-                  <span class="text-[10px] text-stone-400">24 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('wan_2_6')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.6</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('wan_2_5')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5l5.5 3.5v7L12 18.5 6.5 15V8L12 4.5z"/></svg> <span>Wan 2.5 Video</span></span>
-                  <span class="text-[10px] text-stone-400">16 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('ltx_video')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-teal-400 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg> <span>LTX Audio-to-Video</span></span>
-                  <span class="text-[10px] text-stone-400">16 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3_max')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> <span>MiniMax H3 Max</span></span>
-                  <span class="text-[10px] text-stone-400">20 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-500 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> <span>MiniMax H3</span></span>
-                  <span class="text-[10px] text-stone-400">25 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('minimax_h3_recast')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11l4 3-4 3"/></svg> <span>MiniMax H3 Recast</span></span>
-                  <span class="text-[10px] text-stone-400">20 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gemini_omni_flash_1_1')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> <span>Gemini Omni Flash 1.1</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('gemini_omni_flash_extend')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#38bdf8] fill-current" viewBox="0 0 24 24"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/></svg> <span>Gemini Omni Extend</span></span>
-                  <span class="text-[10px] text-stone-400">22 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('flux_3')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg> <span>FLUX 3</span></span>
-                  <span class="text-[10px] text-stone-400">28 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('flux_3_edit')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-[#ef4444] fill-current" viewBox="0 0 24 24"><path d="M12 3L22 20H2L12 3Z"/></svg> <span>FLUX 3 Edit</span></span>
-                  <span class="text-[10px] text-stone-400">15 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('aleph_2')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5h-2v-5h2zm0-7h-2V7h2z"/></svg> <span>Aleph 2.0</span></span>
-                  <span class="text-[10px] text-stone-400">18 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('topaz_video_upscale')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24"><rect x="4" y="14" width="4" height="4" rx="1"/><rect x="10" y="9" width="4" height="4" rx="1"/><rect x="16" y="4" width="4" height="4" rx="1"/></svg> <span>Topaz Video Upscale</span></span>
-                  <span class="text-[10px] text-stone-400">15 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('ruby')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><svg class="w-4 h-4 text-white fill-none stroke-current" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 20V4h6a5 5 0 0 1 5 5c0 3-2 5-5 5H7m6 0l5 6"/></svg> <span>Ruby HDR</span></span>
-                  <span class="text-[10px] text-stone-400">16 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
                 <button onclick="selectElevenLabsVideoModel('video_background_removal')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 text-left text-xs font-semibold text-stone-200">
                   <span class="flex items-center gap-2"><span class="font-black tracking-tighter text-white text-[10px] uppercase leading-none">VEED</span> <span>BG Removal</span></span>
-                  <span class="text-[10px] text-stone-400">10 KZ</span>
+                  <span class="text-[10px] text-stone-400"> ZK</span>
                 </button>
               </div>
               </div>
@@ -2300,27 +2284,27 @@
                   <div id="dropdown-menu-audio-model" class="hidden absolute left-0 right-0 top-full mt-1.5 z-40 bg-[#0e1311] border border-white/20 rounded-xl p-1.5 shadow-2xl space-y-1 backdrop-blur-xl">
                     <div onclick="selectAudioModelVersion('eleven_v4', 'Eleven v4')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold text-xs transition">
                       <span>Eleven v4</span>
-                      <span class="text-[10px] text-amber-400/80 font-mono">10 KZ</span>
+                      <span class="text-[10px] text-amber-400/80 font-mono"> ZK</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_turbo_v2_5', 'Eleven v4 Turbo')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v4 Turbo</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
+                      <span class="text-[10px] text-stone-400 font-mono"> ZK</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_v3_5', 'Eleven v3')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v3</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
+                      <span class="text-[10px] text-stone-400 font-mono"> ZK</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_multilingual_v2', 'Eleven v2')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven v2</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
+                      <span class="text-[10px] text-stone-400 font-mono"> ZK</span>
                     </div>
                     <div onclick="selectAudioModelVersion('music_2_5', 'Elevenlabs Music 2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Elevenlabs Music 2.5</span>
-                      <span class="text-[10px] text-emerald-400 font-mono">20 KZ</span>
+                      <span class="text-[10px] text-emerald-400 font-mono"> ZK</span>
                     </div>
                     <div onclick="selectAudioModelVersion('eleven_flash_v2_5', 'Eleven Flash v2.5')" class="audio-model-opt flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 text-stone-300 font-medium text-xs transition">
                       <span>Eleven Flash v2.5</span>
-                      <span class="text-[10px] text-stone-400 font-mono">10 KZ</span>
+                      <span class="text-[10px] text-stone-400 font-mono"> ZK</span>
                     </div>
                   </div>
                 </div>
@@ -2492,7 +2476,7 @@
             <div id="clone-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-clone" onclick="submitVoiceClone()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🎙️</span> <span>Создать клон голоса (25 KZ)</span>
+              <span>🎙️</span> <span>Создать клон голоса ( ZK)</span>
             </button>
           </div>
 
@@ -2534,7 +2518,7 @@
             </div>
 
             <button type="button" onclick="sendGenerateAudioAction()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🔊</span> <span>Сгенерировать SFX (10 KZ)</span>
+              <span>🔊</span> <span>Сгенерировать SFX ( ZK)</span>
             </button>
           </div>
 
@@ -2666,7 +2650,7 @@
                 <span>Pricing</span>
               </button>
               <button onclick="switchUserSubtab('tokens')" id="user-nav-btn-tokens" class="whitespace-nowrap shrink-0 md:w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
-                <svg class="w-4 h-4 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg>
+                <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                 <span>Purchase Tokens</span>
               </button>
               <button onclick="switchUserSubtab('history')" id="user-nav-btn-history" class="whitespace-nowrap shrink-0 md:w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-stone-300 hover:text-white hover:bg-white/5 transition">
@@ -2797,11 +2781,7 @@
                 </div>
                 <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2.5">
                   <span id="profile-card-tokens">500 000</span>
-                  <svg class="w-8 h-8 shrink-0 inline-block drop-shadow-[0_0_10px_rgba(245,158,11,0.55)]" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/>
-                    <circle cx="12" cy="12" r="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/>
-                    <text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text>
-                  </svg>
+                  <span class="text-xl md:text-2xl font-black text-amber-400 font-mono">ZK</span>
                 </div>
               </div>
             </div>
@@ -2862,7 +2842,7 @@
                 <div class="space-y-2 text-xs">
                   <div class="flex items-center justify-between">
                     <span class="text-stone-400 flex items-center gap-1.5">👥 PARTNER TOKENS</span>
-                    <span class="font-bold text-white flex items-center gap-1.5">0 <span class="text-[10px] text-amber-400 font-mono font-bold">KZ</span></span>
+                    <span class="font-bold text-white flex items-center gap-1.5">0 <span class="text-[10px] text-amber-400 font-mono font-bold">ZK</span></span>
                   </div>
                   <div class="flex items-center justify-between">
                     <span class="text-stone-400 flex items-center gap-1.5">💵 AVAILABLE FUNDS</span>
@@ -3271,7 +3251,7 @@
                   <span class="text-stone-400 flex items-center gap-2 font-medium">
                     <span>👥</span> <span>PARTNER TOKENS</span>
                   </span>
-                  <span class="font-extrabold text-white text-sm flex items-center gap-1.5">0 <span class="text-xs text-amber-400 font-mono font-bold">KZ</span></span>
+                  <span class="font-extrabold text-white text-sm flex items-center gap-1.5">0 <span class="text-xs text-amber-400 font-mono font-bold">ZK</span></span>
                 </div>
                 <div class="flex items-center justify-between text-xs">
                   <span class="text-stone-400 flex items-center gap-2 font-medium">
@@ -3427,7 +3407,7 @@
             </div>
             <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
               <div class="text-[11px] font-medium text-stone-400">Токенов в обороте</div>
-              <div id="admin-stat-tokens" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">... KZ</div>
+              <div id="admin-stat-tokens" class="text-2xl md:text-3xl font-black text-amber-400 mt-1"> ZK</div>
               <div class="text-[10px] text-stone-400 mt-1">На балансах пользователей</div>
             </div>
             <div class="bg-[#141a18] border border-white/10 rounded-2xl p-4 shadow-sm">
@@ -3458,10 +3438,10 @@
                 <div class="bg-black/30 border border-white/10 rounded-xl p-3.5 flex items-center justify-between gap-3">
                   <div>
                     <div class="text-xs font-bold text-white">Подарок всем пользователям</div>
-                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по 500 KZ токенов</div>
+                    <div class="text-[11px] text-stone-400">Начислить каждому пользователю по  ZK токенов</div>
                   </div>
                   <button onclick="adminGiftAll(500)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs px-3.5 py-2 rounded-xl transition shrink-0">
-                    🎁 Подарить 500 KZ
+                    🎁 Подарить  ZK
                   </button>
                 </div>
 
@@ -3668,18 +3648,18 @@
       <input type="hidden" id="admin-edit-user-id">
       <div class="space-y-3">
         <div>
-          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Баланс токенов (KZ)</label>
+          <label class="block text-[11px] text-stone-300 font-semibold mb-1">Баланс токенов (ZK)</label>
           <input id="admin-edit-user-tokens" type="number" step="any" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
         </div>
         <div>
           <label class="block text-[11px] text-stone-300 font-semibold mb-1">Тарифный план</label>
           <select id="admin-edit-user-tier" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400">
             <option value="Free">Free</option>
-            <option value="Basic">Basic (3,120 KZ)</option>
-            <option value="Pro">Pro (8,160 KZ)</option>
-            <option value="VIP">VIP (20,400 KZ)</option>
-            <option value="Elite">Elite (31,200 KZ)</option>
-            <option value="Ultra Elite">Ultra Elite (36,000 KZ)</option>
+            <option value="Basic">Basic ( ZK)</option>
+            <option value="Pro">Pro ( ZK)</option>
+            <option value="VIP">VIP ( ZK)</option>
+            <option value="Elite">Elite ( ZK)</option>
+            <option value="Ultra Elite">Ultra Elite ( ZK)</option>
           </select>
         </div>
         <div class="pt-2 flex gap-2">
@@ -3778,7 +3758,7 @@
       <div class="bg-black/40 border border-white/10 rounded-2xl p-4 mb-5 flex justify-between items-center">
         <div>
           <div class="text-[11px] text-stone-400">Package Included:</div>
-          <div class="text-sm font-bold text-white"><span id="checkout-tokens-count">8,160</span> KZ Tokens</div>
+          <div class="text-sm font-bold text-white"><span id="checkout-tokens-count">8,160</span> ZK tokens</div>
         </div>
         <div class="text-right">
           <div class="text-[11px] text-stone-400">Amount:</div>
@@ -4156,11 +4136,11 @@
           <tbody class="divide-y divide-white/5 text-stone-300">
             <tr>
               <td class="py-3 px-3 font-medium">Monthly Tokens</td>
-              <td class="py-3 px-3">3,120 KZ</td>
-              <td class="py-3 px-3 font-bold text-emerald-300">8,160 KZ</td>
-              <td class="py-3 px-3">20,400 KZ</td>
-              <td class="py-3 px-3">31,200 KZ</td>
-              <td class="py-3 px-3 font-bold text-cyan-300">36,000 KZ</td>
+              <td class="py-3 px-3"> ZK</td>
+              <td class="py-3 px-3 font-bold text-emerald-300"> ZK</td>
+              <td class="py-3 px-3"> ZK</td>
+              <td class="py-3 px-3"> ZK</td>
+              <td class="py-3 px-3 font-bold text-cyan-300"> ZK</td>
             </tr>
             <tr>
               <td class="py-3 px-3 font-medium">Kling 1.5 & Nano Banana</td>
@@ -4481,7 +4461,7 @@
 
         nav_toolkit: "Toolkit",
         sign_in: "Sign in",
-        topup: "Top up KZ",
+        topup: "Top up ZK",
         logout: "Log out",
         drawer_home: "Home",
         drawer_academy: "Academy",
@@ -4494,7 +4474,7 @@
 
         notif_title: "Notifications",
         notif_mark_read: "Mark all read",
-        notif_1_title: "+5.5 KZ tokens credited",
+        notif_1_title: "+ ZK tokens credited",
         notif_1_time: "Just now",
         notif_1_text: "Starter token balance granted for trial generations across all models.",
         notif_2_title: "Wan 3.0 & Veo 3.1 available",
@@ -4574,13 +4554,13 @@
         faq_support_btn: "Contact Support",
 
         faq_q1: "Can I try ZYKO.AI tools for free?",
-        faq_a1: "Yes! Every new user receives complimentary trial tokens (5.5 KZ) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.",
+        faq_a1: "Yes! Every new user receives complimentary trial tokens ( ZK) upon registration to test text generation, photorealistic image creation, and neural voice synthesis before choosing a plan.",
         faq_q2: "Does one subscription give access to all 100+ AI tools?",
         faq_a2: "Absolutely. Instead of paying for separate subscriptions to ChatGPT, Midjourney, Kling, Runway, and ElevenLabs (which would cost over $250/mo combined), ZYKO.AI gives you universal access to all leading models from a single token balance.",
         faq_q3: "What neural networks and models are included in ZYKO.AI?",
         faq_a3: "You get instant access to ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD voices with voice cloning, cinematic sound effects (SFX), and autonomous AI Agents.",
-        faq_q4: "What are KZ tokens and how are they spent?",
-        faq_a4: "Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries = 10 KZ, photorealistic images = 12 KZ, voice synthesis & SFX = 10 KZ, AI Music = 20 KZ, and cinematic video (Kling, Seedance, Veo) = 25 KZ.",
+        faq_q4: "What are ZK tokens and how are they spent?",
+        faq_a4: "Tokens are our universal internal currency across both Web and Telegram. Generations are billed per request: Text/LLM queries =  ZK, photorealistic images =  ZK, voice synthesis & SFX =  ZK, AI Music =  ZK, and cinematic video (Kling, Seedance, Veo) =  ZK.",
         faq_q5: "Can I use generated media for commercial purposes?",
         faq_a5: "Yes! All images, videos, audio voiceovers, musical tracks, and text generated on paid subscriptions (Basic, Pro, VIP, Elite, Ultra Elite) come with full unrestricted commercial license and rights.",
         faq_q6: "Does my account and balance synchronize between Web and Telegram?",
@@ -4651,7 +4631,7 @@
 
         nav_toolkit: "Инструменты",
         sign_in: "Войти",
-        topup: "Пополнить KZ",
+        topup: "Пополнить ZK",
         logout: "Выйти",
         drawer_home: "Главная",
         drawer_academy: "Академия",
@@ -4664,7 +4644,7 @@
 
         notif_title: "Уведомления",
         notif_mark_read: "Прочитать все",
-        notif_1_title: "+5.5 KZ токенов начислено",
+        notif_1_title: "+ ZK токенов начислено",
         notif_1_time: "Только что",
         notif_1_text: "Вам начислен стартовый баланс токенов для тестовых генераций во всех моделях.",
         notif_2_title: "Wan 3.0 & Veo 3.1 доступны",
@@ -4744,13 +4724,13 @@
         faq_support_btn: "Написать в поддержку",
 
         faq_q1: "Могу ли я попробовать инструменты ZYKO.AI бесплатно?",
-        faq_a1: "Да! Каждый новый пользователь получает приветственные пробные токены (5.5 KZ) сразу после регистрации, чтобы протестировать генерацию текста, создание реалистичных фото и нейросетевой голос перед выбором тарифа.",
+        faq_a1: "Да! Каждый новый пользователь получает приветственные пробные токены ( ZK) сразу после регистрации, чтобы протестировать генерацию текста, создание реалистичных фото и нейросетевой голос перед выбором тарифа.",
         faq_q2: "Дает ли одна подписка доступ ко всем 100+ нейросетям?",
         faq_a2: "Да, абсолютно. Вместо оплаты отдельных подписок на ChatGPT, Midjourney, Kling, Runway и ElevenLabs (что стоило бы более $250 в месяц), ZYKO.AI открывает универсальный доступ ко всем передовым моделям из единого баланса токенов.",
         faq_q3: "Какие нейросети и модели входят в ZYKO.AI?",
         faq_a3: "Вы получаете мгновенный доступ к ChatGPT (GPT-4o, o1), Claude 3.7 Sonnet, Google Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Nano Banana 2.1, Kling 1.5 HD, Google Veo 3.1, Seedance 2.5, ElevenLabs HD голосам с клонированием речи, кинематографичным звуковым эффектам (SFX) и автономным AI-агентам.",
-        faq_q4: "Что такое токены KZ и как они расходуются?",
-        faq_a4: "Токены — это универсальная внутренняя валюта на сайте и в Telegram. Списания происходят строго за запрос: запросы к LLM = 10 KZ, генерация фото = 12 KZ, синтез речи и SFX = 10 KZ, AI-музыка = 20 KZ, а кинематографичное видео (Kling, Seedance, Veo) = 25 KZ.",
+        faq_q4: "Что такое токены ZK и как они расходуются?",
+        faq_a4: "Токены — это универсальная внутренняя валюта на сайте и в Telegram. Списания происходят строго за запрос: запросы к LLM =  ZK, генерация фото =  ZK, синтез речи и SFX =  ZK, AI-музыка =  ZK, а кинематографичное видео (Kling, Seedance, Veo) =  ZK.",
         faq_q5: "Могу ли я использовать созданный контент в коммерческих целях?",
         faq_a5: "Да! Все изображения, видео, аудио озвучки, музыкальные треки и тексты, созданные на платных подписках (Basic, Pro, VIP, Elite, Ultra Elite), имеют полную бессрочную коммерческую лицензию и права.",
         faq_q6: "Синхронизируются ли мой аккаунт и баланс между Вебом и Telegram?",
@@ -4807,7 +4787,7 @@
         nav_audio: "Audio",
         nav_toolkit: "Herramientas",
         sign_in: "Iniciar sesión",
-        topup: "Recargar KZ",
+        topup: "Recargar ZK",
         logout: "Cerrar sesión",
         drawer_home: "Inicio",
         drawer_academy: "Academia",
@@ -4878,13 +4858,13 @@
         faq_support_btn: "Contactar soporte",
 
         faq_q1: "¿Puedo probar las herramientas de ZYKO.AI gratis?",
-        faq_a1: "¡Sí! Cada nuevo usuario recibe tokens de prueba (5.5 KZ) al registrarse para probar texto, imágenes fotorrealistas y síntesis de voz.",
+        faq_a1: "¡Sí! Cada nuevo usuario recibe tokens de prueba ( ZK) al registrarse para probar texto, imágenes fotorrealistas y síntesis de voz.",
         faq_q2: "¿Una sola suscripción da acceso a más de 100 herramientas?",
         faq_a2: "Totalmente. En lugar de pagar suscripciones separadas para ChatGPT, Midjourney, Kling y ElevenLabs (más de $250/mes), ZYKO.AI te ofrece acceso unificado desde un solo saldo.",
         faq_q3: "¿Qué redes neuronales y modelos están incluidos?",
         faq_a3: "Acceso instantáneo a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, voces ElevenLabs HD y agentes IA autónomos.",
-        faq_q4: "¿Qué son los tokens KZ y cómo se consumen?",
-        faq_a4: "Son nuestra moneda interna unificada: consultas LLM = 10 KZ, imágenes = 12 KZ, voces y SFX = 10 KZ, música = 20 KZ, y vídeo cinemático = 25 KZ.",
+        faq_q4: "¿Qué son los tokens ZK y cómo se consumen?",
+        faq_a4: "Son nuestra moneda interna unificada: consultas LLM =  ZK, imágenes =  ZK, voces y SFX =  ZK, música =  ZK, y vídeo cinemático =  ZK.",
         faq_q5: "¿Puedo usar el contenido generado para fines comerciales?",
         faq_a5: "¡Sí! Todo el contenido generado en suscripciones de pago cuenta con licencia comercial completa e irrestricta.",
         faq_q6: "¿Se sincroniza mi cuenta entre la Web y Telegram?",
@@ -4911,7 +4891,7 @@
         nav_audio: "Áudio",
         nav_toolkit: "Ferramentas",
         sign_in: "Entrar",
-        topup: "Recarregar KZ",
+        topup: "Recarregar ZK",
         logout: "Sair",
         drawer_home: "Início",
         drawer_academy: "Academia",
@@ -4982,13 +4962,13 @@
         faq_support_btn: "Falar com suporte",
 
         faq_q1: "Posso testar as ferramentas do ZYKO.AI de graça?",
-        faq_a1: "Sim! Novos usuários recebem tokens de teste (5.5 KZ) ao se registrar para experimentar texto, imagens fotorrealistas e voz neural.",
+        faq_a1: "Sim! Novos usuários recebem tokens de teste ( ZK) ao se registrar para experimentar texto, imagens fotorrealistas e voz neural.",
         faq_q2: "Uma assinatura dá acesso a mais de 100 ferramentas de IA?",
         faq_a2: "Com certeza. Em vez de pagar por ChatGPT, Midjourney, Kling e ElevenLabs separadamente, você tem acesso universal em um só saldo.",
         faq_q3: "Quais redes neurais e modelos estão inclusos?",
         faq_a3: "Acesso a ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Google Veo 3.1, vozes ElevenLabs HD e agentes IA.",
-        faq_q4: "O que são tokens KZ e como são consumidos?",
-        faq_a4: "Nossa moeda unificada: consultas LLM = 10 KZ, imagens = 12 KZ, vozes e SFX = 10 KZ, música = 20 KZ e vídeos = 25 KZ.",
+        faq_q4: "O que são tokens ZK e como são consumidos?",
+        faq_a4: "Nossa moeda unificada: consultas LLM =  ZK, imagens =  ZK, vozes e SFX =  ZK, música =  ZK e vídeos =  ZK.",
         faq_q5: "Posso usar as mídias geradas comercialmente?",
         faq_a5: "Sim! Todas as mídias geradas em assinaturas ativas contam com direitos e licença comercial completa.",
         faq_q6: "Minha conta e saldo sincronizam entre Web e Telegram?",
@@ -5015,7 +4995,7 @@
         nav_audio: "Audio",
         nav_toolkit: "Werkzeuge",
         sign_in: "Anmelden",
-        topup: "KZ aufladen",
+        topup: "ZK aufladen",
         logout: "Abmelden",
         drawer_home: "Startseite",
         drawer_academy: "Akademie",
@@ -5086,13 +5066,13 @@
         faq_support_btn: "Support kontaktieren",
 
         faq_q1: "Kann ich ZYKO.AI kostenlos testen?",
-        faq_a1: "Ja! Jeder neue Nutzer erhält bei der Registrierung Test-Token (5.5 KZ), um Text, Bilder und KI-Stimmen auszuprobieren.",
+        faq_a1: "Ja! Jeder neue Nutzer erhält bei der Registrierung Test-Token ( ZK), um Text, Bilder und KI-Stimmen auszuprobieren.",
         faq_q2: "Bietet ein einziges Abo Zugriff auf alle 100+ KI-Tools?",
         faq_a2: "Absolut. Statt separate Abos für ChatGPT, Midjourney, Kling und ElevenLabs zu zahlen, haben Sie universellen Zugriff aus einem Token-Guthaben.",
         faq_q3: "Welche neuronalen Netze sind in ZYKO.AI enthalten?",
         faq_a3: "Sofortiger Zugriff auf ChatGPT, Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek R1, FLUX.1 Pro, Kling 1.5 HD, Veo 3.1, ElevenLabs HD und KI-Agenten.",
-        faq_q4: "Was sind KZ-Token und wie werden sie verbraucht?",
-        faq_a4: "Unsere universelle Währung: LLM = 10 KZ, Fotos = 12 KZ, Stimmen & SFX = 10 KZ, Musik = 20 KZ und Videos = 25 KZ.",
+        faq_q4: "Was sind ZK-Token und wie werden sie verbraucht?",
+        faq_a4: "Unsere universelle Währung: LLM =  ZK, Fotos =  ZK, Stimmen & SFX =  ZK, Musik =  ZK und Videos =  ZK.",
         faq_q5: "Darf ich generierte Medien kommerziell nutzen?",
         faq_a5: "Ja! Alle bei aktiven Abonnements erstellten Medien beinhalten vollständige kommerzielle Nutzungsrechte.",
         faq_q6: "Synchronisieren sich Konto und Guthaben zwischen Web und Telegram?",
@@ -7816,7 +7796,7 @@
               <div class="text-[10px] text-stone-400">${isMusic ? 'Синтез студийной музыки и вокала нейросетью...' : 'Генерация нейросетевого аудио высокого разрешения...'}</div>
             </div>
           </div>
-          <span class="text-xs text-amber-400 font-bold">${costAmount} KZ</span>
+          <span class="text-xs text-amber-400 font-bold">${costAmount} ZK</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(text.length > 120 ? text.slice(0, 120) + '...' : text)}"
@@ -7963,7 +7943,7 @@
               <div class="text-[10px] text-stone-400">Генерация звукового эффекта нейросетью...</div>
             </div>
           </div>
-          <span class="text-xs text-amber-400 font-bold">10 KZ</span>
+          <span class="text-xs text-amber-400 font-bold"> ZK</span>
         </div>
         <div class="text-xs text-stone-300 italic mb-3 bg-black/40 p-2.5 rounded-xl border border-white/5">
           "${escapeHtml(prompt)}"
@@ -8126,7 +8106,7 @@
         }
         alert('Ошибка клонирования голоса: ' + e.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<span>🎙️</span> <span>Создать клон голоса (25 KZ)</span>'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span>🎙️</span> <span>Создать клон голоса ( ZK)</span>'; }
       }
     }
 
@@ -8998,9 +8978,9 @@
       document.getElementById('info-modal-content').innerHTML = `
         <p>Generate your best art or video in ZYKO.AI and tag <b>@ZykoAi_bot</b> to win tokens.</p>
         <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 font-bold">
-          🥇 1st Place: 50,000 KZ Tokens + Ultra Elite Access<br>
-          🥈 2nd Place: 20,000 KZ Tokens<br>
-          🥉 3rd Place: 10,000 KZ Tokens
+          🥇 1st Place:  ZK Tokens + Ultra Elite Access<br>
+          🥈 2nd Place:  ZK Tokens<br>
+          🥉 3rd Place:  ZK Tokens
         </div>
       `;
       document.getElementById('info-modal').classList.remove('hidden');
@@ -11333,7 +11313,7 @@
                 <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
                 ${m.badge ? `<span class="bg-black/60 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
                 <span class="text-[10px] font-mono font-semibold text-emerald-400/90 ml-auto flex items-center gap-1">
-                  <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> ${m.costTokens} KZ <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                  <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> ${m.costTokens} ZK <span class="text-stone-400 font-normal">(${m.costCredits})</span>
                 </span>
               </div>
               <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
@@ -11495,7 +11475,7 @@
                 <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
                 ${m.badge ? `<span class="bg-black/60 text-amber-400 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
                 <span class="text-[10px] font-mono font-semibold text-amber-400/90 ml-auto flex items-center gap-1">
-                  <svg class="w-3 h-3 shrink-0 inline-block drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" fill="url(#kzCoinGrad)" stroke="#fef08a" stroke-width="1.2"/><circle cx="12" cy="8.5" fill="none" stroke="#b45309" stroke-width="0.8" stroke-dasharray="1.5 1" opacity="0.5"/><text x="12" y="15.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="900" font-size="9.5" fill="#0f1412" letter-spacing="-0.5">KZ</text></svg> ${m.costTokens} KZ <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                  <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> ${m.costTokens} ZK <span class="text-stone-400 font-normal">(${m.costCredits})</span>
                 </span>
               </div>
               <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
@@ -11588,7 +11568,7 @@
     }
 
     function sendToolkitInpaint() {
-      alert('Inpainting and neural reconstruction started! Cost: 15 KZ');
+      alert('Inpainting and neural reconstruction started! Cost:  ZK');
       deductTokensUI(15);
     }
 
@@ -11838,10 +11818,10 @@
       tbody.innerHTML = filtered.map(it => {
         const isAdded = it.type === 'added' || it.amount > 0;
         const absAmt = Math.abs(it.amount);
-        const amountDisplay = isAdded ? `+${absAmt.toLocaleString()} KZ` : `-${absAmt.toLocaleString()} KZ`;
+        const amountDisplay = isAdded ? `+${absAmt.toLocaleString()} ZK` : `-${absAmt.toLocaleString()} ZK`;
         const amountClass = isAdded ? 'text-emerald-400 font-bold' : 'text-stone-300 font-semibold';
         const dateDisplay = formatTokenDate(it.created_at);
-        const balanceDisplay = (it.balance != null ? Number(it.balance).toLocaleString() : '—') + ' KZ';
+        const balanceDisplay = (it.balance != null ? Number(it.balance).toLocaleString() : '—') + ' ZK';
 
         return `
           <tr class="border-b border-white/5 hover:bg-white/[0.02] transition">
@@ -12078,7 +12058,7 @@
                 <p class="text-stone-300 font-medium line-clamp-2" title="${escapeHtml(prompt)}">${escapeHtml(prompt)}</p>
                 <div class="flex items-center justify-between text-[10px] text-stone-500 pt-1 border-t border-white/5">
                   <span>${dateStr}</span>
-                  <span class="text-amber-400 font-semibold">${tokensCost} KZ</span>
+                  <span class="text-amber-400 font-semibold">${tokensCost} ZK</span>
                 </div>
               </div>
             </div>
@@ -12096,7 +12076,7 @@
                   <span>${dateStr}</span>
                   <div class="flex items-center gap-2">
                     <a href="${it.result_url}" download="zyko_video.mp4" target="_blank" class="hover:text-white transition" title="Download">⬇️</a>
-                    <span class="text-amber-400 font-semibold">${tokensCost} KZ</span>
+                    <span class="text-amber-400 font-semibold">${tokensCost} ZK</span>
                   </div>
                 </div>
               </div>
@@ -12113,7 +12093,7 @@
                     <div class="text-[10px] text-stone-500">${dateStr}</div>
                   </div>
                 </div>
-                <span class="text-xs text-amber-400 font-semibold">${tokensCost} KZ</span>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ZK</span>
               </div>
               <p class="text-xs text-stone-300 line-clamp-2 leading-relaxed" title="${escapeHtml(prompt)}">"${escapeHtml(prompt)}"</p>
               <audio src="${it.result_url}" controls class="w-full h-8 rounded-lg bg-black/40"></audio>
@@ -12135,7 +12115,7 @@
                     <div class="text-[10px] text-stone-500">${dateStr}</div>
                   </div>
                 </div>
-                <span class="text-xs text-amber-400 font-semibold">${tokensCost} KZ</span>
+                <span class="text-xs text-amber-400 font-semibold">${tokensCost} ZK</span>
               </div>
               <div class="bg-black/30 rounded-xl p-2.5 text-xs text-stone-400 line-clamp-2 border border-white/5">
                 <span class="text-stone-300 font-semibold">User:</span> ${escapeHtml(prompt)}
@@ -12316,9 +12296,9 @@
       const sStatusEl = document.getElementById('usage-session-status');
       if (sStatusEl) {
         if (sessionSpent === 0) {
-          sStatusEl.textContent = `0 / ${sessionLimit.toLocaleString()} KZ used`;
+          sStatusEl.textContent = `0 / ${sessionLimit.toLocaleString()} ZK used`;
         } else {
-          sStatusEl.textContent = `${sessionSpent.toLocaleString()} / ${sessionLimit.toLocaleString()} KZ used`;
+          sStatusEl.textContent = `${sessionSpent.toLocaleString()} / ${sessionLimit.toLocaleString()} ZK used`;
         }
       }
 
@@ -12333,9 +12313,9 @@
       const wStatusEl = document.getElementById('usage-weekly-status');
       if (wStatusEl) {
         if (weeklySpent === 0) {
-          wStatusEl.textContent = `0 / ${weeklyLimit.toLocaleString()} KZ used`;
+          wStatusEl.textContent = `0 / ${weeklyLimit.toLocaleString()} ZK used`;
         } else {
-          wStatusEl.textContent = `${weeklySpent.toLocaleString()} / ${weeklyLimit.toLocaleString()} KZ used`;
+          wStatusEl.textContent = `${weeklySpent.toLocaleString()} / ${weeklyLimit.toLocaleString()} ZK used`;
         }
       }
 
@@ -12579,7 +12559,7 @@
           if (uEl) uEl.textContent = Number(usersCount).toLocaleString();
           if (txEl) txEl.textContent = Number(txCount).toLocaleString();
           if (revEl) revEl.textContent = `${Number(revenue).toFixed(2)} €`;
-          if (tokEl) tokEl.textContent = `${Math.round(Number(tokensCount)).toLocaleString()} KZ`;
+          if (tokEl) tokEl.textContent = `${Math.round(Number(tokensCount)).toLocaleString()} ZK`;
           if (genEl) genEl.textContent = Number(gensCount).toLocaleString();
 
           // Tiers breakdown (supports array or dict)
@@ -12663,7 +12643,7 @@
                 u.tier === 'Basic' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 'bg-stone-500/20 text-stone-400 border border-stone-500/30'
               }">${u.tier || 'Free'}</span>
             </td>
-            <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} KZ</td>
+            <td class="p-3.5 font-black text-amber-400 font-mono">${Math.round(u.tokens || 0).toLocaleString()} ZK</td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(u.created_at || '').substring(0, 16)}</td>
             <td class="p-3.5 text-right">
               <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-emerald-500 hover:text-black text-stone-200 font-bold px-3 py-1.5 rounded-xl transition text-[11px]">
@@ -12719,7 +12699,7 @@
     }
 
     async function adminGiftAll(amount = 500) {
-      if (!confirm(`Вы действительно хотите начислить по ${amount} KZ токенов ВСЕМ пользователям платформы?`)) return;
+      if (!confirm(`Вы действительно хотите начислить по ${amount} ZK токенов ВСЕМ пользователям платформы?`)) return;
       try {
         const res = await fetch('/api/admin/users/gift', {
           method: 'POST',
@@ -12728,7 +12708,7 @@
         });
         const data = await res.json();
         if (data.status === 'ok') {
-          alert(`🎉 Успешно! ${data.affected_users} пользователей получили по ${data.gifted_tokens} KZ!`);
+          alert(`🎉 Успешно! ${data.affected_users} пользователей получили по ${data.gifted_tokens} ZK!`);
           loadAdminOverview();
           loadAdminUsers();
           checkAuthStatus();
@@ -12766,7 +12746,7 @@
               <div class="text-[10px] text-stone-400">${escapeHtml(t.user_email || '')}</div>
             </td>
             <td class="p-3.5 font-black text-white">${t.amount} ${t.currency}</td>
-            <td class="p-3.5 font-mono text-amber-400 font-bold">+${Math.round(t.tokens || 0).toLocaleString()} KZ</td>
+            <td class="p-3.5 font-mono text-amber-400 font-bold">+${Math.round(t.tokens || 0).toLocaleString()} ZK</td>
             <td class="p-3.5 text-stone-300">${t.tier || 'Pack'}</td>
             <td class="p-3.5">
               <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold ${
@@ -12842,7 +12822,7 @@
             <td class="p-3.5 max-w-xs truncate text-stone-300" title="${escapeHtml(g.prompt || '')}">
               ${g.prompt ? escapeHtml(g.prompt.substring(0, 70)) + (g.prompt.length > 70 ? '...' : '') : '—'}
             </td>
-            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} KZ</td>
+            <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ZK</td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
           </tr>
         `).join('');
