@@ -4405,6 +4405,44 @@
     </div>
   </div>
 
+  <!-- ================= 10. FULLSCREEN PHOTO LIGHTBOX MODAL ================= -->
+  <div id="photo-lightbox-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/90 backdrop-blur-2xl transition-all duration-200" onclick="if(event.target === this) closePhotoLightbox()">
+    <div class="relative max-w-5xl w-full max-h-[96vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+      <!-- Close Button Top Right -->
+      <button type="button" onclick="closePhotoLightbox()" class="absolute -top-3 -right-2 sm:top-2 sm:right-2 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/80 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center text-lg sm:text-xl font-bold transition shadow-2xl active:scale-95 cursor-pointer" title="Закрыть (Esc)">
+        ✕
+      </button>
+
+      <!-- Main Image Container -->
+      <div class="relative w-full flex items-center justify-center overflow-hidden rounded-2xl max-h-[76vh] sm:max-h-[80vh] bg-black/60 border border-white/10 shadow-2xl">
+        <img id="photo-lightbox-img" src="" alt="Full view" class="max-h-[76vh] sm:max-h-[80vh] w-auto max-w-full object-contain rounded-2xl select-none transition-transform duration-200">
+      </div>
+
+      <!-- Bottom Info & Action Bar -->
+      <div class="w-full mt-3 bg-[#121615]/95 border border-white/15 rounded-2xl p-3 sm:p-4 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="w-full sm:flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            <span id="photo-lightbox-model" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500 text-black uppercase font-mono">FLUX 1.1 PRO</span>
+            <span id="photo-lightbox-aspect" class="text-[10px] text-stone-400 font-mono">1:1</span>
+            <span class="text-[10px] text-emerald-400/80 font-semibold">• 4K UHD Original</span>
+          </div>
+          <p id="photo-lightbox-prompt" class="text-xs text-stone-200 truncate select-all font-medium" title=""></p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end flex-wrap sm:flex-nowrap">
+          <button type="button" onclick="copyPhotoLightboxPrompt()" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs font-semibold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            📋 <span>Копировать</span>
+          </button>
+          <a id="photo-lightbox-download" href="#" download="zyko_4k_render.jpg" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-bold transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            ⬇️ <span>Скачать 4K</span>
+          </a>
+          <button type="button" onclick="recreateFromPhotoLightbox()" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black text-xs font-black transition shadow-lg active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            ⚡ <span>Recreate</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
     // Global State
@@ -6654,13 +6692,17 @@
           const imgUrl = serverUrl || URL.createObjectURL(blob);
 
           gallery.insertAdjacentHTML('afterbegin', `
-            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01]">
+            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01] cursor-pointer" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')">
               <img src="${imgUrl}" class="w-full h-full object-cover">
               <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-2.5 flex flex-col justify-between">
-                <span class="text-[9px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
-                <div class="flex gap-1.5">
-                  <a href="${imgUrl}" download="zyko_ai_render.jpg" class="flex-1 text-center bg-white/20 hover:bg-white text-black font-bold py-1 rounded text-[10px] transition">Download 4K</a>
-                  <button onclick="document.getElementById('image-prompt-input').value = '${escapeHtml(prompt)}'" class="px-2 py-1 bg-emerald-500 text-black font-bold rounded text-[10px]">Recreate</button>
+                <div class="flex items-center justify-between">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
+                  <span class="text-[9px] bg-white/20 hover:bg-white/40 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">🔍 Открыть</span>
+                </div>
+                <div class="flex gap-1.5" onclick="event.stopPropagation()">
+                  <button type="button" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Открыть</button>
+                  <a href="${imgUrl}" download="zyko_ai_render.jpg" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Download 4K</a>
+                  <button onclick="document.getElementById('image-prompt-input').value = '${escapeHtml(prompt)}'" class="px-2 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[10px] transition">Recreate</button>
                 </div>
               </div>
             </div>
@@ -8666,6 +8708,71 @@
       const modal = document.getElementById('create-agent-modal');
       if (modal) modal.classList.add('hidden');
     }
+
+    // Fullscreen Photo Lightbox Controller
+    let currentLightboxPhoto = { url: '', prompt: '', model: '', aspect: '' };
+
+    function openPhotoLightbox(url, prompt = '', model = 'IMAGE', aspect = '1:1') {
+      if (!url) return;
+      currentLightboxPhoto = { url, prompt, model, aspect };
+
+      const modal = document.getElementById('photo-lightbox-modal');
+      const img = document.getElementById('photo-lightbox-img');
+      const promptEl = document.getElementById('photo-lightbox-prompt');
+      const modelEl = document.getElementById('photo-lightbox-model');
+      const aspectEl = document.getElementById('photo-lightbox-aspect');
+      const downloadLink = document.getElementById('photo-lightbox-download');
+
+      if (!modal || !img) return;
+
+      img.src = url;
+      if (promptEl) {
+        promptEl.textContent = prompt || 'Без описания (Custom prompt)';
+        promptEl.title = prompt || '';
+      }
+      if (modelEl) modelEl.textContent = (model || 'IMAGE').toUpperCase();
+      if (aspectEl) aspectEl.textContent = aspect || '1:1';
+      if (downloadLink) {
+        downloadLink.href = url;
+        downloadLink.setAttribute('download', `zyko_${(model || 'render').toLowerCase()}_4k.jpg`);
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePhotoLightbox() {
+      const modal = document.getElementById('photo-lightbox-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function copyPhotoLightboxPrompt() {
+      if (currentLightboxPhoto.prompt) {
+        navigator.clipboard.writeText(currentLightboxPhoto.prompt);
+        if (typeof showToast === 'function') {
+          showToast('Промпт скопирован!');
+        } else {
+          alert('Промпт скопирован!');
+        }
+      }
+    }
+
+    function recreateFromPhotoLightbox() {
+      closePhotoLightbox();
+      if (typeof switchTab === 'function') switchTab('image');
+      const input = document.getElementById('image-prompt-input');
+      if (input && currentLightboxPhoto.prompt) {
+        input.value = currentLightboxPhoto.prompt;
+        input.focus();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closePhotoLightbox();
+      }
+    });
 
     function saveCustomAgent() {
       const name = (document.getElementById('create-agent-name')?.value || '').trim();
@@ -11953,13 +12060,17 @@
         if (type === 'image') {
           return `
             <div class="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#171a19] shadow-md flex flex-col justify-between transition hover:border-emerald-500/50 hover:shadow-emerald-950/20">
-              <div class="relative aspect-square w-full overflow-hidden bg-black flex items-center justify-center">
+              <div class="relative aspect-square w-full overflow-hidden bg-black flex items-center justify-center cursor-pointer" onclick="openPhotoLightbox('${it.result_url}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${escapeHtml(model || "IMAGE")}')">
                 <img src="${it.result_url}" loading="lazy" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" alt="AI image">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition p-3 flex flex-col justify-between">
-                  <span class="self-start text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500 text-black uppercase">${escapeHtml(model || 'IMAGE')}</span>
-                  <div class="flex items-center gap-2">
-                    <a href="${it.result_url}" target="_blank" download="zyko_image.jpg" class="flex-1 py-1.5 px-2 bg-white text-black font-bold text-[11px] rounded-lg text-center hover:bg-stone-200 transition">Download</a>
-                    <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); alert('Prompt copied!');" class="p-1.5 bg-black/60 hover:bg-black text-white rounded-lg text-xs" title="Copy Prompt">📋</button>
+                  <div class="flex items-center justify-between">
+                    <span class="self-start text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500 text-black uppercase">${escapeHtml(model || 'IMAGE')}</span>
+                    <span class="text-[9px] bg-white/20 hover:bg-white/40 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">🔍 Открыть</span>
+                  </div>
+                  <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+                    <button type="button" onclick="openPhotoLightbox('${it.result_url}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${escapeHtml(model || "IMAGE")}')" class="flex-1 py-1.5 px-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-[11px] rounded-lg text-center transition">Открыть</button>
+                    <a href="${it.result_url}" target="_blank" download="zyko_image.jpg" class="py-1.5 px-2 bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold text-[11px] rounded-lg text-center transition">⬇️</a>
+                    <button onclick="navigator.clipboard.writeText('${escapeHtml(prompt)}'); if(typeof showToast==='function') showToast('Промпт скопирован!'); else alert('Prompt copied!');" class="p-1.5 bg-black/60 hover:bg-black text-white rounded-lg text-xs" title="Copy Prompt">📋</button>
                   </div>
                 </div>
               </div>
