@@ -1657,10 +1657,10 @@
             <div class="flex items-center justify-center gap-2 mb-5">
               <div class="inline-flex p-1 bg-white/5 border border-white/10 rounded-2xl shadow-inner">
                 <button type="button" id="subtab-audio-tts" onclick="switchAudioStudioSubtab('tts')" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg">
-                  🗣️ Текст в речь (TTS)
+                  <span>🗣️</span> <span data-i18n="audio_tab_tts">Text to Speech (TTS)</span>
                 </button>
                 <button type="button" id="subtab-audio-sts" onclick="switchAudioStudioSubtab('sts')" class="px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white">
-                  🎙️ Speech-to-Speech (Voice Changer)
+                  <span>🎙️</span> <span data-i18n="audio_tab_sts">Speech-to-Speech (Voice Changer)</span>
                 </button>
               </div>
             </div>
@@ -1674,8 +1674,8 @@
                     🎙️
                   </div>
                   <div>
-                    <h3 class="text-xs sm:text-sm font-bold text-white">Превращение речи в персонажа</h3>
-                    <p class="text-[10px] text-stone-400">ElevenLabs STS • Сохраняет эмоции, акцент и темп</p>
+                    <h3 class="text-xs sm:text-sm font-bold text-white" data-i18n="sts_title">Speech-to-Speech Voice Changer</h3>
+                    <p class="text-[10px] text-stone-400" data-i18n="sts_desc">ElevenLabs STS • Preserves emotions, tone & pacing</p>
                   </div>
                 </div>
                 <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">15 ZK</span>
@@ -1686,12 +1686,12 @@
                 <div class="flex items-center gap-2.5 min-w-0">
                   <span id="sts-target-voice-avatar" class="text-2xl shrink-0">🎙️</span>
                   <div class="min-w-0">
-                    <div class="text-[10px] text-stone-400 uppercase font-mono">Целевой персонаж:</div>
+                    <div class="text-[10px] text-stone-400 uppercase font-mono" data-i18n="sts_target_character">Target character:</div>
                     <div id="sts-target-voice-name" class="text-xs font-bold text-white truncate">Rachel</div>
                   </div>
                 </div>
-                <button type="button" onclick="openVoiceCatalogModal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-stone-200 hover:text-black text-xs font-bold border border-white/20 transition active:scale-95 shrink-0">
-                  🎭 Выбрать персонажа
+                <button type="button" onclick="openVoiceCatalogModal()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-stone-200 hover:text-black text-xs font-bold border border-white/20 transition active:scale-95 shrink-0 flex items-center gap-1.5">
+                  <span>🎭</span> <span data-i18n="sts_select_character">Choose character</span>
                 </button>
               </div>
 
@@ -1701,8 +1701,8 @@
                   <button type="button" id="btn-sts-record" onclick="toggleSTSRecording()" class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black flex items-center justify-center text-2xl shadow-xl transition active:scale-95 cursor-pointer">
                     <span id="sts-record-icon">🎙️</span>
                   </button>
-                  <div id="sts-record-status" class="text-xs font-bold text-stone-200">
-                    Нажмите на микрофон и скажите любую фразу
+                  <div id="sts-record-status" class="text-xs font-bold text-stone-200" data-i18n="sts_record_prompt">
+                    Click the microphone and speak any phrase
                   </div>
                   <div id="sts-record-timer" class="text-xs font-mono text-amber-400">00:00 / 00:30</div>
 
@@ -1711,9 +1711,9 @@
 
                   <!-- Or File Upload Alternative -->
                   <div class="pt-2 flex items-center justify-center gap-2 w-full border-t border-white/10 text-[11px] text-stone-400">
-                    <span>или</span>
+                    <span data-i18n="sts_or">or</span>
                     <label class="text-amber-400 hover:underline cursor-pointer font-semibold flex items-center gap-1">
-                      <span>📁 Загрузить файл аудио (MP3/WAV)</span>
+                      <span>📁</span> <span data-i18n="sts_upload_file">Upload audio file (MP3/WAV)</span>
                       <input type="file" id="sts-file-upload-input" accept="audio/*" class="hidden" onchange="handleSTSUpload(this)">
                     </label>
                   </div>
@@ -1723,7 +1723,7 @@
 
               <!-- Action Submit Button -->
               <button type="button" id="btn-submit-sts" onclick="executeGenerateSTS()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs shadow-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
-                <span>✨</span> <span>Преобразовать голос (15 ZK)</span>
+                <span>✨</span> <span data-i18n="sts_convert_btn">Convert Voice (15 ZK)</span>
               </button>
             </div>
 
@@ -1739,7 +1739,7 @@
           </div>
 
           <!-- Bottom Prompt Box (Exact same structure & elegance as Image and Video) -->
-          <div class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
+          <div id="audio-bottom-prompt-box" class="max-w-3xl w-full mx-auto pb-2 sm:pb-3 px-1 sm:px-0">
             <div class="bg-[#141719] border border-white/10 focus-within:border-amber-400/70 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition">
               <div class="flex items-center justify-between pb-1.5 text-stone-500 text-[10px]">
                 <span class="flex items-center gap-1.5 text-stone-400">
@@ -2308,24 +2308,24 @@
             <span id="active-audio-model-badge" class="text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-mono font-bold">Eleven v4 Neural</span>
           </div>
 
-          <!-- Mode Switcher Tabs (4 Authentic ElevenLabs Modes) -->
+          <!-- Mode Switcher Tabs (5 Authentic ElevenLabs Modes) -->
           <div class="space-y-1">
-            <label class="block text-[11px] font-bold text-stone-300">Режим студии</label>
+            <label class="block text-[11px] font-bold text-stone-300" data-i18n="audio_mode_title">Studio Mode</label>
             <div class="grid grid-cols-2 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-xl text-xs font-semibold">
               <button type="button" id="audio-tab-tts" onclick="setAudioMode('tts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 font-bold text-white bg-amber-500/20 border border-amber-500/40 shadow">
-                <span>🗣️</span> <span>Озвучка (TTS)</span>
+                <span>🗣️</span> <span data-i18n="audio_tab_tts">Text to Speech</span>
               </button>
               <button type="button" id="audio-tab-sts" onclick="setAudioMode('sts')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
-                <span>🎙️</span> <span>Voice Changer</span>
+                <span>🎙️</span> <span data-i18n="audio_tab_sts">Voice Changer</span>
               </button>
               <button type="button" id="audio-tab-clone" onclick="setAudioMode('clone')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
-                <span>🧬</span> <span>Клонирование</span>
+                <span>🧬</span> <span data-i18n="audio_tab_clone">Voice Cloning</span>
               </button>
               <button type="button" id="audio-tab-sfx" onclick="setAudioMode('sfx')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5">
-                <span>🔊</span> <span>Звуки (SFX)</span>
+                <span>🔊</span> <span data-i18n="audio_tab_sfx">Sound Effects</span>
               </button>
               <button type="button" id="audio-tab-isolate" onclick="setAudioMode('isolate')" class="py-2 px-2.5 rounded-lg transition text-left flex items-center gap-2 text-stone-400 hover:text-white hover:bg-white/5 col-span-2">
-                <span>🧹</span> <span>Изолятор речи</span>
+                <span>🧹</span> <span data-i18n="audio_tab_isolate">Voice Isolator</span>
               </button>
             </div>
           </div>
@@ -2515,14 +2515,15 @@
           </div>
 
           <!-- ================= MODE: SPEECH-TO-SPEECH (VOICE CHANGER) ================= -->
+          <!-- ================= MODE: SPEECH-TO-SPEECH (VOICE CHANGER) ================= -->
           <div id="audio-mode-panel-sts" class="hidden space-y-3.5">
             <div class="bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/20 rounded-2xl p-3.5">
               <div class="flex items-center gap-2 mb-1.5">
                 <span class="text-base">🎙️</span>
-                <span class="font-bold text-white text-xs">Speech-to-Speech (Voice Changer)</span>
+                <span class="font-bold text-white text-xs" data-i18n="audio_tab_sts">Speech-to-Speech (Voice Changer)</span>
               </div>
-              <p class="text-[11px] text-stone-400 leading-relaxed">
-                Запишите голос на микрофон или загрузите аудио, чтобы переозвучить его голосом персонажа (1 176 голосов) с сохранением эмоций!
+              <p class="text-[11px] text-stone-400 leading-relaxed" data-i18n="sts_sidebar_desc">
+                Record your voice or upload audio to speak with any character voice (1,176 voices) while preserving emotions!
               </p>
             </div>
 
@@ -2531,23 +2532,23 @@
               <div class="flex items-center gap-2 min-w-0">
                 <span id="sidebar-sts-voice-avatar" class="text-xl">🎙️</span>
                 <div class="min-w-0">
-                  <div class="text-[10px] text-stone-400 font-mono">Целевой голос:</div>
+                  <div class="text-[10px] text-stone-400 font-mono" data-i18n="sts_target_voice">Target voice:</div>
                   <div id="sidebar-sts-voice-name" class="text-xs font-bold text-white truncate">Rachel</div>
                 </div>
               </div>
               <button type="button" onclick="openVoiceCatalogModal()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white text-stone-200 hover:text-black text-[11px] font-bold border border-white/20 transition active:scale-95 shrink-0">
-                Сменить ▾
+                <span data-i18n="sts_change_voice">Change ▾</span>
               </button>
             </div>
 
             <!-- Quick Record / Upload Trigger -->
             <button type="button" onclick="switchAudioStudioSubtab('sts')" class="w-full py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center justify-center gap-2">
-              <span>🎙️</span> <span>Открыть панель записи речи</span>
+              <span>🎙️</span> <span data-i18n="sts_open_recorder">Open Voice Recording Panel</span>
             </button>
 
             <!-- Submit Button -->
             <button type="button" onclick="executeGenerateSTS()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>✨</span> <span>Преобразовать речь (15 ZK)</span>
+              <span>✨</span> <span data-i18n="sts_convert_btn">Convert Voice (15 ZK)</span>
             </button>
           </div>
 
@@ -2556,35 +2557,35 @@
             <div class="bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/20 rounded-2xl p-3.5">
               <div class="flex items-center gap-2 mb-1.5">
                 <span class="text-base">🧬</span>
-                <span class="font-bold text-white text-xs">Мгновенный клон голоса</span>
+                <span class="font-bold text-white text-xs" data-i18n="clone_title">Instant Voice Cloning</span>
               </div>
-              <p class="text-[11px] text-stone-400 leading-relaxed">
-                Загрузите образец чистого голоса без музыки (1-2 минуты), и ИИ обучится воспроизводить этот голос с любым текстом.
+              <p class="text-[11px] text-stone-400 leading-relaxed" data-i18n="clone_desc">
+                Upload a clean voice sample without music (1-2 min), and AI will reproduce this voice for any text.
               </p>
             </div>
 
             <!-- Clone Name -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-stone-300">Имя голоса <span class="text-red-400">*</span></label>
+              <label class="block text-xs font-bold text-stone-300"><span data-i18n="clone_name">Voice Name</span> <span class="text-red-400">*</span></label>
               <input type="text" id="clone-voice-name-input" placeholder="E.g.: My Voice / Narrator / Podcaster" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
             </div>
 
             <!-- Clone Description / Labels -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-stone-300">Описание и теги</label>
+              <label class="block text-xs font-bold text-stone-300" data-i18n="clone_tags">Description & Tags</label>
               <input type="text" id="clone-voice-desc-input" placeholder="E.g.: Calm, deep, cinematic, podcast" class="w-full bg-[#141b18] border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none">
             </div>
 
             <!-- File Upload Dropzone -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-stone-300">Аудио образец <span class="text-red-400">*</span></label>
+              <label class="block text-xs font-bold text-stone-300"><span data-i18n="clone_sample">Audio Sample</span> <span class="text-red-400">*</span></label>
               <div onclick="document.getElementById('clone-voice-file-input').click()" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-2xl p-4 text-center cursor-pointer bg-[#111614] hover:bg-[#141b18] transition group">
                 <input type="file" id="clone-voice-file-input" accept="audio/*" class="hidden" onchange="handleCloneFileSelected(this)">
                 <span class="text-2xl block mb-1">🎙️</span>
-                <div id="clone-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition">
-                  Нажмите для выбора файла
+                <div id="clone-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition" data-i18n="clone_choose_file">
+                  Click to select file
                 </div>
-                <p class="text-[10px] text-stone-500 mt-1">MP3, WAV, M4A до 15 МБ • Чистая речь без фоновой музыки</p>
+                <p class="text-[10px] text-stone-500 mt-1" data-i18n="clone_file_hint">MP3, WAV, M4A up to 15 MB • Clean speech without background music</p>
               </div>
             </div>
 
@@ -2592,7 +2593,7 @@
             <div id="clone-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-clone" onclick="submitVoiceClone()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🎙️</span> <span>Создать клон голоса ( ZK)</span>
+              <span>🎙️</span> <span data-i18n="clone_create_btn">Create Voice Clone (25 ZK)</span>
             </button>
           </div>
 
@@ -2601,40 +2602,40 @@
             <div class="bg-white/5 border border-white/10 rounded-2xl p-3">
               <div class="flex items-center gap-2 mb-1">
                 <span class="text-base">🔊</span>
-                <span class="font-bold text-white text-xs">ElevenLabs Sound Effects</span>
+                <span class="font-bold text-white text-xs" data-i18n="sfx_title">Cinematic Sound Effects</span>
               </div>
-              <p class="text-[11px] text-stone-400">
-                Генерация реалистичных кинематографических звуковых эффектов, фонов и шумов по текстовому описанию.
+              <p class="text-[11px] text-stone-400" data-i18n="sfx_desc">
+                Generate any audio effects, ambient noises and cinematic sounds from text prompts.
               </p>
             </div>
 
             <!-- Duration Slider -->
             <div class="space-y-1">
               <div class="flex justify-between items-center text-xs">
-                <span class="font-bold text-stone-300">Длительность эффекта:</span>
+                <span class="font-bold text-stone-300" data-i18n="sfx_duration">Effect duration:</span>
                 <span id="val-sfx-duration" class="text-amber-400 font-mono font-bold">4.0s</span>
               </div>
               <input type="range" id="slider-sfx-duration" min="1.0" max="11.0" step="0.5" value="4.0" oninput="document.getElementById('val-sfx-duration').textContent = parseFloat(this.value).toFixed(1) + 's'" class="zyko-slider slider-amber w-full cursor-pointer">
               <div class="flex justify-between text-[9px] text-stone-500">
-                <span>1.0 сек</span>
-                <span>11.0 сек</span>
+                <span>1.0s</span>
+                <span>11.0s</span>
               </div>
             </div>
 
             <!-- Quick Preset Prompts -->
             <div class="space-y-1.5">
-              <label class="block text-xs font-bold text-stone-300">Популярные идеи звуков:</label>
+              <label class="block text-xs font-bold text-stone-300" data-i18n="sfx_examples">Popular sound ideas:</label>
               <div class="flex flex-wrap gap-1.5 text-[10px]">
-                <button type="button" onclick="insertSfxPrompt('Кинематографический мощный взрыв в космосе с басом')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">💥 Взрыв в космосе</button>
-                <button type="button" onclick="insertSfxPrompt('Ливень с раскатами грома за окном уютной комнаты')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">🌧️ Ливень с громом</button>
-                <button type="button" onclick="insertSfxPrompt('Футуристический лазерный выстрел бластера со звоном')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">⚡ Лазерный бластер</button>
-                <button type="button" onclick="insertSfxPrompt('Шаги человека в кожаных ботинках по мокрому гравию')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">👣 Шаги по гравию</button>
-                <button type="button" onclick="insertSfxPrompt('Волшебное заклинание с колокольчиками и сиянием')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">✨ Магический перезвон</button>
+                <button type="button" onclick="insertSfxPrompt('Cinematic powerful space explosion with deep sub bass')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">💥 <span data-i18n="sfx_space_blast">Space Explosion</span></button>
+                <button type="button" onclick="insertSfxPrompt('Heavy rainstorm with thunder rumbles outside a cozy room')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">🌧️ <span data-i18n="sfx_rain_thunder">Rain with Thunder</span></button>
+                <button type="button" onclick="insertSfxPrompt('Futuristic laser blaster gunshot with metallic reverberation')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">⚡ <span data-i18n="sfx_laser">Laser Blaster</span></button>
+                <button type="button" onclick="insertSfxPrompt('Human footsteps in leather boots walking on wet gravel')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">👣 <span data-i18n="sfx_steps">Steps on Gravel</span></button>
+                <button type="button" onclick="insertSfxPrompt('Magical spell chime with sparkling ambient aura')" class="bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/10 px-2 py-1 rounded-lg transition text-stone-300">✨ <span data-i18n="sfx_magic">Magic Chimes</span></button>
               </div>
             </div>
 
             <button type="button" onclick="sendGenerateAudioAction()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>🔊</span> <span>Сгенерировать SFX ( ZK)</span>
+              <span>🔊</span> <span data-i18n="sfx_generate_btn">Generate SFX (10 ZK)</span>
             </button>
           </div>
 
@@ -2643,23 +2644,23 @@
             <div class="bg-white/5 border border-white/10 rounded-2xl p-3">
               <div class="flex items-center gap-2 mb-1">
                 <span class="text-base">🧹</span>
-                <span class="font-bold text-white text-xs">Изолятор голоса (Denoise)</span>
+                <span class="font-bold text-white text-xs" data-i18n="isolate_title">Voice Isolator (Denoise)</span>
               </div>
-              <p class="text-[11px] text-stone-400">
-                Нейросеть удаляет фоновые шумы, гул, эхо и музыку, оставляя кристально чистый студийный голос.
+              <p class="text-[11px] text-stone-400" data-i18n="isolate_desc">
+                Removes background noise, hum, echo and music, extracting crystal-clear studio vocal track.
               </p>
             </div>
 
             <!-- File Upload Dropzone -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-stone-300">Аудиозапись с шумом <span class="text-red-400">*</span></label>
+              <label class="block text-xs font-bold text-stone-300"><span data-i18n="isolate_noisy_sample">Noisy Audio File</span> <span class="text-red-400">*</span></label>
               <div onclick="document.getElementById('isolate-voice-file-input').click()" class="border-2 border-dashed border-white/15 hover:border-emerald-400/60 rounded-2xl p-4 text-center cursor-pointer bg-[#111614] hover:bg-[#141b18] transition group">
                 <input type="file" id="isolate-voice-file-input" accept="audio/*" class="hidden" onchange="handleIsolateFileSelected(this)">
                 <span class="text-2xl block mb-1">🎧</span>
-                <div id="isolate-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition">
-                  Выберите файл для очистки
+                <div id="isolate-file-status-text" class="text-xs font-bold text-stone-300 group-hover:text-emerald-400 transition" data-i18n="isolate_choose_file">
+                  Choose file to clean
                 </div>
-                <p class="text-[10px] text-stone-500 mt-1">MP3, WAV, M4A, OGG до 25 МБ</p>
+                <p class="text-[10px] text-stone-500 mt-1" data-i18n="isolate_file_hint">MP3, WAV, M4A, OGG up to 25 MB</p>
               </div>
             </div>
 
@@ -2667,7 +2668,7 @@
             <div id="isolate-status-msg" class="hidden text-xs p-2 rounded-xl"></div>
 
             <button type="button" id="btn-submit-voice-isolate" onclick="submitVoiceIsolator()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
-              <span>✨</span> <span>Изолировать речь (12 Credits)</span>
+              <span>✨</span> <span data-i18n="isolate_btn">Isolate Speech (15 ZK)</span>
             </button>
           </div>
 
@@ -4721,6 +4722,48 @@
         audio_generated_tracks: "Generated audio tracks",
         audio_ready_title: "Ready for speech synthesis",
         audio_ready_desc: "Enter text above, select a voice and click 'Generate speech'.",
+        audio_mode_title: "Studio Mode",
+        audio_tab_tts: "Text to Speech (TTS)",
+        audio_tab_sts: "Voice Changer",
+        audio_tab_clone: "Voice Cloning",
+        audio_tab_sfx: "Sound Effects",
+        audio_tab_isolate: "Voice Isolator",
+        sts_title: "Speech-to-Speech Voice Changer",
+        sts_desc: "ElevenLabs STS • Preserves emotions, tone & pacing",
+        sts_sidebar_desc: "Record your voice or upload audio to speak with any character voice (1,176 voices) while preserving emotions!",
+        sts_target_character: "Target character:",
+        sts_target_voice: "Target voice:",
+        sts_select_character: "Choose character",
+        sts_change_voice: "Change ▾",
+        sts_record_prompt: "Click the microphone and speak any phrase",
+        sts_or: "or",
+        sts_upload_file: "Upload audio file (MP3/WAV)",
+        sts_open_recorder: "Open Voice Recording Panel",
+        sts_convert_btn: "Convert Voice (15 ZK)",
+        clone_title: "Instant Voice Cloning",
+        clone_desc: "Upload a clean voice sample without music (1-2 min), and AI will reproduce this voice for any text.",
+        clone_name: "Voice Name",
+        clone_tags: "Description & Tags",
+        clone_sample: "Audio Sample",
+        clone_choose_file: "Click to select file",
+        clone_file_hint: "MP3, WAV, M4A up to 15 MB • Clean speech without background music",
+        clone_create_btn: "Create Voice Clone (25 ZK)",
+        sfx_title: "Cinematic Sound Effects",
+        sfx_desc: "Generate any audio effects, ambient noises and cinematic sounds from text prompts.",
+        sfx_duration: "Effect duration:",
+        sfx_examples: "Popular sound ideas:",
+        sfx_space_blast: "Space Explosion",
+        sfx_rain_thunder: "Rain with Thunder",
+        sfx_laser: "Laser Blaster",
+        sfx_steps: "Steps on Gravel",
+        sfx_magic: "Magic Chimes",
+        sfx_generate_btn: "Generate SFX (10 ZK)",
+        isolate_title: "Voice Isolator (Denoise)",
+        isolate_desc: "Removes background noise, hum, echo and music, extracting crystal-clear studio vocal track.",
+        isolate_noisy_sample: "Noisy Audio File",
+        isolate_choose_file: "Choose file to clean",
+        isolate_file_hint: "MP3, WAV, M4A, OGG up to 25 MB",
+        isolate_btn: "Isolate Speech (15 ZK)",
 
         nav_toolkit: "Toolkit",
         sign_in: "Sign in",
@@ -4891,6 +4934,48 @@
         audio_generated_tracks: "Сгенерированные аудиодорожки",
         audio_ready_title: "Готово к синтезу речи",
         audio_ready_desc: "Введите текст выше, выберите голос и параметры в правой колонке и нажмите 'Синтезировать речь'.",
+        audio_mode_title: "Режим студии",
+        audio_tab_tts: "Озвучка (TTS)",
+        audio_tab_sts: "Voice Changer",
+        audio_tab_clone: "Клонирование",
+        audio_tab_sfx: "Звуки (SFX)",
+        audio_tab_isolate: "Изолятор речи",
+        sts_title: "Превращение речи в персонажа",
+        sts_desc: "ElevenLabs STS • Сохраняет эмоции, акцент и темп",
+        sts_sidebar_desc: "Запишите голос на микрофон или загрузите аудио, чтобы переозвучить его голосом персонажа (1 176 голосов) с сохранением эмоций!",
+        sts_target_character: "Целевой персонаж:",
+        sts_target_voice: "Целевой голос:",
+        sts_select_character: "Выбрать персонажа",
+        sts_change_voice: "Сменить ▾",
+        sts_record_prompt: "Нажмите на микрофон и скажите любую фразу",
+        sts_or: "или",
+        sts_upload_file: "Загрузить файл аудио (MP3/WAV)",
+        sts_open_recorder: "Открыть панель записи речи",
+        sts_convert_btn: "Преобразовать голос (15 ZK)",
+        clone_title: "Мгновенный клон голоса",
+        clone_desc: "Загрузите образец чистого голоса без музыки (1-2 минуты), и ИИ обучится воспроизводить этот голос с любым текстом.",
+        clone_name: "Имя голоса",
+        clone_tags: "Описание и теги",
+        clone_sample: "Аудио образец",
+        clone_choose_file: "Нажмите для выбора файла",
+        clone_file_hint: "MP3, WAV, M4A до 15 МБ • Чистая речь без фоновой музыки",
+        clone_create_btn: "Создать клон голоса (25 ZK)",
+        sfx_title: "Звуковые эффекты (SFX)",
+        sfx_desc: "Генерация реалистичных кинематографических звуковых эффектов, фонов и шумов по текстовому описанию.",
+        sfx_duration: "Длительность эффекта:",
+        sfx_examples: "Популярные идеи звуков:",
+        sfx_space_blast: "Взрыв в космосе",
+        sfx_rain_thunder: "Ливень с громом",
+        sfx_laser: "Лазерный бластер",
+        sfx_steps: "Шаги по гравию",
+        sfx_magic: "Магический перезвон",
+        sfx_generate_btn: "Сгенерировать SFX (10 ZK)",
+        isolate_title: "Изолятор голоса (Denoise)",
+        isolate_desc: "Нейросеть удаляет фоновые шумы, гул, эхо и музыку, оставляя кристально чистый студийный голос.",
+        isolate_noisy_sample: "Аудиозапись с шумом",
+        isolate_choose_file: "Выберите файл для очистки",
+        isolate_file_hint: "MP3, WAV, M4A, OGG до 25 МБ",
+        isolate_btn: "Изолировать речь (15 ZK)",
 
         nav_toolkit: "Инструменты",
         sign_in: "Войти",
@@ -7568,79 +7653,83 @@
         }
       });
 
-      // Synchronize central workspace subtabs
-      if (mode === 'sts') {
-        switchAudioStudioSubtab('sts', false);
-      } else if (mode === 'tts') {
-        switchAudioStudioSubtab('tts', false);
-      }
-
-      // Synchronize bottom prompt bar based on mode
-      const input = document.getElementById('audio-text-input');
-      const hint = document.getElementById('audio-input-hint-text');
-      const costBadge = document.getElementById('audio-token-cost-val');
-      const sendBtn = document.getElementById('btn-audio-send');
-      const tagsHelp = document.getElementById('audio-tags-help');
-
-      if (mode === 'tts') {
-        if (input) input.placeholder = 'Type text to synthesize speech with the selected voice...';
-        if (hint) hint.textContent = 'Type text to synthesize speech with the selected voice...';
-        if (costBadge) costBadge.textContent = '10';
-        if (sendBtn) { sendBtn.title = 'Generate Speech'; sendBtn.innerHTML = '➤'; }
-        if (tagsHelp) tagsHelp.classList.add('hidden');
-      } else if (mode === 'sts') {
-        if (input) input.placeholder = 'Speech-to-Speech: Record or upload speech in the panel above to convert voice...';
-        if (hint) hint.textContent = 'ElevenLabs Speech-to-Speech Voice Changer (15 ZK)...';
-        if (costBadge) costBadge.textContent = '15';
-        if (sendBtn) { sendBtn.title = 'Convert Voice'; sendBtn.innerHTML = '✨'; }
-        if (tagsHelp) tagsHelp.classList.add('hidden');
-      } else if (mode === 'clone') {
-        if (input) input.placeholder = 'Enter voice clone name and upload clean audio sample (30s - 2min)...';
-        if (hint) hint.textContent = 'Instant voice cloning from clean speech audio...';
-        if (costBadge) costBadge.textContent = '25';
-        if (sendBtn) { sendBtn.title = 'Clone Voice'; sendBtn.innerHTML = '🎙️'; }
-        if (tagsHelp) tagsHelp.classList.add('hidden');
-      } else if (mode === 'sfx') {
-        if (input) input.placeholder = 'Describe sound effect (e.g. cinematic laser blast, thunderstorm, explosion)...';
-        if (hint) hint.textContent = 'Cinematic sound effects generation...';
-        if (costBadge) costBadge.textContent = '10';
-        if (sendBtn) { sendBtn.title = 'Generate SFX'; sendBtn.innerHTML = '🔊'; }
-        if (tagsHelp) tagsHelp.classList.add('hidden');
-      } else if (mode === 'isolate') {
-        if (input) input.placeholder = 'Upload audio with background noise for crystal speech isolation...';
-        if (hint) hint.textContent = 'Isolate clean vocal track from background noise...';
-        if (costBadge) costBadge.textContent = '15';
-        if (sendBtn) { sendBtn.title = 'Isolate Vocal'; sendBtn.innerHTML = '✨'; }
-        if (tagsHelp) tagsHelp.classList.add('hidden');
-      }
-    }
-
-    function switchAudioStudioSubtab(tab, syncSidebar = true) {
+      const stsWorkspace = document.getElementById('audio-sts-workspace');
+      const bottomPrompt = document.getElementById('audio-bottom-prompt-box');
       const ttsBtn = document.getElementById('subtab-audio-tts');
       const stsBtn = document.getElementById('subtab-audio-sts');
-      const stsWorkspace = document.getElementById('audio-sts-workspace');
 
-      if (tab === 'sts') {
+      if (mode === 'sts') {
+        // Show Voice Changer workspace and HIDE bottom prompt box
+        if (stsWorkspace) stsWorkspace.classList.remove('hidden');
+        if (bottomPrompt) bottomPrompt.classList.add('hidden');
         if (stsBtn) {
           stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg';
         }
         if (ttsBtn) {
           ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
         }
-        if (stsWorkspace) stsWorkspace.classList.remove('hidden');
-
-        // Update target voice labels
         updateSelectedVoiceUI();
-        if (syncSidebar) setAudioMode('sts');
       } else {
-        if (ttsBtn) {
-          ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg';
-        }
-        if (stsBtn) {
-          stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
-        }
+        // ALWAYS hide voice changer workspace when not in sts mode!
         if (stsWorkspace) stsWorkspace.classList.add('hidden');
-        if (syncSidebar) setAudioMode('tts');
+        if (bottomPrompt) bottomPrompt.classList.remove('hidden');
+
+        if (mode === 'tts') {
+          if (ttsBtn) {
+            ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg';
+          }
+          if (stsBtn) {
+            stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
+          }
+        } else {
+          // In clone, sfx, isolate: neither central TTS nor STS subtab is active
+          if (ttsBtn) ttsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
+          if (stsBtn) stsBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white';
+        }
+      }
+
+      // Synchronize bottom prompt bar based on mode and language
+      const input = document.getElementById('audio-text-input');
+      const hint = document.getElementById('audio-input-hint-text');
+      const costBadge = document.getElementById('audio-token-cost-val');
+      const sendBtn = document.getElementById('btn-audio-send');
+      const tagsHelp = document.getElementById('audio-tags-help');
+      const isRu = (currentLang === 'ru');
+
+      if (mode === 'tts') {
+        if (input) input.placeholder = isRu ? 'Введите текст для озвучки выбранным голосом...' : 'Type text to synthesize speech with the selected voice...';
+        if (hint) hint.textContent = isRu ? 'Введите текст для озвучки выбранным голосом...' : 'Type text to synthesize speech with the selected voice...';
+        if (costBadge) costBadge.textContent = '10';
+        if (sendBtn) { sendBtn.title = isRu ? 'Сгенерировать речь' : 'Generate Speech'; sendBtn.innerHTML = '➤'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'sts') {
+        if (costBadge) costBadge.textContent = '15';
+      } else if (mode === 'clone') {
+        if (input) input.placeholder = isRu ? 'Введите текст для проверки клонированного голоса...' : 'Enter text to test your cloned voice...';
+        if (hint) hint.textContent = isRu ? 'Мгновенное клонирование голоса из чистого аудио...' : 'Instant voice cloning from clean speech audio...';
+        if (costBadge) costBadge.textContent = '25';
+        if (sendBtn) { sendBtn.title = isRu ? 'Клонировать голос' : 'Clone Voice'; sendBtn.innerHTML = '🎙️'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'sfx') {
+        if (input) input.placeholder = isRu ? 'Опишите звуковой эффект (например: футуристический лазерный бластер, раскаты грома)...' : 'Describe sound effect (e.g. cinematic laser blast, thunderstorm, explosion)...';
+        if (hint) hint.textContent = isRu ? 'Генерация кинематографичных звуковых эффектов...' : 'Cinematic sound effects generation...';
+        if (costBadge) costBadge.textContent = '10';
+        if (sendBtn) { sendBtn.title = isRu ? 'Сгенерировать SFX' : 'Generate SFX'; sendBtn.innerHTML = '🔊'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      } else if (mode === 'isolate') {
+        if (input) input.placeholder = isRu ? 'Загрузите аудио в панели справа для кристальной изоляции речи...' : 'Upload audio in the right panel for crystal speech isolation...';
+        if (hint) hint.textContent = isRu ? 'Изоляция чистого голоса от фонового шума...' : 'Isolate clean vocal track from background noise...';
+        if (costBadge) costBadge.textContent = '15';
+        if (sendBtn) { sendBtn.title = isRu ? 'Изолировать голос' : 'Isolate Vocal'; sendBtn.innerHTML = '✨'; }
+        if (tagsHelp) tagsHelp.classList.add('hidden');
+      }
+    }
+
+    function switchAudioStudioSubtab(tab, syncSidebar = true) {
+      if (tab === 'sts') {
+        setAudioMode('sts');
+      } else {
+        setAudioMode('tts');
       }
     }
 
@@ -8082,8 +8171,9 @@
         return;
       }
 
+      const isRu = (currentLang === 'ru');
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        showToastNotification('Запись с микрофона не поддерживается вашим браузером');
+        showToastNotification(isRu ? 'Запись с микрофона не поддерживается вашим браузером' : 'Microphone recording is not supported by your browser');
         return;
       }
 
@@ -8107,7 +8197,7 @@
         stsMediaRecorder.onstart = () => {
           if (recordBtn) recordBtn.classList.add('animate-pulse', 'ring-4', 'ring-red-500/50', 'from-red-500', 'to-red-600');
           if (icon) icon.textContent = '⏹';
-          if (statusEl) statusEl.textContent = '🔴 Идет запись голоса... Говорите фразу!';
+          if (statusEl) statusEl.textContent = isRu ? '🔴 Идет запись голоса... Говорите фразу!' : '🔴 Recording voice... Speak your phrase!';
           stsRecordingSeconds = 0;
           if (timerEl) timerEl.textContent = '00:00 / 00:30';
 
@@ -8129,7 +8219,7 @@
 
           if (recordBtn) recordBtn.classList.remove('animate-pulse', 'ring-4', 'ring-red-500/50', 'from-red-500', 'to-red-600');
           if (icon) icon.textContent = '🎙️';
-          if (statusEl) statusEl.textContent = '✓ Голос записан! Прослушайте ниже и нажмите Преобразовать:';
+          if (statusEl) statusEl.textContent = isRu ? '✓ Голос записан! Прослушайте ниже и нажмите Преобразовать:' : '✓ Voice recorded! Preview below and click Convert:';
 
           stsRecordedBlob = new Blob(stsAudioChunks, { type: 'audio/webm' });
           stsUploadedFile = null;
@@ -8145,7 +8235,7 @@
         stsMediaRecorder.start();
       } catch (err) {
         console.warn('Microphone error:', err);
-        showToastNotification('Не удалось получить доступ к микрофону: ' + err.message);
+        showToastNotification((isRu ? 'Не удалось получить доступ к микрофону: ' : 'Failed to access microphone: ') + err.message);
       }
     }
 
@@ -8156,13 +8246,16 @@
         const uploadName = document.getElementById('sts-upload-filename');
         const statusEl = document.getElementById('sts-record-status');
         const audioPrev = document.getElementById('sts-recorded-audio');
+        const isRu = (currentLang === 'ru');
 
         if (uploadName) {
           uploadName.classList.remove('hidden');
-          uploadName.textContent = `✓ Загружен файл: ${stsUploadedFile.name} (${(stsUploadedFile.size / (1024*1024)).toFixed(2)} MB)`;
+          uploadName.textContent = isRu 
+            ? `✓ Загружен файл: ${stsUploadedFile.name} (${(stsUploadedFile.size / (1024*1024)).toFixed(2)} MB)`
+            : `✓ File uploaded: ${stsUploadedFile.name} (${(stsUploadedFile.size / (1024*1024)).toFixed(2)} MB)`;
         }
         if (statusEl) {
-          statusEl.textContent = '✓ Файл готов к преобразованию!';
+          statusEl.textContent = isRu ? '✓ Файл готов к преобразованию!' : '✓ File ready for voice conversion!';
         }
         if (audioPrev) {
           audioPrev.src = URL.createObjectURL(stsUploadedFile);
@@ -8172,9 +8265,10 @@
     }
 
     async function executeGenerateSTS() {
+      const isRu = (currentLang === 'ru');
       const audioToConvert = stsRecordedBlob || stsUploadedFile;
       if (!audioToConvert) {
-        showToastNotification('Пожалуйста, запишите голос на микрофон или загрузите аудиофайл!');
+        showToastNotification(isRu ? 'Пожалуйста, запишите голос на микрофон или загрузите аудиофайл!' : 'Please record your voice or upload an audio file first!');
         return;
       }
 
@@ -8184,10 +8278,12 @@
       const voiceAvatar = voice.avatar || '🎙️';
 
       const btn = document.getElementById('btn-submit-sts');
-      const origText = btn ? btn.innerHTML : 'Преобразовать голос';
+      const origText = btn ? btn.innerHTML : 'Convert Voice';
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = `<span class="animate-spin">⏳</span> <span>Нейросеть ElevenLabs переозвучивает речь...</span>`;
+        btn.innerHTML = isRu 
+          ? `<span class="animate-spin">⏳</span> <span>Нейросеть ElevenLabs переозвучивает речь...</span>`
+          : `<span class="animate-spin">⏳</span> <span>ElevenLabs AI is converting speech...</span>`;
       }
 
       const gallery = document.getElementById('audio-generation-gallery');
@@ -8201,11 +8297,11 @@
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-2">
                 <span class="text-xl">${voiceAvatar}</span>
-                <span class="font-bold text-white text-xs">Превращение речи в персонажа: ${escapeHtml(voiceName)}</span>
+                <span class="font-bold text-white text-xs">${isRu ? 'Превращение речи в персонажа' : 'Speech-to-Speech'}: ${escapeHtml(voiceName)}</span>
               </div>
               <span class="text-xs text-amber-400 font-mono font-bold">15 ZK</span>
             </div>
-            <p class="text-[11px] text-stone-400 mb-2">ElevenLabs Multilingual STS v2 • Преобразование тембра с сохранением эмоций...</p>
+            <p class="text-[11px] text-stone-400 mb-2">${isRu ? 'ElevenLabs Multilingual STS v2 • Преобразование тембра с сохранением эмоций...' : 'ElevenLabs Multilingual STS v2 • Preserving emotions, tone & cadence...'}</p>
             <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
               <div class="bg-gradient-to-r from-amber-400 to-amber-500 h-full rounded-full animate-indeterminate"></div>
             </div>
@@ -13248,6 +13344,9 @@
 
       renderFeaturedShowcase();
       renderTrendsGrid(currentTrendCategory, currentTrendSort);
+      if (typeof setAudioMode === 'function' && typeof currentAudioMode !== 'undefined') {
+        setAudioMode(currentAudioMode);
+      }
     }
 
     document.addEventListener('click', (e) => {
