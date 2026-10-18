@@ -44,7 +44,9 @@ from database import (
     set_user_password,
     get_user_usage_stats,
     get_user_generations,
-    get_user_token_history
+    get_user_token_history,
+    set_user_referrer,
+    get_user_referrals_stats
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
@@ -317,6 +319,13 @@ async def handle_google_auth(request: web.Request):
             return web.json_response({"error": "Missing credential or email"}, status=400)
             
         token = create_access_token(user["id"])
+        ref_ident = data.get("ref") or data.get("referrer")
+        if ref_ident:
+            try:
+                if await set_user_referrer(user["id"], ref_ident):
+                    user = await get_user_by_id(user["id"])
+            except Exception as e_ref:
+                logger.error("Error setting referrer in google auth: %s", e_ref)
         resp = web.json_response({"token": token, "user": user})
         resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
         return resp
@@ -350,6 +359,15 @@ async def handle_email_register(request: web.Request):
                 
         hashed = hash_password(password)
         user = await create_email_user(email, hashed, name)
+        ref_ident = data.get("ref") or data.get("referrer")
+        if ref_ident:
+            try:
+                await set_user_referrer(user["id"], ref_ident)
+                # reload user with welcome referral tokens
+                user = await get_user_by_id(user["id"])
+            except Exception as e_ref:
+                logger.error("Error setting referrer on register: %s", e_ref)
+
         token = create_access_token(user["id"])
         resp = web.json_response({"status": "ok", "token": token, "user": user})
         resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=True, samesite="Lax")
@@ -484,6 +502,13 @@ async def handle_telegram_webapp_auth(request: web.Request):
         )
         
         token = create_access_token(user["id"])
+        ref_ident = data.get("ref") or data.get("referrer") or data.get("start_param")
+        if ref_ident:
+            try:
+                if await set_user_referrer(user["id"], ref_ident):
+                    user = await get_user_by_id(user["id"])
+            except Exception as e_ref:
+                logger.error("Error setting referrer in webapp auth: %s", e_ref)
         
         resp = web.json_response({
             "authenticated": True,
@@ -1361,6 +1386,23 @@ async def handle_user_redeem_promo(request: web.Request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=400)
 
+async def handle_user_referrals(request: web.Request):
+    try:
+        user = await get_current_user(request)
+        if not user:
+            return web.json_response({"error": "Unauthorized"}, status=401)
+        stats = await get_user_referrals_stats(user["id"])
+        # Generate official bot referral link
+        tg_id = user.get("telegram_id")
+        ref_code = tg_id if tg_id else user["id"]
+        bot_user = TELEGRAM_BOT_USERNAME or "ZykoAi_bot"
+        stats["referral_link_bot"] = f"https://t.me/{bot_user}?start=ref_{ref_code}"
+        stats["referral_code"] = f"ref_{ref_code}"
+        return web.json_response({"status": "ok", "stats": stats})
+    except Exception as e:
+        logger.error("Error in handle_user_referrals: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
+
 # =========================================================================
 # BROADCAST & ADVANCED ADMIN SUITE
 # =========================================================================
@@ -1612,6 +1654,7 @@ def create_app():
     app.router.add_get("/api/user/usage-limits", handle_user_usage_limits)
     app.router.add_get("/api/user/generations", handle_user_generations)
     app.router.add_get("/api/user/token-history", handle_user_token_history)
+    app.router.add_get("/api/user/referrals", handle_user_referrals)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)

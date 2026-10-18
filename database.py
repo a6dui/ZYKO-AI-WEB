@@ -115,6 +115,25 @@ async def init_db():
             await db.execute("ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0")
         except Exception:
             pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN referred_by INTEGER")
+        except Exception:
+            pass
+
+        # Create referral rewards system table
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS referral_rewards (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                referrer_id INTEGER NOT NULL,
+                referred_id INTEGER NOT NULL,
+                tokens_amount REAL NOT NULL,
+                reward_type TEXT DEFAULT 'signup',
+                order_id TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (referrer_id) REFERENCES users (id),
+                FOREIGN KEY (referred_id) REFERENCES users (id)
+            )
+        """)
 
         # Create promo codes system tables
         await db.execute("""
@@ -376,6 +395,25 @@ async def complete_transaction(order_id: str) -> dict:
                 "UPDATE users SET tokens = tokens + ?, tier = COALESCE(?, tier) WHERE id = ?",
                 (tx["tokens_credited"], tx["tier_activated"], tx["user_id"])
             )
+            # Referral Cashback / Commission: 15% to referrer
+            try:
+                tokens_credited = float(tx.get("tokens_credited") or 0)
+                if tokens_credited > 0:
+                    async with db.execute("SELECT referred_by FROM users WHERE id = ?", (tx["user_id"],)) as c_ref:
+                        ref_row = await c_ref.fetchone()
+                        if ref_row and ref_row[0]:
+                            referrer_id = ref_row[0]
+                            commission = round(tokens_credited * 0.15)
+                            if commission > 0:
+                                await db.execute("UPDATE users SET tokens = tokens + ? WHERE id = ?", (commission, referrer_id))
+                                await db.execute("""
+                                    INSERT INTO referral_rewards (referrer_id, referred_id, tokens_amount, reward_type, order_id)
+                                    VALUES (?, ?, ?, 'purchase', ?)
+                                """, (referrer_id, tx["user_id"], commission, order_id))
+                                logger.info(f"Referral commission awarded: +{commission} ZK to user #{referrer_id} for purchase by #{tx['user_id']}")
+            except Exception as e:
+                logger.error("Error processing referral commission: %s", e)
+
         await db.commit()
         return tx
 
@@ -981,6 +1019,95 @@ async def redeem_promo_code(user_id: int, code: str) -> dict:
             "tokens_added": tokens_to_add,
             "tier_activated": tier_to_set,
             "user": updated_user
+        }
+
+# =========================================================================
+# REFERRAL SYSTEM BACKEND
+# =========================================================================
+
+async def set_user_referrer(user_id: int, referrer_ident) -> bool:
+    """Sets the referrer for a new user and awards initial signup bonus (500 ZK to each)."""
+    if not referrer_ident or not user_id:
+        return False
+    clean_ident = str(referrer_ident).lower().replace("ref_", "").replace("ref", "").replace("r_", "").replace("r", "").strip()
+    if not clean_ident:
+        return False
+        
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        # Check if user already has referred_by
+        async with db.execute("SELECT id, referred_by FROM users WHERE id = ?", (user_id,)) as c:
+            user = await c.fetchone()
+            if not user or user["referred_by"]:
+                return False
+                
+        # Find referrer by id, telegram_id, or telegram_username
+        referrer = None
+        if clean_ident.isdigit():
+            num_id = int(clean_ident)
+            async with db.execute("SELECT * FROM users WHERE id = ? OR telegram_id = ?", (num_id, num_id)) as cr:
+                referrer = await cr.fetchone()
+        if not referrer:
+            async with db.execute("SELECT * FROM users WHERE LOWER(telegram_username) = LOWER(?)", (clean_ident.lstrip("@"),)) as cr2:
+                referrer = await cr2.fetchone()
+                
+        if not referrer:
+            return False
+            
+        referrer_id = referrer["id"]
+        if referrer_id == user_id:
+            return False # cannot refer oneself
+            
+        # Set referred_by
+        await db.execute("UPDATE users SET referred_by = ? WHERE id = ?", (referrer_id, user_id))
+        
+        # Award welcome signup bonus (500 ZK to user, 500 ZK to referrer)
+        signup_bonus = 500
+        await db.execute("UPDATE users SET tokens = tokens + ? WHERE id = ?", (signup_bonus, user_id))
+        await db.execute("UPDATE users SET tokens = tokens + ? WHERE id = ?", (signup_bonus, referrer_id))
+        
+        await db.execute("""
+            INSERT INTO referral_rewards (referrer_id, referred_id, tokens_amount, reward_type)
+            VALUES (?, ?, ?, 'signup')
+        """, (referrer_id, user_id, signup_bonus))
+        
+        await db.commit()
+        logger.info(f"Referral registered: user #{user_id} referred by #{referrer_id}, awarded +{signup_bonus} ZK each")
+        return True
+
+async def get_user_referrals_stats(user_id: int) -> dict:
+    """Returns detailed statistics and referral list for the user."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        # Total referrals count
+        async with db.execute("SELECT COUNT(*) as cnt FROM users WHERE referred_by = ?", (user_id,)) as c:
+            row = await c.fetchone()
+            total_invited = row["cnt"] if row else 0
+            
+        # Total tokens earned from referral_rewards
+        async with db.execute("SELECT COALESCE(SUM(tokens_amount), 0) as total_tokens FROM referral_rewards WHERE referrer_id = ?", (user_id,)) as c2:
+            row2 = await c2.fetchone()
+            partner_tokens = float(row2["total_tokens"] if row2 else 0)
+            
+        # Recent referrals list
+        async with db.execute("""
+            SELECT u.id, u.name, u.telegram_username, u.tier, u.created_at,
+                   COALESCE(SUM(r.tokens_amount), 0) as earned_tokens
+            FROM users u
+            LEFT JOIN referral_rewards r ON r.referred_id = u.id AND r.referrer_id = ?
+            WHERE u.referred_by = ?
+            GROUP BY u.id
+            ORDER BY u.id DESC LIMIT 30
+        """, (user_id, user_id)) as c3:
+            referrals = [dict(r) for r in await c3.fetchall()]
+            
+        return {
+            "total_invited": total_invited,
+            "partner_tokens": partner_tokens,
+            "available_funds_usd": round(partner_tokens * 0.001, 2),
+            "referrals": referrals
         }
 
 
