@@ -494,6 +494,8 @@ TIER_LIMITS = {
     "VIP": {"session": 3000, "weekly": 12000},
     "Elite": {"session": 5000, "weekly": 20000},
     "Ultra Elite": {"session": 8000, "weekly": 30000},
+    "Max": {"session": 10000, "weekly": 50000},
+    "MAX": {"session": 10000, "weekly": 50000},
 }
 
 async def get_user_usage_stats(user_id: int) -> dict:
@@ -505,7 +507,7 @@ async def get_user_usage_stats(user_id: int) -> dict:
             if user_row and user_row["tier"]:
                 tier = user_row["tier"]
         
-        limits = TIER_LIMITS.get(tier, TIER_LIMITS["Free"])
+        limits = TIER_LIMITS.get(tier, TIER_LIMITS.get(tier.upper(), TIER_LIMITS.get(tier.title(), TIER_LIMITS["Free"])))
         session_limit = limits["session"]
         weekly_limit = limits["weekly"]
 

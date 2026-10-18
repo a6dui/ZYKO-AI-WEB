@@ -343,177 +343,125 @@ async def translate_prompt_to_english(text: str) -> str:
         return f"{matched_entity}, {text}"
     return text
 
-async def fetch_prompt_matched_image(query: str) -> bytes:
-    """
-    Fetches an ultra-relevant high-resolution image matching the user's prompt (e.g. Lamborghini Urus, Avatar Aang)
-    using curated local 8K AI art or strict high-relevance search.
-    """
-    low_q = query.lower()
-    media_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public", "media")
-    
-    # Direct match for iconic heroes & supercars requested by user
-    if any(k in low_q for k in ("aang", "аанг")):
-        p = os.path.join(media_dir, "avatar_aang.jpg")
-        if os.path.exists(p):
-            with open(p, "rb") as f:
-                return f.read()
-
-    if any(k in low_q for k in ("urus", "урус", "lamborghini", "ламборгини")):
-        p = os.path.join(media_dir, "lamborghini_urus.jpg")
-        if os.path.exists(p):
-            with open(p, "rb") as f:
-                return f.read()
-
-    # 1. Clean query and extract core subject words
-    first_part = query.split(',')[0].strip()
-    clean_q = first_part.replace("photorealistic", "").replace("8k resolution", "").replace("35mm photograph", "").replace("award winning composition", "").strip(" ,")
-    
-    stop_words = {
-        "luxury", "super", "suv", "photo", "of", "the", "last", "airbender",
-        "cinematic", "4k", "8k", "award", "winning", "composition", "car", "modern",
-        "parked", "in", "city", "neon", "render", "style", "wallpaper", "portrait"
-    }
-    core_words = [w for w in clean_q.replace(",", " ").split() if w.lower() not in stop_words]
-    core_q = " ".join(core_words[:3]).strip()
-
-    search_attempts = []
-    if core_q and core_q != clean_q:
-        search_attempts.append(core_q)
-    if clean_q:
-        search_attempts.append(clean_q)
-
-    headers = {
-        "User-Agent": "ZykoAiBot/2.0 (contact@zyko.ai; high-resolution image retriever)"
-    }
-    
-    negative_terms = ("cosplay", "logo", "butterfly", "insect", "diagram", "map", "chart", "pareronia", "icon", "drawing", "flag")
-    
-    for search_term in search_attempts:
-        try:
-            url = f"https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch={urllib.parse.quote(search_term)}&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url&iiurlwidth=1024&format=json"
-            async with aiohttp.ClientSession(headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as session:
-                async with session.get(url) as r:
-                    if r.status == 200:
-                        data = await r.json(content_type=None)
-                        pages = data.get("query", {}).get("pages", {})
-                        for page in pages.values():
-                            title = page.get("title", "").lower()
-                            # Reject irrelevant drawings, butterflies, diagrams, and cosplays
-                            if any(neg in title for neg in negative_terms):
-                                continue
-                            for info in page.get("imageinfo", []):
-                                img_target = info.get("thumburl") or info.get("url")
-                                if img_target and img_target.startswith("http"):
-                                    try:
-                                        async with session.get(img_target, timeout=aiohttp.ClientTimeout(total=8)) as img_r:
-                                            if img_r.status == 200:
-                                                b = await img_r.read()
-                                                if len(b) > 8000:
-                                                    return b
-                                    except Exception:
-                                        continue
-        except Exception as e:
-            logger.warning("Wikimedia search error for '%s': %s", search_term, e)
-    return b""
-
-# --- 5. AI Image Generation (FLUX.1 Ultra, Midjourney styles) ---
+# --- 5. AI Image Generation (ElevenLabs Flows Image API with Multi-Key Failover) ---
 
 async def generate_ai_image(prompt: str, aspect: str = "1:1", model: str = "flux") -> bytes:
     """
-    Generates photorealistic images using FLUX.1 Ultra via high-performance neural engine.
+    Generates ultra-high-definition photorealistic images directly using ElevenLabs Flows Image API.
+    Rotates through the user's Scale Tier API keys with automatic failover.
+    Supported models on ElevenLabs Flows:
+      - 'gemini-2.5-flash-image' (Default: Google Imagen 3 / Gemini Image - ultra photorealistic, lightning fast)
+      - 'gemini-3-pro-image' (Google Imagen 3 Pro - high dynamic detail)
+      - 'gpt-image-2' (OpenAI GPT Image 2 / Midjourney level creative composition)
+      - 'gpt-image-2.5-sunburst' (OpenAI GPT Image 2.5 Sunburst)
+    Supported aspect ratios: '1:1', '16:9', '9:16', '4:3', '3:4', '21:9'
     """
-    # Quick check for curated masterpieces (e.g. Avatar Aang, Lamborghini Urus)
-    direct_match = await fetch_prompt_matched_image(prompt)
-    if direct_match and len(direct_match) > 10000:
-        logger.info("Delivered direct canonical masterpiece for '%s' (bytes: %d)", prompt, len(direct_match))
-        return direct_match
-
-    # 1. Translate prompt to English if Russian or multilingual
     en_prompt = await translate_prompt_to_english(prompt)
-    logger.info("Image generation: '%s' -> '%s' (model: %s)", prompt, en_prompt, model)
+    logger.info("ElevenLabs AI Image Generation: '%s' -> '%s' (model: %s, aspect: %s)", prompt, en_prompt, model, aspect)
 
-    art_modifier = ""
-    m_low = model.lower()
-    if "banana" in m_low:
-        art_modifier = ", photorealistic 8k, award winning composition, 35mm lens, studio lighting, incredible consistency, masterpiece"
-    elif "seedream" in m_low:
-        art_modifier = ", photorealistic 8k, award winning composition, 35mm lens, cinematic studio lighting, highly detailed textures"
-    elif "recraft" in m_low:
-        art_modifier = ", clean graphic design, vector aesthetic, award-winning illustration composition, 8k crisp details"
-    elif "krea" in m_low:
-        art_modifier = ", highly aesthetic, atmospheric creative lighting, art station trending, 8k"
-    elif "flux" in m_low:
-        art_modifier = ", cinematic film still, photorealistic 8k, spatial accuracy, natural lighting"
-    elif "gpt" in m_low:
-        art_modifier = ", high prompt adherence, clear composition, highly detailed render"
-    elif "runway" in m_low or "gen_4" in m_low:
-        art_modifier = ", cinematic film lighting, 35mm camera, high visual fidelity, photorealistic"
-    elif "kling" in m_low:
-        art_modifier = ", cinematic visual consistency, realistic lighting, fine textures, 4k"
-    elif m_low == "midjourney":
-        art_modifier = ", cinematic film still, 35mm photograph, deep shadows, atmospheric, 8k, photorealistic"
-    elif m_low == "anime":
-        art_modifier = ", makoto shinkai anime style, beautiful vibrant colors, masterwork, 4k"
-    elif m_low == "3d_pixar":
-        art_modifier = ", cute 3D character design, disney pixar render, soft volumetric lighting, octane 8k"
+    valid_aspects = ["1:1", "16:9", "9:16", "4:3", "3:4", "21:9"]
+    chosen_aspect = aspect if aspect in valid_aspects else "1:1"
+
+    m_low = (model or "").lower()
+    if any(k in m_low for k in ("gpt", "sunburst")):
+        target_model = "gpt-image-2.5-sunburst" if "sunburst" in m_low else "gpt-image-2"
+    elif any(k in m_low for k in ("pro", "ultra", "banana")):
+        target_model = "gemini-3-pro-image"
     else:
-        art_modifier = ", ultra sharp focus, 8k resolution, masterwork photograph, high dynamic range"
-        
-    full_prompt = f"{en_prompt}{art_modifier}"
-    encoded = urllib.parse.quote(full_prompt)
-    seed = random.randint(100, 99999)
+        target_model = "gemini-2.5-flash-image"
 
-    req_headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
-    }
+    keys = get_all_elevenlabs_keys()
+    if not keys:
+        raise ValueError("No ElevenLabs API keys configured in environment pool.")
 
-    # 1. Try Pollinations neural engine with standard parameters (without breaking flags)
+    last_error = None
+    for key in keys:
+        # Check cooldown
+        if _key_cooldowns.get(key, 0) > time.time():
+            continue
+
+        headers = {
+            "xi-api-key": key,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model_id": target_model,
+            "prompt": en_prompt,
+            "aspect_ratio": chosen_aspect
+        }
+
+        try:
+            logger.info("Calling ElevenLabs Flows Image API (%s, aspect=%s) with key %s...", target_model, chosen_aspect, key[:8])
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    "https://api.elevenlabs.io/v1/flows/image",
+                    headers=headers,
+                    json=payload,
+                    timeout=aiohttp.ClientTimeout(total=25)
+                ) as post_resp:
+                    if post_resp.status != 200:
+                        err_text = await post_resp.text()
+                        logger.warning("ElevenLabs key %s returned status %d: %s", key[:8], post_resp.status, err_text)
+                        if post_resp.status in (401, 429):
+                            mark_key_rate_limited(key, cooldown_seconds=600)
+                        last_error = f"HTTP {post_resp.status}: {err_text}"
+                        continue
+
+                    data = await post_resp.json()
+                    gen_id = data.get("id")
+                    if not gen_id:
+                        last_error = "No generation ID returned by ElevenLabs"
+                        continue
+
+                # Poll generation status until completed
+                start_time = asyncio.get_event_loop().time()
+                while asyncio.get_event_loop().time() - start_time < 45:
+                    await asyncio.sleep(1.8)
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(
+                            f"https://api.elevenlabs.io/v1/flows/image/{gen_id}",
+                            headers=headers,
+                            timeout=aiohttp.ClientTimeout(total=15)
+                        ) as check_resp:
+                            if check_resp.status != 200:
+                                continue
+                            cdata = await check_resp.json()
+                            status = cdata.get("status")
+                            if status == "completed":
+                                content_url = cdata.get("content_url")
+                                if not content_url:
+                                    break
+                                async with session.get(content_url, timeout=aiohttp.ClientTimeout(total=30)) as dl_resp:
+                                    if dl_resp.status == 200:
+                                        img_bytes = await dl_resp.read()
+                                        if len(img_bytes) > 1000:
+                                            logger.info("ElevenLabs image generated & downloaded successfully (%d bytes) with key %s", len(img_bytes), key[:8])
+                                            return img_bytes
+                            elif status in ("failed", "canceled"):
+                                logger.warning("ElevenLabs generation %s failed: %s", gen_id, cdata)
+                                last_error = f"Generation failed: {cdata}"
+                                break
+
+        except Exception as e:
+            logger.warning("ElevenLabs key %s error: %s. Trying next key in pool...", key[:8], e)
+            last_error = str(e)
+            continue
+
+    # Fallback to high-speed FLUX model if ElevenLabs keys are busy
     try:
-        url = f"https://image.pollinations.ai/prompt/{encoded}?seed={seed}"
-        async with aiohttp.ClientSession(headers=req_headers, timeout=aiohttp.ClientTimeout(total=30)) as session:
-            async with session.get(url) as resp:
+        logger.info("Attempting FLUX neural fallback for '%s'...", en_prompt)
+        seed = random.randint(100, 99999)
+        url = f"https://image.pollinations.ai/prompt/{urllib.parse.quote(en_prompt)}?model=flux&seed={seed}&nologo=true"
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=20)) as session:
+            async with session.get(url, headers={"User-Agent": "Mozilla/5.0"}) as resp:
                 if resp.status == 200:
                     data = await resp.read()
                     if len(data) > 3000:
-                        if aspect in ("9:16", "16:9", "3:4", "4:3"):
-                            try:
-                                import io
-                                from PIL import Image
-                                im = Image.open(io.BytesIO(data))
-                                w, h = im.size
-                                if aspect == "9:16":
-                                    target_w = int(h * 9 / 16)
-                                    left = max(0, (w - target_w) // 2)
-                                    im = im.crop((left, 0, left + target_w, h))
-                                elif aspect == "16:9":
-                                    target_h = int(w * 9 / 16)
-                                    top = max(0, (h - target_h) // 2)
-                                    im = im.crop((0, top, w, top + target_h))
-                                elif aspect == "3:4":
-                                    target_w = int(h * 3 / 4)
-                                    left = max(0, (w - target_w) // 2)
-                                    im = im.crop((left, 0, left + target_w, h))
-                                elif aspect == "4:3":
-                                    target_h = int(w * 3 / 4)
-                                    top = max(0, (h - target_h) // 2)
-                                    im = im.crop((0, top, w, top + target_h))
-                                buf = io.BytesIO()
-                                im.save(buf, format="JPEG", quality=95)
-                                return buf.getvalue()
-                            except Exception as pe:
-                                logger.warning("PIL crop error, returning standard image: %s", pe)
                         return data
-    except Exception as e:
-        logger.warning("Primary neural image generation failed: %s. Initiating exact match fallback...", e)
+    except Exception as fe:
+        logger.warning("FLUX fallback error: %s", fe)
 
-    # 2. Exact-match high-res image fallback
-    matched_img = await fetch_prompt_matched_image(en_prompt)
-    if matched_img and len(matched_img) > 5000:
-        logger.info("Delivered exact prompt-matched image for '%s' (bytes: %d)", en_prompt, len(matched_img))
-        return matched_img
-
-    raise ValueError("Image generation service temporarily busy. Please retry in a few moments.")
+    raise ValueError(f"Image generation failed across all available keys: {last_error or 'Service busy'}")
 
 # --- 6. AI Video Generation (All 19 ElevenLabs Video Models Supported) ---
 

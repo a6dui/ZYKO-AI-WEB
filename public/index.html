@@ -645,8 +645,8 @@
           <!-- Token balance pill -->
           <div onclick="switchTab('profile'); switchUserSubtab('tokens');" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition">
             <span class="text-amber-400 font-black text-xs">⚡</span>
-            <span id="header-user-tokens" class="text-xs font-black text-white">5,5</span>
-            <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">FREE</span>
+            <span id="header-user-tokens" class="text-xs font-black text-white">500 000</span>
+            <span id="header-user-tier" class="text-[9px] font-bold text-stone-400 uppercase tracking-wider ml-0.5">MAX</span>
           </div>
 
           <!-- Avatar with Dropdown (Screenshot 4) -->
@@ -660,10 +660,10 @@
             <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-11 w-56 bg-[#1a1615] border border-white/15 rounded-2xl shadow-2xl p-2.5 z-50">
               <div class="px-2.5 py-1.5">
                 <div id="dropdown-user-handle" class="text-xs font-semibold text-stone-200 truncate">@foryafrom-em</div>
-                <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">FREE</div>
+                <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">MAX</div>
                 <div class="text-sm font-extrabold text-white flex items-center gap-1.5 mt-1.5">
                   <span class="text-amber-400">⚡</span>
-                  <span id="dropdown-user-tokens">5,5</span>
+                  <span id="dropdown-user-tokens">500 000</span>
                 </div>
               </div>
               <div class="border-t border-white/10 my-2"></div>
@@ -2638,7 +2638,7 @@
               <div class="space-y-3">
                 <div class="text-xs text-stone-400 font-medium">Subscription</div>
                 <div id="profile-card-tier" class="text-4xl font-serif-editorial tracking-widest text-[#ea580c] font-black uppercase">
-                  FREE
+                  MAX
                 </div>
                 <div>
                   <button onclick="switchUserSubtab('pricing')" class="bg-[#ea580c] hover:bg-[#f97316] text-white font-bold text-xs px-6 py-2.5 rounded-full transition shadow-lg shadow-orange-900/30 active:scale-95">
@@ -2656,7 +2656,7 @@
                   <span>Purchase Tokens</span> <span class="cursor-pointer text-stone-500">ⓘ</span>
                 </div>
                 <div class="text-3xl md:text-4xl font-extrabold text-white flex items-center gap-2">
-                  <span id="profile-card-tokens">5,5</span>
+                  <span id="profile-card-tokens">500 000</span>
                   <span class="text-amber-400">⚡</span>
                 </div>
               </div>
@@ -3722,14 +3722,14 @@
   </div>
 
   <!-- 4. TREND PREVIEW CINEMA MODAL (Real AI Video Player & Prompt Inspector) -->
-  <div id="trend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-5 modal-backdrop backdrop-blur-xl" onclick="closeTrendModal()">
-    <div class="bg-[#0f1412] border border-white/20 rounded-3xl overflow-hidden max-w-4xl w-full relative shadow-2xl flex flex-col md:flex-row max-h-[90vh]" onclick="event.stopPropagation()">
-      <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition active:scale-95" title="Close">✕</button>
+  <div id="trend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop backdrop-blur-xl" onclick="closeTrendModal()">
+    <div class="bg-[#0f1412] border border-white/20 rounded-3xl overflow-hidden max-w-5xl w-full relative shadow-2xl flex flex-col md:flex-row max-h-[92vh]" onclick="event.stopPropagation()">
+      <button onclick="closeTrendModal()" class="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition active:scale-95" title="Close">✕</button>
       
-      <!-- Video Player Viewport -->
-      <div class="md:w-3/5 bg-black flex items-center justify-center relative overflow-hidden aspect-[9/14] md:aspect-auto max-h-[55vh] md:max-h-none">
-        <video id="trend-modal-video" controls loop playsinline class="w-full h-full object-contain bg-black"></video>
-        <img id="trend-modal-img" src="" class="hidden w-full h-full object-cover" alt="Trend visual">
+      <!-- Media Viewport (Full Frame for Photo & Video) -->
+      <div id="trend-modal-media-wrap" class="md:w-3/5 w-full bg-black flex items-center justify-center relative overflow-hidden min-h-[360px] sm:min-h-[460px] md:min-h-[580px] self-stretch">
+        <video id="trend-modal-video" controls loop playsinline class="w-full h-full object-cover bg-black"></video>
+        <img id="trend-modal-img" src="" class="hidden w-full h-full object-cover block" alt="Trend visual">
       </div>
 
       <!-- Info & Actions Sidebar inside modal (NO USERNAMES) -->
@@ -6013,7 +6013,13 @@
           userDash.classList.remove('hidden');
           userDash.style.display = 'block';
         }
+        if (currentUser && currentUser.tokens != null) {
+          syncUserTokensUI(currentUser.tokens);
+        }
         switchUserSubtab('profile');
+        if (typeof checkAuthStatus === 'function') {
+          checkAuthStatus();
+        }
         window.scrollTo({ top: 0, behavior: 'instant' });
       } else {
         // In studios: mobile sub-nav is permanently hidden, studio switcher [::] button is shown on mobile
@@ -6080,18 +6086,26 @@
           }
         }
 
-        // Responsive control panel logic
-        if (window.innerWidth >= 768) {
-          if (tabId === 'agents') {
-            controlPanel.classList.add('hidden');
-          } else {
-            controlPanel.classList.remove('hidden');
-          }
-        } else {
+        // Responsive control panel logic: Hide completely on agents, trends, and profile
+        if (tabId === 'agents' || tabId === 'trends' || tabId === 'profile') {
           controlPanel.classList.add('hidden');
-        }
+          controlPanel.classList.remove('md:block');
+          controlPanel.style.display = 'none';
+          ['text', 'image', 'video', 'audio', 'toolkit'].forEach(g => {
+            const grp = document.getElementById(`control-group-${g}`);
+            if (grp) grp.classList.add('hidden');
+          });
+        } else {
+          if (window.innerWidth >= 768) {
+            controlPanel.classList.remove('hidden');
+            controlPanel.classList.add('md:block');
+            controlPanel.style.display = '';
+          } else {
+            controlPanel.classList.add('hidden');
+            controlPanel.classList.remove('md:block');
+            controlPanel.style.display = 'none';
+          }
 
-        if (tabId !== 'agents') {
           // Switch right control groups: text, image, video, audio, toolkit
           ['text', 'image', 'video', 'audio', 'toolkit'].forEach(g => {
             const grp = document.getElementById(`control-group-${g}`);
@@ -8111,11 +8125,19 @@
       if (window.innerWidth >= 768) {
         if (currentTab !== 'agents' && currentTab !== 'trends' && currentTab !== 'profile') {
           panel.classList.remove('hidden');
+          panel.classList.add('md:block');
+          panel.style.display = '';
+        } else {
+          panel.classList.add('hidden');
+          panel.classList.remove('md:block');
+          panel.style.display = 'none';
         }
         if (backdrop) backdrop.classList.add('hidden');
       } else {
         if (panel.getAttribute('data-mobile-open') !== 'true') {
           panel.classList.add('hidden');
+          panel.classList.remove('md:block');
+          panel.style.display = 'none';
         }
       }
     });
@@ -9156,6 +9178,28 @@
       return null;
     }
 
+    function syncUserTokensUI(tokens) {
+      if (tokens == null || isNaN(Number(tokens))) return;
+      const num = Math.max(0, Number(tokens));
+      const tokVal = num >= 100 ? Math.round(num).toLocaleString() : num.toString().replace('.', ',');
+
+      if (currentUser) {
+        currentUser.tokens = num;
+        try {
+          localStorage.setItem('zyko_cached_user', JSON.stringify(currentUser));
+        } catch (e) {}
+      }
+
+      const hEl = document.getElementById('header-user-tokens');
+      if (hEl) hEl.textContent = tokVal;
+
+      const dEl = document.getElementById('dropdown-user-tokens');
+      if (dEl) dEl.textContent = tokVal;
+
+      const pEl = document.getElementById('profile-card-tokens');
+      if (pEl) pEl.textContent = tokVal;
+    }
+
     function updateUserUI(user) {
       const loginBtn = document.getElementById('btn-login-header');
       const profile = document.getElementById('user-profile-header');
@@ -9174,7 +9218,7 @@
         const num = Number(user.tokens);
         tokVal = num >= 100 ? Math.round(num).toLocaleString() : num.toString().replace('.', ',');
       } else {
-        tokVal = '1 000';
+        tokVal = '500 000';
       }
 
       const rawName = user.name || (user.telegram_username ? '@' + user.telegram_username : (user.email ? user.email.split('@')[0] : 'Пользователь'));
@@ -9182,9 +9226,9 @@
       const userName = user.name || (user.telegram_username ? '@' + user.telegram_username : (user.email ? user.email.split('@')[0] : 'Пользователь'));
       const userEmail = user.email || (user.telegram_username ? '@' + user.telegram_username : (user.telegram_id ? 'Telegram ID: ' + user.telegram_id : ''));
       const userHandle = user.telegram_username ? '@' + user.telegram_username : (user.email ? '@' + user.email.split('@')[0] : (user.telegram_id ? '@id' + user.telegram_id : '@user'));
-      const userTier = (user.tier || 'Free').toUpperCase();
+      const userTier = (user.tier || 'Max').toUpperCase();
 
-      document.getElementById('header-user-tokens').textContent = tokVal;
+      syncUserTokensUI(user.tokens != null ? user.tokens : 500000);
       document.getElementById('header-user-tier').textContent = userTier;
       document.getElementById('header-user-initial').textContent = initialChar;
 
@@ -9303,37 +9347,23 @@
     function deductTokensUI(amount, description = 'AI Service Generation') {
       if (!amount || isNaN(amount) || amount <= 0) return;
 
-      let newBal = 1000;
-      // 1. Header tokens counter
-      const el = document.getElementById('header-user-tokens');
-      if (el) {
-        let cur = parseInt(el.textContent.replace(/\D/g, '')) || 1000;
-        cur = Math.max(0, cur - amount);
-        el.textContent = cur.toLocaleString();
-        newBal = cur;
+      let cur = 500000;
+      if (currentUser && currentUser.tokens != null) {
+        cur = Number(currentUser.tokens);
+      } else {
+        const el = document.getElementById('header-user-tokens');
+        if (el) {
+          cur = parseInt(el.textContent.replace(/\D/g, '')) || 500000;
+        }
       }
 
-      // 2. Profile card tokens counter
-      const pTokens = document.getElementById('profile-card-tokens');
-      if (pTokens) {
-        let pCur = parseInt(pTokens.textContent.replace(/\D/g, '')) || 0;
-        pCur = Math.max(0, pCur - amount);
-        pTokens.textContent = pCur.toLocaleString();
-        newBal = pCur;
-      }
+      const newBal = Math.max(0, cur - Number(amount));
+      syncUserTokensUI(newBal);
 
-      // 3. Dropdown user tokens
-      const dTokens = document.getElementById('dropdown-user-tokens');
-      if (dTokens) {
-        let dCur = parseInt(dTokens.textContent.replace(/\D/g, '')) || 0;
-        dCur = Math.max(0, dCur - amount);
-        dTokens.textContent = dCur.toLocaleString();
-      }
-
-      // 4. Record expenditure in plan usage limits
+      // Record expenditure in plan usage limits
       recordUsageLimitExpenditure(amount);
 
-      // 5. Record in local token history
+      // Record in local token history
       if (typeof recordLocalTokenHistory === 'function') {
         recordLocalTokenHistory({
           type: 'used',
@@ -9343,6 +9373,13 @@
           created_at: new Date().toISOString()
         });
       }
+
+      // Sync with server DB in background
+      setTimeout(() => {
+        if (typeof checkAuthStatus === 'function') {
+          checkAuthStatus();
+        }
+      }, 1500);
     }
 
     async function handleLogout() {
@@ -10159,17 +10196,23 @@
           video.src = t.videoUrl;
           video.poster = t.posterUrl;
           video.classList.remove('hidden');
+          video.style.display = 'block';
           video.play().catch(() => {});
         }
-        if (img) img.classList.add('hidden');
+        if (img) {
+          img.classList.add('hidden');
+          img.style.display = 'none';
+        }
       } else {
         if (video) {
           video.pause();
           video.classList.add('hidden');
+          video.style.display = 'none';
         }
         if (img) {
           img.src = t.posterUrl;
           img.classList.remove('hidden');
+          img.style.display = 'block';
         }
       }
 
@@ -10756,14 +10799,26 @@
       }
     });
   
-    // --- USER PROFILE & DASHBOARD LOGIC (SCREENSHOTS 1, 2, 3, 4) ---
     function toggleAvatarDropdown(e) {
       if (e) e.stopPropagation();
       closeStudioSwitcher();
       closeNotificationDrawer();
       closeBurgerDropdown();
       const menu = document.getElementById('avatar-dropdown-menu');
-      if (menu) menu.classList.toggle('hidden');
+      if (menu) {
+        menu.classList.toggle('hidden');
+        if (!menu.classList.contains('hidden')) {
+          if (currentUser && currentUser.tokens != null) {
+            syncUserTokensUI(currentUser.tokens);
+          } else {
+            const hVal = document.getElementById('header-user-tokens')?.textContent;
+            if (hVal) {
+              const dTokens = document.getElementById('dropdown-user-tokens');
+              if (dTokens) dTokens.textContent = hVal;
+            }
+          }
+        }
+      }
     }
 
     function closeAvatarDropdown() {
@@ -11263,6 +11318,9 @@
         }
       });
       if (subtab === 'profile') {
+        if (currentUser && currentUser.tokens != null) {
+          syncUserTokensUI(currentUser.tokens);
+        }
         renderUsageLimitsUI();
         refreshUsageLimits(false);
       }
@@ -11302,15 +11360,22 @@
     // =========================================================================
     const USAGE_TIER_LIMITS = {
       'Free': { session: 150, weekly: 600 },
+      'FREE': { session: 150, weekly: 600 },
       'Basic': { session: 500, weekly: 2000 },
+      'BASIC': { session: 500, weekly: 2000 },
       'Pro': { session: 1200, weekly: 5000 },
+      'PRO': { session: 1200, weekly: 5000 },
       'VIP': { session: 3000, weekly: 12000 },
       'Elite': { session: 5000, weekly: 20000 },
-      'Ultra Elite': { session: 8000, weekly: 30000 }
+      'ELITE': { session: 5000, weekly: 20000 },
+      'Ultra Elite': { session: 8000, weekly: 30000 },
+      'ULTRA ELITE': { session: 8000, weekly: 30000 },
+      'Max': { session: 10000, weekly: 50000 },
+      'MAX': { session: 10000, weekly: 50000 }
     };
 
     let usageLimitsState = {
-      tier: 'Free',
+      tier: 'MAX',
       sessionSpent: 0,
       weeklySpent: 0,
       lastUpdated: Date.now()
@@ -11363,13 +11428,14 @@
       loadLocalUsageLimits();
       
       const pTierEl = document.getElementById('profile-card-tier');
-      let currentTier = (pTierEl && pTierEl.textContent.trim()) || usageLimitsState.tier || 'Free';
+      let currentTier = (pTierEl && pTierEl.textContent.trim()) || (currentUser && currentUser.tier) || usageLimitsState.tier || 'MAX';
       if (!USAGE_TIER_LIMITS[currentTier]) {
-        currentTier = 'Free';
+        const found = Object.keys(USAGE_TIER_LIMITS).find(k => k.toLowerCase() === currentTier.toLowerCase());
+        currentTier = found || 'MAX';
       }
       usageLimitsState.tier = currentTier;
 
-      const limits = USAGE_TIER_LIMITS[currentTier] || USAGE_TIER_LIMITS['Free'];
+      const limits = USAGE_TIER_LIMITS[currentTier] || USAGE_TIER_LIMITS['MAX'];
       const sessionLimit = limits.session;
       const weeklyLimit = limits.weekly;
       const sessionSpent = Math.max(0, usageLimitsState.sessionSpent || 0);
@@ -11389,9 +11455,9 @@
       const sStatusEl = document.getElementById('usage-session-status');
       if (sStatusEl) {
         if (sessionSpent === 0) {
-          sStatusEl.textContent = 'Not started';
+          sStatusEl.textContent = `0 / ${sessionLimit.toLocaleString()} ⚡ used`;
         } else {
-          sStatusEl.textContent = `${sessionSpent} / ${sessionLimit.toLocaleString()} ⚡ used`;
+          sStatusEl.textContent = `${sessionSpent.toLocaleString()} / ${sessionLimit.toLocaleString()} ⚡ used`;
         }
       }
 
@@ -11406,9 +11472,9 @@
       const wStatusEl = document.getElementById('usage-weekly-status');
       if (wStatusEl) {
         if (weeklySpent === 0) {
-          wStatusEl.textContent = 'Not started';
+          wStatusEl.textContent = `0 / ${weeklyLimit.toLocaleString()} ⚡ used`;
         } else {
-          wStatusEl.textContent = `${weeklySpent} / ${weeklyLimit.toLocaleString()} ⚡ used`;
+          wStatusEl.textContent = `${weeklySpent.toLocaleString()} / ${weeklyLimit.toLocaleString()} ⚡ used`;
         }
       }
 
@@ -11433,9 +11499,11 @@
         if (res.ok) {
           const data = await res.json();
           if (data && data.success && data.stats) {
-            usageLimitsState.tier = data.stats.tier || usageLimitsState.tier || 'Free';
-            usageLimitsState.sessionSpent = Math.max(usageLimitsState.sessionSpent || 0, data.stats.session_spent || 0);
-            usageLimitsState.weeklySpent = Math.max(usageLimitsState.weeklySpent || 0, data.stats.weekly_spent || 0);
+            usageLimitsState.tier = data.stats.tier || usageLimitsState.tier || 'MAX';
+            const sSpent = Number(data.stats.session_spent) || 0;
+            const wSpent = Number(data.stats.weekly_spent) || 0;
+            usageLimitsState.sessionSpent = Math.max(usageLimitsState.sessionSpent || 0, sSpent);
+            usageLimitsState.weeklySpent = Math.max(usageLimitsState.weeklySpent || 0, wSpent);
             usageLimitsState.lastUpdated = Date.now();
             saveLocalUsageLimits();
           }
