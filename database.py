@@ -119,6 +119,10 @@ async def init_db():
             await db.execute("ALTER TABLE users ADD COLUMN referred_by INTEGER")
         except Exception:
             pass
+        try:
+            await db.execute("ALTER TABLE transactions ADD COLUMN receipt_url TEXT")
+        except Exception:
+            pass
 
         # Create referral rewards system table
         await db.execute("""
@@ -369,16 +373,16 @@ async def deduct_tokens(user_id: int, cost: int) -> bool:
         await db.commit()
         return True
 
-async def create_transaction(user_id: int, provider: str, order_id: str, amount: float, currency: str, tokens: int, tier: str) -> None:
+async def create_transaction(user_id: int, provider: str, order_id: str, amount: float, currency: str, tokens: int, tier: str, receipt_url: str = None) -> None:
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("""
             INSERT OR REPLACE INTO transactions 
-            (user_id, provider, order_id, amount, currency, tokens_credited, tier_activated, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
-        """, (user_id, provider, order_id, amount, currency, tokens, tier))
+            (user_id, provider, order_id, amount, currency, tokens_credited, tier_activated, status, receipt_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+        """, (user_id, provider, order_id, amount, currency, tokens, tier, receipt_url))
         await db.commit()
 
-async def complete_transaction(order_id: str) -> dict:
+async def complete_transaction(order_id: str, receipt_url: str = None) -> dict:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         async with db.execute("SELECT * FROM transactions WHERE order_id = ?", (order_id,)) as cursor:
@@ -387,9 +391,16 @@ async def complete_transaction(order_id: str) -> dict:
                 return None
             tx = dict(row)
             if tx["status"] == "completed":
+                if receipt_url and not tx.get("receipt_url"):
+                    await db.execute("UPDATE transactions SET receipt_url = ? WHERE order_id = ?", (receipt_url, order_id))
+                    await db.commit()
                 return tx
 
-        await db.execute("UPDATE transactions SET status = 'completed' WHERE order_id = ?", (order_id,))
+        if receipt_url:
+            await db.execute("UPDATE transactions SET status = 'completed', receipt_url = ? WHERE order_id = ?", (receipt_url, order_id))
+        else:
+            await db.execute("UPDATE transactions SET status = 'completed' WHERE order_id = ?", (order_id,))
+
         if tx["user_id"]:
             await db.execute(
                 "UPDATE users SET tokens = tokens + ?, tier = COALESCE(?, tier) WHERE id = ?",
@@ -416,6 +427,20 @@ async def complete_transaction(order_id: str) -> dict:
 
         await db.commit()
         return tx
+
+async def get_user_transactions(user_id: int) -> list:
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute(
+            """SELECT id, provider, order_id, amount, currency, tokens_credited, 
+                      tier_activated, status, receipt_url, created_at 
+               FROM transactions 
+               WHERE user_id = ? 
+               ORDER BY id DESC""",
+            (user_id,)
+        ) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
 
 async def log_generation(user_id: int, model: str, prompt: str, result_url: str, cost: int):
     async with aiosqlite.connect(DB_PATH) as db:

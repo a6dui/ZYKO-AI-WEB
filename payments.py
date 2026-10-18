@@ -89,7 +89,8 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
     if not STRIPE_SECRET_KEY:
         # Mock mode if key not provided
         order_id = f"mock_stripe_{user_id}_{int(os.times()[4])}"
-        await create_transaction(user_id, "stripe", order_id, unit_price, "EUR", plan["tokens"], plan_name)
+        mock_receipt = f"{origin_url}/#receipt-{order_id}"
+        await create_transaction(user_id, "stripe", order_id, unit_price, "EUR", plan["tokens"], plan_name, receipt_url=mock_receipt)
         return {
             "url": f"{origin_url}/?payment=success&order_id={order_id}&plan={plan_name}",
             "mock": True
@@ -109,9 +110,21 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
         else:
             card_image_url = f"https://raw.githubusercontent.com/a6dui/ZYKO-AI-WEB/main/public/cards/card_{card_slug}.png"
 
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
+        customer_id = None
+        if user_email:
+            try:
+                existing_customers = stripe.Customer.list(email=user_email, limit=1)
+                if existing_customers and existing_customers.data:
+                    customer_id = existing_customers.data[0].id
+                else:
+                    new_cust = stripe.Customer.create(email=user_email, metadata={"user_id": str(user_id)})
+                    customer_id = new_cust.id
+            except Exception as cust_err:
+                logger.warning("Could not resolve Stripe customer for %s: %s", user_email, cust_err)
+
+        session_params = {
+            "payment_method_types": ["card"],
+            "line_items": [{
                 "price_data": {
                     "currency": "eur",
                     "product_data": {
@@ -123,18 +136,23 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
                 },
                 "quantity": 1,
             }],
-            mode="payment",
-            customer_email=user_email if user_email else None,
-            client_reference_id=str(user_id),
-            metadata={
+            "mode": "payment",
+            "client_reference_id": str(user_id),
+            "metadata": {
                 "user_id": str(user_id),
                 "plan_name": plan_name,
                 "tokens": str(plan["tokens"]),
                 "cycle": cycle
             },
-            success_url=f"{origin_url}/?payment=success&session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{origin_url}/?payment=cancelled",
-        )
+            "success_url": f"{origin_url}/?payment=success&session_id={{CHECKOUT_SESSION_ID}}",
+            "cancel_url": f"{origin_url}/?payment=cancelled",
+        }
+        if customer_id:
+            session_params["customer"] = customer_id
+        elif user_email:
+            session_params["customer_email"] = user_email
+
+        session = stripe.checkout.Session.create(**session_params)
         
         await create_transaction(user_id, "stripe", session.id, unit_price, "EUR", plan["tokens"], plan_name)
         return {
@@ -147,6 +165,26 @@ async def create_stripe_checkout(user_id: int, user_email: str, plan_name: str, 
         logger.error("Stripe Checkout error: %s", e)
         raise e
 
+async def create_stripe_customer_portal_session(user_id: int, user_email: str, return_url: str) -> str:
+    """
+    Creates a Stripe Billing Customer Portal session allowing users to view all
+    official Stripe receipts, update payment cards, and manage invoices.
+    """
+    if not STRIPE_SECRET_KEY or not user_email:
+        return None
+    try:
+        customers = stripe.Customer.list(email=user_email, limit=1)
+        if not customers or not customers.data:
+            return None
+        portal = stripe.billing_portal.Session.create(
+            customer=customers.data[0].id,
+            return_url=return_url
+        )
+        return portal.url
+    except Exception as e:
+        logger.error("Stripe Customer Portal error: %s", e)
+        return None
+
 async def handle_stripe_webhook_payload(payload: bytes, sig_header: str) -> bool:
     if not STRIPE_SECRET_KEY or not STRIPE_WEBHOOK_SECRET:
         logger.warning("Stripe webhook received but keys not configured.")
@@ -156,8 +194,18 @@ async def handle_stripe_webhook_payload(payload: bytes, sig_header: str) -> bool
         if event["type"] == "checkout.session.completed":
             session = event["data"]["object"]
             order_id = session.get("id")
-            await complete_transaction(order_id)
-            logger.info("Stripe payment completed for session %s", order_id)
+            receipt_url = None
+            payment_intent_id = session.get("payment_intent")
+            if payment_intent_id:
+                try:
+                    pi = stripe.PaymentIntent.retrieve(payment_intent_id, expand=["latest_charge"])
+                    if hasattr(pi, "latest_charge") and pi.latest_charge:
+                        receipt_url = getattr(pi.latest_charge, "receipt_url", None)
+                except Exception as pi_err:
+                    logger.warning("Could not retrieve receipt_url for session %s: %s", order_id, pi_err)
+
+            await complete_transaction(order_id, receipt_url=receipt_url)
+            logger.info("Stripe payment completed for session %s (receipt: %s)", order_id, receipt_url)
             return True
         return True
     except Exception as e:

@@ -46,11 +46,13 @@ from database import (
     get_user_generations,
     get_user_token_history,
     set_user_referrer,
-    get_user_referrals_stats
+    get_user_referrals_stats,
+    get_user_transactions
 )
 from auth import create_access_token, decode_access_token, verify_google_id_token, verify_telegram_auth, verify_telegram_webapp_data, hash_password, verify_password, GOOGLE_CLIENT_ID
 from payments import (
     create_stripe_checkout,
+    create_stripe_customer_portal_session,
     handle_stripe_webhook_payload,
     create_platega_payment,
     handle_platega_webhook_payload,
@@ -721,7 +723,35 @@ async def handle_user_token_history(request: web.Request):
     history = await get_user_token_history(user["id"], filter_type)
     return web.json_response({"success": True, "history": history})
 
+async def handle_user_invoices(request: web.Request):
+    user = await get_current_user(request)
+    if not user:
+        user = await get_or_create_demo_user()
+    user_id = user["id"]
+    invoices = await get_user_transactions(user_id)
+    return web.json_response({"success": True, "invoices": invoices})
+
 # --- Payments ---
+
+async def handle_stripe_customer_portal(request: web.Request):
+    try:
+        user = await get_current_user(request)
+        if not user:
+            user = await get_or_create_demo_user()
+        user_id = user["id"]
+        user_email = user.get("email", "")
+        origin = f"{request.scheme}://{request.host}"
+        return_url = f"{origin}/#dashboard"
+        portal_url = await create_stripe_customer_portal_session(user_id, user_email, return_url)
+        if portal_url:
+            return web.json_response({"success": True, "url": portal_url})
+        return web.json_response({
+            "success": False, 
+            "message": "Активная подписка Stripe не обнаружена для вашего аккаунта."
+        }, status=404)
+    except Exception as e:
+        logger.error("Stripe customer portal error: %s", e)
+        return web.json_response({"error": str(e)}, status=500)
 
 async def handle_stripe_create_checkout(request: web.Request):
     try:
@@ -1655,9 +1685,11 @@ def create_app():
     app.router.add_get("/api/user/generations", handle_user_generations)
     app.router.add_get("/api/user/token-history", handle_user_token_history)
     app.router.add_get("/api/user/referrals", handle_user_referrals)
+    app.router.add_get("/api/user/invoices", handle_user_invoices)
     
     # Payments & Webhooks
     app.router.add_post("/api/payments/stripe/create-checkout", handle_stripe_create_checkout)
+    app.router.add_post("/api/payments/stripe/customer-portal", handle_stripe_customer_portal)
     app.router.add_post("/api/payments/stripe/webhook", handle_stripe_webhook)
     app.router.add_post("/api/payments/platega/create-invoice", handle_platega_create)
     app.router.add_post("/api/payments/platega/webhook", handle_platega_webhook)
