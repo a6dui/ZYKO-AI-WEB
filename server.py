@@ -9,6 +9,7 @@ import uuid
 import aiohttp
 from aiohttp import web
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -289,7 +290,7 @@ async def handle_public_config(request: web.Request):
         "plans": PLANS,
         "costs": {
             "image": int(settings.get("cost_image", 12)),
-            "video": int(settings.get("cost_video", 25)),
+            "video": int(settings.get("cost_video", 35)),
             "music": int(settings.get("cost_music", 20)),
             "tts": int(settings.get("cost_tts", 2)),
             "clone": int(settings.get("cost_clone", 50)),
@@ -1229,8 +1230,7 @@ async def handle_generate_image(request: web.Request):
         quality_str = str(data.get("quality", "")).lower()
         aspect_str = str(aspect).lower()
         is_pro_or_4k = "4k" in quality_str or "4k" in aspect_str or any(k in model_str for k in ["pro", "ultra", "gpt", "gemini-3", "recraft"])
-        base_cost = 24 if is_pro_or_4k else 12
-        cost = await get_generation_cost("image", base_cost)
+        cost = 24 if is_pro_or_4k else 12
         
         user, err_resp = await authorize_user_or_guest(request, cost, "генерации фото")
         if err_resp:
@@ -1249,6 +1249,58 @@ async def handle_generate_image(request: web.Request):
         logger.error("Image generation error: %s", e)
         return web.json_response({"error": str(e)}, status=500)
 
+def calculate_video_cost(duration: str, resolution: str, model: str) -> int:
+    """
+    Dynamic video pricing grid:
+    - Short (5.0s / 4.0s): cheap, 20-100 ZK (25-45 ZK for 720p, 55-75 ZK for 1080p, 90-100 ZK for 4K)
+    - Medium (10.0s): standard, 95-380 ZK
+    - Long (15.0s+ / 30s): high quality cinematic, 300-500 ZK (340-380 ZK for 1080p, 480-500 ZK for 4K)
+    """
+    dur = str(duration or "10.0s").lower()
+    res = str(resolution or "720").lower()
+    m = str(model or "").lower()
+
+    ultra_keywords = [
+        "sora", "veo", "seedance_2_5", "kling_3_pro", "flux_3",
+        "gemini_omni", "wan_2_6", "gen_4_5", "ultra", "pro_master"
+    ]
+    mini_keywords = [
+        "mini", "background", "fast", "topaz", "low_cost", "ltx"
+    ]
+
+    is_ultra = any(k in m for k in ultra_keywords)
+    is_mini = not is_ultra and any(k in m for k in mini_keywords)
+
+    sec_match = re.search(r"(\d+(?:\.\d+)?)", dur)
+    seconds = float(sec_match.group(1)) if sec_match else 10.0
+
+    is_short = seconds <= 6.0 or any(k in dur for k in ["quick", "short"])
+    is_long = seconds >= 14.0 or any(k in dur for k in ["long", "extend", "cinema"])
+    is_4k = "4k" in res or "2160" in res or "uhd" in res
+    is_1080 = "1080" in res or "fhd" in res
+
+    if is_short:
+        if is_4k:
+            return 100 if is_ultra else 90
+        elif is_1080:
+            return 75 if is_ultra else (55 if is_mini else 60)
+        else:
+            return 45 if is_ultra else (25 if is_mini else 35)
+    elif is_long:
+        if is_4k:
+            return 500 if is_ultra else 480
+        elif is_1080:
+            return 380 if is_ultra else (300 if is_mini else 340)
+        else:
+            return 260 if is_ultra else (190 if is_mini else 220)
+    else:
+        if is_4k:
+            return 380 if is_ultra else (310 if is_mini else 340)
+        elif is_1080:
+            return 240 if is_ultra else (180 if is_mini else 200)
+        else:
+            return 140 if is_ultra else (95 if is_mini else 110)
+
 async def handle_generate_video(request: web.Request):
     try:
         m_block = await check_maintenance_blocked(request)
@@ -1258,18 +1310,14 @@ async def handle_generate_video(request: web.Request):
         prompt = data.get("prompt", "").strip()
         aspect = data.get("aspect", "9:16")
         duration = data.get("duration", "10.0s")
+        resolution = data.get("resolution") or data.get("res") or "720"
         model = data.get("model", "kling")
         image_url = data.get("image_url") or data.get("image") or ""
         
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
-        # Dynamic pricing: standard duration (4s/5s) is 25 ZK, long video (8s/10s/15s) or HD/Pro models is 50 ZK (~2x)
-        duration_str = str(duration).lower()
-        model_str = str(model).lower()
-        is_long_or_hd = any(k in duration_str for k in ["8", "10", "15", "long"]) or any(k in model_str for k in ["pro", "ultra", "hd", "sora", "veo", "wan"])
-        base_cost = 50 if is_long_or_hd else 25
-        cost = await get_generation_cost("video", base_cost)
+        cost = calculate_video_cost(duration, resolution, model)
         
         user, err_resp = await authorize_user_or_guest(request, cost, "генерации видео")
         if err_resp:

@@ -1794,7 +1794,7 @@
                     <option value="9:16">9:16 Portrait</option>
                     <option value="1:1">1:1 Square</option>
                   </select>
-                  <select id="video-res-pill" onchange="updateVideoCostUI()" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                  <select id="video-res-pill" onchange="syncVideoResolution(this.value)" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="720" selected>720</option>
                     <option value="1080">1080</option>
                     <option value="4K">4K</option>
@@ -1817,9 +1817,9 @@
                   <button type="button" onclick="handleVoiceInput('video')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-stone-300 hover:text-emerald-400 flex items-center justify-center text-sm transition" title="Voice Input">
                     <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                   </button>
-                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm" title="Стоимость генерации видео: 25 ZK">
+                  <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm" title="Стоимость генерации видео">
                     <span class="text-[10px] text-stone-400 font-medium">Стоимость:</span>
-                    <span id="video-token-cost">25</span>
+                    <span id="video-token-cost">140</span>
                     <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span>
                   </div>
                   <button type="button" onclick="sendGenerateVideo()" id="btn-generate-video" class="w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold flex items-center justify-center text-sm transition shadow-lg active:scale-95" title="Generate Video">
@@ -2531,9 +2531,20 @@
                 <span id="video-panel-dur-badge" class="text-emerald-400 font-mono text-[10px] font-bold">10.0s</span>
               </div>
               <select id="video-panel-duration" onchange="syncVideoDuration(this.value)" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
-                <option value="5.0s">5.0s (Quick Clip)</option>
+                <option value="5.0s">5.0s (Quick Clip • 20-100 ZK)</option>
                 <option value="10.0s" selected>10.0s (Standard Studio)</option>
-                <option value="15.0s">15.0s (Extended Cinema)</option>
+                <option value="15.0s">15.0s (Extended Cinema • 300-500 ZK)</option>
+              </select>
+            </div>
+            <div class="space-y-1.5 mt-3">
+              <div class="flex items-center justify-between text-[11px] text-stone-400">
+                <span>Качество / Разрешение</span>
+                <span id="video-panel-res-badge" class="text-emerald-400 font-mono text-[10px] font-bold">720</span>
+              </div>
+              <select id="video-panel-res" onchange="syncVideoResolution(this.value)" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
+                <option value="720" selected>720p (HD • Экономно)</option>
+                <option value="1080">1080p (Full HD • Высокое качество)</option>
+                <option value="4K">4K (Ultra HD • Кинематографичное)</option>
               </select>
             </div>
           </div>
@@ -7889,6 +7900,9 @@
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeVideoModelKey || 'seedance_2_5');
             mobModelName.textContent = document.getElementById('active-video-name')?.textContent || 'Seedance 2.5';
             mobModelSub.textContent = document.getElementById('active-video-sub')?.textContent || 'Bytedance';
+            if (typeof updateVideoCostUI === 'function') {
+              updateVideoCostUI();
+            }
             if (typeof renderVideoStudioGallery === 'function') {
               renderVideoStudioGallery();
             }
@@ -7896,6 +7910,9 @@
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'nano_banana_pro');
             mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Nano Banana Pro';
             mobModelSub.textContent = document.getElementById('active-image-sub')?.textContent || 'Google';
+            if (typeof updateImageCostUI === 'function') {
+              updateImageCostUI();
+            }
           } else if (tabId === 'text') {
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon('gemini');
             mobModelName.textContent = document.getElementById('active-text-name')?.textContent || 'Gemini';
@@ -8312,12 +8329,46 @@
     }
 
     // Dynamic Pricing Controllers for Video & Image Studios
+    function calculateVideoCost(duration, resolution, modelKey) {
+      const dur = String(duration || '10.0s').toLowerCase();
+      const res = String(resolution || '720').toLowerCase();
+      const m = String(modelKey || '').toLowerCase();
+
+      const ultraKeywords = ['sora', 'veo', 'seedance_2_5', 'kling_3_pro', 'flux_3', 'gemini_omni', 'wan_2_6', 'gen_4_5', 'ultra', 'pro_master'];
+      const miniKeywords = ['mini', 'background', 'fast', 'topaz', 'low_cost', 'ltx'];
+
+      const isUltra = ultraKeywords.some(k => m.includes(k));
+      const isMini = !isUltra && miniKeywords.some(k => m.includes(k));
+
+      const secMatch = dur.match(/(\d+(?:\.\d+)?)/);
+      const seconds = secMatch ? parseFloat(secMatch[1]) : 10.0;
+
+      const isShort = seconds <= 6.0 || dur.includes('quick') || dur.includes('short');
+      const isLong = seconds >= 14.0 || dur.includes('long') || dur.includes('extend') || dur.includes('cinema');
+
+      const is4K = res.includes('4k') || res.includes('2160') || res.includes('uhd');
+      const is1080 = res.includes('1080') || res.includes('fhd');
+
+      if (isShort) {
+        if (is4K) return isUltra ? 100 : 90;
+        if (is1080) return isUltra ? 75 : (isMini ? 55 : 60);
+        return isUltra ? 45 : (isMini ? 25 : 35);
+      } else if (isLong) {
+        if (is4K) return isUltra ? 500 : 480;
+        if (is1080) return isUltra ? 380 : (isMini ? 300 : 340);
+        return isUltra ? 260 : (isMini ? 190 : 220);
+      } else {
+        if (is4K) return isUltra ? 380 : (isMini ? 310 : 340);
+        if (is1080) return isUltra ? 240 : (isMini ? 180 : 200);
+        return isUltra ? 140 : (isMini ? 95 : 110);
+      }
+    }
+
     function updateVideoCostUI() {
-      const dur = (document.getElementById('video-duration-pill')?.value || '').toLowerCase();
-      const res = (document.getElementById('video-res-pill')?.value || '').toLowerCase();
-      const model = (activeVideoModelKey || 'seedance_2_5').toLowerCase();
-      const isLongOrHd = dur.includes('8') || dur.includes('10') || dur.includes('15') || res.includes('1080') || res.includes('4k') || model.includes('pro') || model.includes('ultra') || model.includes('wan') || model.includes('veo') || model.includes('sora');
-      const cost = isLongOrHd ? 50 : 25;
+      const dur = document.getElementById('video-duration-pill')?.value || '10.0s';
+      const res = document.getElementById('video-res-pill')?.value || '720';
+      const model = activeVideoModelKey || 'seedance_2_5';
+      const cost = calculateVideoCost(dur, res, model);
       const costEl = document.getElementById('video-token-cost');
       if (costEl) costEl.textContent = cost;
       const badge = costEl ? costEl.closest('[title]') : null;
@@ -8337,12 +8388,23 @@
       return cost;
     }
 
-    // Synchronization helper for video durations across top pills and right parameter drawer
+    // Synchronization helpers for video durations & resolutions across pills and drawer
     function syncVideoDuration(val) {
       if (!val) return;
       const p1 = document.getElementById('video-duration-pill');
       const p2 = document.getElementById('video-panel-duration');
       const badge = document.getElementById('video-panel-dur-badge');
+      if (p1 && p1.value !== val) p1.value = val;
+      if (p2 && p2.value !== val) p2.value = val;
+      if (badge) badge.textContent = val;
+      updateVideoCostUI();
+    }
+
+    function syncVideoResolution(val) {
+      if (!val) return;
+      const p1 = document.getElementById('video-res-pill');
+      const p2 = document.getElementById('video-panel-res');
+      const badge = document.getElementById('video-panel-res-badge');
       if (p1 && p1.value !== val) p1.value = val;
       if (p2 && p2.value !== val) p2.value = val;
       if (badge) badge.textContent = val;
@@ -8481,6 +8543,7 @@
 
       const aspect = document.getElementById('video-aspect-pill')?.value || '16:9';
       const duration = document.getElementById('video-duration-pill')?.value || '10.0s';
+      const resolution = document.getElementById('video-res-pill')?.value || '720';
       const gallery = document.getElementById('video-generation-gallery');
       const modelToUse = activeVideoModelKey || 'seedance_2_5';
 
@@ -8495,7 +8558,7 @@
       gallery.insertAdjacentHTML('afterbegin', `
         <div id="${loadCardId}" class="rounded-2xl overflow-hidden border border-emerald-500/40 bg-[#0d1412] p-3.5 text-left shadow-2xl transition">
           <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-1.5">
-            <span class="flex items-center gap-1.5"><span class="animate-spin">⏳</span> ${(modelToUse).toUpperCase()} • ${duration} • ${aspect}</span>
+            <span class="flex items-center gap-1.5"><span class="animate-spin">⏳</span> ${(modelToUse).toUpperCase()} • ${duration} • ${resolution} • ${aspect}</span>
             <span id="${ptextId}" class="font-mono text-stone-300">15%</span>
           </div>
           <div class="text-xs text-stone-200 mb-2.5 line-clamp-1">${escapeHtml(prompt)}</div>
@@ -8528,6 +8591,7 @@
           prompt: prompt,
           aspect: aspect,
           duration: duration,
+          resolution: resolution,
           model: modelToUse
         };
         if (typeof currentVideoReferenceImage !== 'undefined' && currentVideoReferenceImage) {
@@ -8564,7 +8628,8 @@
           if (pbar) pbar.style.width = '100%';
           if (ptext) ptext.textContent = '100%';
 
-          deductTokensUI(calculatedCost, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
+          const finalCost = data.tokens_deducted != null ? data.tokens_deducted : calculatedCost;
+          deductTokensUI(finalCost, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           if (currentUser && data.tokens_remaining != null) {
             syncUserTokensUI(data.tokens_remaining);
           } else if (!currentUser && data.tokens_remaining != null) {
@@ -8579,7 +8644,7 @@
               resultUrl: data.video_url,
               duration: data.duration || duration,
               aspect: aspect,
-              tokensCost: calculatedCost
+              tokensCost: finalCost
             });
           }
 
@@ -14016,9 +14081,15 @@
         return;
       }
 
+      const currentDur = document.getElementById('video-duration-pill')?.value || '10.0s';
+      const currentRes = document.getElementById('video-res-pill')?.value || '720';
+
       container.innerHTML = filtered.map(m => {
         const isSelected = activeVideoModelKey === m.id;
         const iconSvg = renderIcon(m.iconKey);
+        const currentCost = calculateVideoCost(currentDur, currentRes, m.id);
+        const minCost = calculateVideoCost('5.0s', '720', m.id);
+        const maxCost = calculateVideoCost('15.0s', '4K', m.id);
         return `
           <div onclick="selectElevenLabsVideoModel('${m.id}')" class="flex items-start gap-3 p-3 rounded-2xl cursor-pointer transition ${isSelected ? 'bg-emerald-500/10 border border-emerald-500/40' : 'hover:bg-white/5 border border-transparent'}">
             <div class="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0 mt-0.5">
@@ -14029,7 +14100,7 @@
                 <span class="text-xs sm:text-sm font-bold text-white">${m.name}</span>
                 ${m.badge ? `<span class="bg-black/60 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${m.badge}</span>` : ''}
                 <span class="text-[10px] font-mono font-semibold text-emerald-400/90 ml-auto flex items-center gap-1">
-                  <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> ${m.costTokens} ZK <span class="text-stone-400 font-normal">(${m.costCredits})</span>
+                  <span class="text-[11px] font-black text-amber-400 font-mono">ZK</span> ${currentCost} ZK <span class="text-stone-400 font-normal">(${minCost}-${maxCost} ZK)</span>
                 </span>
               </div>
               <div class="flex items-center gap-2 mt-1 text-[10px] text-stone-400">
