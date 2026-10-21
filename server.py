@@ -20,6 +20,11 @@ from database import (
     get_or_create_telegram_user,
     get_or_create_demo_user,
     sync_link_user_accounts,
+    create_auth_session,
+    get_auth_session,
+    confirm_auth_session,
+    get_or_init_guest_quota,
+    deduct_guest_quota,
     get_admin_overview,
     get_admin_users,
     admin_update_user,
@@ -413,7 +418,7 @@ async def handle_user_link_account(request: web.Request):
     try:
         user = await get_current_user(request)
         if not user:
-            user = await get_or_create_demo_user()
+            return web.json_response({"error": "Требуется авторизация"}, status=401)
         data = await request.json()
         google_email = data.get("google_email") or data.get("email")
         tg_id = data.get("telegram_id")
@@ -534,6 +539,7 @@ async def handle_telegram_webapp_auth(request: web.Request):
 async def handle_telegram_create_session(request: web.Request):
     """
     Creates a unique temporary session code for QR/deep-link bot authentication with host callback.
+    Persists to both memory cache and SQLite for guaranteed cross-device reliability.
     """
     try:
         body = await request.json()
@@ -546,6 +552,9 @@ async def handle_telegram_create_session(request: web.Request):
         clean_host = "zyko.zeabur.app"
         
     code = f"zk_{uuid.uuid4().hex[:6]}"
+    
+    # Save to SQLite table for cross-process / cross-worker reliability
+    await create_auth_session(code, clean_host)
     
     PENDING_AUTH_SESSIONS[code] = {
         "status": "pending",
@@ -574,18 +583,26 @@ async def handle_telegram_create_session(request: web.Request):
 async def handle_telegram_check_session(request: web.Request):
     """
     Polls status of a pending Telegram login session.
+    Checks memory cache first, then persistent SQLite table.
     """
     code = request.query.get("code", "").strip()
+    if not code:
+        return web.json_response({"authenticated": False, "status": "expired"})
+
     session = PENDING_AUTH_SESSIONS.get(code)
-    if not session:
+    db_session = await get_auth_session(code)
+    
+    if not session and not db_session:
         return web.json_response({"authenticated": False, "status": "expired"})
         
+    created_at = (session or {}).get("created_at") or (db_session or {}).get("created_at") or 0
     # Check expiration (10 minutes)
-    if time.time() - session.get("created_at", 0) > 600:
+    if time.time() - created_at > 600:
         PENDING_AUTH_SESSIONS.pop(code, None)
         return web.json_response({"authenticated": False, "status": "expired"})
         
-    if session.get("status") == "authenticated" and session.get("user"):
+    # Check if authenticated in memory or database
+    if (session and session.get("status") == "authenticated" and session.get("user")):
         token = session.get("token")
         resp = web.json_response({
             "authenticated": True,
@@ -595,6 +612,25 @@ async def handle_telegram_check_session(request: web.Request):
         })
         resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=False, samesite="None", secure=True, path="/")
         return resp
+        
+    if db_session and db_session.get("status") == "authenticated" and db_session.get("user_id"):
+        user = await get_user_by_id(db_session["user_id"])
+        token = db_session.get("token")
+        if user and token:
+            PENDING_AUTH_SESSIONS[code] = {
+                "status": "authenticated",
+                "token": token,
+                "user": user,
+                "created_at": created_at
+            }
+            resp = web.json_response({
+                "authenticated": True,
+                "status": "authenticated",
+                "token": token,
+                "user": user
+            })
+            resp.set_cookie("zyko_token", token, max_age=30*86400, httponly=False, samesite="None", secure=True, path="/")
+            return resp
         
     return web.json_response({"authenticated": False, "status": "pending"})
 
@@ -618,6 +654,7 @@ async def handle_telegram_confirm_session(request: web.Request):
         token = create_access_token(user["id"])
         
         if code:
+            await confirm_auth_session(code, user["id"], token)
             PENDING_AUTH_SESSIONS[code] = {
                 "status": "authenticated",
                 "token": token,
@@ -664,7 +701,7 @@ async def handle_logout(request: web.Request):
 async def handle_user_usage_limits(request: web.Request):
     user = await get_current_user(request)
     if not user:
-        user = await get_or_create_demo_user()
+        return web.json_response({"success": True, "stats": {"daily_usage": 0, "plan_limit": 10}})
     stats = await get_user_usage_stats(user["id"])
     return web.json_response({"success": True, "stats": stats})
 
@@ -684,7 +721,7 @@ def save_generated_media(data_bytes: bytes, prefix: str, ext: str) -> str:
 async def handle_user_generations(request: web.Request):
     user = await get_current_user(request)
     if not user:
-        user = await get_or_create_demo_user()
+        return web.json_response({"success": True, "generations": []})
     
     gen_type = request.query.get("type", "all")
     generations = await get_user_generations(user["id"], gen_type)
@@ -718,7 +755,7 @@ async def handle_user_generations(request: web.Request):
 async def handle_user_token_history(request: web.Request):
     user = await get_current_user(request)
     if not user:
-        user = await get_or_create_demo_user()
+        return web.json_response({"success": True, "history": []})
     
     filter_type = request.query.get("type", "all")
     history = await get_user_token_history(user["id"], filter_type)
@@ -727,7 +764,7 @@ async def handle_user_token_history(request: web.Request):
 async def handle_user_invoices(request: web.Request):
     user = await get_current_user(request)
     if not user:
-        user = await get_or_create_demo_user()
+        return web.json_response({"success": True, "invoices": []})
     user_id = user["id"]
     invoices = await get_user_transactions(user_id)
     return web.json_response({"success": True, "invoices": invoices})
@@ -738,7 +775,7 @@ async def handle_stripe_customer_portal(request: web.Request):
     try:
         user = await get_current_user(request)
         if not user:
-            user = await get_or_create_demo_user()
+            return web.json_response({"error": "Требуется авторизация"}, status=401)
         user_id = user["id"]
         user_email = user.get("email", "")
         origin = f"{request.scheme}://{request.host}"
@@ -762,7 +799,7 @@ async def handle_stripe_create_checkout(request: web.Request):
         
         user = await get_current_user(request)
         if not user:
-            user = await get_or_create_demo_user()
+            return web.json_response({"error": "Требуется авторизация"}, status=401)
         user_id = user["id"]
         user_email = user.get("email", "")
         
@@ -788,7 +825,7 @@ async def handle_platega_create(request: web.Request):
         method = data.get("method", "sbp")
         user = await get_current_user(request)
         if not user:
-            user = await get_or_create_demo_user()
+            return web.json_response({"error": "Требуется авторизация"}, status=401)
         user_id = user["id"]
         origin = f"{request.scheme}://{request.host}"
         
@@ -815,7 +852,7 @@ async def handle_crypto_create(request: web.Request):
         cycle = data.get("cycle", "annual")
         user = await get_current_user(request)
         if not user:
-            user = await get_or_create_demo_user()
+            return web.json_response({"error": "Требуется авторизация"}, status=401)
         user_id = user["id"]
         
         res = await create_cryptopay_payment(user_id, plan_name, cycle)
@@ -862,6 +899,33 @@ async def get_generation_cost(action: str, default: int) -> int:
     except Exception:
         pass
     return default
+
+async def authorize_user_or_guest(request: web.Request, cost: int, action_name: str = "генерации"):
+    """
+    Validates tokens and deducts cost for logged-in user or checks strict 10 ZK quota for guests.
+    Returns (user, None) if user authorized and tokens deducted.
+    Returns (None, None) if guest authorized and guest tokens deducted.
+    Returns (None, web.json_response) if deduction failed or quota exhausted.
+    """
+    user = await get_current_user(request)
+    if not user:
+        guest_id = request.headers.get("X-Guest-ID") or request.remote or "guest_anon"
+        guest_balance = await get_or_init_guest_quota(guest_id)
+        if guest_balance < cost:
+            return None, web.json_response({
+                "error": f"Гостевой баланс ({guest_balance}/10 ZK) недостаточен для {action_name} (требуется {cost} ZK). Пожалуйста, войдите через Telegram для продолжения.",
+                "require_auth": True
+            }, status=403)
+        if not await deduct_guest_quota(guest_id, cost):
+            return None, web.json_response({
+                "error": "Гостевой лимит токенов (10 ZK) исчерпан. Пожалуйста, войдите через Telegram.",
+                "require_auth": True
+            }, status=403)
+        return None, None
+    else:
+        if not await deduct_tokens(user["id"], cost):
+            return None, web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        return user, None
 
 async def check_maintenance_blocked(request: web.Request):
     try:
@@ -936,15 +1000,15 @@ async def handle_ai_chat(request: web.Request):
         system_prompt = data.get("system_prompt", "")
         deep_research = bool(data.get("deep_research", False))
         
-        user = await get_current_user(request) or await get_or_create_demo_user()
         cost = 18 if deep_research else 10
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Insufficient tokens (requires {cost} Credits)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "AI чата")
+        if err_resp:
+            return err_resp
                 
         res = await generate_llm_chat(messages, model, system_prompt, deep_research)
         last_prompt = messages[-1].get("content", "") if messages else "chat"
         reply_text = res.get("reply", "") if isinstance(res, dict) else ""
-        await log_generation(user["id"], f"llm_{model}", last_prompt[:200], reply_text[:500], cost)
+        await log_generation(user["id"] if user else None, f"llm_{model}", last_prompt[:200], reply_text[:500], cost)
             
         return web.json_response(res)
     except Exception as e:
@@ -965,14 +1029,14 @@ async def handle_generate_tts(request: web.Request):
             return web.json_response({"error": "Text required"}, status=400)
             
         cost = await get_generation_cost("tts", 2)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "озвучки")
+        if err_resp:
+            return err_resp
             
         voice_settings = data.get("voice_settings")
         audio_bytes = await text_to_speech(text, voice_id, model_id, voice_settings)
         result_url = save_generated_media(audio_bytes, "tts", "mp3")
-        await log_generation(user["id"], f"elevenlabs_tts_{model_id}", text[:100], result_url or "tts_audio", cost)
+        await log_generation(user["id"] if user else None, f"elevenlabs_tts_{model_id}", text[:100], result_url or "tts_audio", cost)
             
         resp = web.Response(body=audio_bytes, content_type="audio/mpeg")
         if result_url:
@@ -991,13 +1055,14 @@ async def handle_generate_sfx(request: web.Request):
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], 10):
-            return web.json_response({"error": "Insufficient tokens (requires 10 Credits)"}, status=400)
+        cost = await get_generation_cost("sfx", 10)
+        user, err_resp = await authorize_user_or_guest(request, cost, "генерации SFX")
+        if err_resp:
+            return err_resp
             
         audio_bytes = await generate_sfx(prompt, duration)
         result_url = save_generated_media(audio_bytes, "sfx", "mp3")
-        await log_generation(user["id"], "elevenlabs_sfx", prompt, result_url or "sfx_audio", 10)
+        await log_generation(user["id"] if user else None, "elevenlabs_sfx", prompt, result_url or "sfx_audio", cost)
             
         resp = web.Response(body=audio_bytes, content_type="audio/mpeg")
         if result_url:
@@ -1032,12 +1097,12 @@ async def handle_generate_clone(request: web.Request):
             return web.json_response({"error": "Name and audio sample file required"}, status=400)
             
         cost = await get_generation_cost("clone", 50)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "создания клона голоса")
+        if err_resp:
+            return err_resp
             
         res = await clone_voice(name, audio_bytes, filename)
-        await log_generation(user["id"], "elevenlabs_clone", name, res.get("voice_id", ""), cost)
+        await log_generation(user["id"] if user else None, "elevenlabs_clone", name, res.get("voice_id", ""), cost)
             
         return web.json_response({"status": "success", "voice": res})
     except Exception as e:
@@ -1089,13 +1154,13 @@ async def handle_generate_isolate(request: web.Request):
             return web.json_response({"error": "Audio file required for isolation"}, status=400)
             
         cost = await get_generation_cost("isolate", 15)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "изоляции голоса")
+        if err_resp:
+            return err_resp
             
         clean_bytes = await isolate_audio(audio_bytes)
         result_url = save_generated_media(clean_bytes, "isolate", "mp3")
-        await log_generation(user["id"], "elevenlabs_isolate", "voice isolation", result_url or "isolated_audio", cost)
+        await log_generation(user["id"] if user else None, "elevenlabs_isolate", "voice isolation", result_url or "isolated_audio", cost)
             
         resp = web.Response(body=clean_bytes, content_type="audio/mpeg")
         if result_url:
@@ -1129,13 +1194,13 @@ async def handle_generate_sts(request: web.Request):
             return web.json_response({"error": "Audio recording or file required for Speech-to-Speech"}, status=400)
 
         cost = await get_generation_cost("sts", 15)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "изменения голоса")
+        if err_resp:
+            return err_resp
 
         changed_bytes = await speech_to_speech(audio_bytes, voice_id=voice_id)
         result_url = save_generated_media(changed_bytes, "sts", "mp3")
-        await log_generation(user["id"], "speech_to_speech", f"Voice Changer: {voice_id}", result_url or "sts_audio", cost)
+        await log_generation(user["id"] if user else None, "speech_to_speech", f"Voice Changer: {voice_id}", result_url or "sts_audio", cost)
 
         resp = web.Response(body=changed_bytes, content_type="audio/mpeg")
         if result_url:
@@ -1159,14 +1224,21 @@ async def handle_generate_image(request: web.Request):
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
-        cost = await get_generation_cost("image", 12)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        # Dynamic pricing: standard is 12 ZK, 4K / Pro / Ultra models is 24 ZK (~2x)
+        model_str = str(model).lower()
+        quality_str = str(data.get("quality", "")).lower()
+        aspect_str = str(aspect).lower()
+        is_pro_or_4k = "4k" in quality_str or "4k" in aspect_str or any(k in model_str for k in ["pro", "ultra", "gpt", "gemini-3", "recraft"])
+        base_cost = 24 if is_pro_or_4k else 12
+        cost = await get_generation_cost("image", base_cost)
+        
+        user, err_resp = await authorize_user_or_guest(request, cost, "генерации фото")
+        if err_resp:
+            return err_resp
             
         img_bytes = await generate_ai_image(prompt, aspect, model)
         result_url = save_generated_media(img_bytes, "img", "jpg")
-        await log_generation(user["id"], f"image_{model}", prompt, result_url or "image_result", cost)
+        await log_generation(user["id"] if user else None, f"image_{model}", prompt, result_url or "image_result", cost)
             
         resp = web.Response(body=img_bytes, content_type="image/jpeg")
         if result_url:
@@ -1192,17 +1264,28 @@ async def handle_generate_video(request: web.Request):
         if not prompt:
             return web.json_response({"error": "Prompt required"}, status=400)
             
-        cost = await get_generation_cost("video", 25)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        # Dynamic pricing: standard duration (4s/5s) is 25 ZK, long video (8s/10s/15s) or HD/Pro models is 50 ZK (~2x)
+        duration_str = str(duration).lower()
+        model_str = str(model).lower()
+        is_long_or_hd = any(k in duration_str for k in ["8", "10", "15", "long"]) or any(k in model_str for k in ["pro", "ultra", "hd", "sora", "veo", "wan"])
+        base_cost = 50 if is_long_or_hd else 25
+        cost = await get_generation_cost("video", base_cost)
+        
+        user, err_resp = await authorize_user_or_guest(request, cost, "генерации видео")
+        if err_resp:
+            return err_resp
             
         res = await generate_ai_video(prompt, aspect, model, image_url=image_url, duration=duration)
         video_url = res.get("video_url", "") if isinstance(res, dict) else ""
-        await log_generation(user["id"], f"video_{model}", prompt, video_url, cost)
+        await log_generation(user["id"] if user else None, f"video_{model}", prompt, video_url, cost)
         
-        updated_user = await get_user_by_id(user["id"])
-        new_balance = updated_user.get("tokens", 0) if updated_user else 0
+        if user:
+            updated_user = await get_user_by_id(user["id"])
+            new_balance = updated_user.get("tokens", 0) if updated_user else 0
+        else:
+            guest_id = request.headers.get("X-Guest-ID") or request.remote or "guest_anon"
+            new_balance = await get_or_init_guest_quota(guest_id)
+            
         if isinstance(res, dict):
             res["tokens_remaining"] = new_balance
             res["tokens_deducted"] = cost
@@ -1223,15 +1306,15 @@ async def handle_generate_music(request: web.Request):
         title = data.get("title", "AI Track")
         
         cost = await get_generation_cost("music", 20)
-        user = await get_current_user(request) or await get_or_create_demo_user()
-        if not await deduct_tokens(user["id"], cost):
-            return web.json_response({"error": f"Недостаточно токенов (требуется {cost} ZK)"}, status=400)
+        user, err_resp = await authorize_user_or_guest(request, cost, "генерации музыки")
+        if err_resp:
+            return err_resp
             
         res = await generate_ai_music(prompt, style, title)
         result_url = ""
         if isinstance(res, (bytes, bytearray)):
             result_url = save_generated_media(res, "music", "mp3")
-            await log_generation(user["id"], "ai_music", prompt, result_url or "music_audio", cost)
+            await log_generation(user["id"] if user else None, "ai_music", prompt, result_url or "music_audio", cost)
             resp = web.Response(body=res, content_type="audio/mpeg")
             if result_url:
                 resp.headers["X-Result-URL"] = result_url
@@ -1239,7 +1322,7 @@ async def handle_generate_music(request: web.Request):
             return resp
         else:
             result_url = res.get("audio_url", "") if isinstance(res, dict) else ""
-            await log_generation(user["id"], "ai_music", prompt, result_url, cost)
+            await log_generation(user["id"] if user else None, "ai_music", prompt, result_url, cost)
             return web.json_response(res)
     except Exception as e:
         logger.error("Music generation error: %s", e)

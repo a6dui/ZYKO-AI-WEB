@@ -1,6 +1,7 @@
 import os
 import aiosqlite
 import logging
+import time
 from datetime import datetime, timedelta
 
 logger = logging.getLogger("zyko_db")
@@ -27,6 +28,7 @@ ADMIN_TELEGRAM_IDS.add(755843448)
 
 async def init_db():
     async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
         await db.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -162,27 +164,51 @@ async def init_db():
             )
         """)
 
-        # Ensure owner / superadmin 755843448 and any ADMIN_TELEGRAM_IDS is superadmin with Max tier and at least 500,000 tokens
+        # Create auth sessions table for seamless cross-device Telegram auth
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS auth_sessions (
+                code TEXT PRIMARY KEY,
+                status TEXT DEFAULT 'pending',
+                token TEXT,
+                user_id INTEGER,
+                created_at REAL,
+                host TEXT
+            )
+        """)
+
+        # Create guest quotas table (strictly 10 tokens total for unregistered visitors)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS guest_quotas (
+                identifier TEXT PRIMARY KEY,
+                tokens_remaining INTEGER DEFAULT 10,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        # Ensure owner / superadmin 755843448 and any ADMIN_TELEGRAM_IDS is unified as superadmin with Max tier and at least 500,000 tokens
         try:
             for admin_tg_id in ADMIN_TELEGRAM_IDS:
                 async with db.execute(
-                    "SELECT * FROM users WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?",
+                    "SELECT * FROM users WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ? OR LOWER(email) = 'foryafrom@gmail.com' OR LOWER(telegram_username) = 'zykolandstore' ORDER BY id ASC LIMIT 1",
                     (admin_tg_id, str(admin_tg_id))
                 ) as c_admin:
                     admin_row = await c_admin.fetchone()
                     if not admin_row:
                         await db.execute("""
-                            INSERT INTO users (telegram_id, telegram_username, name, tokens, tier, is_superadmin)
-                            VALUES (?, 'Zykolandstore', 'Zykolandstore', 500000, 'Max', 1)
+                            INSERT INTO users (telegram_id, telegram_username, email, name, tokens, tier, is_superadmin)
+                            VALUES (?, 'Zykolandstore', 'foryafrom@gmail.com', 'Дима', 500000, 'Max', 1)
                         """, (admin_tg_id,))
                     else:
                         await db.execute("""
                             UPDATE users SET is_superadmin = 1, tier = 'Max',
                                 tokens = COALESCE(tokens, 500000),
+                                telegram_id = COALESCE(telegram_id, ?),
                                 telegram_username = COALESCE(telegram_username, 'Zykolandstore'),
-                                name = COALESCE(name, 'Zykolandstore')
-                            WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?
-                        """, (admin_tg_id, str(admin_tg_id)))
+                                email = COALESCE(email, 'foryafrom@gmail.com'),
+                                name = COALESCE(name, 'Дима')
+                            WHERE id = ?
+                        """, (admin_tg_id, admin_row["id"]))
 
             # Also ensure all superadmins and demo accounts have at least initial tokens and Max tier
             await db.execute("""
@@ -225,15 +251,19 @@ async def set_user_password(user_id: int, password_hash: str):
         await db.commit()
 
 async def get_or_create_google_user(google_id: str, email: str, name: str, avatar: str) -> dict:
+    clean_email = email.strip().lower() if email else ""
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT * FROM users WHERE google_id = ? OR email = ?", (google_id, email)) as cursor:
+        async with db.execute(
+            "SELECT * FROM users WHERE google_id = ? OR (email IS NOT NULL AND LOWER(email) = ?) ORDER BY id ASC LIMIT 1",
+            (google_id, clean_email)
+        ) as cursor:
             row = await cursor.fetchone()
             if row:
                 user = dict(row)
                 await db.execute(
-                    "UPDATE users SET last_login = CURRENT_TIMESTAMP, name = COALESCE(?, name), avatar = COALESCE(?, avatar), google_id = COALESCE(?, google_id) WHERE id = ?",
-                    (name, avatar, google_id, user["id"])
+                    "UPDATE users SET last_login = CURRENT_TIMESTAMP, name = COALESCE(?, name), avatar = COALESCE(?, avatar), google_id = COALESCE(?, google_id), email = COALESCE(?, email) WHERE id = ?",
+                    (name, avatar, google_id, clean_email, user["id"])
                 )
                 await db.commit()
                 async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c2:
@@ -241,7 +271,7 @@ async def get_or_create_google_user(google_id: str, email: str, name: str, avata
             else:
                 cursor_ins = await db.execute(
                     "INSERT INTO users (google_id, email, name, avatar, tokens, tier) VALUES (?, ?, ?, ?, 1000, 'Free')",
-                    (google_id, email, name, avatar)
+                    (google_id, clean_email, name, avatar)
                 )
                 await db.commit()
                 user_id = cursor_ins.lastrowid
@@ -252,62 +282,86 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
     if not telegram_id:
         return None
     telegram_id = int(telegram_id)
-    display_name = first_name or (f"@{username}" if username else f"User {telegram_id}")
-    clean_username = username.lstrip("@") if username else ""
-    is_admin = 1 if telegram_id in ADMIN_TELEGRAM_IDS else 0
+    clean_username = username.lstrip("@").strip() if username else ""
+    display_name = first_name or (f"@{clean_username}" if clean_username else f"User {telegram_id}")
+    is_admin = 1 if telegram_id in ADMIN_TELEGRAM_IDS or clean_username.lower() in ("zykolandstore", "zykoai_bot") else 0
     
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
+        
+        # 1. Exact match by telegram_id
+        row = None
         async with db.execute(
             "SELECT * FROM users WHERE telegram_id = ? OR CAST(telegram_id AS TEXT) = ?",
             (telegram_id, str(telegram_id))
         ) as cursor:
             row = await cursor.fetchone()
-            if row:
-                user = dict(row)
-                updates = ["last_login = CURRENT_TIMESTAMP"]
-                params = []
-                if display_name and (not user.get("name") or "kirabakuta" in str(user.get("name")).lower()):
-                    updates.append("name = ?")
-                    params.append(display_name)
-                if photo_url and not user.get("avatar"):
-                    updates.append("avatar = ?")
-                    params.append(photo_url)
-                if clean_username:
-                    updates.append("telegram_username = ?")
-                    params.append(clean_username)
-                if is_admin:
-                    updates.append("is_superadmin = 1")
-                    updates.append("tier = 'Max'")
-                    if user.get("tokens") is None:
-                        updates.append("tokens = 500000")
+            
+        # 2. If not found by telegram_id, link by username
+        if not row and clean_username:
+            async with db.execute(
+                "SELECT * FROM users WHERE LOWER(telegram_username) = LOWER(?) ORDER BY id ASC LIMIT 1",
+                (clean_username,)
+            ) as c2:
+                row = await c2.fetchone()
                 
-                query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
-                params.append(user["id"])
-                await db.execute(query, params)
-                await db.commit()
+        # 3. If admin, link to the unified admin account
+        if not row and is_admin:
+            async with db.execute(
+                "SELECT * FROM users WHERE LOWER(email) = 'foryafrom@gmail.com' OR is_superadmin = 1 ORDER BY id ASC LIMIT 1"
+            ) as c3:
+                row = await c3.fetchone()
                 
-                async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c2:
-                    return dict(await c2.fetchone())
-            else:
-                initial_tier = "Max" if is_admin else "Free"
-                initial_tokens = 500000 if is_admin else 1000
-                cursor_ins = await db.execute(
-                    """
-                    INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    """,
-                    (telegram_id, clean_username, display_name, photo_url, initial_tokens, initial_tier, is_admin)
-                )
-                await db.commit()
-                user_id = cursor_ins.lastrowid
-                async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c2:
-                    return dict(await c2.fetchone())
+        if row:
+            user = dict(row)
+            updates = ["last_login = CURRENT_TIMESTAMP"]
+            params = []
+            if not user.get("telegram_id"):
+                updates.append("telegram_id = ?")
+                params.append(telegram_id)
+            if clean_username and not user.get("telegram_username"):
+                updates.append("telegram_username = ?")
+                params.append(clean_username)
+            if display_name and (not user.get("name") or "kirabakuta" in str(user.get("name")).lower()):
+                updates.append("name = ?")
+                params.append(display_name)
+            if photo_url and not user.get("avatar"):
+                updates.append("avatar = ?")
+                params.append(photo_url)
+            if is_admin:
+                updates.append("is_superadmin = 1")
+                updates.append("tier = 'Max'")
+                if user.get("tokens") is None:
+                    updates.append("tokens = 500000")
+                if not user.get("email"):
+                    updates.append("email = 'foryafrom@gmail.com'")
+            
+            query = f"UPDATE users SET {', '.join(updates)} WHERE id = ?"
+            params.append(user["id"])
+            await db.execute(query, params)
+            await db.commit()
+            
+            async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c_res:
+                return dict(await c_res.fetchone())
+        else:
+            initial_tier = "Max" if is_admin else "Free"
+            initial_tokens = 500000 if is_admin else 1000
+            cursor_ins = await db.execute(
+                """
+                INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (telegram_id, clean_username, display_name, photo_url, initial_tokens, initial_tier, is_admin)
+            )
+            await db.commit()
+            user_id = cursor_ins.lastrowid
+            async with db.execute("SELECT * FROM users WHERE id = ?", (user_id,)) as c_ins:
+                return dict(await c_ins.fetchone())
 
 async def get_or_create_demo_user() -> dict:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT * FROM users WHERE email = 'foryafrom@gmail.com' OR email = 'demo@zyko.ai'") as cursor:
+        async with db.execute("SELECT * FROM users WHERE telegram_id = 755843448 OR email = 'foryafrom@gmail.com' OR is_superadmin = 1 ORDER BY id ASC LIMIT 1") as cursor:
             row = await cursor.fetchone()
             if row:
                 user = dict(row)
@@ -320,7 +374,7 @@ async def get_or_create_demo_user() -> dict:
                     user["is_superadmin"] = 1
                 return user
         cursor_ins = await db.execute(
-            "INSERT INTO users (email, name, tokens, tier, is_superadmin) VALUES ('foryafrom@gmail.com', 'Дима', 500000, 'Max', 1)"
+            "INSERT INTO users (telegram_id, telegram_username, email, name, tokens, tier, is_superadmin) VALUES (755843448, 'Zykolandstore', 'foryafrom@gmail.com', 'Дима', 500000, 'Max', 1)"
         )
         await db.commit()
         user_id = cursor_ins.lastrowid
@@ -378,6 +432,86 @@ async def deduct_tokens(user_id: int, cost: int) -> bool:
         await db.execute("UPDATE users SET tokens = tokens - ? WHERE id = ?", (cost, user_id))
         await db.commit()
         return True
+
+# --- Telegram Auth Sessions (Cross-Worker / Cross-Device Storage) ---
+
+async def create_auth_session(code: str, host: str = "") -> dict:
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "INSERT OR REPLACE INTO auth_sessions (code, status, host, created_at) VALUES (?, 'pending', ?, ?)",
+            (code, host, time.time())
+        )
+        await db.commit()
+        return {"code": code, "status": "pending", "host": host}
+
+async def get_auth_session(code: str) -> dict:
+    if not code:
+        return None
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT * FROM auth_sessions WHERE code = ?", (code,)) as cursor:
+            row = await cursor.fetchone()
+            return dict(row) if row else None
+
+async def confirm_auth_session(code: str, user_id: int, token: str) -> bool:
+    if not code:
+        return False
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            "UPDATE auth_sessions SET status = 'authenticated', user_id = ?, token = ?, created_at = ? WHERE code = ?",
+            (user_id, token, time.time(), code)
+        )
+        await db.commit()
+        return True
+
+async def cleanup_expired_auth_sessions():
+    try:
+        ten_mins_ago = time.time() - 600
+        async with aiosqlite.connect(DB_PATH) as db:
+            await db.execute("DELETE FROM auth_sessions WHERE created_at < ?", (ten_mins_ago,))
+            await db.commit()
+    except Exception as e:
+        logger.warning("cleanup_expired_auth_sessions error: %s", e)
+
+# --- Guest Quotas (Strictly 10 ZK for unregistered users) ---
+
+async def get_or_init_guest_quota(identifier: str) -> int:
+    if not identifier:
+        return 10
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT tokens_remaining FROM guest_quotas WHERE identifier = ?", (identifier,)) as cursor:
+            row = await cursor.fetchone()
+            if row:
+                return int(row["tokens_remaining"])
+            else:
+                await db.execute("INSERT OR IGNORE INTO guest_quotas (identifier, tokens_remaining) VALUES (?, 10)", (identifier,))
+                await db.commit()
+                return 10
+
+async def deduct_guest_quota(identifier: str, amount: int) -> bool:
+    if not identifier:
+        return False
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("SELECT tokens_remaining FROM guest_quotas WHERE identifier = ?", (identifier,)) as cursor:
+            row = await cursor.fetchone()
+            if not row:
+                current = 10
+                if current < amount:
+                    return False
+                await db.execute("INSERT INTO guest_quotas (identifier, tokens_remaining) VALUES (?, ?)", (identifier, current - amount))
+                await db.commit()
+                return True
+            current = int(row["tokens_remaining"])
+            if current < amount:
+                return False
+            await db.execute(
+                "UPDATE guest_quotas SET tokens_remaining = ?, updated_at = CURRENT_TIMESTAMP WHERE identifier = ?",
+                (current - amount, identifier)
+            )
+            await db.commit()
+            return True
 
 async def create_transaction(user_id: int, provider: str, order_id: str, amount: float, currency: str, tokens: int, tier: str, receipt_url: str = None) -> None:
     async with aiosqlite.connect(DB_PATH) as db:

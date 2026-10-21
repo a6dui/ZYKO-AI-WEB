@@ -418,12 +418,6 @@
                 </span>
                 <span data-i18n="drawer_home">Home</span>
               </button>
-              <button onclick="switchTab('profile'); switchUserSubtab('profile'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
-                <span class="w-5 h-5 rounded-md bg-stone-500/15 border border-stone-500/30 text-stone-300 group-hover:text-white inline-flex items-center justify-center shrink-0">
-                  <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </span>
-                <span data-i18n="profile_title">Profile</span>
-              </button>
               <button onclick="switchTab('profile'); switchUserSubtab('invoices'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
                 <span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 group-hover:text-white inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.2)]">
                   <svg class="w-3 h-3 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -700,9 +694,9 @@
         <!-- Logged Out State -->
         <div id="logged-out-header-group" class="flex items-center gap-2">
           <!-- Guest Token balance pill -->
-          <div onclick="openAuthModal()" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm" title="Ваш баланс токенов">
+          <div onclick="openAuthModal()" class="flex items-center gap-1.5 bg-[#171a19] hover:bg-white/10 border border-white/15 rounded-xl px-2.5 py-1.5 cursor-pointer transition shadow-sm" title="Ваш гостевой баланс токенов (10 ZK)">
             <span class="text-xs font-black text-amber-400 font-mono tracking-wider">ZK</span>
-            <span id="guest-user-tokens" class="text-xs font-black text-white">250</span>
+            <span id="guest-user-tokens" class="text-xs font-black text-white">10</span>
           </div>
           <button id="btn-login-header" onclick="openAuthModal()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/25 active:scale-95">
             <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -1714,7 +1708,7 @@
                     <option value="16:9">16:9 Landscape</option>
                     <option value="4:5">4:5 Social</option>
                   </select>
-                  <select id="image-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                  <select id="image-res-pill" onchange="updateImageCostUI()" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="1K">1K</option>
                     <option value="2K" selected>2K HD</option>
                     <option value="4K">4K Topaz</option>
@@ -1800,12 +1794,12 @@
                     <option value="9:16">9:16 Portrait</option>
                     <option value="1:1">1:1 Square</option>
                   </select>
-                  <select id="video-res-pill" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                  <select id="video-res-pill" onchange="updateVideoCostUI()" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="720" selected>720</option>
                     <option value="1080">1080</option>
                     <option value="4K">4K</option>
                   </select>
-                  <select id="video-duration-pill" onchange="syncVideoDuration(this.value)" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
+                  <select id="video-duration-pill" onchange="syncVideoDuration(this.value); updateVideoCostUI();" class="bg-white/5 border border-white/15 rounded-lg px-2 py-1 text-[11px] text-stone-300 font-semibold focus:outline-none cursor-pointer shrink-0">
                     <option value="5.0s">5.0s</option>
                     <option value="10.0s" selected>10.0s</option>
                     <option value="15.0s">15.0s</option>
@@ -2121,10 +2115,10 @@
       </div>
 
       <!-- Backdrop for mobile control panel -->
-      <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" class="hidden fixed top-[53px] inset-x-0 bottom-0 bg-black/80 backdrop-blur-sm md:hidden" style="z-index: 40 !important;"></div>
+      <div id="mobile-control-backdrop" onclick="toggleMobileControlPanel(false)" ontouchend="toggleMobileControlPanel(false)" class="hidden fixed top-[53px] inset-x-0 bottom-0 bg-black/80 backdrop-blur-sm md:hidden cursor-pointer" style="z-index: 9998 !important; -webkit-tap-highlight-color: transparent;"></div>
 
       <!-- ================= 3. RIGHT CONTROL PANEL (SCREENSHOTS 1, 2, 3, 4 & 5) ================= -->
-      <aside id="workspace-control-panel" class="hidden md:block md:w-80 fixed md:static top-[53px] bottom-0 right-0 w-[88vw] sm:w-80 max-w-[360px] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs shadow-2xl transition-all duration-300 shrink-0" style="background-color: #0c1110 !important; z-index: 50 !important;">
+      <aside id="workspace-control-panel" class="hidden md:block md:w-80 fixed md:static top-[53px] bottom-0 right-0 w-[88vw] sm:w-80 max-w-[360px] border-l border-white/10 p-4 overflow-y-auto space-y-4 text-xs shadow-2xl transition-all duration-300 shrink-0" style="background-color: #0c1110 !important; z-index: 50;">
         
         <!-- Mobile Drawer Header (Visible only on < md) -->
         <div class="md:hidden flex items-center justify-between pb-3 border-b border-white/10 mb-2">
@@ -2134,7 +2128,7 @@
             </span>
             <span class="font-bold text-white text-xs sm:text-sm" data-i18n="drawer_params_title">Parameters & Models</span>
           </div>
-          <button onclick="toggleMobileControlPanel(false)" class="px-2.5 py-1 rounded-lg bg-white/10 text-stone-300 hover:text-white text-xs font-semibold" data-i18n="close_btn">✕ Close</button>
+          <button type="button" onclick="toggleMobileControlPanel(false)" ontouchend="toggleMobileControlPanel(false)" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer" data-i18n="close_btn">✕ Close</button>
         </div>
 
         <!-- Model Filter Info Header -->
@@ -8190,7 +8184,19 @@
       const prompt = input.value.trim();
       if (!prompt) return;
 
+      const calculatedCost = updateImageCostUI();
+      const guestVal = Number(localStorage.getItem('zyko_guest_tokens')) || 10;
+      const availableTokens = currentUser ? (currentUser.tokens ?? 0) : guestVal;
+      if (availableTokens < calculatedCost) {
+        if (typeof showToastNotification === 'function') {
+          showToastNotification(`⚠️ Недостаточно кредитов (${availableTokens}/${calculatedCost} ZK). Пожалуйста, войдите через Telegram.`);
+        }
+        openAuthModal();
+        return;
+      }
+
       const aspect = document.getElementById('image-aspect-pill')?.value || '1:1';
+      const quality = document.getElementById('image-res-pill')?.value || '2K';
       const gallery = document.getElementById('image-generation-gallery');
       const btn = document.getElementById('btn-generate-image');
       const modelToUse = activeImageModelKey || currentStudioModel || 'seedream';
@@ -8203,7 +8209,7 @@
       gallery.insertAdjacentHTML('afterbegin', `
         <div id="${loadCardId}" class="relative rounded-2xl overflow-hidden border border-emerald-500/40 bg-white/5 p-4 flex flex-col items-center justify-center text-center aspect-square shadow-xl animate-pulse">
           <span class="animate-spin text-2xl mb-2 text-emerald-400">✨</span>
-          <span class="text-[11px] font-bold text-white mb-1">Rendering 4K Image</span>
+          <span class="text-[11px] font-bold text-white mb-1">Rendering Image (${quality})</span>
           <span class="text-[9px] text-stone-400 line-clamp-2">${escapeHtml(prompt.slice(0, 50))}...</span>
         </div>
       `);
@@ -8212,6 +8218,7 @@
         const token = localStorage.getItem('zyko_token');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
+        headers['X-Guest-ID'] = getOrCreateGuestId();
 
         const resp = await fetch('/api/generate/image', {
           method: 'POST',
@@ -8219,6 +8226,7 @@
           body: JSON.stringify({
             prompt: prompt,
             aspect: aspect,
+            quality: quality,
             model: modelToUse
           })
         });
@@ -8255,7 +8263,7 @@
               </div>
             </div>
           `);
-          deductTokensUI(12, 'Image Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
+          deductTokensUI(calculatedCost, 'Image Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           saveToHistory('projects', prompt.slice(0, 30), serverUrl || imgUrl);
           if (typeof saveToFeed === 'function') {
             saveToFeed({
@@ -8263,12 +8271,15 @@
               model: modelToUse,
               prompt: prompt,
               resultUrl: serverUrl || imgUrl,
-              tokensCost: 12
+              tokensCost: calculatedCost
             });
           }
         } else {
           const errData = await resp.json().catch(() => ({}));
           const errMsg = errData.error || 'Ошибка при генерации изображения. Попробуйте еще раз.';
+          if (errData.require_auth) {
+            openAuthModal();
+          }
           alert(errMsg);
         }
       } catch (e) {
@@ -8300,6 +8311,32 @@
       }
     }
 
+    // Dynamic Pricing Controllers for Video & Image Studios
+    function updateVideoCostUI() {
+      const dur = (document.getElementById('video-duration-pill')?.value || '').toLowerCase();
+      const res = (document.getElementById('video-res-pill')?.value || '').toLowerCase();
+      const model = (activeVideoModelKey || 'seedance_2_5').toLowerCase();
+      const isLongOrHd = dur.includes('8') || dur.includes('10') || dur.includes('15') || res.includes('1080') || res.includes('4k') || model.includes('pro') || model.includes('ultra') || model.includes('wan') || model.includes('veo') || model.includes('sora');
+      const cost = isLongOrHd ? 50 : 25;
+      const costEl = document.getElementById('video-token-cost');
+      if (costEl) costEl.textContent = cost;
+      const badge = costEl ? costEl.closest('[title]') : null;
+      if (badge) badge.title = `Стоимость генерации видео: ${cost} ZK`;
+      return cost;
+    }
+
+    function updateImageCostUI() {
+      const res = (document.getElementById('image-res-pill')?.value || '').toLowerCase();
+      const model = (activeImageModelKey || 'nano_banana_pro').toLowerCase();
+      const isProOr4k = res.includes('4k') || model.includes('pro') || model.includes('ultra') || model.includes('gpt') || model.includes('gemini-3') || model.includes('recraft');
+      const cost = isProOr4k ? 24 : 12;
+      const costEl = document.getElementById('image-token-cost');
+      if (costEl) costEl.textContent = cost;
+      const badge = costEl ? costEl.closest('[title]') : null;
+      if (badge) badge.title = `Стоимость генерации изображения: ${cost} ZK`;
+      return cost;
+    }
+
     // Synchronization helper for video durations across top pills and right parameter drawer
     function syncVideoDuration(val) {
       if (!val) return;
@@ -8309,6 +8346,7 @@
       if (p1 && p1.value !== val) p1.value = val;
       if (p2 && p2.value !== val) p2.value = val;
       if (badge) badge.textContent = val;
+      updateVideoCostUI();
     }
 
     // Universal Cross-Origin Safe Media Downloader
@@ -8429,10 +8467,21 @@
       const prompt = input.value.trim();
       if (!prompt) return;
 
+      const calculatedCost = updateVideoCostUI();
+      const guestVal = Number(localStorage.getItem('zyko_guest_tokens')) || 10;
+      const availableTokens = currentUser ? (currentUser.tokens ?? 0) : guestVal;
+      const btn = document.getElementById('btn-generate-video');
+      if (availableTokens < calculatedCost) {
+        if (typeof showToastNotification === 'function') {
+          showToastNotification(`⚠️ Недостаточно кредитов (${availableTokens}/${calculatedCost} ZK). Пожалуйста, войдите через Telegram.`);
+        }
+        openAuthModal();
+        return;
+      }
+
       const aspect = document.getElementById('video-aspect-pill')?.value || '16:9';
       const duration = document.getElementById('video-duration-pill')?.value || '10.0s';
       const gallery = document.getElementById('video-generation-gallery');
-      const btn = document.getElementById('btn-generate-video');
       const modelToUse = activeVideoModelKey || 'seedance_2_5';
 
       btn.disabled = true;
@@ -8473,6 +8522,7 @@
         const token = localStorage.getItem('zyko_token');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
+        headers['X-Guest-ID'] = getOrCreateGuestId();
 
         const bodyData = {
           prompt: prompt,
@@ -8514,8 +8564,10 @@
           if (pbar) pbar.style.width = '100%';
           if (ptext) ptext.textContent = '100%';
 
-          deductTokensUI(25, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
+          deductTokensUI(calculatedCost, 'Video Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           if (currentUser && data.tokens_remaining != null) {
+            syncUserTokensUI(data.tokens_remaining);
+          } else if (!currentUser && data.tokens_remaining != null) {
             syncUserTokensUI(data.tokens_remaining);
           }
           saveToHistory('projects', `Video: ${prompt.slice(0, 25)}`, data.video_url);
@@ -8527,7 +8579,7 @@
               resultUrl: data.video_url,
               duration: data.duration || duration,
               aspect: aspect,
-              tokensCost: 25
+              tokensCost: calculatedCost
             });
           }
 
@@ -8539,6 +8591,9 @@
         } else {
           document.getElementById(loadCardId)?.remove();
           const errData = await resp.json().catch(() => ({}));
+          if (errData.require_auth) {
+            openAuthModal();
+          }
           alert(errData.error || 'Ошибка при рендере видео');
         }
       } catch (e) {
@@ -9766,6 +9821,16 @@
       const typeLabel = isMusic ? 'MUSIC' : 'TTS';
       const modelTitle = isMusic ? 'ElevenLabs Music 2.5' : (voiceName + ' • ' + modelId);
 
+      const guestVal = Number(localStorage.getItem('zyko_guest_tokens')) || 10;
+      const availableTokens = currentUser ? (currentUser.tokens ?? 0) : guestVal;
+      if (availableTokens < costAmount) {
+        if (typeof showToastNotification === 'function') {
+          showToastNotification(`⚠️ Недостаточно кредитов (${availableTokens}/${costAmount} ZK). Войдите через Telegram.`);
+        }
+        openAuthModal();
+        return;
+      }
+
       // Gallery & Loading state
       const gallery = document.getElementById('audio-generation-gallery');
       const emptyState = document.getElementById('audio-empty-placeholder');
@@ -9805,6 +9870,7 @@
         const token = localStorage.getItem('zyko_token');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
+        headers['X-Guest-ID'] = getOrCreateGuestId();
 
         let audioUrl = '';
         let serverUrl = null;
@@ -11071,27 +11137,33 @@
       const panel = document.getElementById('workspace-control-panel');
       const backdrop = document.getElementById('mobile-control-backdrop');
       if (!panel) return;
-      const isMobile = window.innerWidth < 768;
-      if (!isMobile) return;
 
       const isCurrentlyOpen = panel.getAttribute('data-mobile-open') === 'true' && panel.style.display === 'block';
       const shouldOpen = forceOpen !== undefined ? forceOpen : !isCurrentlyOpen;
 
       if (shouldOpen) {
+        if (window.innerWidth >= 768) return;
         panel.classList.remove('hidden');
         panel.style.display = 'block';
-        panel.style.zIndex = '9999';
-        panel.style.backgroundColor = '#0c1110';
+        panel.style.setProperty('z-index', '9999', 'important');
+        panel.style.setProperty('background-color', '#0c1110', 'important');
         panel.setAttribute('data-mobile-open', 'true');
         if (backdrop) {
           backdrop.classList.remove('hidden');
           backdrop.style.display = 'block';
-          backdrop.style.zIndex = '9998';
+          backdrop.style.setProperty('z-index', '9998', 'important');
         }
       } else {
+        // Always close cleanly when shouldOpen is false
         panel.setAttribute('data-mobile-open', 'false');
-        panel.classList.add('hidden');
-        panel.style.display = 'none';
+        if (window.innerWidth < 768) {
+          panel.classList.add('hidden');
+          panel.style.display = 'none';
+        } else {
+          panel.classList.remove('hidden');
+          panel.style.display = 'block';
+          panel.style.removeProperty('z-index');
+        }
         if (backdrop) {
           backdrop.classList.add('hidden');
           backdrop.style.display = 'none';
@@ -12313,6 +12385,15 @@
       }, 700);
     }
 
+    function getOrCreateGuestId() {
+      let gid = localStorage.getItem('zyko_guest_id');
+      if (!gid) {
+        gid = 'g_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        localStorage.setItem('zyko_guest_id', gid);
+      }
+      return gid;
+    }
+
     function syncUserTokensUI(tokens) {
       if (tokens == null || isNaN(Number(tokens))) return;
       const num = Math.max(0, Number(tokens));
@@ -12352,8 +12433,12 @@
         else if (loginBtn) loginBtn.classList.remove('hidden');
         if (profile) profile.classList.add('hidden');
 
-        const guestStored = localStorage.getItem('zyko_guest_tokens');
-        const guestTokens = guestStored != null ? Number(guestStored) : 250;
+        let guestStored = localStorage.getItem('zyko_guest_tokens');
+        if (guestStored === '250' || guestStored == null) {
+          localStorage.setItem('zyko_guest_tokens', '10');
+          guestStored = '10';
+        }
+        const guestTokens = Number(guestStored);
         const guestEl = document.getElementById('guest-user-tokens');
         if (guestEl) guestEl.textContent = guestTokens.toLocaleString();
         return;
@@ -12505,11 +12590,11 @@
         cur = Number(currentUser.tokens);
       } else {
         const stored = localStorage.getItem('zyko_guest_tokens');
-        if (stored != null && !isNaN(Number(stored))) {
+        if (stored != null && !isNaN(Number(stored)) && stored !== '250') {
           cur = Number(stored);
         } else {
-          const gEl = document.getElementById('guest-user-tokens');
-          cur = gEl ? (parseInt(gEl.textContent.replace(/\D/g, '')) || 250) : 250;
+          cur = 10;
+          localStorage.setItem('zyko_guest_tokens', '10');
         }
       }
 
@@ -13999,9 +14084,8 @@
       const activeSub = document.getElementById('active-video-sub');
       if (activeSub) activeSub.textContent = model.sub || model.tag;
 
-      // Update Token Cost Pill
-      const tokenCostEl = document.getElementById('video-token-cost');
-      if (tokenCostEl) tokenCostEl.textContent = model.costTokens;
+      // Update Token Cost Pill with dynamic resolution/duration multiplier
+      updateVideoCostUI();
 
       // Update Version List
       if (model.versions && model.versions.length > 0) {
@@ -14011,6 +14095,7 @@
 
       closeVideoModelsModal();
       document.getElementById('dropdown-menu-video')?.classList.add('hidden');
+      if (window.innerWidth < 768) toggleMobileControlPanel(false);
     }
 
     function selectVideoModel(key, iconKey, name, ver) {
@@ -14031,6 +14116,8 @@
         const vTitle = document.getElementById('video-model-title');
         if (vTitle) vTitle.textContent = name || key;
         updateVersionList('video', key);
+        updateVideoCostUI();
+        if (window.innerWidth < 768) toggleMobileControlPanel(false);
       }
     }
 
@@ -14155,9 +14242,8 @@
       const activeSub = document.getElementById('active-image-sub');
       if (activeSub) activeSub.textContent = model.sub || model.tag;
 
-      // Update Token Cost Pill
-      const tokenCostEl = document.getElementById('image-token-cost');
-      if (tokenCostEl) tokenCostEl.textContent = model.costTokens;
+      // Update Token Cost Pill with dynamic 4K/Pro resolution multiplier
+      updateImageCostUI();
 
       // Update Version List
       if (model.versions && model.versions.length > 0) {
@@ -14167,6 +14253,7 @@
 
       closeImageModelsModal();
       document.getElementById('dropdown-menu-image')?.classList.add('hidden');
+      if (window.innerWidth < 768) toggleMobileControlPanel(false);
     }
 
     function selectToolkitModel(key, iconKey, name) {
@@ -15482,7 +15569,7 @@
       }
     }
 
-    document.addEventListener('click', (e) => {
+    const handleOutsideDismiss = (e) => {
       const burgerMenu = document.getElementById('burger-dropdown-menu');
       const burgerBtn = document.getElementById('burger-menu-btn');
       if (burgerMenu && !burgerMenu.classList.contains('hidden')) {
@@ -15506,7 +15593,18 @@
           closeStudioSwitcher();
         }
       }
-    });
+
+      const avatarMenu = document.getElementById('avatar-dropdown-menu');
+      const avatarBtn = document.getElementById('header-user-avatar-btn');
+      if (avatarMenu && !avatarMenu.classList.contains('hidden')) {
+        if (!avatarMenu.contains(e.target) && (!avatarBtn || !avatarBtn.contains(e.target))) {
+          if (typeof closeAvatarDropdown === 'function') closeAvatarDropdown();
+          else avatarMenu.classList.add('hidden');
+        }
+      }
+    };
+    document.addEventListener('click', handleOutsideDismiss);
+    document.addEventListener('pointerdown', handleOutsideDismiss);
 
     // Auto-reposition popovers on viewport resize or scroll
     window.addEventListener('resize', () => {
