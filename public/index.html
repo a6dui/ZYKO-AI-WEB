@@ -4049,7 +4049,7 @@
 
 
   <!-- ================= ADMIN PANEL MODAL (FULL CONTROL SUITE) ================= -->
-  <div id="admin-panel-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop" onclick="closeAdminPanel()">
+  <div id="admin-panel-modal" style="display: none;" class="fixed inset-0 z-[200] hidden items-center justify-center p-2 sm:p-4 md:p-6 modal-backdrop" onclick="closeAdminPanel()">
     <div class="bg-[#0b0f0e] border border-emerald-500/40 rounded-3xl overflow-hidden max-w-6xl w-full h-[92vh] flex flex-col shadow-2xl relative" onclick="event.stopPropagation()">
       
       <!-- Admin Header -->
@@ -4077,14 +4077,26 @@
             <span id="admin-header-el-pct" class="font-bold text-stone-200">...%</span>
           </div>
 
+          <!-- Quick Exit to Main Menu (Trends) -->
+          <button onclick="closeAdminPanel(); switchTab('trends');" title="Главное меню (Тренды)" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-500/40 text-stone-300 hover:text-emerald-300 font-semibold text-xs rounded-xl transition shadow-sm">
+            <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="hidden md:inline">Главное меню</span>
+          </button>
+
+          <!-- Quick Exit to Profile -->
+          <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('profile');" title="Личный профиль" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-teal-500/20 border border-white/10 hover:border-teal-500/40 text-stone-300 hover:text-teal-300 font-semibold text-xs rounded-xl transition shadow-sm">
+            <svg class="w-3.5 h-3.5 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="hidden md:inline">Профиль</span>
+          </button>
+
           <a href="/api/admin/backup-db" target="_blank" download title="Скачать резервную копию базы данных (.db)" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition shadow-sm">
             <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            <span class="hidden sm:inline">Бэкап БД</span>
+            <span class="hidden lg:inline">Бэкап БД</span>
           </a>
           <button onclick="refreshAdminData()" title="Refresh Data" class="p-2 text-stone-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition flex items-center justify-center">
             <svg class="w-3.5 h-3.5 text-stone-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
           </button>
-          <button onclick="closeAdminPanel()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center transition">
+          <button onclick="closeAdminPanel()" title="Закрыть админку (Esc)" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-red-500/20 hover:border-red-500/30 border border-white/10 text-stone-300 hover:text-red-300 flex items-center justify-center transition font-bold">
             ✕
           </button>
         </div>
@@ -7903,6 +7915,7 @@
     }
 
     function switchTab(tabId) {
+      if (typeof closeAdminPanel === 'function') closeAdminPanel();
       currentTab = tabId;
       window.location.hash = tabId;
 
@@ -15198,6 +15211,7 @@
     }
 
     function switchUserSubtab(subtab) {
+      if (typeof closeAdminPanel === 'function') closeAdminPanel();
       if (typeof closeAvatarDropdown === 'function') closeAvatarDropdown();
       const tabs = ['profile', 'pricing', 'tokens', 'history', 'invoices', 'feed', 'affiliate'];
       tabs.forEach(t => {
@@ -15757,20 +15771,44 @@
       closeNotificationDrawer();
       closeAvatarDropdown();
       const menu = document.getElementById('burger-dropdown-menu');
-      if (menu) menu.classList.toggle('hidden');
+      if (menu) {
+        const isHidden = menu.classList.contains('hidden') || menu.style.display === 'none';
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          menu.style.display = 'block';
+        } else {
+          menu.classList.add('hidden');
+          menu.style.display = 'none';
+        }
+      }
     }
 
     function closeBurgerDropdown() {
       const menu = document.getElementById('burger-dropdown-menu');
-      if (menu) menu.classList.add('hidden');
+      if (menu) {
+        menu.classList.add('hidden');
+        menu.style.display = 'none';
+      }
       const flyout = document.getElementById('lang-flyout-menu');
-      if (flyout) flyout.classList.add('hidden');
+      if (flyout) {
+        flyout.classList.add('hidden');
+        flyout.style.display = 'none';
+      }
     }
 
     function toggleLangFlyout(e) {
       if (e) e.stopPropagation();
       const flyout = document.getElementById('lang-flyout-menu');
-      if (flyout) flyout.classList.toggle('hidden');
+      if (flyout) {
+        const isHidden = flyout.classList.contains('hidden') || flyout.style.display === 'none';
+        if (isHidden) {
+          flyout.classList.remove('hidden');
+          flyout.style.display = 'block';
+        } else {
+          flyout.classList.add('hidden');
+          flyout.style.display = 'none';
+        }
+      }
     }
 
     const langDetails = {
@@ -15837,7 +15875,7 @@
     const handleOutsideDismiss = (e) => {
       const burgerMenu = document.getElementById('burger-dropdown-menu');
       const burgerBtn = document.getElementById('burger-menu-btn');
-      if (burgerMenu && !burgerMenu.classList.contains('hidden')) {
+      if (burgerMenu && (!burgerMenu.classList.contains('hidden') && burgerMenu.style.display !== 'none')) {
         if (!burgerMenu.contains(e.target) && (!burgerBtn || !burgerBtn.contains(e.target))) {
           closeBurgerDropdown();
         }
@@ -15898,17 +15936,40 @@
       const modal = document.getElementById('admin-panel-modal');
       if (modal) {
         modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        if (window.location.hash !== '#admin') {
+          try { window.history.pushState(null, null, '#admin'); } catch(e) {}
+        }
         refreshAdminData();
       }
     }
 
     function closeAdminPanel() {
       const modal = document.getElementById('admin-panel-modal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
       if (window.location.hash === '#admin') {
-        window.history.replaceState(null, null, ' ');
+        try {
+          if (typeof currentTab !== 'undefined' && currentTab) {
+            window.history.replaceState(null, null, '#' + currentTab);
+          } else {
+            window.history.replaceState(null, null, ' ');
+          }
+        } catch(e) {}
       }
     }
+
+    // Global ESC key to close Admin Panel Modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('admin-panel-modal');
+        if (modal && modal.style.display !== 'none' && !modal.classList.contains('hidden')) {
+          closeAdminPanel();
+        }
+      }
+    });
 
     function switchAdminTab(tabName) {
       adminCurrentTab = tabName;
