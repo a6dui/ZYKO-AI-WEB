@@ -486,7 +486,7 @@
               <div class="relative group/lang">
                 <button onclick="toggleLangFlyout(event)" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left">
                   <div class="flex items-center gap-3">
-                    <span id="active-lang-flag">🇬🇧</span> <span id="active-lang-label">English</span>
+                    <span id="active-lang-flag">🇷🇺</span> <span id="active-lang-label">Русский</span>
                   </div>
                   <span class="text-stone-500 text-xs">›</span>
                 </button>
@@ -832,10 +832,10 @@
       
       <!-- HERO SECTION WITH VIDEO BACKGROUND (Screenshot 1 & 5) -->
       <section class="relative w-full h-[84vh] min-h-[540px] flex items-end overflow-hidden">
-        <video id="heroVideo" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-80 contrast-110">
+        <video id="heroVideo" autoplay loop muted playsinline preload="auto" class="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-80 contrast-110">
+          <source src="/media/videos/wick.mp4" type="video/mp4">
           <source src="https://cdn.openai.com/sora/videos/tokyo-walk.mp4" type="video/mp4">
           <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/0e/OpenAI_Sora_in_Action-_Tokyo_Walk.webm/OpenAI_Sora_in_Action-_Tokyo_Walk.webm.1080p.vp9.webm" type="video/webm">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-working-on-her-laptop-in-a-creative-office-42525-large.mp4" type="video/mp4">
         </video>
         <!-- Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-[#060908] via-[#060908]/45 to-emerald-950/25"></div>
@@ -847,12 +847,12 @@
               ZYKO.AI
             </h1>
             <p class="text-2xl md:text-4xl font-black text-emerald-400 leading-tight mb-8">
-              <span data-i18n="hero_sub1">One subscription.</span><br>
-              <span data-i18n="hero_sub2">Unlimited access to top AI tools.</span>
+              <span data-i18n="hero_sub1">Одна подписка.</span><br>
+              <span data-i18n="hero_sub2">Безлимитный доступ к лучшим нейросетям.</span>
             </p>
             <div class="flex flex-wrap gap-3">
               <button onclick="switchTab('agents')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs px-6 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-xl shadow-emerald-500/25 transition active:scale-95">
-                <span data-i18n="hero_cta">Start creating</span> <span>✦</span>
+                <span data-i18n="hero_cta">Начать создавать</span> <span>✦</span>
               </button>
             </div>
           </div>
@@ -870,13 +870,13 @@
           <!-- Featured Headline -->
           <div class="text-center max-w-2xl mx-auto mb-8">
             <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-400 text-xs font-bold mb-3 shadow">
-              <span>✦</span> <span data-i18n="showcase_badge">Curated Highlights</span>
+              <span>✦</span> <span data-i18n="showcase_badge">✦ Избранные работы</span>
             </div>
             <h2 class="font-serif-editorial text-3xl sm:text-5xl md:text-6xl tracking-normal leading-tight mb-3 text-stone-100" data-i18n="showcase_title">
-              Featured AI Showcase
+              Тренды в несколько кликов
             </h2>
             <p class="text-stone-300 text-xs sm:text-sm font-medium max-w-xl mx-auto leading-relaxed" data-i18n="showcase_desc">
-              Selected creations from FLUX, Midjourney and ElevenLabs. Browse artwork, copy prompts and create in 1 click.
+              Лучшие работы FLUX, Midjourney и ElevenLabs. Смотрите работы, копируйте промпты и создавайте свои шедевры в 1 клик.
             </p>
           </div>
 
@@ -5890,7 +5890,7 @@
     let currentSelectedPlan = 'Pro';
     let currentBillingCycle = 'annual';
     let currentStudioModel = 'banana';
-    let currentLang = 'en';
+    let currentLang = 'ru';
     let currentTgAuthCode = null;
     let tgAuthPollTimer = null;
     let chatHistories = { chats: [], projects: [] };
@@ -6883,6 +6883,15 @@
         }
       } catch (e) {}
 
+      // Ensure hero video starts playing smoothly
+      try {
+        const hv = document.getElementById('heroVideo');
+        if (hv) {
+          hv.muted = true;
+          hv.play().catch(() => {});
+        }
+      } catch (e) {}
+
       // Check URL Hash for initial tab
       const hash = window.location.hash.replace('#', '');
       const userSubtabsMap = {
@@ -6935,7 +6944,7 @@
 
       // Apply saved language universally across all freshly rendered components
       try {
-        const savedLang = localStorage.getItem('zyko_lang') || 'en';
+        const savedLang = localStorage.getItem('zyko_lang') || 'ru';
         setLanguage(savedLang);
       } catch (e) {
         console.warn('Lang restore error:', e);
@@ -13001,9 +13010,9 @@
         prompt_ru: 'Аниме-персонаж трансформируется в фотореалистичную героиню, кинематографичный студийный свет, красный бархат, 8K',
         model: 'Seedance 2.5 HD',
         modelKey: 'seedance',
-        type: 'image',
+        type: 'video',
         categories: ['all', 'anime', 'cinema', 'flux'],
-        videoUrl: '',
+        videoUrl: '/media/videos/keanu.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800',
         likes: 542000,
         views: '6.8M',
@@ -13017,9 +13026,9 @@
         prompt_ru: 'Матовый черный AMG суперкар в управляемом заносе по набережной Монако мимо суперъяхт, 8K кинематография',
         model: 'Kling 4.0 Pro',
         modelKey: 'kling',
-        type: 'image',
+        type: 'video',
         categories: ['all', 'cars', 'cinema'],
-        videoUrl: '',
+        videoUrl: '/media/videos/wick.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800',
         likes: 489000,
         views: '5.9M',
@@ -13065,9 +13074,9 @@
         prompt_ru: 'Захватывающий полет дрона над пастельными виллами на скалах и бирюзовыми водами норвежского фьорда в золотом свете, 8K',
         model: 'Google Veo 3.1',
         modelKey: 'veo',
-        type: 'image',
+        type: 'video',
         categories: ['all', 'cinema', 'fashion', 'flux'],
-        videoUrl: '',
+        videoUrl: '/media/generations/video_1792340756_e1fb2540.mp4',
         posterUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800',
         likes: 359000,
         views: '4.0M',
@@ -13515,12 +13524,18 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
+        const isVideo = (t.type === 'video') || !!t.videoUrl || (t.mediaUrl && (t.mediaUrl.endsWith('.mp4') || t.mediaUrl.endsWith('.webm')));
+        const videoSrc = t.videoUrl || t.mediaUrl || '';
+        const mediaTag = (t.type === 'audio' ? '🎵' : (isVideo ? '🎬' : '🖼️'));
+
+        const mediaElem = (isVideo && videoSrc)
+          ? `<video src="${videoSrc}" poster="${t.posterUrl || ''}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>`
+          : `<img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">`;
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3 transition duration-300 shadow-xl select-none"
                onclick="openTrendModalById('${t.id}')">
-            <img src="${t.posterUrl}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            ${mediaElem}
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/60 pointer-events-none"></div>
 
             <!-- Top Badge & Like -->
@@ -13588,13 +13603,19 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
+        const isVideo = (t.type === 'video') || !!t.videoUrl || (t.mediaUrl && (t.mediaUrl.endsWith('.mp4') || t.mediaUrl.endsWith('.webm')));
+        const videoSrc = t.videoUrl || t.mediaUrl || '';
+        const mediaTag = (t.type === 'audio' ? '🎵' : (isVideo ? '🎬' : '🖼️'));
+
+        const mediaElem = (isVideo && videoSrc)
+          ? `<video src="${videoSrc}" poster="${t.posterUrl || ''}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>`
+          : `<img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">`;
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
                onclick="openTrendModalById('${t.id}')">
             
-            <img src="${t.posterUrl}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            ${mediaElem}
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/60 pointer-events-none"></div>
 
             <!-- Top Floating Bar: Model Badge + Like Counter -->
@@ -13663,10 +13684,13 @@
       const video = document.getElementById('trend-modal-video');
       const img = document.getElementById('trend-modal-img');
 
-      if (t.videoUrl) {
+      const isVideo = !!t.videoUrl || (t.type === 'video') || (t.mediaUrl && (t.mediaUrl.endsWith('.mp4') || t.mediaUrl.endsWith('.webm')));
+      const videoSrc = t.videoUrl || t.mediaUrl || '';
+
+      if (isVideo && videoSrc) {
         if (video) {
-          video.src = t.videoUrl;
-          video.poster = t.posterUrl;
+          video.src = videoSrc;
+          video.poster = t.posterUrl || '';
           video.classList.remove('hidden');
           video.style.display = 'block';
           video.play().catch(() => {});
@@ -13682,7 +13706,7 @@
           video.style.display = 'none';
         }
         if (img) {
-          img.src = t.posterUrl;
+          img.src = t.posterUrl || t.mediaUrl || '';
           img.classList.remove('hidden');
           img.style.display = 'block';
         }
@@ -17188,10 +17212,13 @@
                 type: type,
                 title_ru: '🌟 ' + (g.model || 'AI') + ' — ' + (g.user_name || 'Выбор ZYKO'),
                 title_en: '🌟 ' + (g.model || 'AI') + ' by ' + (g.user_name || 'ZYKO Pick'),
-                prompt_ru: g.prompt || 'Генерация ZYKO.AI',
-                prompt_en: g.prompt || 'ZYKO.AI Neural Creation',
+                prompt_ru: g.prompt || 'Генерация ZYKO.STUDY',
+                prompt_en: g.prompt || 'ZYKO.STUDY Neural Creation',
                 posterUrl: url,
                 mediaUrl: url,
+                videoUrl: isVid ? url : '',
+                views: '16.8K',
+                aspect: isVid ? '16:9 HD' : '9:16 4K',
                 model: (g.model || 'AI') + ' ✦ Pick',
                 modelKey: isVid ? 'wan_3_0' : (isAud ? 'elevenlabs' : 'flux_pro'),
                 likes: 180 + (g.id * 7) % 50,
