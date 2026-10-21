@@ -59,6 +59,7 @@ from auth import create_access_token, decode_access_token, verify_google_id_toke
 from payments import (
     create_stripe_checkout,
     create_stripe_customer_portal_session,
+    fetch_stripe_user_invoices,
     handle_stripe_webhook_payload,
     create_platega_payment,
     handle_platega_webhook_payload,
@@ -767,8 +768,25 @@ async def handle_user_invoices(request: web.Request):
     if not user:
         return web.json_response({"success": True, "invoices": []})
     user_id = user["id"]
+    user_email = user.get("email", "")
+
+    # 1. Fetch DB transactions
     invoices = await get_user_transactions(user_id)
-    return web.json_response({"success": True, "invoices": invoices})
+    
+    # 2. Fetch live Stripe invoices & charges directly from Stripe
+    stripe_invoices = await fetch_stripe_user_invoices(user_email)
+    
+    # Combine live Stripe invoices with local transactions, prioritizing Stripe
+    if stripe_invoices:
+        stripe_order_ids = {si["order_id"] for si in stripe_invoices} | {si["id"] for si in stripe_invoices}
+        non_dupe_local = [inv for inv in invoices if inv.get("order_id") not in stripe_order_ids]
+        invoices = stripe_invoices + non_dupe_local
+
+    return web.json_response({
+        "success": True, 
+        "invoices": invoices,
+        "stripe_customer_available": bool(user_email)
+    })
 
 # --- Payments ---
 

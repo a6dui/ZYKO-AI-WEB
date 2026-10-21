@@ -370,6 +370,42 @@
     #notification-drawer {
       box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 30px -5px rgba(16, 185, 129, 0.15);
     }
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #receipt-view-modal,
+      #receipt-view-modal * {
+        visibility: visible !important;
+      }
+      #receipt-view-modal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      #receipt-view-modal > div {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        background: white !important;
+        color: black !important;
+      }
+      #avatar-dropdown-menu,
+      #notification-drawer,
+      #studio-switcher-dropdown,
+      #burger-dropdown-menu,
+      header,
+      nav,
+      aside,
+      button,
+      .no-print {
+        display: none !important;
+        visibility: hidden !important;
+      }
+    }
   </style>
 </head>
 <body class="selection:bg-emerald-400 selection:text-black notranslate">
@@ -720,8 +756,8 @@
               <img id="header-user-avatar" src="" class="hidden w-full h-full rounded-full object-cover" alt="Avatar">
             </button>
 
-            <!-- Dropdown Menu (Screenshot 4) -->
-            <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-12 w-64 border border-white/20 rounded-2xl shadow-2xl p-2.5" style="display: none; background-color: #121614 !important; opacity: 1 !important; z-index: 999999 !important;">
+            <!-- Dropdown Menu -->
+            <div id="avatar-dropdown-menu" class="hidden absolute right-0 top-full mt-2 w-64 border border-white/20 rounded-2xl shadow-2xl p-2.5 z-[99999999]" style="display: none; background-color: #121614 !important; opacity: 1 !important;">
               <div class="px-2.5 py-1.5">
                 <div id="dropdown-user-handle" class="text-xs font-semibold text-stone-200 truncate">@foryafrom-em</div>
                 <div id="dropdown-user-tier" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">MAX</div>
@@ -5120,7 +5156,7 @@
   <!-- DIGITAL RECEIPT MODAL (ЧЕК ТРАНЗАКЦИИ ZYKO / STRIPE / СБП) -->
   <div id="receipt-view-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-backdrop" onclick="closeReceiptModal()">
     <div class="bg-[#111514] border border-emerald-500/40 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl text-stone-200" onclick="event.stopPropagation()">
-      <button onclick="closeReceiptModal()" class="absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
+      <button onclick="closeReceiptModal()" class="no-print absolute top-5 right-5 text-stone-400 hover:text-white text-lg">✕</button>
 
       <!-- Receipt Header -->
       <div class="flex items-center gap-3 mb-4 pb-4 border-b border-white/10">
@@ -5189,7 +5225,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center justify-between gap-3 pt-2">
+      <div class="no-print flex items-center justify-between gap-3 pt-2">
         <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition flex items-center gap-2">
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
           <span>Печать / В PDF</span>
@@ -14407,30 +14443,15 @@
   
     function positionAvatarDropdown() {
       const menu = document.getElementById('avatar-dropdown-menu');
-      const btn = document.getElementById('header-user-avatar-btn');
-      if (!menu || !btn || menu.classList.contains('hidden') || menu.style.display === 'none') return;
-
-      const rect = btn.getBoundingClientRect();
-      const screenW = window.innerWidth;
-      const menuWidth = Math.min(240, screenW - 16);
-
-      let right = screenW - rect.right;
-      if (right < 8) right = 8;
-      if (rect.right - menuWidth < 8) {
-        right = Math.max(8, screenW - menuWidth - 8);
-      }
-
-      const top = Math.max(rect.bottom + 8, 56);
-
-      menu.style.position = 'fixed';
-      menu.style.top = `${top}px`;
-      menu.style.right = `${right}px`;
+      if (!menu) return;
+      menu.style.position = 'absolute';
+      menu.style.right = '0px';
+      menu.style.top = 'calc(100% + 8px)';
       menu.style.left = 'auto';
-      menu.style.width = `${menuWidth}px`;
+      menu.style.width = '16rem';
       menu.style.zIndex = '99999999';
       menu.style.backgroundColor = '#121614';
       menu.style.opacity = '1';
-      menu.style.display = 'block';
     }
 
     function toggleAvatarDropdown(e) {
@@ -14480,9 +14501,9 @@
         }
       }
     }
-    document.addEventListener('click', handleAvatarOutsideDismiss);
-    document.addEventListener('pointerdown', handleAvatarOutsideDismiss);
-    document.addEventListener('touchstart', handleAvatarOutsideDismiss, { passive: true });
+    document.addEventListener('click', handleAvatarOutsideDismiss, true);
+    document.addEventListener('pointerdown', handleAvatarOutsideDismiss, true);
+    document.addEventListener('touchstart', handleAvatarOutsideDismiss, { capture: true, passive: true });
 
     
     function togglePlanTokens(plan, tokens, priceText, btn) {
@@ -15126,24 +15147,6 @@
         userInvoicesData = [];
       }
 
-      if (!userInvoicesData.length && currentUser) {
-        const initialDate = currentUser.created_at || new Date().toISOString();
-        if (currentUser.tier && currentUser.tier !== 'FREE' && currentUser.tier !== 'Free') {
-          userInvoicesData = [{
-            id: 1,
-            provider: 'stripe',
-            order_id: 'cs_init_' + (currentUser.id || 'usr'),
-            amount: 16.90,
-            currency: 'EUR',
-            tokens_credited: 8160,
-            tier_activated: currentUser.tier || 'Pro',
-            status: 'completed',
-            receipt_url: null,
-            created_at: initialDate
-          }];
-        }
-      }
-
       updateInvoicesSummary();
       renderUserInvoices();
     }
@@ -15211,12 +15214,17 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="6" class="py-16 text-center text-stone-500">
-              <div class="max-w-xs mx-auto text-center space-y-2">
-                <span class="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 text-stone-400 inline-flex items-center justify-center">
-                  <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              <div class="max-w-md mx-auto text-center space-y-3">
+                <span class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 text-emerald-400 inline-flex items-center justify-center text-xl shadow-lg">
+                  📄
                 </span>
-                <div class="text-xs font-bold text-stone-300">Нет транзакций</div>
-                <div class="text-[11px] text-stone-500">История платежей и чеков появится здесь после первой оплаты подписки или токенов.</div>
+                <div class="text-sm font-bold text-white">Официальные чеки и счета-фактуры Stripe</div>
+                <div class="text-xs text-stone-400 leading-relaxed">
+                  При оплате любого тарифа через карту Stripe сюда автоматически поступают оригинальные квитанции Stripe за каждый расчетный месяц с возможностью скачивания PDF-чека.
+                </div>
+                <div class="pt-2">
+                  <button onclick="switchUserSubtab('pricing')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs transition shadow-lg active:scale-95">Выбрать тариф</button>
+                </div>
               </div>
             </td>
           </tr>
@@ -15226,6 +15234,7 @@
 
       tbody.innerHTML = filtered.map(tx => {
         const dateStr = formatTokenDate(tx.created_at);
+        const monthLabel = tx.month_label || formatInvoiceMonth(tx.created_at);
         const provider = (tx.provider || 'stripe').toLowerCase();
         const currency = (tx.currency || 'EUR').toUpperCase();
         const isCompleted = tx.status === 'completed';
@@ -15261,29 +15270,55 @@
           ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Оплачен</span>`
           : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Ожидание</span>`;
 
-        let receiptAction = `
-          <button onclick='openReceiptModal(${JSON.stringify(tx).replace(/'/g, "\\'")})' class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/40 text-stone-200 hover:text-white font-bold text-[11px] transition inline-flex items-center gap-1.5 shadow-sm">
-            <svg class="w-3 h-3 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-            <span>Квитанция</span>
-          </button>
-        `;
-
-        if (tx.receipt_url) {
-          receiptAction = `
-            <div class="flex items-center justify-end gap-1.5">
-              <a href="${escapeHtml(tx.receipt_url)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 hover:text-emerald-300 font-bold text-[11px] transition inline-flex items-center gap-1 shadow-sm">
-                <span>Чек Stripe ↗</span>
+        let receiptAction = '';
+        if (provider === 'stripe') {
+          const docUrl = tx.invoice_pdf || tx.receipt_url;
+          if (docUrl) {
+            receiptAction = `
+              <a href="${escapeHtml(docUrl)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 border border-emerald-500/40 text-emerald-300 hover:text-black font-extrabold text-xs transition inline-flex items-center gap-1.5 shadow-sm active:scale-95">
+                <span>📄 Чек Stripe (PDF) ↗</span>
               </a>
-              <button onclick='openReceiptModal(${JSON.stringify(tx).replace(/'/g, "\\'")})' title="Электронная квитанция" class="p-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white transition">
-                <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            `;
+          } else {
+            receiptAction = `
+              <button onclick="openStripeCustomerPortal()" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 hover:text-white font-bold text-xs transition inline-flex items-center gap-1 shadow-sm">
+                <span>Чек в Stripe Portal ↗</span>
               </button>
-            </div>
+            `;
+          }
+        } else if (tx.receipt_url) {
+          receiptAction = `
+            <a href="${escapeHtml(tx.receipt_url)}" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-200 font-bold text-xs transition inline-flex items-center gap-1">
+              <span>Чек транзакции ↗</span>
+            </a>
+          `;
+        } else {
+          receiptAction = `
+            <button onclick='openReceiptModal(${JSON.stringify(tx).replace(/'/g, "\\'")})' class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white font-medium text-[11px] transition">
+              <span>Детали</span>
+            </button>
           `;
         }
 
         return `
           <tr class="hover:bg-white/[0.02] transition">
-            <td class="py-3.5 px-4 text-stone-400 font-mono text-[11px] whitespace-nowrap">${dateStr}</td>
+            <td class="py-3.5 px-4 text-stone-300 text-xs whitespace-nowrap">
+              <div class="font-bold text-white">${escapeHtml(monthLabel)}</div>
+              <div class="font-mono text-[11px] text-stone-400 mt-0.5">${dateStr}</div>
+            </td>
+            <td class="py-3.5 px-4 font-semibold text-white">
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-5 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-amber-400 shrink-0">ZK</span>
+                <div>
+                  <div class="font-bold text-stone-100">${escapeHtml(tierName)}</div>
+                  <div class="text-[10px] text-amber-400 font-mono font-medium">${tokensDisplay}</div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3.5 px-4 text-right font-mono font-extrabold text-white text-xs">${amountDisplay}</td>
+            <td class="py-3.5 px-4 text-center">${gatewayBadge}</td>
+            <td class="py-3.5 px-4 text-center">${statusBadge}</td>
+            <td class="py-3.5 px-4 text-right">${receiptAction}</td>
             <td class="py-3.5 px-4 font-semibold text-white">
               <div class="flex items-center gap-2">
                 <span class="w-5 h-5 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-amber-400 shrink-0">ZK</span>

@@ -173,17 +173,110 @@ async def create_stripe_customer_portal_session(user_id: int, user_email: str, r
     if not STRIPE_SECRET_KEY or not user_email:
         return None
     try:
+        stripe.api_key = STRIPE_SECRET_KEY
         customers = stripe.Customer.list(email=user_email, limit=1)
-        if not customers or not customers.data:
-            return None
+        if customers and customers.data:
+            cust_id = customers.data[0].id
+        else:
+            new_cust = stripe.Customer.create(
+                email=user_email,
+                metadata={"user_id": str(user_id)}
+            )
+            cust_id = new_cust.id
+
         portal = stripe.billing_portal.Session.create(
-            customer=customers.data[0].id,
+            customer=cust_id,
             return_url=return_url
         )
         return portal.url
     except Exception as e:
         logger.error("Stripe Customer Portal error: %s", e)
         return None
+
+async def fetch_stripe_user_invoices(user_email: str) -> list:
+    """
+    Fetches real official Stripe Invoices and Charges for a given user email directly from Stripe API.
+    Returns official hosted receipt URLs, invoice PDFs, amounts, dates, and monthly periods.
+    """
+    if not STRIPE_SECRET_KEY or not user_email:
+        return []
+    try:
+        stripe.api_key = STRIPE_SECRET_KEY
+        customers = stripe.Customer.list(email=user_email, limit=3)
+        if not customers or not customers.data:
+            return []
+
+        results = []
+        from datetime import datetime
+
+        months_ru = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+
+        for c in customers.data:
+            # 1. Official Stripe Invoices
+            try:
+                inv_list = stripe.Invoice.list(customer=c.id, limit=30)
+                for inv in inv_list.data:
+                    created_dt = datetime.fromtimestamp(inv.created) if inv.created else datetime.now()
+                    period_dt = datetime.fromtimestamp(inv.period_start) if inv.period_start else created_dt
+                    month_label = f"{months_ru[period_dt.month - 1]} {period_dt.year}"
+
+                    plan_title = "Тариф Stripe"
+                    if inv.lines and inv.lines.data:
+                        first_line = inv.lines.data[0]
+                        plan_title = first_line.description or "Тариф ZYKO.AI"
+                    elif inv.metadata and "plan_name" in inv.metadata:
+                        plan_title = f"Тариф {inv.metadata['plan_name']}"
+
+                    results.append({
+                        "id": inv.id,
+                        "provider": "stripe",
+                        "order_id": inv.number or inv.id,
+                        "amount": round(inv.total / 100.0, 2),
+                        "currency": (inv.currency or "eur").upper(),
+                        "tokens_credited": int(inv.metadata.get("tokens", 0)) if (inv.metadata and inv.metadata.get("tokens")) else 0,
+                        "tier_activated": plan_title,
+                        "status": "completed" if inv.paid else inv.status,
+                        "receipt_url": inv.hosted_invoice_url or inv.invoice_pdf,
+                        "invoice_pdf": inv.invoice_pdf or inv.hosted_invoice_url,
+                        "month_label": month_label,
+                        "created_at": created_dt.isoformat(),
+                        "is_stripe_official": True
+                    })
+            except Exception as inv_err:
+                logger.warning("Error listing Stripe invoices: %s", inv_err)
+
+            # 2. Standalone Stripe Charges / Payments
+            try:
+                ch_list = stripe.Charge.list(customer=c.id, limit=30)
+                existing_ids = {r["id"] for r in results}
+                for ch in ch_list.data:
+                    if ch.invoice and ch.invoice in existing_ids:
+                        continue
+                    created_dt = datetime.fromtimestamp(ch.created) if ch.created else datetime.now()
+                    month_label = f"{months_ru[created_dt.month - 1]} {created_dt.year}"
+
+                    results.append({
+                        "id": ch.id,
+                        "provider": "stripe",
+                        "order_id": ch.id,
+                        "amount": round(ch.amount / 100.0, 2),
+                        "currency": (ch.currency or "eur").upper(),
+                        "tokens_credited": int(ch.metadata.get("tokens", 0)) if (ch.metadata and ch.metadata.get("tokens")) else 0,
+                        "tier_activated": ch.description or (f"Тариф {ch.metadata['plan_name']}" if ch.metadata and "plan_name" in ch.metadata else "Тариф Stripe"),
+                        "status": "completed" if ch.paid else ch.status,
+                        "receipt_url": ch.receipt_url,
+                        "invoice_pdf": ch.receipt_url,
+                        "month_label": month_label,
+                        "created_at": created_dt.isoformat(),
+                        "is_stripe_official": True
+                    })
+            except Exception as ch_err:
+                logger.warning("Error listing Stripe charges: %s", ch_err)
+
+        return results
+    except Exception as e:
+        logger.error("fetch_stripe_user_invoices error: %s", e)
+        return []
 
 async def handle_stripe_webhook_payload(payload: bytes, sig_header: str) -> bool:
     if not STRIPE_SECRET_KEY or not STRIPE_WEBHOOK_SECRET:
