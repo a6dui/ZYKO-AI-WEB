@@ -278,6 +278,134 @@ async def fetch_stripe_user_invoices(user_email: str) -> list:
         logger.error("fetch_stripe_user_invoices error: %s", e)
         return []
 
+async def get_stripe_financial_hub_data() -> dict:
+    """
+    Direct Stripe API integration for Administrator Financial Dashboard.
+    Fetches real-time Monthly Recurring Revenue (MRR), active subscriptions breakdown,
+    Stripe wallet balances (EUR / USD), and recent charges without third-party delay.
+    """
+    if not STRIPE_SECRET_KEY:
+        return {
+            "status": "error",
+            "message": "STRIPE_SECRET_KEY не настроен",
+            "mrr_eur": 0.0,
+            "mrr_rub": 0,
+            "active_subscribers": 0,
+            "tier_breakdown": {},
+            "available_balance_eur": 0.0,
+            "pending_balance_eur": 0.0,
+            "recent_charges": []
+        }
+
+    headers = {
+        "Authorization": f"Bearer {STRIPE_SECRET_KEY}"
+    }
+
+    active_subs = []
+    balance_data = {}
+    recent_charges = []
+
+    async with aiohttp.ClientSession() as session:
+        # 1. Active Subscriptions
+        try:
+            async with session.get("https://api.stripe.com/v1/subscriptions?status=active&limit=100", headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as r:
+                if r.status == 200:
+                    res_json = await r.json()
+                    active_subs = res_json.get("data", [])
+        except Exception as e:
+            logger.error("Error fetching Stripe active subs: %s", e)
+
+        # 2. Live Balance
+        try:
+            async with session.get("https://api.stripe.com/v1/balance", headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as r:
+                if r.status == 200:
+                    balance_data = await r.json()
+        except Exception as e:
+            logger.error("Error fetching Stripe balance: %s", e)
+
+        # 3. Recent Charges
+        try:
+            async with session.get("https://api.stripe.com/v1/charges?limit=10", headers=headers, timeout=aiohttp.ClientTimeout(total=8)) as r:
+                if r.status == 200:
+                    res_json = await r.json()
+                    recent_charges = res_json.get("data", [])
+        except Exception as e:
+            logger.error("Error fetching Stripe charges: %s", e)
+
+    # Calculate MRR and Tier breakdown
+    mrr_eur = 0.0
+    tier_counts = {"Basic": 0, "Pro": 0, "VIP": 0, "Elite": 0, "Ultra Elite": 0, "Other": 0}
+
+    for s in active_subs:
+        items = s.get("items", {}).get("data", [])
+        for it in items:
+            plan = it.get("plan", {})
+            amt = (plan.get("amount") or 0) / 100.0
+            interval = plan.get("interval", "month")
+            monthly_val = (amt / 12.0) if interval == "year" else amt
+            mrr_eur += monthly_val
+
+            # Determine Tier
+            meta = s.get("metadata") or {}
+            p_name = meta.get("plan_name", "")
+            if not p_name:
+                nick = (plan.get("nickname") or "").lower()
+                desc = (plan.get("product") or "").lower()
+                for t in ["Ultra Elite", "Elite", "VIP", "Pro", "Basic"]:
+                    if t.lower() in nick or t.lower() in desc:
+                        p_name = t
+                        break
+            if not p_name:
+                p_name = "Pro" if monthly_val >= 25 else ("Basic" if monthly_val <= 10 else "VIP")
+
+            if p_name in tier_counts:
+                tier_counts[p_name] += 1
+            else:
+                tier_counts["Other"] += 1
+
+    # Extract available and pending balance
+    avail_eur = 0.0
+    pending_eur = 0.0
+    for b in balance_data.get("available", []):
+        curr = (b.get("currency") or "eur").lower()
+        amt = (b.get("amount") or 0) / 100.0
+        if curr == "eur":
+            avail_eur += amt
+        elif curr == "usd":
+            avail_eur += amt * 0.92
+    for b in balance_data.get("pending", []):
+        curr = (b.get("currency") or "eur").lower()
+        amt = (b.get("amount") or 0) / 100.0
+        if curr == "eur":
+            pending_eur += amt
+        elif curr == "usd":
+            pending_eur += amt * 0.92
+
+    formatted_charges = []
+    for ch in recent_charges:
+        formatted_charges.append({
+            "id": ch.get("id"),
+            "amount": round((ch.get("amount") or 0) / 100.0, 2),
+            "currency": (ch.get("currency") or "eur").upper(),
+            "status": ch.get("status"),
+            "paid": ch.get("paid", False),
+            "customer_email": ch.get("billing_details", {}).get("email") or ch.get("receipt_email") or "Клиент",
+            "created": ch.get("created"),
+            "receipt_url": ch.get("receipt_url")
+        })
+
+    return {
+        "status": "ok",
+        "mrr_eur": round(mrr_eur, 2),
+        "mrr_rub": round(mrr_eur * 105),
+        "active_subscribers": len(active_subs),
+        "tier_breakdown": tier_counts,
+        "available_balance_eur": round(avail_eur, 2),
+        "pending_balance_eur": round(pending_eur, 2),
+        "recent_charges": formatted_charges,
+        "dashboard_url": "https://dashboard.stripe.com/"
+    }
+
 async def handle_stripe_webhook_payload(payload: bytes, sig_header: str) -> bool:
     if not STRIPE_SECRET_KEY or not STRIPE_WEBHOOK_SECRET:
         logger.warning("Stripe webhook received but keys not configured.")

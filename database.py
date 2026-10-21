@@ -2,6 +2,8 @@ import os
 import aiosqlite
 import logging
 import time
+import asyncio
+import aiohttp
 from datetime import datetime, timedelta
 
 logger = logging.getLogger("zyko_db")
@@ -99,6 +101,10 @@ async def init_db():
         # Ensure additional columns exist on older tables
         try:
             await db.execute("ALTER TABLE generations ADD COLUMN is_hidden INTEGER DEFAULT 0")
+        except Exception:
+            pass
+        try:
+            await db.execute("ALTER TABLE generations ADD COLUMN is_featured_trend INTEGER DEFAULT 0")
         except Exception:
             pass
         try:
@@ -564,6 +570,18 @@ async def complete_transaction(order_id: str, receipt_url: str = None) -> dict:
                                 logger.info(f"Referral commission awarded: +{commission} ZK to user #{referrer_id} for purchase by #{tx['user_id']}")
             except Exception as e:
                 logger.error("Error processing referral commission: %s", e)
+
+        # Send instant Telegram push notification to superadmins
+        try:
+            user_data = None
+            if tx.get("user_id"):
+                async with db.execute("SELECT id, name, email, telegram_id, telegram_username FROM users WHERE id = ?", (tx["user_id"],)) as cu:
+                    u_row = await cu.fetchone()
+                    if u_row:
+                        user_data = dict(u_row)
+            asyncio.create_task(notify_superadmins_of_payment(tx, user_data))
+        except Exception as e_notify:
+            logger.error("Error scheduling payment notification: %s", e_notify)
 
         await db.commit()
         return tx
@@ -1274,6 +1292,149 @@ async def get_user_referrals_stats(user_id: int) -> dict:
             "available_funds_usd": round(partner_tokens * 0.001, 2),
             "referrals": referrals
         }
+
+async def notify_superadmins_of_payment(tx: dict, user_data: dict = None):
+    """
+    Sends an instant, beautiful Telegram Push Notification to project administrators
+    whenever a payment is completed (Stripe, Platega, CryptoPay, or Admin grant).
+    """
+    bot_token = os.environ.get("TELEGRAM_BOT_TOKEN") or "8824462987:AAFQ_K1QLmi9ZKiyq6gnYnFUGpgBWsXBFqs"
+    if not bot_token:
+        return
+
+    admin_ids = set()
+    admin_ids.add(755843448) # Default Project Owner Telegram ID
+    for aid in ADMIN_TELEGRAM_IDS:
+        admin_ids.add(aid)
+
+    try:
+        async with aiosqlite.connect(DB_PATH) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute("SELECT telegram_id FROM users WHERE is_superadmin = 1 AND telegram_id IS NOT NULL") as c:
+                rows = await c.fetchall()
+                for r in rows:
+                    if r["telegram_id"]:
+                        try:
+                            admin_ids.add(int(r["telegram_id"]))
+                        except Exception:
+                            pass
+    except Exception as e:
+        logger.error("Error retrieving admin telegram IDs: %s", e)
+
+    user_label = "Клиент"
+    user_id = tx.get("user_id") or "—"
+    if user_data:
+        tg_u = user_data.get("telegram_username")
+        name = user_data.get("name") or user_data.get("email") or f"ID #{user_id}"
+        if tg_u:
+            user_label = f"@{tg_u} ({name})"
+        else:
+            user_label = name
+
+    provider_names = {
+        "stripe": "Stripe Card / Apple Pay 💳",
+        "platega": "Platega (СБП / РФ Карты) 🇷🇺",
+        "cryptopay": "CryptoPay (USDT / TON / BTC) 💎",
+        "admin": "Админ-Панель (Ручное) 🛠️"
+    }
+    prov = (tx.get("provider") or "stripe").lower()
+    prov_label = provider_names.get(prov, prov.capitalize())
+
+    tier_plan = tx.get("tier_activated") or "Пакет токенов ZK"
+    tokens = int(tx.get("tokens_credited") or 0)
+    amount = tx.get("amount") or 0
+    curr = (tx.get("currency") or "EUR").upper()
+    curr_sym = "€" if curr == "EUR" else ("₽" if curr in ("RUB", "RUBLE") else curr)
+    order_id = tx.get("order_id") or "—"
+    receipt_url = tx.get("receipt_url")
+
+    msg_text = (
+        f"💰 <b>Новая оплата на ZYKO.AI!</b>\n\n"
+        f"👤 <b>Пользователь:</b> {user_label} (ID #{user_id})\n"
+        f"💎 <b>Тариф:</b> <b>{tier_plan}</b>\n"
+        f"💵 <b>Сумма:</b> <b>{amount} {curr_sym}</b>\n"
+        f"⚡ <b>Начислено:</b> <b>+{tokens:,} ZK</b>\n"
+        f"💳 <b>Метод:</b> {prov_label}\n"
+        f"🧾 <b>ID заказа:</b> <code>{order_id}</code>"
+    )
+
+    payload = {
+        "text": msg_text,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True
+    }
+    if receipt_url and str(receipt_url).startswith("http"):
+        payload["reply_markup"] = {
+            "inline_keyboard": [[
+                {"text": "📄 Посмотреть чек Stripe / Инвойс", "url": receipt_url}
+            ]]
+        }
+
+    async with aiohttp.ClientSession() as session:
+        for tg_id in admin_ids:
+            try:
+                p = dict(payload)
+                p["chat_id"] = tg_id
+                async with session.post(
+                    f"https://api.telegram.org/bot{bot_token}/sendMessage",
+                    json=p,
+                    timeout=aiohttp.ClientTimeout(total=5)
+                ) as resp:
+                    if resp.status == 200:
+                        logger.info("Admin payment push successfully sent to TG chat %s", tg_id)
+            except Exception as ex:
+                logger.error("Failed sending admin payment push to tg %s: %s", tg_id, ex)
+
+async def admin_toggle_generation_trend(generation_id: int, is_featured: int) -> bool:
+    """Toggles whether a generation is curated and displayed in the main Trends showcase."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("UPDATE generations SET is_featured_trend = ? WHERE id = ?", (is_featured, generation_id))
+        await db.commit()
+        return True
+
+async def get_public_featured_trends(limit: int = 24) -> list:
+    """Fetches administrator-curated generations for the public showcase."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute("""
+            SELECT g.id, g.model, g.prompt, g.result_url, g.created_at, g.tokens_cost,
+                   u.name as user_name, u.telegram_username
+            FROM generations g
+            LEFT JOIN users u ON g.user_id = u.id
+            WHERE g.is_featured_trend = 1 AND (g.is_hidden = 0 OR g.is_hidden IS NULL)
+            ORDER BY g.id DESC
+            LIMIT ?
+        """, (limit,)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
+
+async def get_admin_top_spenders(hours: int = 24, limit: int = 10) -> list:
+    """Fetches users with the highest token burn in the last N hours for anti-abuse & cost monitoring."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = """
+            SELECT 
+                u.id as user_id,
+                u.name,
+                u.email,
+                u.telegram_username,
+                u.telegram_id,
+                u.tier,
+                u.tokens as current_tokens,
+                u.is_banned,
+                COUNT(g.id) as total_gens,
+                COALESCE(SUM(g.tokens_cost), 0) as tokens_spent,
+                MAX(g.created_at) as last_gen_at
+            FROM generations g
+            JOIN users u ON g.user_id = u.id
+            WHERE g.created_at >= datetime('now', ?)
+            GROUP BY u.id
+            ORDER BY tokens_spent DESC
+            LIMIT ?
+        """
+        async with db.execute(query, (f"-{hours} hours", limit)) as cursor:
+            rows = await cursor.fetchall()
+            return [dict(r) for r in rows]
 
 
 

@@ -4070,6 +4070,13 @@
         </div>
 
         <div class="flex items-center gap-2">
+          <!-- Live ElevenLabs Quota Pill with pulse indicator -->
+          <div id="admin-header-el-pill" onclick="switchAdminTab('elevenlabs')" class="cursor-pointer hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-black/40 hover:bg-white/5 transition shadow-sm text-xs font-mono" title="Остаток квоты ElevenLabs (нажмите для перехода)">
+            <span id="admin-header-el-dot" class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+            <span class="text-stone-300 font-sans font-bold">ElevenLabs:</span>
+            <span id="admin-header-el-pct" class="font-bold text-stone-200">...%</span>
+          </div>
+
           <a href="/api/admin/backup-db" target="_blank" download title="Скачать резервную копию базы данных (.db)" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition shadow-sm">
             <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
             <span class="hidden sm:inline">Бэкап БД</span>
@@ -4170,6 +4177,63 @@
             </div>
           </div>
 
+          <!-- Stripe Live Financial Hub & MRR Card -->
+          <div class="bg-gradient-to-br from-[#121a16] via-[#101514] to-[#0c100f] border border-emerald-500/30 rounded-2xl p-5 space-y-4 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-[#635bff]/20 border border-[#635bff]/40 text-[#635bff] flex items-center justify-center font-black text-sm shadow">
+                  S
+                </span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-sm font-extrabold text-white">Stripe Live Financial Hub & MRR</h3>
+                    <span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full">Realtime API</span>
+                  </div>
+                  <p class="text-[11px] text-stone-400">Ежемесячный доход (MRR), активные подписки и живой баланс Stripe</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="loadAdminStripeHub()" class="bg-white/10 hover:bg-white/20 text-stone-200 border border-white/15 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                  <svg class="w-3 h-3 text-stone-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                  <span>Синхронизировать</span>
+                </button>
+                <a href="https://dashboard.stripe.com/" target="_blank" class="bg-[#635bff] hover:bg-[#5851ea] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                  <span>Stripe Dashboard</span>
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Stripe Metrics Row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+              <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                <div class="text-[10px] uppercase font-bold tracking-wider text-stone-400">Live MRR (Доход в месяц)</div>
+                <div id="stripe-hub-mrr" class="text-xl md:text-2xl font-black text-emerald-400 mt-1 font-mono">0.00 €</div>
+                <div id="stripe-hub-mrr-rub" class="text-[10px] text-stone-400 font-mono mt-0.5">≈ 0 ₽ / мес</div>
+              </div>
+
+              <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                <div class="text-[10px] uppercase font-bold tracking-wider text-stone-400">Активных подписчиков</div>
+                <div id="stripe-hub-active-subs" class="text-xl md:text-2xl font-black text-white mt-1">0</div>
+                <div id="stripe-hub-tier-pills" class="flex items-center gap-1 text-[9px] text-stone-300 mt-1 flex-wrap">
+                  <span class="text-stone-400">Standard: 0</span> • <span class="text-emerald-400">Pro: 0</span> • <span class="text-amber-400">VIP: 0</span>
+                </div>
+              </div>
+
+              <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                <div class="text-[10px] uppercase font-bold tracking-wider text-stone-400">Доступный баланс Stripe</div>
+                <div id="stripe-hub-balance-avail" class="text-xl md:text-2xl font-black text-white mt-1 font-mono">0.00 €</div>
+                <div class="text-[10px] text-emerald-400 mt-0.5">Готово к выводу на счет</div>
+              </div>
+
+              <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                <div class="text-[10px] uppercase font-bold tracking-wider text-stone-400">В обработке (Pending)</div>
+                <div id="stripe-hub-balance-pend" class="text-xl md:text-2xl font-black text-amber-300 mt-1 font-mono">0.00 €</div>
+                <div class="text-[10px] text-stone-400 mt-0.5">Поступят в течение 2-3 дней</div>
+              </div>
+            </div>
+          </div>
+
           <!-- Quick Actions & Subscriptions Breakdown -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Active Subscriptions Breakdown -->
@@ -4226,6 +4290,47 @@
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Anti-Burn / Top Token Spenders (24h) -->
+          <div class="bg-[#141a18] border border-amber-500/25 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-500/35 text-amber-400 flex items-center justify-center font-bold text-xs shadow">
+                  🔥
+                </span>
+                <div>
+                  <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    Анти-Слив & Контроль расходов (Топ списаний токенов за 24 часа)
+                  </h3>
+                  <p class="text-[11px] text-stone-400">Мониторинг пользователей с высоким расходом кредитов на 4K-видео и изображения.</p>
+                </div>
+              </div>
+              <button onclick="loadAdminTopSpenders()" class="bg-white/10 hover:bg-white/20 text-stone-300 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                <span>Обновить</span>
+              </button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[#0e1211] text-stone-400 border-b border-white/10">
+                  <tr>
+                    <th class="p-3 font-semibold">Пользователь</th>
+                    <th class="p-3 font-semibold">Тариф</th>
+                    <th class="p-3 font-semibold">Генераций (24ч)</th>
+                    <th class="p-3 font-semibold">Списано ZK</th>
+                    <th class="p-3 font-semibold">Текущий баланс</th>
+                    <th class="p-3 font-semibold text-right">Быстрые меры</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-top-spenders-body" class="divide-y divide-white/5 text-stone-300">
+                  <tr>
+                    <td colspan="6" class="p-4 text-center text-stone-500">Загрузка данных расхода...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -6770,6 +6875,13 @@
       } catch (e) {
         console.warn('System settings fetch error:', e);
       }
+
+      // Load administrator-curated featured trends from database
+      try {
+        if (typeof loadCuratedTrends === 'function') {
+          loadCuratedTrends();
+        }
+      } catch (e) {}
 
       // Check URL Hash for initial tab
       const hash = window.location.hash.replace('#', '');
@@ -15804,11 +15916,15 @@
     }
 
     function refreshAdminData() {
+      loadAdminHeaderElevenLabsQuota();
       switchAdminTab(adminCurrentTab);
     }
 
     // Tab 1: Overview & KPI
     async function loadAdminOverview() {
+      loadAdminHeaderElevenLabsQuota();
+      loadAdminStripeHub();
+      loadAdminTopSpenders();
       try {
         const res = await fetch('/api/admin/overview');
         if (!res.ok) return;
@@ -15860,6 +15976,124 @@
         }
       } catch (e) {
         console.error('Error loading admin overview:', e);
+      }
+    }
+
+    async function loadAdminHeaderElevenLabsQuota() {
+      try {
+        const res = await fetch('/api/admin/elevenlabs/quota');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && data.quota) {
+          const q = data.quota;
+          const sub = q.subscription || {};
+          const used = sub.character_count || q.total_character_count || 0;
+          const limit = sub.character_limit || q.total_character_limit || 0;
+          const remaining = Math.max(0, limit - used);
+          const remPct = limit > 0 ? Math.round((remaining / limit) * 100) : 0;
+
+          const pill = document.getElementById('admin-header-el-pill');
+          const dot = document.getElementById('admin-header-el-dot');
+          const pctEl = document.getElementById('admin-header-el-pct');
+          if (pill) pill.classList.remove('hidden');
+          if (pctEl) {
+            pctEl.textContent = `${remPct}% (${Math.round(remaining / 1000)}k)`;
+          }
+          if (dot) {
+            dot.className = 'w-2 h-2 rounded-full ' + (
+              remPct > 30 ? 'bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.5)]' :
+              remPct > 15 ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]' :
+              'bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]'
+            );
+          }
+        }
+      } catch (e) {
+        console.warn('Error loading header elevenlabs quota', e);
+      }
+    }
+
+    async function loadAdminStripeHub() {
+      try {
+        const res = await fetch('/api/admin/stripe/hub');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok') {
+          const mrrEl = document.getElementById('stripe-hub-mrr');
+          const mrrRubEl = document.getElementById('stripe-hub-mrr-rub');
+          const subsEl = document.getElementById('stripe-hub-active-subs');
+          const pillsEl = document.getElementById('stripe-hub-tier-pills');
+          const availEl = document.getElementById('stripe-hub-balance-avail');
+          const pendEl = document.getElementById('stripe-hub-balance-pend');
+
+          if (mrrEl) mrrEl.textContent = `${Number(data.mrr_eur || 0).toFixed(2)} €`;
+          if (mrrRubEl) mrrRubEl.textContent = `≈ ${Number(data.mrr_rub || 0).toLocaleString()} ₽ / мес`;
+          if (subsEl) subsEl.textContent = Number(data.active_subscribers || 0);
+          if (availEl) availEl.textContent = `${Number(data.available_balance_eur || 0).toFixed(2)} €`;
+          if (pendEl) pendEl.textContent = `${Number(data.pending_balance_eur || 0).toFixed(2)} €`;
+
+          if (pillsEl && data.tier_breakdown) {
+            const tb = data.tier_breakdown;
+            pillsEl.innerHTML = `
+              <span class="text-stone-300">Basic: <b class="text-white">${tb.Basic || 0}</b></span> • 
+              <span class="text-emerald-400">Pro: <b class="text-white">${tb.Pro || 0}</b></span> • 
+              <span class="text-amber-400">VIP: <b class="text-white">${tb.VIP || 0}</b></span> • 
+              <span class="text-purple-400">Max: <b class="text-white">${tb.Elite || tb.Max || 0}</b></span>
+            `;
+          }
+        }
+      } catch (e) {
+        console.error('Error loading Stripe Hub:', e);
+      }
+    }
+
+    async function loadAdminTopSpenders() {
+      const tbody = document.getElementById('admin-top-spenders-body');
+      if (!tbody) return;
+      try {
+        const res = await fetch('/api/admin/analytics/top-spenders?hours=24');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const spenders = data.spenders || [];
+        if (spenders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-stone-500">За последние 24 часа аномальных списаний не зафиксировано (все пользователи в пределах нормы)</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = spenders.map((s, idx) => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-3">
+              <div class="font-bold text-white flex items-center gap-1.5">
+                <span class="text-[10px] text-amber-400 font-mono">#${idx + 1}</span>
+                <span>${escapeHtml(s.name || s.email || 'User #' + s.user_id)}</span>
+              </div>
+              <div class="text-[10px] text-stone-400">${s.telegram_username ? '@' + escapeHtml(s.telegram_username) : escapeHtml(s.email || '')}</div>
+            </td>
+            <td class="p-3">
+              <span class="font-bold px-2 py-0.5 rounded-lg text-[10px] ${
+                s.tier === 'VIP' || s.tier === 'Pro' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-stone-500/20 text-stone-400'
+              }">${s.tier || 'Free'}</span>
+            </td>
+            <td class="p-3 font-semibold text-white">${s.total_gens} шт.</td>
+            <td class="p-3 font-black text-rose-400 font-mono">-${Math.round(s.tokens_spent).toLocaleString()} ZK</td>
+            <td class="p-3 font-black text-amber-400 font-mono">${Math.round(s.current_tokens || 0).toLocaleString()} ZK</td>
+            <td class="p-3 text-right">
+              <div class="flex items-center justify-end gap-1 flex-wrap">
+                <button onclick="adminQuickSetTokens(${s.user_id}, 10)" class="bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Сбросить баланс до 10 ZK (гостевой лимит)">
+                  10 ZK
+                </button>
+                <button onclick="adminQuickAdjustTokens(${s.user_id}, 1000)" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Бонус +1,000 ZK">
+                  +1k
+                </button>
+                <button onclick="adminToggleBan(${s.user_id}, ${s.is_banned ? 0 : 1})" class="${s.is_banned ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/15 text-red-400 border border-red-500/30'} font-bold px-2 py-1 rounded-lg transition text-[10px]">
+                  ${s.is_banned ? 'Разбан' : 'Бан'}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error('Error loading top spenders:', e);
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">Ошибка: ${e.message}</td></tr>`;
       }
     }
 
@@ -16240,15 +16474,24 @@
             </td>
             <td class="p-3.5 text-stone-400 text-[11px]">${(u.created_at || '').substring(0, 16)}</td>
             <td class="p-3.5 text-right">
-              <div class="flex items-center justify-end gap-1.5 flex-wrap">
-                <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-white/20 text-stone-200 font-bold px-2.5 py-1 rounded-xl transition text-[11px]" title="Изменить тариф и баланс">
-                  ✏️ Инфо
+              <div class="flex items-center justify-end gap-1 flex-wrap">
+                <button onclick="adminQuickSetTokens(${u.id}, 10)" class="bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Сбросить баланс до 10 ZK (гостевой лимит)">
+                  10 ZK
                 </button>
-                <button onclick="adminPromptAdjustTokens(${u.id})" class="bg-amber-500/10 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-bold px-2 py-1 rounded-xl transition text-[11px]" title="Начислить (+) или списать (-) ZK">
-                  ⚡ +/- ZK
+                <button onclick="adminQuickAdjustTokens(${u.id}, 1000)" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Быстро начислить +1,000 ZK">
+                  +1k
                 </button>
-                <button onclick="adminToggleBan(${u.id}, ${u.is_banned ? 0 : 1})" class="${u.is_banned ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30'} font-bold px-2 py-1 rounded-xl transition text-[11px]">
-                  ${u.is_banned ? 'Разбанить' : 'Бан'}
+                <button onclick="adminQuickAdjustTokens(${u.id}, 5000)" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Быстро начислить +5,000 ZK">
+                  +5k
+                </button>
+                <button onclick="adminQuickSetTier(${u.id}, 'VIP')" class="bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Выдать VIP статус на 30 дней">
+                  💎 VIP
+                </button>
+                <button onclick="adminEditUser(${u.id})" class="bg-white/10 hover:bg-white/20 text-stone-200 font-bold px-2 py-1 rounded-lg transition text-[10px]" title="Изменить тариф и баланс">
+                  ✏️
+                </button>
+                <button onclick="adminToggleBan(${u.id}, ${u.is_banned ? 0 : 1})" class="${u.is_banned ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30'} font-bold px-2 py-1 rounded-lg transition text-[10px]">
+                  ${u.is_banned ? 'Разбан' : 'Бан'}
                 </button>
               </div>
             </td>
@@ -16257,6 +16500,70 @@
       } catch (e) {
         console.error(e);
         tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function adminQuickSetTokens(userId, tokens) {
+      if (!confirm(`Установить баланс пользователя #${userId} ровно в ${tokens} ZK?`)) return;
+      try {
+        const res = await fetch('/api/admin/users/update', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: userId, tokens: tokens })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          showNotification(`Баланс пользователя #${userId} установлен в ${tokens} ZK!`, 'success');
+          loadAdminUsers();
+          if (typeof loadAdminTopSpenders === 'function') loadAdminTopSpenders();
+          if (currentUser && currentUser.id == userId) checkAuthStatus();
+        } else {
+          showNotification(data.error || 'Ошибка обновления', 'error');
+        }
+      } catch (e) {
+        showNotification(e.message, 'error');
+      }
+    }
+
+    async function adminQuickAdjustTokens(userId, delta) {
+      try {
+        const res = await fetch('/api/admin/users/adjust-tokens', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: userId, delta: delta, reason: `Quick grant +${delta} ZK` })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          showNotification(`Пользователю #${userId} начислено +${delta} ZK!`, 'success');
+          loadAdminUsers();
+          if (typeof loadAdminTopSpenders === 'function') loadAdminTopSpenders();
+          if (currentUser && currentUser.id == userId) checkAuthStatus();
+        } else {
+          showNotification(data.error || 'Ошибка начисления', 'error');
+        }
+      } catch (e) {
+        showNotification(e.message, 'error');
+      }
+    }
+
+    async function adminQuickSetTier(userId, tier) {
+      if (!confirm(`Присвоить пользователю #${userId} тариф ${tier} на 30 дней?`)) return;
+      try {
+        const res = await fetch('/api/admin/users/update', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: userId, tier: tier })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          showNotification(`Пользователю #${userId} присвоен тариф ${tier}!`, 'success');
+          loadAdminUsers();
+          if (currentUser && currentUser.id == userId) checkAuthStatus();
+        } else {
+          showNotification(data.error || 'Ошибка смены тарифа', 'error');
+        }
+      } catch (e) {
+        showNotification(e.message, 'error');
       }
     }
 
@@ -16800,9 +17107,17 @@
             }
           }
 
+          const trendBtn = g.is_featured_trend == 1
+            ? `<button onclick="adminToggleGenTrend(${g.id}, 0)" class="bg-amber-500/25 text-amber-300 hover:bg-amber-500/35 border border-amber-500/40 px-2.5 py-1 rounded-xl text-[10px] font-bold transition flex items-center gap-1 shadow">
+                <span>⭐</span> В Трендах (Убрать)
+               </button>`
+            : `<button onclick="adminToggleGenTrend(${g.id}, 1)" class="bg-white/10 hover:bg-amber-500/20 text-stone-300 hover:text-amber-300 border border-white/15 hover:border-amber-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition flex items-center gap-1">
+                <span>⭐</span> В Тренды на главную
+               </button>`;
+
           const modBtn = g.is_hidden == 1
-            ? `<button onclick="adminToggleGenVisibility(${g.id}, 0)" class="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">🚫 Скрыто (Показать)</button>`
-            : `<button onclick="adminToggleGenVisibility(${g.id}, 1)" class="bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 border border-emerald-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">👁️ В Trends (Скрыть)</button>`;
+            ? `<button onclick="adminToggleGenVisibility(${g.id}, 0)" class="bg-red-500/20 text-red-300 hover:bg-red-500/30 border border-red-500/30 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">🚫 Скрыто</button>`
+            : `<button onclick="adminToggleGenVisibility(${g.id}, 1)" class="bg-stone-500/20 text-stone-400 hover:text-stone-200 border border-white/10 px-2.5 py-1 rounded-xl text-[10px] font-bold transition">👁️ Скрыть</button>`;
 
           return `
             <tr class="hover:bg-white/5 transition">
@@ -16818,15 +17133,81 @@
                 ${g.prompt ? escapeHtml(g.prompt.substring(0, 60)) + (g.prompt.length > 60 ? '...' : '') : '—'}
               </td>
               <td class="p-3.5">${mediaHtml}</td>
-              <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || 0} ZK</td>
+              <td class="p-3.5 font-mono text-red-400 font-bold">-${g.tokens_used || g.tokens_cost || 0} ZK</td>
               <td class="p-3.5 text-stone-400 text-[11px]">${(g.created_at || '').substring(0, 16)}</td>
-              <td class="p-3.5 text-right">${modBtn}</td>
+              <td class="p-3.5 text-right">
+                <div class="flex items-center justify-end gap-1.5 flex-wrap">${trendBtn} ${modBtn}</div>
+              </td>
             </tr>
           `;
         }).join('');
       } catch (e) {
         console.error(e);
         tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-red-400">Ошибка загрузки: ${e.message}</td></tr>`;
+      }
+    }
+
+    async function adminToggleGenTrend(genId, isFeatured) {
+      try {
+        const res = await fetch('/api/admin/generations/toggle-trend', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ generation_id: genId, is_featured: isFeatured })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'ok') {
+          showNotification(
+            isFeatured ? `⭐ Генерация #${genId} добавлена в Тренды на главную страницу!` : `Генерация #${genId} убрана из трендов`,
+            'success'
+          );
+          loadAdminGenerations();
+          loadCuratedTrends();
+        } else {
+          showNotification(data.error || 'Ошибка обновления', 'error');
+        }
+      } catch (e) {
+        showNotification(e.message, 'error');
+      }
+    }
+
+    async function loadCuratedTrends() {
+      try {
+        const res = await fetch('/api/trends/curated');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'ok' && Array.isArray(data.trends)) {
+          data.trends.forEach(g => {
+            const id = 'gen_' + g.id;
+            if (!TRENDS_DATA.some(t => t.id === id)) {
+              const url = g.result_url || '';
+              const isVid = (g.model || '').includes('video') || (g.model || '').includes('veo') || (g.model || '').includes('kling') || url.endsWith('.mp4');
+              const isAud = (g.model || '').includes('voice') || (g.model || '').includes('tts') || (g.model || '').includes('audio') || url.endsWith('.mp3');
+              const type = isVid ? 'video' : (isAud ? 'audio' : 'image');
+              const newItem = {
+                id: id,
+                type: type,
+                title_ru: '🌟 ' + (g.model || 'AI') + ' — ' + (g.user_name || 'Выбор ZYKO'),
+                title_en: '🌟 ' + (g.model || 'AI') + ' by ' + (g.user_name || 'ZYKO Pick'),
+                prompt_ru: g.prompt || 'Генерация ZYKO.AI',
+                prompt_en: g.prompt || 'ZYKO.AI Neural Creation',
+                posterUrl: url,
+                mediaUrl: url,
+                model: (g.model || 'AI') + ' ✦ Pick',
+                modelKey: isVid ? 'wan_3_0' : (isAud ? 'elevenlabs' : 'flux_pro'),
+                likes: 180 + (g.id * 7) % 50,
+                isCuratedByAdmin: true
+              };
+              TRENDS_DATA.unshift(newItem);
+              if (!FEATURED_SHOWCASE_IDS.includes(id)) {
+                FEATURED_SHOWCASE_IDS.unshift(id);
+              }
+            }
+          });
+          renderFeaturedShowcase();
+          if (typeof renderTrendsGrid === 'function') renderTrendsGrid(currentTrendCategory, currentTrendSort);
+        }
+      } catch (e) {
+        console.warn('Error loading curated trends:', e);
       }
     }
 

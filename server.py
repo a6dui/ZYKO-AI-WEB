@@ -43,6 +43,9 @@ from database import (
     get_telegram_broadcast_recipients,
     get_admin_studio_analytics,
     admin_toggle_generation_hidden,
+    admin_toggle_generation_trend,
+    get_public_featured_trends,
+    get_admin_top_spenders,
     admin_quick_grant,
     complete_transaction,
     get_user_by_email,
@@ -65,6 +68,7 @@ from payments import (
     handle_platega_webhook_payload,
     create_cryptopay_payment,
     handle_cryptopay_webhook_payload,
+    get_stripe_financial_hub_data,
     STRIPE_PUBLISHABLE_KEY,
     PLANS
 )
@@ -1910,6 +1914,35 @@ async def handle_admin_update_settings_batch(request: web.Request):
         await update_system_setting(str(k), str(v))
     return web.json_response({"status": "ok", "message": "Настройки успешно сохранены"})
 
+async def handle_admin_generations_toggle_trend(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await request.json()
+    gen_id = int(data.get("generation_id", 0))
+    is_featured = int(data.get("is_featured", 0))
+    await admin_toggle_generation_trend(gen_id, is_featured)
+    return web.json_response({"status": "ok", "generation_id": gen_id, "is_featured": is_featured})
+
+async def handle_public_curated_trends(request: web.Request):
+    trends = await get_public_featured_trends(limit=24)
+    return web.json_response({"status": "ok", "trends": trends})
+
+async def handle_admin_stripe_hub(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    data = await get_stripe_financial_hub_data()
+    return web.json_response(data)
+
+async def handle_admin_top_spenders(request: web.Request):
+    admin = await get_current_user(request)
+    if not admin or not admin.get("is_superadmin"):
+        return web.json_response({"error": "Superadmin required"}, status=403)
+    hours = int(request.query.get("hours", 24))
+    spenders = await get_admin_top_spenders(hours=hours, limit=10)
+    return web.json_response({"status": "ok", "spenders": spenders})
+
 def create_app():
     app = web.Application(client_max_size=50 * 1024 * 1024)
     
@@ -1946,6 +1979,10 @@ def create_app():
     app.router.add_post("/api/admin/transactions/complete", handle_admin_complete_transaction)
     app.router.add_get("/api/admin/generations", handle_admin_generations)
     app.router.add_post("/api/admin/generations/toggle-visibility", handle_admin_generations_toggle)
+    app.router.add_post("/api/admin/generations/toggle-trend", handle_admin_generations_toggle_trend)
+    app.router.add_get("/api/trends/curated", handle_public_curated_trends)
+    app.router.add_get("/api/admin/stripe/hub", handle_admin_stripe_hub)
+    app.router.add_get("/api/admin/analytics/top-spenders", handle_admin_top_spenders)
     app.router.add_post("/api/admin/settings", handle_admin_update_setting)
     app.router.add_post("/api/admin/settings/batch", handle_admin_update_settings_batch)
     app.router.add_get("/api/admin/analytics/studios", handle_admin_studio_analytics)
