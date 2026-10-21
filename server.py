@@ -2173,14 +2173,14 @@ async def run_telegram_bot_poller(app):
                                 user_tier = user.get("tier", "Free")
                                 reply_text = (
                                     f"🎉 <b>Авторизация успешна!</b>\n\n"
-                                    f"Вы вошли в <b>ZYKO.AI</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
+                                    f"Вы вошли в <b>ZYKO.STUDY</b> под аккаунтом: <b>@{tg_username or tg_first_name}</b>\n\n"
                                     f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
                                     f"👑 Подписка: <b>{user_tier}</b>\n\n"
-                                    f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт в свой аккаунт:</b>"
+                                    f"👇 <b>Нажмите на кнопку ниже, чтобы перейти на сайт zyko.study:</b>"
                                 )
                                 kb = {
                                     "inline_keyboard": [
-                                        [{"text": "🚀 Войти на сайт ZYKO.AI", "url": redirect_url}],
+                                        [{"text": "🚀 Войти на сайт zyko.study", "url": redirect_url}],
                                         [{"text": "📱 Открыть Mini App", "web_app": {"url": redirect_url}}]
                                     ]
                                 }
@@ -2207,15 +2207,16 @@ async def run_telegram_bot_poller(app):
                                 user_tier = user.get("tier", "Free")
 
                                 reply_text = (
-                                    f"✨ <b>Добро пожаловать в ZYKO.AI, {tg_first_name or tg_username}!</b>\n\n"
-                                    f"Медиа-студия нового поколения: озвучка 40 персонажей, клонирование голоса, генерация 4K фото и видео.\n\n"
+                                    f"✨ <b>Добро пожаловать в ZYKO.STUDY, {tg_first_name or tg_username}!</b>\n\n"
+                                    f"Нейросетевая платформа нового поколения: генерация 4K фото, видео Veo 3.1 & Wan 2.1, озвучка и клонирование голоса.\n\n"
                                     f"💎 Ваш баланс: <b>{user_tok:,} ZK токенов</b>\n"
                                     f"👑 Тариф: <b>{user_tier}</b>\n\n"
+                                    f"🌐 Официальный сайт: <b>https://zyko.study</b>\n\n"
                                     f"👇 Нажмите кнопку ниже для мгновенного входа в свой профиль:"
                                 )
                                 kb = {
                                     "inline_keyboard": [
-                                        [{"text": "🚀 Войти на сайт ZYKO.AI", "url": direct_login_url}],
+                                        [{"text": "🚀 Войти на сайт zyko.study", "url": direct_login_url}],
                                         [{"text": "📱 Открыть Mini App", "web_app": {"url": direct_login_url}}]
                                     ]
                                 }

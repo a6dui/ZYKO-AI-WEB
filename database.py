@@ -1349,7 +1349,7 @@ async def notify_superadmins_of_payment(tx: dict, user_data: dict = None):
     receipt_url = tx.get("receipt_url")
 
     msg_text = (
-        f"💰 <b>Новая оплата на ZYKO.AI!</b>\n\n"
+        f"💰 <b>Новая оплата на ZYKO.STUDY!</b>\n\n"
         f"👤 <b>Пользователь:</b> {user_label} (ID #{user_id})\n"
         f"💎 <b>Тариф:</b> <b>{tier_plan}</b>\n"
         f"💵 <b>Сумма:</b> <b>{amount} {curr_sym}</b>\n"
