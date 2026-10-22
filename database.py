@@ -40,7 +40,7 @@ async def init_db():
                 telegram_username TEXT,
                 name TEXT,
                 avatar TEXT,
-                tokens INTEGER DEFAULT 1000,
+                tokens INTEGER DEFAULT 10,
                 tier TEXT DEFAULT 'Free',
                 tier_expires_at TIMESTAMP,
                 is_superadmin INTEGER DEFAULT 0,
@@ -94,7 +94,8 @@ async def init_db():
             ('cost_clone', '50'),
             ('cost_isolate', '15'),
             ('cost_sts', '15'),
-            ('starting_tokens', '1000'),
+            ('starting_tokens', '10'),
+            ('welcome_bonus', '10'),
             ('maintenance_mode', 'false'),
             ('maintenance_message', 'Платформа ZYKO.AI обновляется. Мы скоро вернемся!')
         """)
@@ -240,11 +241,16 @@ async def get_user_by_email(email: str) -> dict:
 async def create_email_user(email: str, password_hash: str, name: str = None) -> dict:
     clean_email = email.strip().lower()
     display_name = name or clean_email.split("@")[0].capitalize()
+    sys_settings = await get_system_settings()
+    try:
+        bonus = int(float(sys_settings.get("starting_tokens") or sys_settings.get("welcome_bonus") or 10))
+    except Exception:
+        bonus = 10
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         cursor = await db.execute(
-            "INSERT INTO users (email, name, password_hash, tokens, tier) VALUES (?, ?, ?, 1000, 'Free')",
-            (clean_email, display_name, password_hash)
+            "INSERT INTO users (email, name, password_hash, tokens, tier) VALUES (?, ?, ?, ?, 'Free')",
+            (clean_email, display_name, password_hash, bonus)
         )
         await db.commit()
         user_id = cursor.lastrowid
@@ -275,9 +281,14 @@ async def get_or_create_google_user(google_id: str, email: str, name: str, avata
                 async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c2:
                     return dict(await c2.fetchone())
             else:
+                sys_settings = await get_system_settings()
+                try:
+                    bonus = int(float(sys_settings.get("starting_tokens") or sys_settings.get("welcome_bonus") or 10))
+                except Exception:
+                    bonus = 10
                 cursor_ins = await db.execute(
-                    "INSERT INTO users (google_id, email, name, avatar, tokens, tier) VALUES (?, ?, ?, ?, 1000, 'Free')",
-                    (google_id, clean_email, name, avatar)
+                    "INSERT INTO users (google_id, email, name, avatar, tokens, tier) VALUES (?, ?, ?, ?, ?, 'Free')",
+                    (google_id, clean_email, name, avatar, bonus)
                 )
                 await db.commit()
                 user_id = cursor_ins.lastrowid
@@ -350,8 +361,13 @@ async def get_or_create_telegram_user(telegram_id: int, username: str = "", firs
             async with db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)) as c_res:
                 return dict(await c_res.fetchone())
         else:
+            sys_settings = await get_system_settings()
+            try:
+                bonus = int(float(sys_settings.get("starting_tokens") or sys_settings.get("welcome_bonus") or 10))
+            except Exception:
+                bonus = 10
             initial_tier = "Max" if is_admin else "Free"
-            initial_tokens = 500000 if is_admin else 1000
+            initial_tokens = 500000 if is_admin else bonus
             cursor_ins = await db.execute(
                 """
                 INSERT INTO users (telegram_id, telegram_username, name, avatar, tokens, tier, is_superadmin) 
@@ -1063,12 +1079,17 @@ async def get_user_token_history(user_id: int, filter_type: str = 'all', limit: 
 
         # 3. Initial welcome bonus or plan allocation if user exists
         if user_created_at:
-            if current_balance > 1000 and not tx_rows:
+            sys_settings = await get_system_settings()
+            try:
+                dyn_bonus = int(float(sys_settings.get("starting_tokens") or sys_settings.get("welcome_bonus") or 10))
+            except Exception:
+                dyn_bonus = 10
+            if current_balance > dyn_bonus and not tx_rows and user_tier != 'Free':
                 bonus_desc = f"{user_tier} Plan Initial Allocation"
                 bonus_amt = current_balance
             else:
                 bonus_desc = "Welcome Starter Gift Bonus"
-                bonus_amt = 1000
+                bonus_amt = dyn_bonus
 
             events.append({
                 "id": "init_bonus",

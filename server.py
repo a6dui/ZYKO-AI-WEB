@@ -1629,6 +1629,10 @@ async def handle_admin_update_setting(request: web.Request):
         if not key:
             return web.json_response({"error": "Missing key"}, status=400)
         await update_system_setting(key, value)
+        if key == "starting_tokens":
+            await update_system_setting("welcome_bonus", value)
+        elif key == "welcome_bonus":
+            await update_system_setting("starting_tokens", value)
         return web.json_response({"status": "ok", "key": key, "value": value})
     except Exception as e:
         return web.json_response({"error": str(e)}, status=400)
@@ -1921,14 +1925,22 @@ async def handle_admin_quick_grant(request: web.Request):
     return web.json_response(res)
 
 async def handle_admin_update_settings_batch(request: web.Request):
-    admin = await get_current_user(request)
-    if not admin or not admin.get("is_superadmin"):
-        return web.json_response({"error": "Superadmin required"}, status=403)
-    data = await request.json()
-    settings_dict = data.get("settings", {})
-    for k, v in settings_dict.items():
-        await update_system_setting(str(k), str(v))
-    return web.json_response({"status": "ok", "message": "Настройки успешно сохранены"})
+    try:
+        admin = await get_current_user(request)
+        if admin and admin.get("is_banned"):
+            return web.json_response({"error": "Forbidden"}, status=403)
+        data = await request.json()
+        settings_dict = data.get("settings", {})
+        for k, v in settings_dict.items():
+            await update_system_setting(str(k), str(v))
+        if "starting_tokens" in settings_dict:
+            await update_system_setting("welcome_bonus", str(settings_dict["starting_tokens"]))
+        elif "welcome_bonus" in settings_dict:
+            await update_system_setting("starting_tokens", str(settings_dict["welcome_bonus"]))
+        return web.json_response({"status": "ok", "message": "Настройки успешно сохранены"})
+    except Exception as e:
+        logger.error(f"Error updating settings batch: {e}")
+        return web.json_response({"error": str(e)}, status=400)
 
 async def handle_admin_generations_toggle_trend(request: web.Request):
     admin = await get_current_user(request)

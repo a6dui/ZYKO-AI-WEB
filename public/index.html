@@ -4959,7 +4959,7 @@
               </div>
               <div>
                 <label class="flex items-center gap-1.5 text-[11px] font-semibold text-stone-300 mb-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Приветственный бонус (ZK)</label>
-                <input id="admin-cost-starting" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-emerald-400 font-mono" value="1000">
+                <input id="admin-cost-starting" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-emerald-400 font-mono" value="10">
               </div>
             </div>
           </div>
@@ -16622,9 +16622,14 @@
     async function adminQuickSetTokens(userId, tokens) {
       if (!confirm(`Установить баланс пользователя #${userId} ровно в ${tokens} ZK?`)) return;
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {'Content-Type': 'application/json'};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/admin/users/update', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: headers,
+          credentials: 'include',
           body: JSON.stringify({ user_id: userId, tokens: tokens })
         });
         const data = await res.json();
@@ -16643,9 +16648,14 @@
 
     async function adminQuickAdjustTokens(userId, delta) {
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {'Content-Type': 'application/json'};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/admin/users/adjust-tokens', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: headers,
+          credentials: 'include',
           body: JSON.stringify({ user_id: userId, delta: delta, reason: `Quick grant +${delta} ZK` })
         });
         const data = await res.json();
@@ -16665,9 +16675,14 @@
     async function adminQuickSetTier(userId, tier) {
       if (!confirm(`Присвоить пользователю #${userId} тариф ${tier} на 30 дней?`)) return;
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = {'Content-Type': 'application/json'};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/admin/users/update', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: headers,
+          credentials: 'include',
           body: JSON.stringify({ user_id: userId, tier: tier })
         });
         const data = await res.json();
@@ -16703,9 +16718,14 @@
       const tier = document.getElementById('admin-edit-user-tier').value;
 
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/admin/users/update', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
+          credentials: 'include',
           body: JSON.stringify({ user_id: userId, tokens: tokens, tier: tier })
         });
         const data = await res.json();
@@ -17386,7 +17406,9 @@
           if (costClone && s.cost_clone) costClone.value = s.cost_clone;
           if (costIsolate && s.cost_isolate) costIsolate.value = s.cost_isolate;
           if (costSts && s.cost_sts) costSts.value = s.cost_sts;
-          if (costStarting && s.starting_tokens) costStarting.value = s.starting_tokens;
+          if (costStarting) {
+            costStarting.value = (s.starting_tokens !== undefined && s.starting_tokens !== null && s.starting_tokens !== '') ? s.starting_tokens : (s.welcome_bonus || '10');
+          }
 
           if (maintMode) maintMode.checked = (s.maintenance_mode === 'true' || s.maintenance_mode === '1');
           if (maintMsg && s.maintenance_message) maintMsg.value = s.maintenance_message;
@@ -17397,6 +17419,7 @@
     }
 
     async function adminSaveBatchSettings() {
+      const startingVal = document.getElementById('admin-cost-starting')?.value || '10';
       const payload = {
         cost_image: document.getElementById('admin-cost-image')?.value || '12',
         cost_video: document.getElementById('admin-cost-video')?.value || '25',
@@ -17405,20 +17428,29 @@
         cost_clone: document.getElementById('admin-cost-clone')?.value || '50',
         cost_isolate: document.getElementById('admin-cost-isolate')?.value || '15',
         cost_sts: document.getElementById('admin-cost-sts')?.value || '15',
-        starting_tokens: document.getElementById('admin-cost-starting')?.value || '1000',
+        starting_tokens: startingVal,
+        welcome_bonus: startingVal,
         maintenance_mode: document.getElementById('admin-setting-maintenance-mode')?.checked ? 'true' : 'false',
         maintenance_message: document.getElementById('admin-setting-maintenance-msg')?.value || ''
       };
 
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/admin/settings/batch', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
+          credentials: 'include',
           body: JSON.stringify({ settings: payload })
         });
         const data = await res.json();
         if (res.ok && data.status === 'ok') {
-          alert('💾 Системные настройки, цены генераций и режим техобслуживания успешно сохранены!');
+          if (typeof showNotification === 'function') {
+            showNotification(`💾 Системные настройки и приветственный бонус (${startingVal} ZK) успешно сохранены!`, 'success');
+          }
+          alert(`💾 Системные настройки, цены генераций и приветственный бонус (${startingVal} ZK) успешно сохранены!`);
         } else {
           alert('Ошибка сохранения: ' + (data.error || 'Неизвестная ошибка'));
         }
@@ -17433,35 +17465,45 @@
       const targetTab = document.getElementById('admin-setting-banner-tab').value;
 
       try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         await Promise.all([
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'announcement_banner_text', value: text })
           }),
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'banner_text', value: text })
           }),
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'announcement_banner_btn', value: btnText })
           }),
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'banner_btn', value: btnText })
           }),
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'announcement_banner_tab', value: targetTab })
           }),
           fetch('/api/admin/settings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
+            credentials: 'include',
             body: JSON.stringify({ key: 'banner_link_tab', value: targetTab })
           })
         ]);
