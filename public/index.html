@@ -448,13 +448,19 @@
           <!-- Floating Hamburger Dropdown (Screenshot 5) -->
           <div id="burger-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-56 border border-white/15 rounded-2xl shadow-2xl p-2" style="background-color: #121614 !important; opacity: 1 !important; z-index: 99999 !important;">
             <div class="space-y-0.5 text-xs font-semibold text-stone-300">
-              <button onclick="switchTab('trends'); closeBurgerDropdown(); window.scrollTo({top: 0, behavior: 'smooth'});" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
+              <button onclick="closeAdminPanel(); switchTab('trends'); closeBurgerDropdown(); window.scrollTo({top: 0, behavior: 'smooth'});" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
                 <span class="w-5 h-5 rounded-md bg-stone-500/15 border border-stone-500/30 text-stone-300 group-hover:text-white inline-flex items-center justify-center shrink-0">
                   <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </span>
-                <span data-i18n="drawer_home">Home</span>
+                <span data-i18n="drawer_home">Home (Главное меню)</span>
               </button>
-              <button onclick="switchTab('profile'); switchUserSubtab('invoices'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
+              <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('profile'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
+                <span class="w-5 h-5 rounded-md bg-teal-500/15 border border-teal-500/30 text-teal-400 group-hover:text-white inline-flex items-center justify-center shrink-0">
+                  <svg class="w-3 h-3 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span>Личный профиль</span>
+              </button>
+              <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('invoices'); closeBurgerDropdown();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 hover:text-white transition text-left group">
                 <span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 group-hover:text-white inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.2)]">
                   <svg class="w-3 h-3 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </span>
@@ -768,31 +774,31 @@
               </div>
               <div class="border-t border-white/10 my-2"></div>
               <div class="space-y-0.5 text-xs font-medium">
-                <button onclick="switchTab('profile'); switchUserSubtab('profile'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('profile'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
                   <span class="w-5 h-5 rounded-md bg-stone-500/15 border border-stone-500/30 text-stone-300 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(168,162,158,0.15)]">
                     <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                   </span>
                   <span data-i18n="profile_title">Profile</span>
                 </button>
-                <button onclick="switchTab('profile'); switchUserSubtab('feed'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('feed'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
                   <span class="w-5 h-5 rounded-md bg-purple-500/15 border border-purple-500/30 text-purple-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(168,85,247,0.2)]">
                     <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                   </span>
                   <span data-i18n="profile_feed">Generation feed</span>
                 </button>
-                <button onclick="switchTab('profile'); switchUserSubtab('pricing'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('pricing'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
                   <span class="w-5 h-5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                     <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                   </span>
                   <span data-i18n="profile_pricing">Pricing</span>
                 </button>
-                <button onclick="switchTab('profile'); switchUserSubtab('invoices'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('invoices'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
                   <span class="w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.2)]">
                     <svg class="w-3 h-3 fill-none stroke-current" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   </span>
                   <span data-i18n="nav_billing_invoices">Платежи и чеки</span>
                 </button>
-                <button onclick="switchTab('profile'); switchUserSubtab('affiliate'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
+                <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('affiliate'); closeAvatarDropdown();" class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-white/5 text-stone-300 hover:text-white flex items-center gap-2.5 transition">
                   <span class="w-5 h-5 rounded-md bg-teal-500/15 border border-teal-500/30 text-teal-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(20,184,166,0.2)]">
                     <svg class="w-3 h-3 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                   </span>
@@ -4094,15 +4100,15 @@
           </div>
 
           <!-- Quick Exit to Main Menu (Trends) -->
-          <button onclick="closeAdminPanel(); switchTab('trends');" title="Главное меню (Тренды)" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-500/40 text-stone-300 hover:text-emerald-300 font-semibold text-xs rounded-xl transition shadow-sm">
-            <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span class="hidden md:inline">Главное меню</span>
+          <button type="button" onclick="closeAdminPanel(); switchTab('trends');" title="Главное меню (Тренды)" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition shadow-sm active:scale-95 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="inline">Главное меню</span>
           </button>
 
           <!-- Quick Exit to Profile -->
-          <button onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('profile');" title="Личный профиль" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-teal-500/20 border border-white/10 hover:border-teal-500/40 text-stone-300 hover:text-teal-300 font-semibold text-xs rounded-xl transition shadow-sm">
-            <svg class="w-3.5 h-3.5 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span class="hidden md:inline">Профиль</span>
+          <button type="button" onclick="closeAdminPanel(); switchTab('profile'); switchUserSubtab('profile');" title="Личный профиль" class="flex items-center gap-1.5 px-3 py-1.5 bg-teal-500/15 hover:bg-teal-500/25 border border-teal-500/30 text-teal-300 font-bold text-xs rounded-xl transition shadow-sm active:scale-95 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-teal-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="inline">Профиль</span>
           </button>
 
           <a href="/api/admin/backup-db" target="_blank" download title="Скачать резервную копию базы данных (.db)" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition shadow-sm">
@@ -4973,6 +4979,60 @@
                 <label class="flex items-center gap-1.5 text-[11px] font-semibold text-stone-300 mb-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Приветственный бонус (ZK)</label>
                 <input id="admin-cost-starting" type="number" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-emerald-400 font-mono" value="10">
               </div>
+            </div>
+          </div>
+
+          <!-- LLM Gateway & Provider API Card -->
+          <div class="bg-[#141a18] border border-emerald-500/30 rounded-2xl p-5 space-y-4 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2.5">
+                  <span class="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/></svg>
+                  </span>
+                  Шлюз LLM Студии и AI Агентов (OrigAPI / OpenRouter / DeepSeek / OpenAI)
+                </h3>
+                <p class="text-xs text-stone-400 mt-0.5">Универсальный коннектор для подключения любого OpenAI-совместимого API ключа для чата и агентов.</p>
+              </div>
+              <span id="llm-status-pill" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-stone-400">
+                Не проверено
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-1">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Base URL (Шлюз API)</label>
+                <input id="admin-setting-llm-base-url" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" placeholder="https://api.origapi.net/v1" value="https://api.origapi.net/v1">
+                <span class="text-[9px] text-stone-500 mt-1 block">Напр: <code class="text-emerald-400">https://api.origapi.net/v1</code></span>
+              </div>
+
+              <div class="md:col-span-1">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">API Key (Секретный ключ)</label>
+                <div class="relative">
+                  <input id="admin-setting-llm-api-key" type="password" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono pr-8" placeholder="sk-...">
+                  <button type="button" onclick="toggleLLMKeyVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs">👁️</button>
+                </div>
+                <span class="text-[9px] text-stone-500 mt-1 block">Ключ от OrigAPI, OpenRouter или DeepSeek</span>
+              </div>
+
+              <div class="md:col-span-1">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Модель по умолчанию (Fallback Model)</label>
+                <input id="admin-setting-llm-default-model" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" placeholder="gpt-4o-mini" value="gpt-4o-mini">
+                <span class="text-[9px] text-stone-500 mt-1 block">Напр: <code class="text-stone-300">gpt-4o-mini</code> или <code class="text-stone-300">deepseek-chat</code></span>
+              </div>
+            </div>
+
+            <!-- Test Result Output Box -->
+            <div id="llm-test-result-box" class="hidden rounded-xl p-3 text-xs font-mono transition"></div>
+
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <button type="button" id="btn-test-llm-ping" onclick="adminTestLLMConnection()" class="bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition active:scale-95 flex items-center gap-2">
+                <span>⚡</span> <span>Проверить подключение (Test Ping)</span>
+              </button>
+              <button type="button" onclick="adminSaveBatchSettings()" class="bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black font-extrabold text-xs px-6 py-2.5 rounded-xl transition shadow-md shadow-emerald-500/20 active:scale-95 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span>Сохранить настройки шлюза</span>
+              </button>
             </div>
           </div>
 
@@ -16058,15 +16118,12 @@
       const modal = document.getElementById('admin-panel-modal');
       if (modal) {
         modal.classList.add('hidden');
-        modal.style.display = 'none';
+        modal.style.setProperty('display', 'none', 'important');
       }
       if (window.location.hash === '#admin') {
         try {
-          if (typeof currentTab !== 'undefined' && currentTab) {
-            window.history.replaceState(null, null, '#' + currentTab);
-          } else {
-            window.history.replaceState(null, null, ' ');
-          }
+          const target = (typeof currentTab !== 'undefined' && currentTab && currentTab !== 'admin') ? currentTab : 'trends';
+          window.history.replaceState(null, null, '#' + target);
         } catch(e) {}
       }
     }
@@ -17489,6 +17546,14 @@
             costStarting.value = (s.starting_tokens !== undefined && s.starting_tokens !== null && s.starting_tokens !== '') ? s.starting_tokens : (s.welcome_bonus || '10');
           }
 
+          const llmBaseUrl = document.getElementById('admin-setting-llm-base-url');
+          const llmApiKey = document.getElementById('admin-setting-llm-api-key');
+          const llmDefaultModel = document.getElementById('admin-setting-llm-default-model');
+
+          if (llmBaseUrl && s.llm_base_url) llmBaseUrl.value = s.llm_base_url;
+          if (llmApiKey && s.llm_api_key) llmApiKey.value = s.llm_api_key;
+          if (llmDefaultModel && s.llm_default_model) llmDefaultModel.value = s.llm_default_model;
+
           if (maintMode) maintMode.checked = (s.maintenance_mode === 'true' || s.maintenance_mode === '1');
           if (maintMsg && s.maintenance_message) maintMsg.value = s.maintenance_message;
         }
@@ -17510,7 +17575,10 @@
         starting_tokens: startingVal,
         welcome_bonus: startingVal,
         maintenance_mode: document.getElementById('admin-setting-maintenance-mode')?.checked ? 'true' : 'false',
-        maintenance_message: document.getElementById('admin-setting-maintenance-msg')?.value || ''
+        maintenance_message: document.getElementById('admin-setting-maintenance-msg')?.value || '',
+        llm_base_url: document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://api.origapi.net/v1',
+        llm_api_key: document.getElementById('admin-setting-llm-api-key')?.value?.trim() || '',
+        llm_default_model: document.getElementById('admin-setting-llm-default-model')?.value?.trim() || 'gpt-4o-mini'
       };
 
       try {
@@ -17527,14 +17595,94 @@
         const data = await res.json();
         if (res.ok && data.status === 'ok') {
           if (typeof showNotification === 'function') {
-            showNotification(`💾 Системные настройки и приветственный бонус (${startingVal} ZK) успешно сохранены!`, 'success');
+            showNotification(`💾 Системные настройки и шлюз LLM успешно сохранены!`, 'success');
           }
-          alert(`💾 Системные настройки, цены генераций и приветственный бонус (${startingVal} ZK) успешно сохранены!`);
+          alert(`💾 Системные настройки, цены генераций и параметры шлюза LLM успешно сохранены!`);
         } else {
           alert('Ошибка сохранения: ' + (data.error || 'Неизвестная ошибка'));
         }
       } catch (e) {
         alert('Ошибка сети: ' + e.message);
+      }
+    }
+
+    function toggleLLMKeyVisibility() {
+      const el = document.getElementById('admin-setting-llm-api-key');
+      if (el) el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    async function adminTestLLMConnection() {
+      const btn = document.getElementById('btn-test-llm-ping');
+      const resultBox = document.getElementById('llm-test-result-box');
+      const statusPill = document.getElementById('llm-status-pill');
+      const baseUrl = document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://api.origapi.net/v1';
+      const apiKey = document.getElementById('admin-setting-llm-api-key')?.value?.trim();
+      const model = document.getElementById('admin-setting-llm-default-model')?.value?.trim() || 'gpt-4o-mini';
+
+      if (!apiKey) {
+        alert('Пожалуйста, введите API Key перед тестированием');
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-spin">⏳</span> <span>Тестирование...</span>`;
+      }
+      if (resultBox) {
+        resultBox.classList.remove('hidden');
+        resultBox.className = 'rounded-xl p-3 text-xs font-mono bg-stone-900 border border-white/10 text-stone-300';
+        resultBox.textContent = `Отправка тестового запроса к ${baseUrl} (модель: ${model})...`;
+      }
+
+      try {
+        const token = localStorage.getItem('zyko_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/admin/llm/test', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ base_url: baseUrl, api_key: apiKey, model: model })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          if (statusPill) {
+            statusPill.className = 'text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400';
+            statusPill.textContent = `🟢 Онлайн (${data.latency_ms} ms)`;
+          }
+          if (resultBox) {
+            resultBox.className = 'rounded-xl p-3 text-xs font-mono bg-emerald-950/40 border border-emerald-500/30 text-emerald-300';
+            resultBox.innerHTML = `<strong>✅ Успешное подключение к LLM шлюзу!</strong><br>` +
+              `• Провайдер: <span class="text-white">${data.provider_url}</span><br>` +
+              `• Модель: <span class="text-white">${data.model_used}</span><br>` +
+              `• Пинг: <span class="text-white">${data.latency_ms} ms</span><br>` +
+              `• Ответ модели: <span class="text-emerald-200">"${escapeHtml(data.reply || '')}"</span>`;
+          }
+        } else {
+          if (statusPill) {
+            statusPill.className = 'text-[10px] font-bold px-2.5 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400';
+            statusPill.textContent = `🔴 Ошибка (${data.status_code || 'Err'})`;
+          }
+          if (resultBox) {
+            resultBox.className = 'rounded-xl p-3 text-xs font-mono bg-red-950/40 border border-red-500/30 text-red-300';
+            resultBox.innerHTML = `<strong>❌ Ошибка подключения:</strong><br>${escapeHtml(data.error || 'Не удалось получить ответ от провайдера')}`;
+          }
+        }
+      } catch (e) {
+        if (statusPill) {
+          statusPill.className = 'text-[10px] font-bold px-2.5 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400';
+          statusPill.textContent = '🔴 Ошибка сети';
+        }
+        if (resultBox) {
+          resultBox.className = 'rounded-xl p-3 text-xs font-mono bg-red-950/40 border border-red-500/30 text-red-300';
+          resultBox.textContent = 'Сетевая ошибка при проверке: ' + e.message;
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span>⚡</span> <span>Проверить подключение (Test Ping)</span>`;
+        }
       }
     }
 

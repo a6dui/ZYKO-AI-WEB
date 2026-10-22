@@ -97,7 +97,10 @@ async def init_db():
             ('starting_tokens', '10'),
             ('welcome_bonus', '10'),
             ('maintenance_mode', 'false'),
-            ('maintenance_message', 'Платформа ZYKO.AI обновляется. Мы скоро вернемся!')
+            ('maintenance_message', 'Платформа ZYKO.AI обновляется. Мы скоро вернемся!'),
+            ('llm_base_url', 'https://api.origapi.net/v1'),
+            ('llm_api_key', ''),
+            ('llm_default_model', 'gpt-4o-mini')
         """)
         # Ensure additional columns exist on older tables
         try:

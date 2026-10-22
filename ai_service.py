@@ -1,4 +1,5 @@
 import os
+import time
 import aiohttp
 import json
 import base64
@@ -95,9 +96,180 @@ async def generate_prompt_expansion(user_prompt: str) -> dict:
     )
     return {"expanded": expanded, "provider": "neural_rules"}
 
+def normalize_openai_endpoint(base_url: str) -> str:
+    """
+    Normalizes base_url into a full /chat/completions endpoint.
+    Handles origapi.net, OpenRouter, DeepSeek, OpenAI, Groq, local Ollama, etc.
+    """
+    url = (base_url or "").strip().rstrip("/")
+    if not url:
+        url = "https://api.origapi.net/v1"
+    if url.endswith("/chat/completions"):
+        return url
+    if url.endswith("/v1"):
+        return f"{url}/chat/completions"
+    return f"{url}/v1/chat/completions"
+
+
+def map_requested_model_to_provider(model: str, default_model: str = "gpt-4o-mini") -> str:
+    """
+    Maps frontend model keys or agent personas to standard provider model IDs.
+    """
+    m = (model or "").lower().strip()
+    fallback = (default_model or "gpt-4o-mini").strip()
+
+    # If already a full model name with provider prefix (e.g. anthropic/claude-3.5-sonnet, openai/gpt-4o)
+    if "/" in m or "-202" in m:
+        return model.strip()
+
+    if "deepseek" in m or "r1" in m:
+        return "deepseek-chat"
+    elif "claude" in m or "sonnet" in m or "anthropic" in m:
+        return "claude-3-5-sonnet-20241022"
+    elif "gemini" in m:
+        return "gemini-1.5-flash"
+    elif "qwen" in m:
+        return "qwen-plus"
+    elif "grok" in m:
+        return "grok-beta"
+    elif "zhipu" in m or "glm" in m:
+        return "glm-4"
+    elif "perplexity" in m or "sonar" in m:
+        return "sonar-medium-online"
+    elif "chatgpt" in m or "gpt" in m or "luna" in m:
+        return "gpt-4o-mini"
+    elif "agent" in m:
+        return fallback or "gpt-4o-mini"
+
+    return fallback or "gpt-4o-mini"
+
+
+def build_system_instruction(model: str, user_system_prompt: str = "", deep_research: bool = False) -> str:
+    """
+    Constructs high-fidelity system personas for AI agents and LLM Studio models.
+    """
+    m = (model or "").lower()
+
+    if user_system_prompt and user_system_prompt.strip():
+        base = user_system_prompt.strip()
+    elif "agent" in m:
+        if "creative" in m or "media" in m:
+            base = (
+                "You are the Media Production Director in ZYKO.AI Studio. You specialize in visual cinematography, "
+                "storyboarding, video prompt crafting (Veo 3.1, Wan 3.0, Kling 1.5 HD, Seedance 2.5), image art direction "
+                "(Nano Banana 2.1, FLUX 1.1 Pro Ultra), and audio design. Be structured, inspiring, and formatted with clean markdown."
+            )
+        elif "code" in m or "architect" in m:
+            base = (
+                "You are the Full-Stack & Neural Architect in ZYKO.AI Studio. You provide production-grade code, "
+                "optimal system architecture, high-efficiency algorithms, and clear technical guidance with syntax-highlighted code blocks."
+            )
+        elif "voice" in m or "audio" in m:
+            base = (
+                "You are the Voice & Audio Producer in ZYKO.AI Studio. You specialize in ElevenLabs HD voice cloning, "
+                "cinematic sound effects (SFX), music generation, and audio production workflows."
+            )
+        elif "marketing" in m or "content" in m:
+            base = (
+                "You are the Viral Content Strategist in ZYKO.AI Studio. You craft high-converting hooks, viral TikTok/Reels/Shorts "
+                "scripts, and actionable social media campaigns."
+            )
+        elif "research" in m or "academic" in m:
+            base = (
+                "You are the Deep Research Agent in ZYKO.AI Studio. You conduct exhaustive, objective research, providing "
+                "verifiable reasoning, comparative tables, and data-backed insights."
+            )
+        else:
+            base = "You are a versatile autonomous AI Agent inside ZYKO.AI Studio. Assist the user with clarity, speed, and precision."
+    else:
+        model_display = model.replace("_", " ").title()
+        base = (
+            f"You are {model_display} running inside ZYKO.AI Studio. Provide helpful, accurate, well-structured answers "
+            f"in the language the user speaks. Use clean markdown formatting."
+        )
+
+    if deep_research:
+        base += "\n\nProvide deep analytical reasoning, step-by-step logic, key takeaways, and comprehensive explanations."
+
+    return base
+
+
+async def test_llm_connection(base_url: str, api_key: str, model: str = "") -> dict:
+    """
+    Tests connection to an OpenAI-compatible provider endpoint (e.g. OrigAPI, OpenRouter, DeepSeek, OpenAI).
+    """
+    if not api_key or not api_key.strip():
+        return {"success": False, "error": "API Key не указан (введите ключ в настройках панели)"}
+
+    endpoint = normalize_openai_endpoint(base_url)
+    model_to_use = (model or "").strip() or "gpt-4o-mini"
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key.strip()}"
+    }
+    if "openrouter" in endpoint.lower():
+        headers["HTTP-Referer"] = "https://zyko.study"
+        headers["X-Title"] = "ZYKO.AI"
+
+    payload = {
+        "model": model_to_use,
+        "messages": [
+            {"role": "user", "content": "Ping test from ZYKO.AI. Reply in Russian in 1 short sentence: say hello, confirm connection, and state your model name."}
+        ],
+        "max_tokens": 120,
+        "temperature": 0.5
+    }
+
+    t0 = time.time()
+    try:
+        timeout = aiohttp.ClientTimeout(total=20)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.post(endpoint, json=payload, headers=headers) as resp:
+                latency_ms = int((time.time() - t0) * 1000)
+                if resp.status == 200:
+                    data = await resp.json()
+                    choices = data.get("choices", [])
+                    reply_text = ""
+                    if choices:
+                        msg_obj = choices[0].get("message", {})
+                        reply_text = msg_obj.get("content") or msg_obj.get("reasoning_content") or ""
+                    return {
+                        "success": True,
+                        "status_code": 200,
+                        "latency_ms": latency_ms,
+                        "model_used": model_to_use,
+                        "provider_url": endpoint,
+                        "reply": reply_text.strip() or "Соединение успешно установлено!"
+                    }
+                else:
+                    err_text = await resp.text()
+                    try:
+                        err_json = json.loads(err_text)
+                        err_msg = err_json.get("error", {}).get("message") or err_json.get("message") or err_text
+                    except Exception:
+                        err_msg = err_text[:300]
+                    return {
+                        "success": False,
+                        "status_code": resp.status,
+                        "latency_ms": latency_ms,
+                        "provider_url": endpoint,
+                        "error": f"HTTP {resp.status}: {err_msg}"
+                    }
+    except Exception as e:
+        latency_ms = int((time.time() - t0) * 1000)
+        return {
+            "success": False,
+            "latency_ms": latency_ms,
+            "provider_url": endpoint,
+            "error": f"Ошибка соединения: {str(e)}"
+        }
+
+
 async def generate_llm_chat(messages: list, model: str = "chatgpt", system_prompt: str = "", deep_research: bool = False) -> dict:
     """
-    Generates intelligent LLM responses for ChatGPT, Claude, Gemini, DeepSeek, Grok, or AI Agents.
+    Generates intelligent LLM responses for ChatGPT, Claude, Gemini, DeepSeek, Grok, or AI Agents
+    via OpenAI-compatible provider (origapi.net, OpenRouter, DeepSeek, OpenAI) or Gemini/algorithmic fallback.
     """
     last_user_msg = ""
     for m in reversed(messages):
@@ -108,25 +280,99 @@ async def generate_llm_chat(messages: list, model: str = "chatgpt", system_promp
     if not last_user_msg:
         last_user_msg = "Hello!"
 
-    model_clean = model.lower()
-    
-    # 1. If Gemini API key is available, use Gemini 1.5 Flash / Pro
+    model_clean = (model or "chatgpt").lower()
+
+    # 1. Load active settings from database or environment
+    llm_base_url = "https://api.origapi.net/v1"
+    llm_api_key = os.environ.get("OPENAI_API_KEY", "")
+    llm_default_model = "gpt-4o-mini"
+
+    try:
+        from database import get_system_settings
+        sys_settings = await get_system_settings()
+        if sys_settings:
+            llm_base_url = sys_settings.get("llm_base_url") or llm_base_url
+            if sys_settings.get("llm_api_key"):
+                llm_api_key = sys_settings.get("llm_api_key").strip()
+            llm_default_model = sys_settings.get("llm_default_model") or llm_default_model
+    except Exception as e:
+        logger.warning("Could not read system_settings for LLM: %s", e)
+
+    # 2. Universal OpenAI-compatible connector (OrigAPI / OpenRouter / DeepSeek / OpenAI)
+    if llm_api_key:
+        endpoint = normalize_openai_endpoint(llm_base_url)
+        target_model = map_requested_model_to_provider(model, llm_default_model)
+        sys_instruction = build_system_instruction(model, system_prompt, deep_research)
+
+        payload_messages = [{"role": "system", "content": sys_instruction}]
+        for m in messages[-10:]:
+            role = m.get("role", "user")
+            if role == "model":
+                role = "assistant"
+            content = m.get("content", "")
+            if content:
+                payload_messages.append({"role": role, "content": content})
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {llm_api_key}"
+        }
+        if "openrouter" in endpoint.lower():
+            headers["HTTP-Referer"] = "https://zyko.study"
+            headers["X-Title"] = "ZYKO.AI"
+
+        models_to_try = [target_model]
+        if llm_default_model and llm_default_model != target_model:
+            models_to_try.append(llm_default_model)
+
+        for attempt_model in models_to_try:
+            req_body = {
+                "model": attempt_model,
+                "messages": payload_messages,
+                "temperature": 0.7,
+                "max_tokens": 3000 if deep_research else 1500
+            }
+            try:
+                timeout = aiohttp.ClientTimeout(total=40)
+                async with aiohttp.ClientSession(timeout=timeout) as session:
+                    async with session.post(endpoint, json=req_body, headers=headers) as resp:
+                        if resp.status == 200:
+                            data = await resp.json()
+                            choices = data.get("choices", [])
+                            if choices:
+                                msg_obj = choices[0].get("message", {})
+                                reply_text = msg_obj.get("content") or msg_obj.get("reasoning_content") or ""
+                                if reply_text.strip():
+                                    usage = data.get("usage", {})
+                                    total_tokens = usage.get("total_tokens") or len(reply_text.split())
+                                    return {
+                                        "reply": reply_text.strip(),
+                                        "model": attempt_model,
+                                        "deep_research": deep_research,
+                                        "tokens_used": total_tokens,
+                                        "provider": "openai_gateway"
+                                    }
+                        else:
+                            err_txt = await resp.text()
+                            logger.warning("OpenAI gateway HTTP %s on model %s: %s", resp.status, attempt_model, err_txt[:200])
+                            if resp.status in (404, 400) and attempt_model != models_to_try[-1]:
+                                continue
+            except Exception as ex:
+                logger.warning("OpenAI gateway attempt error with model %s: %s", attempt_model, ex)
+
+    # 3. Fallback to Gemini 1.5 Flash if GEMINI_API_KEY is available
     if GEMINI_API_KEY:
         try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
-            
             contents = []
-            for m in messages[-8:]: # keep recent context
+            for m in messages[-8:]:
                 role = "user" if m.get("role") == "user" else "model"
                 contents.append({
                     "role": role,
                     "parts": [{"text": m.get("content", "")}]
                 })
-                
-            persona_instruct = system_prompt or f"You are {model.upper()} running inside ZYKO.AI Studio. Be concise, highly capable, and formatted with markdown."
-            if deep_research:
-                persona_instruct += " Provide in-depth reasoning, key bullet points, and analytical depth."
-                
+
+            persona_instruct = build_system_instruction(model, system_prompt, deep_research)
             body = {
                 "contents": contents,
                 "systemInstruction": {
@@ -144,15 +390,15 @@ async def generate_llm_chat(messages: list, model: str = "chatgpt", system_promp
                                 "reply": text.strip(),
                                 "model": model,
                                 "deep_research": deep_research,
-                                "tokens_used": len(text.split())
+                                "tokens_used": len(text.split()),
+                                "provider": "gemini"
                             }
         except Exception as e:
             logger.warning("Gemini chat error: %s", e)
 
-    # 2. Intelligent Persona Engine Fallback
+    # 4. Intelligent Persona Engine Fallback
     q_lower = last_user_msg.lower()
-    
-    # Custom Agent Personas
+
     if "agent" in model_clean:
         if "creative" in model_clean or "media" in model_clean:
             prefix = "🎬 **Media Production Director**\n\n"
@@ -199,7 +445,6 @@ async def generate_llm_chat(messages: list, model: str = "chatgpt", system_promp
             f"Для эффективного решения вашей задачи используйте проверенную цепочку логических шагов. Вся структура оптимизирована для минимального расхода токенов и максимальной точности."
         )
     else:
-        # ChatGPT / GPT 6 Luna
         if deep_research:
             reply = (
                 f"🔬 **Deep Research Report (GPT 6 Luna)**\n\n"
@@ -220,5 +465,6 @@ async def generate_llm_chat(messages: list, model: str = "chatgpt", system_promp
         "reply": reply,
         "model": model,
         "deep_research": deep_research,
-        "tokens_used": len(reply.split())
+        "tokens_used": len(reply.split()),
+        "provider": "persona_engine"
     }

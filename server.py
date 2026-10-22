@@ -72,7 +72,7 @@ from payments import (
     STRIPE_PUBLISHABLE_KEY,
     PLANS
 )
-from ai_service import generate_prompt_expansion, generate_llm_chat, transcribe_audio_gemini
+from ai_service import generate_prompt_expansion, generate_llm_chat, transcribe_audio_gemini, test_llm_connection
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("zyko_server")
@@ -1569,7 +1569,35 @@ def make_file_handler(filename, content_type=None):
 
 async def handle_get_system_settings(request: web.Request):
     settings = await get_system_settings()
+    user = await get_current_user(request)
+    is_admin = bool(user and user.get("is_superadmin"))
+    if not is_admin:
+        # Hide sensitive API keys from public unauthenticated callers
+        safe_settings = {k: v for k, v in settings.items() if not k.endswith("_key")}
+        return web.json_response({"status": "ok", "settings": safe_settings})
     return web.json_response({"status": "ok", "settings": settings})
+
+async def handle_admin_test_llm(request: web.Request):
+    try:
+        admin = await get_current_user(request)
+        if not admin or not admin.get("is_superadmin"):
+            return web.json_response({"error": "Superadmin required"}, status=403)
+        data = await request.json()
+        base_url = data.get("base_url")
+        api_key = data.get("api_key")
+        model = data.get("model")
+
+        if not base_url or not api_key:
+            settings = await get_system_settings()
+            base_url = base_url or settings.get("llm_base_url") or "https://api.origapi.net/v1"
+            api_key = api_key or settings.get("llm_api_key") or ""
+            model = model or settings.get("llm_default_model") or "gpt-4o-mini"
+
+        res = await test_llm_connection(base_url, api_key, model)
+        return web.json_response(res)
+    except Exception as e:
+        logger.error("Admin LLM Test error: %s", e)
+        return web.json_response({"success": False, "error": str(e)}, status=500)
 
 async def handle_admin_overview(request: web.Request):
     overview = await get_admin_overview()
@@ -2013,6 +2041,7 @@ def create_app():
     app.router.add_get("/api/admin/analytics/top-spenders", handle_admin_top_spenders)
     app.router.add_post("/api/admin/settings", handle_admin_update_setting)
     app.router.add_post("/api/admin/settings/batch", handle_admin_update_settings_batch)
+    app.router.add_post("/api/admin/llm/test", handle_admin_test_llm)
     app.router.add_get("/api/admin/analytics/studios", handle_admin_studio_analytics)
     app.router.add_get("/api/admin/elevenlabs/quota", handle_admin_elevenlabs_quota)
     app.router.add_post("/api/admin/elevenlabs/add-key", handle_admin_elevenlabs_add_key)
