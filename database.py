@@ -98,7 +98,7 @@ async def init_db():
             ('welcome_bonus', '10'),
             ('maintenance_mode', 'false'),
             ('maintenance_message', 'Платформа ZYKO.AI обновляется. Мы скоро вернемся!'),
-            ('llm_base_url', 'https://api.origapi.net/v1'),
+            ('llm_base_url', 'https://openrouter.ai/api/v1'),
             ('llm_api_key', ''),
             ('llm_default_model', 'gpt-4o-mini')
         """)

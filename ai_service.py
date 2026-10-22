@@ -99,11 +99,11 @@ async def generate_prompt_expansion(user_prompt: str) -> dict:
 def normalize_openai_endpoint(base_url: str) -> str:
     """
     Normalizes base_url into a full /chat/completions endpoint.
-    Handles origapi.net, OpenRouter, DeepSeek, OpenAI, Groq, local Ollama, etc.
+    Handles OpenRouter, DeepSeek, OpenAI, Groq, local Ollama, etc.
     """
     url = (base_url or "").strip().rstrip("/")
     if not url:
-        url = "https://api.origapi.net/v1"
+        url = "https://openrouter.ai/api/v1"
     if url.endswith("/chat/completions"):
         return url
     if url.endswith("/v1"):
@@ -269,7 +269,7 @@ async def test_llm_connection(base_url: str, api_key: str, model: str = "") -> d
 async def generate_llm_chat(messages: list, model: str = "chatgpt", system_prompt: str = "", deep_research: bool = False) -> dict:
     """
     Generates intelligent LLM responses for ChatGPT, Claude, Gemini, DeepSeek, Grok, or AI Agents
-    via OpenAI-compatible provider (origapi.net, OpenRouter, DeepSeek, OpenAI) or Gemini/algorithmic fallback.
+    via OpenAI-compatible provider (OpenRouter, DeepSeek, OpenAI) or Gemini/algorithmic fallback.
     """
     last_user_msg = ""
     for m in reversed(messages):
@@ -283,7 +283,7 @@ async def generate_llm_chat(messages: list, model: str = "chatgpt", system_promp
     model_clean = (model or "chatgpt").lower()
 
     # 1. Load active settings from database or environment
-    llm_base_url = "https://api.origapi.net/v1"
+    llm_base_url = "https://openrouter.ai/api/v1"
     llm_api_key = os.environ.get("OPENAI_API_KEY", "")
     llm_default_model = "gpt-4o-mini"
 

@@ -1589,7 +1589,7 @@ async def handle_admin_test_llm(request: web.Request):
 
         if not base_url or not api_key:
             settings = await get_system_settings()
-            base_url = base_url or settings.get("llm_base_url") or "https://api.origapi.net/v1"
+            base_url = base_url or settings.get("llm_base_url") or "https://openrouter.ai/api/v1"
             api_key = api_key or settings.get("llm_api_key") or ""
             model = model or settings.get("llm_default_model") or "gpt-4o-mini"
 

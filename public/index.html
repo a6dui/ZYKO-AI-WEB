@@ -4990,7 +4990,7 @@
                   <span class="w-6 h-6 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/></svg>
                   </span>
-                  Шлюз LLM Студии и AI Агентов (OrigAPI / OpenRouter / DeepSeek / OpenAI)
+                  Шлюз LLM Студии и AI Агентов (OpenRouter / DeepSeek / OpenAI)
                 </h3>
                 <p class="text-xs text-stone-400 mt-0.5">Универсальный коннектор для подключения любого OpenAI-совместимого API ключа для чата и агентов.</p>
               </div>
@@ -5002,8 +5002,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div class="md:col-span-1">
                 <label class="block text-[11px] font-semibold text-stone-300 mb-1">Base URL (Шлюз API)</label>
-                <input id="admin-setting-llm-base-url" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" placeholder="https://api.origapi.net/v1" value="https://api.origapi.net/v1">
-                <span class="text-[9px] text-stone-500 mt-1 block">Напр: <code class="text-emerald-400">https://api.origapi.net/v1</code></span>
+                <input id="admin-setting-llm-base-url" type="text" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono" placeholder="https://openrouter.ai/api/v1" value="https://openrouter.ai/api/v1">
+                <span class="text-[9px] text-stone-500 mt-1 block">Напр: <code class="text-emerald-400">https://openrouter.ai/api/v1</code> или <code class="text-stone-300">https://api.deepseek.com/v1</code></span>
               </div>
 
               <div class="md:col-span-1">
@@ -5012,7 +5012,7 @@
                   <input id="admin-setting-llm-api-key" type="password" class="w-full bg-black/40 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono pr-8" placeholder="sk-...">
                   <button type="button" onclick="toggleLLMKeyVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs">👁️</button>
                 </div>
-                <span class="text-[9px] text-stone-500 mt-1 block">Ключ от OrigAPI, OpenRouter или DeepSeek</span>
+                <span class="text-[9px] text-stone-500 mt-1 block">Ключ от OpenRouter, DeepSeek или OpenAI</span>
               </div>
 
               <div class="md:col-span-1">
@@ -17576,7 +17576,7 @@
         welcome_bonus: startingVal,
         maintenance_mode: document.getElementById('admin-setting-maintenance-mode')?.checked ? 'true' : 'false',
         maintenance_message: document.getElementById('admin-setting-maintenance-msg')?.value || '',
-        llm_base_url: document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://api.origapi.net/v1',
+        llm_base_url: document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://openrouter.ai/api/v1',
         llm_api_key: document.getElementById('admin-setting-llm-api-key')?.value?.trim() || '',
         llm_default_model: document.getElementById('admin-setting-llm-default-model')?.value?.trim() || 'gpt-4o-mini'
       };
@@ -17615,7 +17615,7 @@
       const btn = document.getElementById('btn-test-llm-ping');
       const resultBox = document.getElementById('llm-test-result-box');
       const statusPill = document.getElementById('llm-status-pill');
-      const baseUrl = document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://api.origapi.net/v1';
+      const baseUrl = document.getElementById('admin-setting-llm-base-url')?.value?.trim() || 'https://openrouter.ai/api/v1';
       const apiKey = document.getElementById('admin-setting-llm-api-key')?.value?.trim();
       const model = document.getElementById('admin-setting-llm-default-model')?.value?.trim() || 'gpt-4o-mini';
 
