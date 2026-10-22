@@ -1297,7 +1297,9 @@ def calculate_video_cost(duration: str, resolution: str, model: str) -> int:
     seconds = float(sec_match.group(1)) if sec_match else 10.0
 
     is_short = seconds <= 6.0 or any(k in dur for k in ["quick", "short"])
-    is_long = seconds >= 14.0 or any(k in dur for k in ["long", "extend", "cinema"])
+    is_ultra_long = seconds >= 25.0
+    is_very_long = seconds >= 18.0 and seconds < 25.0
+    is_long = (seconds >= 14.0 and seconds < 18.0) or any(k in dur for k in ["extend", "cinema"])
     is_4k = "4k" in res or "2160" in res or "uhd" in res
     is_1080 = "1080" in res or "fhd" in res
 
@@ -1308,13 +1310,27 @@ def calculate_video_cost(duration: str, resolution: str, model: str) -> int:
             return 75 if is_ultra else (55 if is_mini else 60)
         else:
             return 45 if is_ultra else (25 if is_mini else 35)
+    elif is_ultra_long:
+        if is_4k:
+            return 500
+        elif is_1080:
+            return 400 if is_ultra else 360
+        else:
+            return 280 if is_ultra else 240
+    elif is_very_long:
+        if is_4k:
+            return 460 if is_ultra else 430
+        elif is_1080:
+            return 360 if is_ultra else 310
+        else:
+            return 240 if is_ultra else 210
     elif is_long:
         if is_4k:
-            return 500 if is_ultra else 480
+            return 420 if is_ultra else 390
         elif is_1080:
-            return 380 if is_ultra else (300 if is_mini else 340)
+            return 320 if is_ultra else 270
         else:
-            return 260 if is_ultra else (190 if is_mini else 220)
+            return 210 if is_ultra else 180
     else:
         if is_4k:
             return 380 if is_ultra else (310 if is_mini else 340)

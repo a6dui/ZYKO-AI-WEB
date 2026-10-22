@@ -833,9 +833,9 @@
       <!-- HERO SECTION WITH VIDEO BACKGROUND (Screenshot 1 & 5) -->
       <section class="relative w-full h-[84vh] min-h-[540px] flex items-end overflow-hidden">
         <video id="heroVideo" autoplay loop muted playsinline preload="auto" class="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-80 contrast-110">
-          <source src="/media/videos/wick.mp4" type="video/mp4">
           <source src="https://cdn.openai.com/sora/videos/tokyo-walk.mp4" type="video/mp4">
           <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/0e/OpenAI_Sora_in_Action-_Tokyo_Walk.webm/OpenAI_Sora_in_Action-_Tokyo_Walk.webm.1080p.vp9.webm" type="video/webm">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-working-on-her-laptop-in-a-creative-office-42525-large.mp4" type="video/mp4">
         </video>
         <!-- Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-[#060908] via-[#060908]/45 to-emerald-950/25"></div>
@@ -1839,6 +1839,8 @@
                     <option value="5.0s">5.0s</option>
                     <option value="10.0s" selected>10.0s</option>
                     <option value="15.0s">15.0s</option>
+                    <option value="20.0s">20.0s</option>
+                    <option value="30.0s">30.0s (Max)</option>
                   </select>
                   <button type="button" onclick="toggleMobileControlPanel(true)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white flex items-center justify-center text-xs transition shrink-0" title="Generation Settings">
                     <svg class="w-3.5 h-3.5 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -2567,9 +2569,11 @@
                 <span id="video-panel-dur-badge" class="text-emerald-400 font-mono text-[10px] font-bold">10.0s</span>
               </div>
               <select id="video-panel-duration" onchange="syncVideoDuration(this.value)" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white">
-                <option value="5.0s">5.0s (Quick Clip • 20-100 ZK)</option>
-                <option value="10.0s" selected>10.0s (Standard Studio)</option>
-                <option value="15.0s">15.0s (Extended Cinema • 300-500 ZK)</option>
+                <option value="5.0s">5.0s (Quick Clip • 25-100 ZK)</option>
+                <option value="10.0s" selected>10.0s (Standard Studio • 95-380 ZK)</option>
+                <option value="15.0s">15.0s (Extended Cinema • 180-420 ZK)</option>
+                <option value="20.0s">20.0s (Long Cinema • 210-460 ZK)</option>
+                <option value="30.0s">30.0s (Full 30s Master • 240-500 ZK)</option>
               </select>
             </div>
             <div class="space-y-1.5 mt-3">
@@ -8517,7 +8521,9 @@
       const seconds = secMatch ? parseFloat(secMatch[1]) : 10.0;
 
       const isShort = seconds <= 6.0 || dur.includes('quick') || dur.includes('short');
-      const isLong = seconds >= 14.0 || dur.includes('long') || dur.includes('extend') || dur.includes('cinema');
+      const isUltraLong = seconds >= 25.0; // 30s
+      const isVeryLong = seconds >= 18.0 && seconds < 25.0; // 20s
+      const isLong = (seconds >= 14.0 && seconds < 18.0) || dur.includes('extend') || dur.includes('cinema');
 
       const is4K = res.includes('4k') || res.includes('2160') || res.includes('uhd');
       const is1080 = res.includes('1080') || res.includes('fhd');
@@ -8526,15 +8532,77 @@
         if (is4K) return isUltra ? 100 : 90;
         if (is1080) return isUltra ? 75 : (isMini ? 55 : 60);
         return isUltra ? 45 : (isMini ? 25 : 35);
-      } else if (isLong) {
-        if (is4K) return isUltra ? 500 : 480;
-        if (is1080) return isUltra ? 380 : (isMini ? 300 : 340);
-        return isUltra ? 260 : (isMini ? 190 : 220);
-      } else {
+      } else if (isUltraLong) { // 30.0s
+        if (is4K) return 500;
+        if (is1080) return isUltra ? 400 : 360;
+        return isUltra ? 280 : 240;
+      } else if (isVeryLong) { // 20.0s
+        if (is4K) return isUltra ? 460 : 430;
+        if (is1080) return isUltra ? 360 : 310;
+        return isUltra ? 240 : 210;
+      } else if (isLong) { // 15.0s
+        if (is4K) return isUltra ? 420 : 390;
+        if (is1080) return isUltra ? 320 : 270;
+        return isUltra ? 210 : 180;
+      } else { // 10.0s
         if (is4K) return isUltra ? 380 : (isMini ? 310 : 340);
         if (is1080) return isUltra ? 240 : (isMini ? 180 : 200);
         return isUltra ? 140 : (isMini ? 95 : 110);
       }
+    }
+
+    function updateVideoDurationOptions(modelKey) {
+      const mKey = (modelKey || activeVideoModelKey || 'seedance_2_5').toLowerCase();
+      const isSeedance = mKey.includes('seedance');
+      const p1 = document.getElementById('video-duration-pill');
+      const p2 = document.getElementById('video-panel-duration');
+      const currentVal = p1 ? p1.value : '10.0s';
+
+      let optionsPill = '';
+      let optionsPanel = '';
+
+      if (isSeedance) {
+        optionsPill = `
+          <option value="5.0s">5.0s</option>
+          <option value="10.0s">10.0s</option>
+          <option value="15.0s">15.0s</option>
+          <option value="20.0s">20.0s</option>
+          <option value="30.0s">30.0s (Max)</option>
+        `;
+        optionsPanel = `
+          <option value="5.0s">5.0s (Quick Clip • 25-100 ZK)</option>
+          <option value="10.0s">10.0s (Standard Studio • 95-380 ZK)</option>
+          <option value="15.0s">15.0s (Extended Cinema • 180-420 ZK)</option>
+          <option value="20.0s">20.0s (Long Cinema • 210-460 ZK)</option>
+          <option value="30.0s">30.0s (Full 30s Master • 240-500 ZK)</option>
+        `;
+      } else {
+        optionsPill = `
+          <option value="5.0s">5.0s</option>
+          <option value="10.0s">10.0s</option>
+          <option value="15.0s">15.0s</option>
+        `;
+        optionsPanel = `
+          <option value="5.0s">5.0s (Quick Clip • 25-100 ZK)</option>
+          <option value="10.0s">10.0s (Standard Studio • 95-380 ZK)</option>
+          <option value="15.0s">15.0s (Extended Cinema • 180-420 ZK)</option>
+        `;
+      }
+
+      const validValues = isSeedance ? ['5.0s', '10.0s', '15.0s', '20.0s', '30.0s'] : ['5.0s', '10.0s', '15.0s'];
+      const chosenVal = validValues.includes(currentVal) ? currentVal : (isSeedance ? '10.0s' : '10.0s');
+
+      if (p1) {
+        p1.innerHTML = optionsPill;
+        p1.value = chosenVal;
+      }
+      if (p2) {
+        p2.innerHTML = optionsPanel;
+        p2.value = chosenVal;
+      }
+      const badge = document.getElementById('video-panel-dur-badge');
+      if (badge) badge.textContent = chosenVal;
+      updateVideoCostUI();
     }
 
     function updateVideoCostUI() {
@@ -13537,18 +13605,12 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const isVideo = (t.type === 'video') || !!t.videoUrl || (t.mediaUrl && (t.mediaUrl.endsWith('.mp4') || t.mediaUrl.endsWith('.webm')));
-        const videoSrc = t.videoUrl || t.mediaUrl || '';
-        const mediaTag = (t.type === 'audio' ? '🎵' : (isVideo ? '🎬' : '🖼️'));
-
-        const mediaElem = (isVideo && videoSrc)
-          ? `<video src="${videoSrc}" poster="${t.posterUrl || ''}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>`
-          : `<img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">`;
+        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-2xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3 transition duration-300 shadow-xl select-none"
                onclick="openTrendModalById('${t.id}')">
-            ${mediaElem}
+            <img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/60 pointer-events-none"></div>
 
             <!-- Top Badge & Like -->
@@ -13616,19 +13678,13 @@
         const liked = isTrendLiked(t.id);
         const title = isRu ? t.title_ru : t.title_en;
         const prompt = isRu ? t.prompt_ru : t.prompt_en;
-        const isVideo = (t.type === 'video') || !!t.videoUrl || (t.mediaUrl && (t.mediaUrl.endsWith('.mp4') || t.mediaUrl.endsWith('.webm')));
-        const videoSrc = t.videoUrl || t.mediaUrl || '';
-        const mediaTag = (t.type === 'audio' ? '🎵' : (isVideo ? '🎬' : '🖼️'));
-
-        const mediaElem = (isVideo && videoSrc)
-          ? `<video src="${videoSrc}" poster="${t.posterUrl || ''}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"></video>`
-          : `<img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">`;
+        const mediaTag = (t.type === 'audio' ? '🎵' : (t.type === 'video' ? '🎬' : '🖼️'));
 
         return `
           <div class="trend-card-item tilt-card cursor-pointer rounded-3xl overflow-hidden bg-[#121615] border border-white/10 hover:border-emerald-500/50 group relative aspect-[9/14] flex flex-col justify-between p-3.5 transition duration-300 shadow-2xl select-none"
                onclick="openTrendModalById('${t.id}')">
             
-            ${mediaElem}
+            <img src="${t.posterUrl || t.mediaUrl || ''}" alt="${escapeHtml(title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/60 pointer-events-none"></div>
 
             <!-- Top Floating Bar: Model Badge + Like Counter -->
@@ -14348,7 +14404,8 @@
       const activeSub = document.getElementById('active-video-sub');
       if (activeSub) activeSub.textContent = model.sub || model.tag;
 
-      // Update Token Cost Pill with dynamic resolution/duration multiplier
+      // Update Token Cost Pill and duration options with dynamic model capability
+      updateVideoDurationOptions(model.id);
       updateVideoCostUI();
 
       // Update Version List
@@ -14380,6 +14437,7 @@
         const vTitle = document.getElementById('video-model-title');
         if (vTitle) vTitle.textContent = name || key;
         updateVersionList('video', key);
+        updateVideoDurationOptions(key);
         updateVideoCostUI();
         if (window.innerWidth < 768) toggleMobileControlPanel(false);
       }

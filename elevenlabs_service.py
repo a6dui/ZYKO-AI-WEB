@@ -579,14 +579,26 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     2. Photo-to-Video (Image-to-Video): Encodes reference photo as inline_base64 start_frame.
     3. Custom duration: 5.0s, 10.0s, 15.0s.
     """
-    # Parse requested duration (Google Veo 3.1 strictly expects 4, 6, or 8)
+    # Parse requested duration (Seedance up to 30s, Google Veo strictly expects 4, 6, or 8)
     dur_clean = str(duration or "10.0s").lower().strip()
-    if "15" in dur_clean or "10" in dur_clean or "8" in dur_clean:
-        duration_secs = 8
+    if "30" in dur_clean:
+        duration_secs = 30
+        duration_label = "30.0s"
+    elif "20" in dur_clean:
+        duration_secs = 20
+        duration_label = "20.0s"
+    elif "15" in dur_clean:
+        duration_secs = 15
+        duration_label = "15.0s"
+    elif "10" in dur_clean or "8" in dur_clean:
+        duration_secs = 10
         duration_label = "10.0s"
     elif "4" in dur_clean:
         duration_secs = 4
         duration_label = "4.0s"
+    elif "5" in dur_clean:
+        duration_secs = 5
+        duration_label = "5.0s"
     else:
         duration_secs = 6
         duration_label = "6.0s"
@@ -678,11 +690,12 @@ async def generate_ai_video(prompt: str, aspect: str = "9:16", model: str = "veo
     # 3. Call ElevenLabs Video Flows API
     keys = get_all_elevenlabs_keys()
     for target_model in preferred_models:
+        payload_dur = 8 if ("veo" in target_model and duration_secs > 8) else duration_secs
         payload = {
             "model_id": target_model,
             "prompt": clean_prompt,
             "aspect_ratio": aspect_ratio,
-            "duration_secs": duration_secs,
+            "duration_secs": payload_dur,
             "generate_audio": True
         }
         if start_frame:
