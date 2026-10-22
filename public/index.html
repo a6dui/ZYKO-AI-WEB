@@ -1611,21 +1611,24 @@
         <!-- ================= VIEW 3: LLM STUDIO (SCREENSHOT 2) ================= -->
         <div id="view-text" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
-            <!-- LLM Icon (SVG) -->
-            <div id="llm-model-icon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
-              <svg class="w-7 h-7 sm:w-8 sm:h-8 text-emerald-400 fill-current" viewBox="0 0 24 24">
-                <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/>
-              </svg>
-            </div>
-            <h2 id="llm-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Google Gemini</h2>
-            <p id="llm-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
-              Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities. It is well suited for everyday work with text, code, research, and creative workflows.
-            </p>
-            <div id="llm-capabilities-row" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
-              <span class="text-emerald-400">Key capabilities:</span>
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">2M context</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">ultra fast</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">multimodal reasoning</span>
+            <!-- Model Center Hero (Hidden during and after generation) -->
+            <div id="llm-model-hero" class="text-center transition-all duration-300">
+              <!-- LLM Icon (SVG) -->
+              <div id="llm-model-icon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl">
+                <svg class="w-7 h-7 sm:w-8 sm:h-8 text-emerald-400 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z"/>
+                </svg>
+              </div>
+              <h2 id="llm-model-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Google Gemini</h2>
+              <p id="llm-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-3 sm:mb-4 leading-relaxed">
+                Google Gemini 2.5 Pro combines 2M token context, high-speed multimodal reasoning, and deep analytical capabilities. It is well suited for everyday work with text, code, research, and creative workflows.
+              </p>
+              <div id="llm-capabilities-row" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
+                <span class="text-emerald-400">Key capabilities:</span>
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">2M context</span> •
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">ultra fast</span> •
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">multimodal reasoning</span>
+              </div>
             </div>
 
             <!-- Chat messages stream -->
@@ -1687,27 +1690,30 @@
         <!-- ================= VIEW 4: IMAGE STUDIO (SCREENSHOT 3 & 4) ================= -->
         <div id="view-image" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
-            <!-- Model Icon (Toggles Image Model Dropdown) -->
-            <div id="image-model-icon" onclick="toggleModelDropdown('image'); toggleMobileControlPanel(true);" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 hover:border-amber-400 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition" title="Choose Image Model">
-              <svg class="w-7 h-7 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
-            </div>
-            <div class="flex items-center justify-center gap-2 mb-2">
-              <h2 id="image-model-title" class="text-xl sm:text-2xl font-bold text-white">Nano Banana Pro</h2>
-              <span id="image-model-badge" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase inline-flex items-center gap-1"><svg class="w-2.5 h-2.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.08 8.16 13.93C8.08 13.86 8.03 13.78 7.96 13.7C6.95 12.57 6.74 10.87 7.37 9.47C5.25 11.08 4.29 14.1 5.12 16.71C5.7 18.5 7.15 19.95 8.94 20.54C11.83 21.5 15.08 20.4 16.89 17.91C18.44 15.77 18.66 12.78 17.66 11.2Z"/></svg>Top Studio</span>
-            </div>
-            <p id="image-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-4 sm:mb-5 leading-relaxed">
-              Studio quality control, legible text, incredible consistency.
-            </p>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
-              <span class="text-emerald-400">Key capabilities:</span>
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">maximum quality</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">precise reference handling</span> •
-              <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">style consistency</span>
+            <!-- Model Center Hero (Hidden during and after generation) -->
+            <div id="image-model-hero" class="text-center transition-all duration-300">
+              <!-- Model Icon (Toggles Image Model Dropdown) -->
+              <div id="image-model-icon" onclick="toggleModelDropdown('image'); toggleMobileControlPanel(true);" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 hover:border-amber-400 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition" title="Choose Image Model">
+                <svg class="w-7 h-7 text-white fill-current" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.94 2.31-2 3.02v2.51h3.24c1.89-1.74 2.98-4.31 2.98-7.39 0-.71-.07-1.4-.2-2.06zM12.18 21c2.7 0 4.96-.9 6.61-2.43l-3.24-2.51c-.9.6-2.04.96-3.37.96-2.6 0-4.8-1.76-5.59-4.13H3.25v2.6C4.89 18.77 8.28 21 12.18 21zm-5.59-8.11c-.2-.6-.31-1.24-.31-1.89 0-.65.11-1.29.31-1.89V6.51H3.25A9.97 9.97 0 0 0 2 11c0 1.61.39 3.14 1.25 4.49l3.34-2.6zM12.18 4.96c1.47 0 2.79.5 3.82 1.49l2.87-2.87C17.13 1.96 14.87 1 12.18 1 8.28 1 4.89 3.23 3.25 6.51l3.34 2.6c.79-2.37 2.99-4.15 5.59-4.15z"/></svg>
+              </div>
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <h2 id="image-model-title" class="text-xl sm:text-2xl font-bold text-white">Nano Banana Pro</h2>
+                <span id="image-model-badge" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase inline-flex items-center gap-1"><svg class="w-2.5 h-2.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.08 8.16 13.93C8.08 13.86 8.03 13.78 7.96 13.7C6.95 12.57 6.74 10.87 7.37 9.47C5.25 11.08 4.29 14.1 5.12 16.71C5.7 18.5 7.15 19.95 8.94 20.54C11.83 21.5 15.08 20.4 16.89 17.91C18.44 15.77 18.66 12.78 17.66 11.2Z"/></svg>Top Studio</span>
+              </div>
+              <p id="image-model-desc" class="text-xs text-stone-400 max-w-lg mx-auto mb-4 sm:mb-5 leading-relaxed">
+                Studio quality control, legible text, incredible consistency.
+              </p>
+              <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-6">
+                <span class="text-emerald-400">Key capabilities:</span>
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">maximum quality</span> •
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">precise reference handling</span> •
+                <span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">style consistency</span>
+              </div>
             </div>
 
-            <!-- Image Generation Live Gallery -->
-            <div id="image-generation-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 max-w-2xl mx-auto mb-4 sm:mb-6">
-              <!-- Dynamically populated -->
+            <!-- Image Generation Live Gallery (Single Active Image Preview) -->
+            <div id="image-generation-gallery" class="max-w-md mx-auto mb-4 sm:mb-6 flex flex-col items-center">
+              <!-- Dynamically populated with ONLY the current image -->
             </div>
           </div>
 
@@ -1777,21 +1783,24 @@
         <!-- ================= VIEW 5: VIDEO STUDIO (SCREENSHOTS 1, 2 & 3) ================= -->
         <div id="view-video" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
-            <!-- Dynamic Model Icon (Toggles Video Model Dropdown) -->
-            <div id="video-model-icon" onclick="toggleModelDropdown('video'); toggleMobileControlPanel(true);" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition" title="Choose Video Model">
-              <svg class="w-8 h-8 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
+            <!-- Model Center Hero (Hidden during and after generation) -->
+            <div id="video-model-hero" class="text-center transition-all duration-300">
+              <!-- Dynamic Model Icon (Toggles Video Model Dropdown) -->
+              <div id="video-model-icon" onclick="toggleModelDropdown('video'); toggleMobileControlPanel(true);" class="w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 text-white flex items-center justify-center text-3xl mx-auto mb-3 sm:mb-4 shadow-xl cursor-pointer hover:scale-105 transition" title="Choose Video Model">
+                <svg class="w-8 h-8 text-white fill-current" viewBox="0 0 24 24"><rect x="3" y="7" width="4" height="13" rx="2"/><rect x="10" y="3" width="4" height="17" rx="2"/><rect x="17" y="8" width="4" height="12" rx="2"/></svg>
+              </div>
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <h2 id="video-model-title" class="text-2xl font-bold text-white">Seedance 2.5</h2>
+                <span id="video-model-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">New • Beta</span>
+              </div>
+              <p id="video-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 sm:mb-6 leading-relaxed">
+                Sharper realism, up to 50 image, video & audio refs, up to 30s.
+              </p>
             </div>
-            <div class="flex items-center justify-center gap-2 mb-2">
-              <h2 id="video-model-title" class="text-2xl font-bold text-white">Seedance 2.5</h2>
-              <span id="video-model-badge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">New • Beta</span>
-            </div>
-            <p id="video-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-4 sm:mb-6 leading-relaxed">
-              Sharper realism, up to 50 image, video & audio refs, up to 30s.
-            </p>
 
-            <!-- Video Gallery Stream -->
-            <div id="video-generation-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
-              <!-- Dynamically populated -->
+            <!-- Video Gallery Stream (Single Active Video Preview) -->
+            <div id="video-generation-gallery" class="max-w-2xl mx-auto mb-6">
+              <!-- Dynamically populated with ONLY the current video -->
             </div>
           </div>
 
@@ -1872,21 +1881,24 @@
         <!-- ================= VIEW 6: AUDIO & VOICE STUDIO ================= -->
         <div id="view-audio" class="hidden flex-1 flex flex-col justify-between bg-[#060908] p-3.5 sm:p-5 md:p-6 overflow-y-auto relative">
           <div class="max-w-3xl w-full mx-auto my-auto text-center py-4 sm:py-6">
-            <!-- Dynamic Voice / Model Icon (Opens Voice Dropdown / Modal) -->
-            <div id="audio-model-icon" onclick="openVoiceCatalogModal()" class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/30 hover:border-amber-400 text-amber-400 flex items-center justify-center mx-auto mb-3.5 shadow-[0_0_15px_rgba(245,158,11,0.25)] cursor-pointer hover:scale-105 transition select-none" title="ElevenLabs Voice Catalog">
-              <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M7 4h3.2v16H7zm6.8 0H17v16h-3.2z"/></svg>
-            </div>
-            <div class="flex items-center justify-center gap-2 mb-2">
-              <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">Elevenlabs</h2>
-            </div>
-            <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
-              Eleven v4 creates natural, emotionally expressive speech with authentic human cadence and realistic tones. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
-            </p>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-5">
-              <span class="text-stone-300">Key capabilities:</span>
-              <span class="text-stone-400">ultra-realistic speech</span> •
-              <span class="text-stone-400">accent-free voice</span> •
-              <span class="text-stone-400">speech-to-speech changer</span>
+            <!-- Model Center Hero (Hidden during and after generation) -->
+            <div id="audio-model-hero" class="text-center transition-all duration-300">
+              <!-- Dynamic Voice / Model Icon (Opens Voice Dropdown / Modal) -->
+              <div id="audio-model-icon" onclick="openVoiceCatalogModal()" class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/30 hover:border-amber-400 text-amber-400 flex items-center justify-center mx-auto mb-3.5 shadow-[0_0_15px_rgba(245,158,11,0.25)] cursor-pointer hover:scale-105 transition select-none" title="ElevenLabs Voice Catalog">
+                <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M7 4h3.2v16H7zm6.8 0H17v16h-3.2z"/></svg>
+              </div>
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <h2 id="audio-model-title" class="text-xl sm:text-2xl font-bold text-white">Elevenlabs</h2>
+              </div>
+              <p id="audio-model-desc" class="text-xs text-stone-400 max-w-xl mx-auto mb-3.5 leading-relaxed">
+                Eleven v4 creates natural, emotionally expressive speech with authentic human cadence and realistic tones. The same voice sounds natural across different languages without carrying over the speaker's original accent. It is well suited for long-form content and multi-speaker dialogue.
+              </p>
+              <div class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] font-semibold text-stone-400 mb-4 sm:mb-5">
+                <span class="text-stone-300">Key capabilities:</span>
+                <span class="text-stone-400">ultra-realistic speech</span> •
+                <span class="text-stone-400">accent-free voice</span> •
+                <span class="text-stone-400">speech-to-speech changer</span>
+              </div>
             </div>
 
             <!-- Authentic Audio Subtabs Switcher: TTS vs Speech-to-Speech -->
@@ -6963,11 +6975,7 @@
         console.warn('Lang restore error:', e);
       }
 
-      try {
-        if (typeof renderVideoStudioGallery === 'function') {
-          renderVideoStudioGallery();
-        }
-      } catch (e) {}
+
     });
 
     // 2. Tab Switcher
@@ -8077,9 +8085,6 @@
             if (typeof updateVideoCostUI === 'function') {
               updateVideoCostUI();
             }
-            if (typeof renderVideoStudioGallery === 'function') {
-              renderVideoStudioGallery();
-            }
           } else if (tabId === 'image') {
             if (mobModelIcon) mobModelIcon.innerHTML = renderIcon(activeImageModelKey || 'nano_banana_pro');
             mobModelName.textContent = document.getElementById('active-image-name')?.textContent || 'Nano Banana Pro';
@@ -8223,6 +8228,10 @@
       const chatBox = document.getElementById('agent-chat-messages');
       chatBox.classList.remove('hidden');
 
+      // Hide center hero so agent conversation takes full focus
+      const agentHero = document.getElementById('agent-hero-container');
+      if (agentHero) agentHero.classList.add('hidden');
+
       // Render user message
       chatBox.innerHTML += `
         <div class="flex justify-end">
@@ -8306,6 +8315,10 @@
       const sysPrompt = document.getElementById('custom-system-prompt')?.value || document.getElementById('llm-system-prompt')?.value || '';
       const chatBox = document.getElementById('llm-chat-messages');
       chatBox.classList.remove('hidden');
+
+      // Hide center hero so LLM conversation takes full focus
+      const llmHero = document.getElementById('llm-model-hero');
+      if (llmHero) llmHero.classList.add('hidden');
 
       chatBox.innerHTML += `
         <div class="flex justify-end">
@@ -8395,15 +8408,22 @@
       btn.disabled = true;
       btn.innerHTML = `<span class="animate-spin">⏳</span>`;
 
+      // 1. Hide center hero (model icon, title "Nano Banana Pro", badge, description)
+      const imgHero = document.getElementById('image-model-hero');
+      if (imgHero) imgHero.classList.add('hidden');
+
+      // 2. Clear past images from the studio canvas so only the new generation is shown
+      gallery.innerHTML = '';
+
       // Live placeholder loading card
       const loadCardId = 'img-load-' + Date.now();
-      gallery.insertAdjacentHTML('afterbegin', `
-        <div id="${loadCardId}" class="relative rounded-2xl overflow-hidden border border-emerald-500/40 bg-white/5 p-4 flex flex-col items-center justify-center text-center aspect-square shadow-xl animate-pulse">
-          <span class="animate-spin text-2xl mb-2 text-emerald-400">✨</span>
-          <span class="text-[11px] font-bold text-white mb-1">Rendering Image (${quality})</span>
-          <span class="text-[9px] text-stone-400 line-clamp-2">${escapeHtml(prompt.slice(0, 50))}...</span>
+      gallery.innerHTML = `
+        <div id="${loadCardId}" class="relative rounded-2xl overflow-hidden border border-emerald-500/40 bg-white/5 p-6 flex flex-col items-center justify-center text-center aspect-square shadow-xl animate-pulse w-full max-w-sm mx-auto">
+          <span class="animate-spin text-3xl mb-3 text-emerald-400">✨</span>
+          <span class="text-xs font-bold text-white mb-1.5">Rendering Image (${quality})</span>
+          <span class="text-[10px] text-stone-400 line-clamp-2 max-w-xs">${escapeHtml(prompt.slice(0, 60))}...</span>
         </div>
-      `);
+      `;
 
       try {
         const token = localStorage.getItem('zyko_token');
@@ -8437,23 +8457,23 @@
           } catch(e) {}
           const imgUrl = base64Url || serverUrl || URL.createObjectURL(blob);
 
-          gallery.insertAdjacentHTML('afterbegin', `
-            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-xl transition hover:scale-[1.01] cursor-pointer" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')">
+          gallery.innerHTML = `
+            <div class="relative rounded-2xl overflow-hidden border border-white/15 bg-black group aspect-square shadow-2xl transition hover:scale-[1.01] cursor-pointer w-full max-w-sm mx-auto" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')">
               <img src="${imgUrl}" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-2.5 flex flex-col justify-between">
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition p-3 flex flex-col justify-between">
                 <div class="flex items-center justify-between">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
-                  <span class="text-[9px] bg-white/20 hover:bg-white/40 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">🔍 Открыть</span>
+                  <span class="text-[10px] font-bold text-emerald-400 uppercase">${modelToUse} • ${aspect}</span>
+                  <span class="text-[10px] bg-white/20 hover:bg-white/40 text-white px-2 py-0.5 rounded-full backdrop-blur-sm">🔍 Открыть</span>
                 </div>
-                <div class="flex gap-1" onclick="event.stopPropagation()">
-                  <button type="button" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1 rounded text-[10px] transition">Открыть</button>
-                  <button type="button" onclick="animatePhotoToVideo('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}')" class="px-2 py-1 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded text-[10px] transition shadow" title="Анимировать в видео (Image-to-Video)">🎬</button>
-                  <button type="button" onclick="shareToTelegram('image', '${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2 py-1 bg-[#2AABEE] hover:bg-[#229ed9] text-white font-bold rounded text-[10px] transition shadow" title="Поделиться в Telegram">✈️</button>
-                  <button type="button" onclick="downloadMediaFile('${serverUrl || imgUrl}', 'zyko_ai_render.jpg', this)" class="px-2 py-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold rounded text-[10px] transition" title="Скачать 4K">⬇️</button>
+                <div class="flex gap-1.5" onclick="event.stopPropagation()">
+                  <button type="button" onclick="openPhotoLightbox('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}', '${aspect}')" class="flex-1 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition">Открыть</button>
+                  <button type="button" onclick="animatePhotoToVideo('${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded-lg text-xs transition shadow" title="Анимировать в видео (Image-to-Video)">🎬</button>
+                  <button type="button" onclick="shareToTelegram('image', '${imgUrl}', '${escapeHtml(prompt).replace(/'/g, "\\'")}', '${modelToUse}')" class="px-2.5 py-1.5 bg-[#2AABEE] hover:bg-[#229ed9] text-white font-bold rounded-lg text-xs transition shadow" title="Поделиться в Telegram">✈️</button>
+                  <button type="button" onclick="downloadMediaFile('${serverUrl || imgUrl}', 'zyko_ai_render.jpg', this)" class="px-2.5 py-1.5 text-center bg-white/20 hover:bg-white text-stone-200 hover:text-black font-bold rounded-lg text-xs transition" title="Скачать 4K">⬇️</button>
                 </div>
               </div>
             </div>
-          `);
+          `;
           deductTokensUI(calculatedCost, 'Image Generation • ' + modelToUse.toUpperCase() + ' (' + prompt.slice(0, 30) + ')');
           saveToHistory('projects', prompt.slice(0, 30), serverUrl || imgUrl);
           if (typeof saveToFeed === 'function') {
@@ -8694,6 +8714,8 @@
       const gallery = document.getElementById('video-generation-gallery');
       if (!gallery) return;
 
+      const vHero = document.getElementById('video-model-hero');
+
       let items = [];
       if (typeof getCombinedFeedItems === 'function') {
         items = getCombinedFeedItems().filter(it => it && it.type === 'video');
@@ -8713,53 +8735,59 @@
       const activeLoader = gallery.querySelector('[id^="vid-load-"]');
       const loaderHtml = activeLoader ? activeLoader.outerHTML : '';
 
-      if (!items || items.length === 0) {
-        if (!activeLoader) {
-          gallery.innerHTML = '';
-        }
+      if ((!items || items.length === 0) && !activeLoader) {
+        gallery.innerHTML = '';
+        if (vHero) vHero.classList.remove('hidden');
         return;
       }
+
+      // Hide center hero when video is generating or generated
+      if (vHero) vHero.classList.add('hidden');
 
       const currentLangVal = (typeof currentLang !== 'undefined' && currentLang) ? currentLang : 'ru';
       const dlLabel = (i18n[currentLangVal] && i18n[currentLangVal].download_mp4) || 'Скачать MP4';
 
-      const cardsHtml = items.map((it, idx) => {
+      // Studio canvas displays ONLY the single active / latest video
+      const it = items[0];
+      let cardHtml = '';
+      if (it) {
         const vUrl = it.result_url || it.resultUrl || it.result_text || '';
-        if (!vUrl) return '';
-        const safePrompt = escapeHtml(it.prompt || 'AI Video');
-        const rawPrompt = (it.prompt || 'AI Video').replace(/'/g, "\\'");
-        const safeModel = (it.model || 'VEO 3.1').toUpperCase();
-        const safeDur = it.duration || '10.0s';
-        const safeAspect = it.aspect || '16:9';
-        const cardId = 'vid-item-' + (it.id || (it.created_at ? new Date(it.created_at).getTime() : idx));
+        if (vUrl) {
+          const safePrompt = escapeHtml(it.prompt || 'AI Video');
+          const rawPrompt = (it.prompt || 'AI Video').replace(/'/g, "\\'");
+          const safeModel = (it.model || 'VEO 3.1').toUpperCase();
+          const safeDur = it.duration || '10.0s';
+          const safeAspect = it.aspect || '16:9';
+          const cardId = 'vid-item-' + (it.id || (it.created_at ? new Date(it.created_at).getTime() : 'latest'));
 
-        return `
-          <div id="${cardId}" class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3 text-left shadow-2xl transition hover:border-emerald-400/50">
-            <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
-              <span class="truncate pr-2">${safeModel} • ${safeDur} • ${safeAspect}</span>
-              <span class="text-stone-400 font-medium shrink-0">Готово ✓</span>
+          cardHtml = `
+            <div id="${cardId}" class="rounded-2xl overflow-hidden border border-emerald-500/30 bg-[#0d1412] p-3.5 text-left shadow-2xl transition hover:border-emerald-400/50 max-w-xl mx-auto">
+              <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold mb-2">
+                <span class="truncate pr-2">${safeModel} • ${safeDur} • ${safeAspect}</span>
+                <span class="text-stone-400 font-medium shrink-0">Готово ✓</span>
+              </div>
+              <div class="relative rounded-xl overflow-hidden bg-black/80 aspect-video mb-2.5 border border-white/10">
+                <video src="${vUrl}" controls playsinline preload="metadata" onerror="this.onerror=null; this.src='/media/elevenlabs/el_cinematic_1080.mp4'; this.load();" class="w-full h-full object-cover rounded-xl"></video>
+              </div>
+              <p class="text-xs text-stone-300 mb-2.5 line-clamp-2" title="${safePrompt}">${safePrompt}</p>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="downloadMediaFile('${vUrl}', 'zyko_video_${Date.now()}.mp4', this)" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 active:scale-95">
+                  <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                  <span data-i18n="download_mp4">${dlLabel}</span>
+                </button>
+                <button type="button" onclick="shareToTelegram('video', '${vUrl}', '${rawPrompt}', '${safeModel}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
+                  ✈️
+                </button>
+                <button onclick="document.getElementById('video-prompt-input').value = '${rawPrompt}'; document.getElementById('video-prompt-input').focus();" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
+                  Повторить
+                </button>
+              </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden bg-black/80 aspect-video mb-2.5 border border-white/10">
-              <video src="${vUrl}" controls playsinline preload="metadata" onerror="this.onerror=null; this.src='/media/elevenlabs/el_cinematic_1080.mp4'; this.load();" class="w-full h-full object-cover rounded-xl"></video>
-            </div>
-            <p class="text-xs text-stone-300 mb-2.5 line-clamp-2" title="${safePrompt}">${safePrompt}</p>
-            <div class="flex items-center gap-2">
-              <button type="button" onclick="downloadMediaFile('${vUrl}', 'zyko_video_${Date.now()}.mp4', this)" class="flex-1 text-center bg-white/10 hover:bg-white text-stone-200 hover:text-black font-bold py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5 active:scale-95">
-                <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-                <span data-i18n="download_mp4">${dlLabel}</span>
-              </button>
-              <button type="button" onclick="shareToTelegram('video', '${vUrl}', '${rawPrompt}', '${safeModel}')" class="px-2.5 py-1.5 bg-[#2AABEE]/20 hover:bg-[#2AABEE] text-[#2AABEE] hover:text-white font-bold rounded-lg text-xs transition active:scale-95 flex items-center gap-1" title="Поделиться в Telegram">
-                ✈️
-              </button>
-              <button onclick="document.getElementById('video-prompt-input').value = '${rawPrompt}'; document.getElementById('video-prompt-input').focus();" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black font-bold rounded-lg text-xs transition">
-                Повторить
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }
+      }
 
-      gallery.innerHTML = loaderHtml + cardsHtml;
+      gallery.innerHTML = loaderHtml ? loaderHtml : cardHtml;
     }
 
     async function sendGenerateVideo() {
@@ -8787,6 +8815,13 @@
 
       btn.disabled = true;
       btn.innerHTML = `<span class="animate-spin text-xs">⏳</span>`;
+
+      // 1. Hide center hero (Seedance 2.5, badge, description)
+      const vHero = document.getElementById('video-model-hero');
+      if (vHero) vHero.classList.add('hidden');
+
+      // 2. Clear past videos from canvas so only the new generation is shown
+      gallery.innerHTML = '';
 
       // Live progress card
       const loadCardId = 'vid-load-' + Date.now();
@@ -9901,7 +9936,11 @@
           : `<span class="animate-spin">⏳</span> <span>ElevenLabs AI is converting speech...</span>`;
       }
 
+      const aHero = document.getElementById('audio-model-hero');
+      if (aHero) aHero.classList.add('hidden');
+
       const gallery = document.getElementById('audio-generation-gallery');
+      if (gallery) gallery.innerHTML = '';
       const emptyState = document.getElementById('audio-empty-placeholder');
       if (emptyState) emptyState.remove();
 
@@ -10135,7 +10174,11 @@
       }
 
       // Gallery & Loading state
+      const aHero = document.getElementById('audio-model-hero');
+      if (aHero) aHero.classList.add('hidden');
+
       const gallery = document.getElementById('audio-generation-gallery');
+      if (gallery) gallery.innerHTML = '';
       const emptyState = document.getElementById('audio-empty-placeholder');
       if (emptyState) emptyState.remove();
 
@@ -10284,7 +10327,11 @@
 
       const duration = parseFloat(document.getElementById('slider-sfx-duration')?.value || 4.0);
 
+      const aHero = document.getElementById('audio-model-hero');
+      if (aHero) aHero.classList.add('hidden');
+
       const gallery = document.getElementById('audio-generation-gallery');
+      if (gallery) gallery.innerHTML = '';
       const emptyState = document.getElementById('audio-empty-placeholder');
       if (emptyState) emptyState.remove();
 
@@ -10765,6 +10812,10 @@
       const gallery = document.getElementById('audio-generation-gallery');
       if (!gallery) return;
 
+      const aHero = document.getElementById('audio-model-hero');
+      if (aHero) aHero.classList.add('hidden');
+      gallery.innerHTML = '';
+
       const cardId = 'audio-card-' + Date.now();
       const cardUid = 'card-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
       const card = document.createElement('div');
@@ -11204,11 +11255,13 @@
       const hiddenSelect = document.getElementById('agent-persona-select');
       const promptBox = document.getElementById('agent-prompt-box');
       const chatBox = document.getElementById('agent-chat-messages');
+      const agentHero = document.getElementById('agent-hero-container');
 
       if (nameEl) nameEl.textContent = 'Select an agent from the list';
       if (hiddenSelect) hiddenSelect.value = 'agent_creative';
       if (promptBox) promptBox.classList.add('hidden');
       if (chatBox) chatBox.classList.add('hidden');
+      if (agentHero) agentHero.classList.remove('hidden');
     }
 
     // Document click to dismiss agent dropdown
@@ -11646,6 +11699,21 @@
         llmChat.innerHTML = '';
         llmChat.classList.add('hidden');
       }
+
+      // Restore Studio Galleries & Center Heroes
+      const vGallery = document.getElementById('video-generation-gallery');
+      if (vGallery) vGallery.innerHTML = '';
+      const iGallery = document.getElementById('image-generation-gallery');
+      if (iGallery) iGallery.innerHTML = '';
+      const aGallery = document.getElementById('audio-generation-gallery');
+      if (aGallery) aGallery.innerHTML = '';
+
+      document.getElementById('video-model-hero')?.classList.remove('hidden');
+      document.getElementById('image-model-hero')?.classList.remove('hidden');
+      document.getElementById('audio-model-hero')?.classList.remove('hidden');
+      document.getElementById('llm-model-hero')?.classList.remove('hidden');
+      document.getElementById('agent-hero-container')?.classList.remove('hidden');
+
       resetAgentToLanding();
       showToastNotification('Started fresh new session');
     }
@@ -14366,6 +14434,13 @@
       const iconEl = document.getElementById('video-model-icon');
       if (iconEl) iconEl.innerHTML = renderIcon(model.iconKey);
 
+      // Restore center hero if studio canvas is currently empty
+      const vGallery = document.getElementById('video-generation-gallery');
+      const vHero = document.getElementById('video-model-hero');
+      if (vGallery && vGallery.children.length === 0 && vHero) {
+        vHero.classList.remove('hidden');
+      }
+
       // Update Right Sidebar Control Panel
       const activeIcon = document.getElementById('active-video-icon');
       if (activeIcon) activeIcon.innerHTML = renderIcon(model.iconKey);
@@ -14525,6 +14600,13 @@
 
       const iconEl = document.getElementById('image-model-icon');
       if (iconEl) iconEl.innerHTML = renderIcon(model.iconKey);
+
+      // Restore center hero if studio canvas is currently empty
+      const iGallery = document.getElementById('image-generation-gallery');
+      const iHero = document.getElementById('image-model-hero');
+      if (iGallery && iGallery.children.length === 0 && iHero) {
+        iHero.classList.remove('hidden');
+      }
 
       // Update Right Sidebar Control Panel
       const activeIcon = document.getElementById('active-image-icon');
@@ -14964,9 +15046,6 @@
           if (data && data.success && Array.isArray(data.generations)) {
             serverFeedItems = data.generations;
             renderFeedUI();
-            if (typeof renderVideoStudioGallery === 'function') {
-              renderVideoStudioGallery();
-            }
           }
         }
       } catch (err) {
